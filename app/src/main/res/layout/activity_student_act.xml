@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueLight"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ads"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="6sp">
+        </View>
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adViewInHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="ca-app-pub-8499573931707406/7695814352">
+        </com.google.android.gms.ads.AdView>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="6sp">
+        </View>
+    </LinearLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:background="@color/blueLight">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+    <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+        android:id="@+id/Student_name_textinputLayout"
+        android:layout_width="match_parent"
+        app:hintTextAppearance="@style/Hints"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/personTextFromStudentAct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/student_name"
+        android:ems="10"
+        android:layout_marginBottom="@dimen/margin_10" />
+    </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+
+    <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+        android:id="@+id/Roll_textinputLayout"
+        android:layout_width="match_parent"
+        app:hintTextAppearance="@style/Hints"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/RollNumberFromStudentAct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:hint="@string/student_roll"
+        android:layout_marginBottom="@dimen/margin_10" />
+    </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+
+
+    <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+        android:id="@+id/Student_number_textinputLayout"
+        android:layout_width="match_parent"
+        app:hintTextAppearance="@style/Hints"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/phoneNumbersFromStudentAct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:hint="@string/student_contact"
+        android:layout_marginBottom="@dimen/margin_10" />
+    </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+    <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+        android:id="@+id/parent_name_textinputLayout"
+        android:layout_width="match_parent"
+        app:hintTextAppearance="@style/Hints"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/personParentTextFromStudentAct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/student_parent_name"
+        android:ems="10"
+        android:layout_marginBottom="@dimen/margin_10" />
+    </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+    <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+        android:id="@+id/parentPhoneNumber_textinputLayout"
+        android:layout_width="match_parent"
+        app:hintTextAppearance="@style/Hints"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/ParentsphoneNumbersFromStudentAct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:hint="@string/student_parent_contact"
+        android:layout_marginBottom="@dimen/margin_10" />
+    </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+            <!--<com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout-->
+                <!--android:id="@+id/parent_name_textinputLayout2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--app:hintTextAppearance="@style/Hints"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<EditText-->
+                    <!--android:id="@+id/personParentTextFromStudentAct2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:inputType="textPersonName"-->
+                    <!--android:hint="@string/student_parent_name2"-->
+                    <!--android:ems="10"-->
+                    <!--android:layout_marginBottom="@dimen/margin_10" />-->
+            <!--</com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>-->
+            <!--<com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout-->
+                <!--android:id="@+id/parentPhoneNumber_textinputLayout2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--app:hintTextAppearance="@style/Hints"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<EditText-->
+                    <!--android:id="@+id/ParentsphoneNumbersFromStudentAct2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:inputType="phone"-->
+                    <!--android:ems="10"-->
+                    <!--android:hint="@string/student_parent_contact2"-->
+                    <!--android:layout_marginBottom="@dimen/margin_10" />-->
+            <!--</com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:backgroundTint="#4CAF50"
+            android:id="@+id/btnAddFromStudentAct"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="@string/add"/>
+
+        <Button
+            android:backgroundTint="#FF9800"
+            android:id="@+id/btnEditFromStudentAct"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="@string/edit" />
+
+        <Button
+        android:backgroundTint="#F44336"
+        android:textColor="@color/white"
+        android:id="@+id/btnDeleteFromStudentAct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete"/>
+
+    </LinearLayout>
+    <Button
+        android:backgroundTint="#2196F3"
+        android:textColor="@color/white"
+        android:id="@+id/classRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/class_record"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--TODO: Must use id in group to create a line between two group-->
+
+    <group android:checkableBehavior="none"
+        android:id="@+id/group1">
+    <item
+        android:id="@+id/savedUrl"
+        android:icon="@drawable/ic_action_saved_data"
+        android:title="সেভকৃত তথ্য " />
+
+    <item
+        android:id="@+id/instruction"
+        android:icon="@drawable/ic_action_instruction"
+        android:title="ব্যবহারবিধি"/>
+
+    <item
+        android:id="@+id/questuon_answer"
+        android:icon="@drawable/ic_action_question_answer"
+        android:title="প্রশ্নোত্তর" />
+    </group>
+
+
+
+    <group android:checkableBehavior="none"
+        android:id="@+id/group2">
+    <item
+        android:id="@+id/review"
+        android:icon="@drawable/ic_action_review"
+        android:title="আপনার মতামত" />
+        <item
+        android:id="@+id/share_the_app"
+        android:icon="@drawable/ic_action_share_app"
+        android:title="এপটি শেয়ার করুন" />
+        <item
+            android:id="@+id/rating"
+            android:icon="@drawable/ic_action_rating"
+            android:title="রেটিং দিন"
+            />
+    </group>
+
+    <group
+        android:checkableBehavior="none"
+        android:id="@+id/group4">
+        <item android:title="আমাদের আরো এপস">
+            <menu>
+                <item
+                    android:id="@+id/FourG"
+                    android:icon="@drawable/logo_4g"
+                    android:title="4G সার্ভিস বাংলাদেশ" />
+                <item
+                    android:id="@+id/nav_tutor_finder"
+                    android:icon="@drawable/tutor_finder"
+                    android:title="টিউশন ফাইন্ডার" />
+            </menu>
+        </item>
+    </group>
+    <group
+        android:checkableBehavior="none"
+        android:id="@+id/group3">
+        <item
+            android:id="@+id/facebook_community_Title"
+            android:icon="@drawable/ic_action_facebook_community"
+            android:title="@string/facebook_community_Title" />
+        <item
+            android:id="@+id/about"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="এপটি সম্পর্কে জানুন" />
+    </group>
+
+</menu>

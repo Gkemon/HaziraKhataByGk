@@ -1,0 +1,311 @@
+package com.Teachers.HaziraKhataByGk;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.Teachers.HaziraKhataByGk.model.Notes;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
+import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
+
+/**
+ * Created by uy on 9/7/2017.
+ */
+
+public class noteAddActivity extends AppCompatActivity implements View.OnClickListener {
+    private EditText title;
+    private EditText content;
+    private com.Teachers.HaziraKhataByGk.model.Notes Notes;
+    private Button ADD,Save, btnDelete;
+    public static String currentTitle,previousTitle;
+    Activity activity;
+    public LinearLayout adlayout;
+    public AdView mAdView;
+
+    public static void start(Context context){
+        Intent intent = new Intent(context,noteAddActivity.class);
+        context.startActivity(intent);
+    }
+    public static void start(Context context, Notes Notes){
+        Intent intent = new Intent(context, noteAddActivity.class);
+        intent.putExtra(ClassRoom_activity.class.getSimpleName(), Notes);
+        context.startActivity(intent);
+    }
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.note_add_activity);
+        activity = this;
+        title = (EditText) findViewById(R.id.Title);
+        content = (EditText) findViewById(R.id.content);
+
+        //ADD TEXT CHANGE LISTENER
+        title.addTextChangedListener(new MyTextWatcher(title));
+        content.addTextChangedListener(new MyTextWatcher(content));
+
+        ADD=(Button) findViewById(R.id.ADD);
+        Save = (Button) findViewById(R.id.SAVE);
+        btnDelete = (Button) findViewById(R.id.DELETE);
+        Notes = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
+        ADD.setOnClickListener(this);
+        Save.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
+        if (Notes != null) {
+            ADD.setVisibility(View.GONE);
+            title.setText(Notes.getheading());
+            content.setText(Notes.getContent());
+            previousTitle=Notes.getheading();
+        }
+        else{
+            Save.setVisibility(View.GONE);
+            btnDelete.setVisibility(View.GONE);
+        }
+
+    }
+    @Override
+    public void onClick(View v) {
+        if(v==ADD) {
+            Notes = new Notes();
+            Notes.setheading(title.getText().toString().trim());
+            Notes.setContent(content.getText().toString().trim());
+
+            //CHECK THAT THE ITEM IS UNIQUE
+            for (int i = 0; i < ClassRoom_activity.notesList.size(); i++) {
+                if (ClassRoom_activity.notesList.get(i).getheading().equals(Notes.getheading())) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("সতর্কীকরণ");
+                    alertDialog.setIcon(R.drawable.warning_for_add);
+                    alertDialog.setMessage("এই একই শিরোনামের নোট ইতিমধ্যে এই ক্লাসের ডাটাবেজে রয়েছে।নতুন শিরোনাম ইনপুট দিন,ধন্যবাদ।");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                    return;
+                }
+            }
+            if (submitForm()) {
+                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+                Toast.makeText(this, "নোটটি সার্ভারে যুক্ত হয়েছে,ধন্যবাদ ।", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+        else if(v == Save){
+               Notes.setheading(title.getText().toString().trim());
+               Notes.setContent(content.getText().toString().trim());
+
+            //CHECK THAT THE ITEM IS UNIQUE
+            for (int i = 0; i < ClassRoom_activity.notesList.size(); i++) {
+                if (ClassRoom_activity.notesList.get(i).getheading().equals(Notes.getheading())&&!previousTitle.equals(title.getText().toString())) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("সতর্কীকরণ");
+                    alertDialog.setIcon(R.drawable.warning_for_add);
+                    alertDialog.setMessage("এই একই শিরোনামের নোট ইতিমধ্যে এই ক্লাসের ডাটাবেজে রয়েছে।নতুন শিরোনাম ইনপুট দিন,ধন্যবাদ।");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                    return;
+                }
+            }
+
+
+            if(submitForm()){
+                //Then remove the old student data
+                databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
+                //Then first reinstall previous student data;
+                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+
+            }
+
+            Toast.makeText(this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();
+            previousTitle=null;
+            finish();
+
+
+        }else if(v == btnDelete){
+            Notes.setheading(title.getText().toString());
+            Notes.setContent(content.getText().toString());
+
+            //FOR AVOID SQL INJECTION
+            for (int i = 0; i < ClassRoom_activity.notesList.size(); i++) {
+                if (ClassRoom_activity.notesList.get(i).getheading().equals(Notes.getheading())&&!previousTitle.equals(title.getText().toString())) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("সতর্কীকরণ");
+                    alertDialog.setIcon(R.drawable.warnig_for_delete);
+                    alertDialog.setMessage("আপনি নোটের শিরোনাম অংশ পরিবর্তন করে যে শিরোনাম ইনপুট করেছেন তা অন্য আরেকটি নোটের শিরোনাম অংশের সাথে মিলে যায় ।তাই আপনাকে সেই নোটটি ডিলেট করতে হলে অবশ্যই সেই নোটে যেতে হবে।ধন্যবাদ ");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                    return;
+                }
+            }
+            DeleteDialog();
+
+        }
+    }
+
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+
+                case R.id.title:
+                    validateNoteTitle();
+                    break;
+                case R.id.content:
+                   // validateRoll();
+                    break;
+            }
+        }
+    }
+
+    boolean validateNoteTitle(){
+        if (title.getText().toString().trim().isEmpty()) {
+            title.setError(getString(R.string.error_massege_for_input));
+            requestFocus(title);
+            return false;
+        }
+        return true;
+    }
+
+    private void requestFocus(View view) {
+        view.requestFocus();
+    }
+    private boolean submitForm() {
+        if (!validateNoteTitle()) {
+            Toast.makeText(getApplicationContext(), "দয়া করে নোটের শিরোনাম অংশের ভুল সংশোধণ করুন,ধন্যবাদ", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        Toast.makeText(getApplicationContext(), "সঠিক তথ্য ইনপুট দেয়ার জন্য আপনাকে ধন্যবাদ", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    public void DeleteDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
+        dialogBuilder.setView(dialogView);
+        final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
+        dialogBuilder.setIcon(R.drawable.warnig_for_delete);
+        dialogBuilder.setTitle("আপনি কি আসলেই নোটটি ডিলিট করতে চান?");
+        dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");
+        dialogBuilder.setPositiveButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if(edt.getText().toString().trim().equals("DELETE")){
+
+                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Notes").child(title.getText().toString()).removeValue();
+                    Toast.makeText(noteAddActivity.this, "নোটটি ডিলিট হচ্ছে!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+        dialogBuilder.setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    @Override
+    protected void onStart() {
+        //ADMOB
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                .build();
+        adlayout=findViewById(R.id.ads);
+        mAdView = (AdView) findViewById(R.id.adViewInHome);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                adlayout.setVisibility(View.GONE);
+                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onAdLeftApplication() {
+                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+        mAdView.loadAd(adRequest);
+
+
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+
+}

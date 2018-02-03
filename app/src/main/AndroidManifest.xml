@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.Teachers.HaziraKhataByGk">
+
+    <uses-permission android:name="ANDROID.PERMISSION.INTERNET" />
+    <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/main_icon_hd_half"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- for FB LOGIN -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <!-- for FB LOGIN -->
+
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
+        <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/AppThemeForNoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
+        <activity android:name=".ActActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".ClassRoom_activity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".attendanceActivity">
+
+            <!-- android:theme="@style/AppThemeForNoActionBar"> -->
+        </activity>
+        <activity android:name=".studentActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".printerActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".StudentActActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".studentAllInfoShowActiviy"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".noteAddActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".Scheduler.scheduleActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".Scheduler.AddToDoActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".Scheduler.ReminderActivity"
+            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity android:name=".FirebaseWorks.FirebaseDataShowActivity" />
+        <activity
+            android:name=".widget.text_show_activity"
+            android:label=""
+            android:theme="@style/style_for_text_content" />
+        <activity
+            android:name=".previous_question_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Browsing.BrowsingActivity"
+            android:theme="@style/AppTheme.NoActionBarForBrowser" />
+        <activity android:name=".blog" />
+
+        <service android:name=".Scheduler.TodoNotificationService" />
+        <service android:name=".Scheduler.DeleteNotificationService" />
+
+        <activity
+            android:name=".BottomNavigationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- Firebase Notifications -->
+        <service android:name=".FirebaseWorks.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".FirebaseWorks.FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- ./Firebase Notifications -->
+
+        <activity android:name=".modelTestChoose"
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
+        <activity
+            android:name=".model_test"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".result_activity"
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
+        <activity
+            android:name=".about_activity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".MonthWiseClassDataActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+    </application>
+
+</manifest>

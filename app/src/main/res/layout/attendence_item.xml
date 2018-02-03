@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/attendanceLayout"
+        android:elevation="20sp"
+        android:paddingLeft="12sp"
+        android:paddingStart="12sp"
+        android:paddingTop="12sp"
+        android:backgroundTint="#bbdefb"
+        android:background="#bbdefb"
+
+        android:weightSum="10">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:paddingTop="10sp"
+        android:textSize="14sp"
+        android:id="@+id/attendanceText"
+        android:gravity="left|center"
+        android:elevation="6sp"
+        android:backgroundTint="#2196F3"
+        android:textColor="@color/white"
+        android:background="#2196F3"
+        android:layout_weight="1"
+        android:text="Roll And Name"
+        />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#bbdefb"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:background="#bbdefb"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"
+                android:text=" উপস্থিত"
+                android:textColor="@color/gray_deep"
+                android:textSize="9sp" />
+            <CheckBox
+                android:id="@+id/attMarker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:buttonTint="#4CAF50"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"
+                android:text="অনুপস্থিত "
+                android:textColor="@color/gray_deep"
+                android:textSize="9sp" />
+            <CheckBox
+                android:id="@+id/absentMarker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:buttonTint="#E91E63"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

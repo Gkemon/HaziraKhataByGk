@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueForAll">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:background="@color/blueForAll">
+
+        <ImageView
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:src="@drawable/class_room_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:paddingTop="10sp"
+            android:layout_height="wrap_content"
+            android:text="শ্রেণী কার্যক্রম"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15sp"
+            android:paddingRight="15sp"
+            android:text="উপস্থিতি নেয়া,উপস্থিতির হার,শিক্ষার্থীদের তথ্যসহ ক্লাসের যাবতীয় সকল কিছুর সুন্দর ব্যবস্থাপনা করার সুবিধা"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+</RelativeLayout>
