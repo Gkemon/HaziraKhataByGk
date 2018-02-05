@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -54,6 +55,7 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
     private LinearLayout linearLayoutForPresent, linearLayoutForStudentProfile;
     public static class_item classitem;
     public static List<Notes> notesList;
+    public Button feesButton;
     View EmptyView;
     public LinearLayout adlayout;
     public AdView mAdView;
@@ -66,10 +68,13 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
         activity = this;
         context = getApplicationContext();
         setContentView(R.layout.activity_class_room);
+
         NOTES = (RecyclerView) findViewById(R.id.notes);
         EmptyView = findViewById(R.id.toDoEmptyView);
         notesList=new ArrayList<Notes>();
         btnAdd = (FloatingActionButton) findViewById(R.id.fabForNotes);
+        feesButton=(Button)findViewById(R.id.feesButton);
+
         linearLayoutManager = new LinearLayoutManager(this);
         noteListAdapter = new noteListAdapter(this);
         noteListAdapter.setOnItemClickListener(this);
@@ -82,6 +87,14 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
 
         //FOR GETTING THE CURRENT CLASS
         classitem = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
+
+        feesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(ClassRoom_activity.activity,FeesAcitvity.class);
+                activity.startActivity(intent);
+            }
+        });
 
 
         //ADMOB

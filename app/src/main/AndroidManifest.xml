@@ -37,7 +37,8 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppThemeForNoActionBar"></activity>
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/AppThemeForNoActionBar">
@@ -49,7 +50,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppThemeForNoActionBar"></activity>
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
         <activity
             android:name=".ActActivity"
             android:theme="@style/AppThemeForNoActionBar" />

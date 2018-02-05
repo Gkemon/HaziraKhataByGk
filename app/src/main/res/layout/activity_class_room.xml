@@ -51,6 +51,7 @@
             android:layout_height="6sp">
         </View>
     </LinearLayout>
+
     <LinearLayout
         android:layout_below="@+id/ads"
         android:id="@+id/PresentAndProfileLayout"
@@ -75,11 +76,24 @@
     android:layout_below="@+id/PresentAndProfileLayout"
     android:background="#2196F3" />
 
+    <Button
+        android:layout_below="@+id/TitleOfClassNote"
+        android:id="@+id/feesButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F44336"
+        android:elevation="20sp"
+        android:padding="15sp"
+        android:layout_margin="10sp"
+        android:text="পরিক্ষার ফি/বেতন"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
     <LinearLayout
         android:id="@+id/toDoEmptyView"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_below="@+id/TitleOfClassNote"
+        android:layout_below="@+id/feesButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -102,7 +116,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/TitleOfClassNote"
+        android:layout_below="@id/feesButton"
         android:id="@+id/notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,6 +137,5 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
-
 
 </RelativeLayout>

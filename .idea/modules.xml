@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/HaziraKhataForTeachers.iml" filepath="$PROJECT_DIR$/.idea/HaziraKhataForTeachers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HaziraKhataByGk.iml" filepath="$PROJECT_DIR$/HaziraKhataByGk.iml" />
+      <module fileurl="file://E:\HaziraKhataByGk\.idea\HaziraKhataForTeachers.iml" filepath="E:\HaziraKhataByGk\.idea\HaziraKhataForTeachers.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
