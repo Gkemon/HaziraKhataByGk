@@ -37,8 +37,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
+            android:theme="@style/AppThemeForNoActionBar"></activity>
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/AppThemeForNoActionBar">
@@ -50,32 +49,41 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
-        <activity android:name=".ActActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".ClassRoom_activity"
-            android:theme="@style/AppThemeForNoActionBar"/>
+            android:theme="@style/AppThemeForNoActionBar"></activity>
+        <activity
+            android:name=".ActActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".ClassRoom_activity"
+            android:theme="@style/AppThemeForNoActionBar" />
         <activity android:name=".attendanceActivity">
 
             <!-- android:theme="@style/AppThemeForNoActionBar"> -->
         </activity>
-        <activity android:name=".studentActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".printerActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".StudentActActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".studentAllInfoShowActiviy"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".noteAddActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".Scheduler.scheduleActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".Scheduler.AddToDoActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
-        <activity android:name=".Scheduler.ReminderActivity"
-            android:theme="@style/AppThemeForNoActionBar"/>
+        <activity
+            android:name=".studentActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".printerActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".StudentActActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".studentAllInfoShowActiviy"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".noteAddActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".Scheduler.scheduleActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".Scheduler.AddToDoActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name=".Scheduler.ReminderActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
         <activity android:name=".FirebaseWorks.FirebaseDataShowActivity" />
         <activity
             android:name=".widget.text_show_activity"
@@ -108,31 +116,28 @@
         </service>
         <!-- ./Firebase Notifications -->
 
-        <activity android:name=".modelTestChoose"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
+        <activity
+            android:name=".modelTestChoose"
+            android:theme="@style/AppThemeForNoActionBar"></activity>
         <activity
             android:name=".model_test"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".result_activity"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
+        <activity
+            android:name=".result_activity"
+            android:theme="@style/AppThemeForNoActionBar"></activity>
         <activity
             android:name=".about_activity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ResetPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".MonthWiseClassDataActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".FeesAcitvity"></activity>
     </application>
 
 </manifest>
