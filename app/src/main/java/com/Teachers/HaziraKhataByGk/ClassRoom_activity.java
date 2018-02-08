@@ -74,6 +74,7 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
         notesList=new ArrayList<Notes>();
         btnAdd = (FloatingActionButton) findViewById(R.id.fabForNotes);
         feesButton=(Button)findViewById(R.id.feesButton);
+        feesButton.setVisibility(View.GONE);
 
         linearLayoutManager = new LinearLayoutManager(this);
         noteListAdapter = new noteListAdapter(this);

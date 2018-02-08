@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,12 +21,14 @@ import java.util.Collections;
 
 public class SingleStudentPresentDateListAdaper extends BaseAdapter {
    public ArrayList<String> attendenceListForSingleStudent;
-    Activity activity;
+   public Activity activity;
+   public Context context;
    public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
 
-    public SingleStudentPresentDateListAdaper(Activity activity, ArrayList<String> attendenceListForSingleStudent,ArrayList<Boolean> absentPresent) {
+    public SingleStudentPresentDateListAdaper(Context context,Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent) {
         this.attendenceListForSingleStudent = attendenceListForSingleStudent;
         this.activity = activity;
+        this.context=context;
         this.absentPresent=absentPresent;
 
         Collections.reverse(this.absentPresent);//TO REVERSE THE BOOLEAN LIST;
@@ -57,14 +61,25 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
         TextView textView = (TextView) v.findViewById(R.id.SingleStudentAttendeceDateList);
         ImageView imageView=(ImageView) v.findViewById(R.id.PresentOrAbsent);
 
+
+
         textView.setText((attendenceListForSingleStudent.get(position)));
 
         if(absentPresent.get(pos)) {
-                    imageView.setBackgroundResource(R.drawable.present);
+
+            Glide.with(context)
+                    .load((Integer) R.drawable.present)
+                    .into(imageView);
+
+                    //imageView.setBackgroundResource(R.drawable.present);
         }
         else {
 
-                    imageView.setBackgroundResource(R.drawable.absent);
+            Glide.with(context)
+                    .load((Integer) R.drawable.absent)
+                    .into(imageView);
+
+                    //imageView.setBackgroundResource(R.drawable.absent);
         }
 
 

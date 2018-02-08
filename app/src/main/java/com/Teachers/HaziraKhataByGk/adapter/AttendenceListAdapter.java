@@ -176,9 +176,9 @@ public class AttendenceListAdapter extends BaseAdapter {
     }
     public void saveAll()
     {
-        int totalAttendendStudentNumber=0;
-        int totalAbsentStudentNumberPersentage=0;
-        int totalAbsentStudentNumber=0;
+        double totalAttendendStudentNumber=0;
+        double totalAbsentStudentNumberPersentage=0;
+        double totalAbsentStudentNumber=0;
         for(int i=0; i<nameList.size(); i++)
         {
             boolean sts;
@@ -195,7 +195,7 @@ public class AttendenceListAdapter extends BaseAdapter {
 
             //activity.finish();
         }
-        totalAbsentStudentNumberPersentage=(totalAttendendStudentNumber/nameList.size())*100;
+        totalAbsentStudentNumberPersentage=(totalAttendendStudentNumber/nameList.size())*100.00;
         totalAbsentStudentNumber=nameList.size()-totalAttendendStudentNumber;
         String massegeOfDailyPersentage="আজকের মোট উপস্থিত শিক্ষার্থীর সংখ্যা "+totalAttendendStudentNumber+",মোট অনুপস্থিত শিক্ষার্থীর সংখ্যা "+totalAbsentStudentNumber+", এবং শতকরা উপস্থিতির হার "+totalAbsentStudentNumberPersentage+"%";
 

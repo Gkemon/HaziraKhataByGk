@@ -43,7 +43,7 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
     private EditText parentPhoneNumber;
     private Button btnAdd, btnEdit, btnDelete,btnClassRecord;
     private student student;
-    public  static String previousId,currentId;
+    public   String previousId,currentId;
     public  static Activity activity;
     public LinearLayout adlayout;
     public AdView mAdView;
@@ -236,9 +236,9 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
                         //Then add attendance list of the specific student before edit.This is an operation from student act activity;
                         if (StudentActActivity.attendenceDataListBeforeEdit != null) {
                             for (int i = 0; i < StudentActActivity.attendenceDataListBeforeEdit.size(); i++) {
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(studentActivity.contactofSA.getName() + studentActivity.contactofSA.getSection()).child("Student").child(StudentActActivity.currentId).child("Attendance").push().setValue(StudentActActivity.attendenceDataListBeforeEdit.get(i));
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(studentActivity.contactofSA.getName() + studentActivity.contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentActActivity.attendenceDataListBeforeEdit.get(i));
                             }
-                            StudentActActivity.currentId=null;
+                            currentId=null;
                             Log.d("GK","IF in SA");
                         }
                         else {
@@ -309,7 +309,7 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
             DeleteDialogForStudent();
         }
         else if(v==btnClassRecord){
-                    Intent launchinIntent = new Intent(StudentActActivity.activity, studentAllInfoShowActiviy.class);
+                    Intent launchinIntent = new Intent(this, studentAllInfoShowActiviy.class);
                     String roll = previousId;
                     launchinIntent.putExtra("Roll", roll);
                     StudentActActivity.activity.startActivity(launchinIntent);

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.ads.AdListener;
@@ -58,7 +59,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         UUID id = (UUID)i.getSerializableExtra(TodoNotificationService.TODOUUID);
-        mItem = null;
+        mItem = new ToDoItem();
         for(ToDoItem toDoItem : mToDoItems){
             if (toDoItem.getIdentifier().equals(id)){
                 mItem = toDoItem;
@@ -72,7 +73,13 @@ public class ReminderActivity extends AppCompatActivity {
         mtoDoTextTextView = (TextView)findViewById(R.id.toDoReminderTextViewBody);
         mSnoozeTextView = (TextView)findViewById(R.id.reminderViewSnoozeTextView);
         mSnoozeSpinner = (MaterialSpinner)findViewById(R.id.todoReminderSnoozeSpinner);
+        if (mItem!=null)
         mtoDoTextTextView.setText(mItem.getToDoText());
+        else{
+            mtoDoTextTextView.setText("");
+            Toast.makeText(this,"আপনার ডিভাইসের যান্ত্রিক গোলযোগের কারনে টাইটেলটি লোড হচ্ছেনা । দয়া করে আবার চেষ্টা করুন",Toast.LENGTH_LONG).show();
+        }
+
 
         if(theme.equals(scheduleActivity.LIGHTTHEME)){
             mSnoozeTextView.setTextColor(getResources().getColor(R.color.secondary_text));

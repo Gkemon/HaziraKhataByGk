@@ -19,6 +19,7 @@ import com.Teachers.HaziraKhataByGk.model.NibondhonItems;
 import com.Teachers.HaziraKhataByGk.modelTestChoose;
 import com.Teachers.HaziraKhataByGk.previous_question_activity;
 import com.Teachers.HaziraKhataByGk.widget.text_show_activity;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -105,9 +106,14 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
         @Override
         public void onBindViewHolder(final nibondhonViewHolder holder, int position) {
 
+//TODO: USE GLIDE FOR MAKING IMAGE LIGHT
+            Glide.with(MainActivity.context)
+                    .load((Integer) list.get(position).getImageResourceId())
+                    .into(holder.coverImageView);
+
             holder.titleTextView.setText(list.get(position).getItemNames());
-            holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
-            holder.coverImageView.setTag(list.get(position).getImageResourceId());
+            //holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
+            //holder.coverImageView.setTag(list.get(position).getImageResourceId());
         }
 
         @Override
@@ -125,6 +131,7 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
             super(v);
             titleTextView = (TextView) v.findViewById(R.id.titleTextView);
             coverImageView = (ImageView) v.findViewById(R.id.coverImageView);
+
         }
     }
 

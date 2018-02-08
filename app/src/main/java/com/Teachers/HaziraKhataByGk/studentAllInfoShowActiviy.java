@@ -175,7 +175,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                     }
                     PresentAbsent.add(attendenceData.getStatus());
                 }
-                singleStudentPresentDateListAdaper =new  SingleStudentPresentDateListAdaper(activity,attendenceListForSingleStudent,PresentAbsent);
+                singleStudentPresentDateListAdaper =new  SingleStudentPresentDateListAdaper(studentAllInfoShowActiviy.this,activity,attendenceListForSingleStudent,PresentAbsent);
 
                 DatewiseAttendence.setAdapter(singleStudentPresentDateListAdaper);
             }

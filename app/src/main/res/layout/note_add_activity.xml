@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -53,24 +54,24 @@
         android:ems="10"
         android:layout_marginBottom="@dimen/margin_10" />
     </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
-
     <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
         android:id="@+id/note_content_textinputLayout"
-        app:hintTextAppearance="@style/Hints"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        app:hintTextAppearance="@style/Hints">
 
         <EditText
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="280dp"
             android:layout_marginBottom="@dimen/margin_10"
-            android:ems="10"
             android:gravity="left|top"
             android:hint="@string/note_content_hint"
             android:inputType="textMultiLine"
-            android:maxLength="140" />
+            android:maxLength="1000"
+            app:layout_constraintTop_toTopOf="parent"
+            android:maxLines="1000" />
     </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,7 +85,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ADD"/>
-
         <Button
             android:id="@+id/SAVE"
             android:backgroundTint="#FF9800"
@@ -93,7 +93,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/SAVE" />
-
         <Button
             android:id="@+id/DELETE"
             android:backgroundTint="#F44336"
@@ -102,8 +101,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/DELETE" />
-
     </LinearLayout>
-
 </LinearLayout>
 </LinearLayout>

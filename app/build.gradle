@@ -11,8 +11,8 @@ android {
         applicationId "com.Teachers.HaziraKhataByGk"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 6
-        versionName "1.5"
+        versionCode 8
+        versionName "1.7"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [onesignal_app_id: "611c83ef-2af7-48c6-921c-f22f31e7ccd9", onesignal_google_project_number: "REMOTE"]
@@ -27,13 +27,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     compile 'com.getkeepsafe.taptargetview:taptargetview:1.11.0'
     compile 'com.facebook.android:facebook-android-sdk:4.29.0'
     compile 'com.android.support:animated-vector-drawable:27.0.2'

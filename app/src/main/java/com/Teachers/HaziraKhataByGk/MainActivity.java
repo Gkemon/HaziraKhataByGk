@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity=this;
-        context = getApplicationContext();
+        context = this;
 
         //VIEWS
         setContentView(R.layout.activity_scrollable_tabs);
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (mAdView != null) {
             mAdView.resume();
         }
-
+        context = this;
 
 //        IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
 //        For loading class_room from Server
@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
     }
    public void onStart(){
-
+       context = this;
         //ADMOB
        AdRequest adRequest = new AdRequest.Builder()
                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)

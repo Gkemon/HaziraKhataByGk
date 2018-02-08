@@ -155,7 +155,7 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
-                    alertDialog.setMessage("আপনি নোটের শিরোনাম অংশ পরিবর্তন করে যে শিরোনাম ইনপুট করেছেন তা অন্য আরেকটি নোটের শিরোনাম অংশের সাথে মিলে যায় ।তাই আপনাকে সেই নোটটি ডিলেট করতে হলে অবশ্যই সেই নোটে যেতে হবে।ধন্যবাদ ");
+                    alertDialog.setMessage("আপনি নোটের শিরোনাম অংশ পরিবর্তন করে যে শিরোনাম ইনপুট করেছেন তা অন্য আরেকটি নোটের শিরোনাম অংশের সাথে মিলে যায় ।তাই আপনাকে সেই নোটটি ডিলেট করতে হলে  অবশ্যই সেই নোটে যেতে হবে।ধন্যবাদ ");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -259,6 +259,7 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                 .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                 .build();
         adlayout=findViewById(R.id.ads);
+        adlayout.setVisibility(View.GONE);
         mAdView = (AdView) findViewById(R.id.adViewInHome);
         mAdView.setAdListener(new AdListener() {
             @Override

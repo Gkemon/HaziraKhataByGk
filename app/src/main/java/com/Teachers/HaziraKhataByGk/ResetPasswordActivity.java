@@ -83,6 +83,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
+                if(email.length()==0){
+                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                    alertDialog.setMessage("দয়া করে আপনার এই এপের একাউন্ট খোলার জন্য আগে ব্যবহার করা ইমেইল এড্রেসটি দিন।");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+                else
                 auth.sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
