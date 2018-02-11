@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 
 public class MonthWiseClassDataActivity extends AppCompatActivity {
 TextView textView;
@@ -107,7 +106,6 @@ TextView textView;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 
 

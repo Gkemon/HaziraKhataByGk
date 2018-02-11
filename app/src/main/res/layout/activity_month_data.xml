@@ -33,6 +33,31 @@
             android:layout_height="6sp">
         </View>
     </LinearLayout>
+    <LinearLayout
+        android:background="#e3f2fd"
+        android:id="@+id/emptyViewOnPrintActivity"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/EmptyImage"
+            android:src="@drawable/note"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+        <TextView
+            android:text="এখনো কোন উপস্থিতি নেয়া শুরু হয়নি।উপস্থিতি নেয়ার পর এখানে মাসিক উপস্থিতির হিসাব সংরক্ষিত থাকবে এবং এখান থেকে তা শেয়ার এবং প্রিন্ট করা সম্ভব হবে। "
+            android:id="@+id/EmptyText"
+            android:textColor="@color/secondary_text"
+            android:layout_gravity="center"
+            android:textSize="13sp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 <ScrollView
     android:layout_width="match_parent"
     android:orientation="vertical"

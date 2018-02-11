@@ -24,11 +24,6 @@ public class totthojhuri extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        //TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(MainActivity.context);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
         super.onCreate(savedInstanceState);
     }
 
@@ -48,6 +43,19 @@ public class totthojhuri extends Fragment {
         button8=(Button)view.findViewById(R.id.btn_dialog_8);
         button9=(Button)view.findViewById(R.id.btn_dialog_9);
         button10=(Button)view.findViewById(R.id.btn_dialog_10);
+
+        //TODO: FOR INTERSTIALAD
+        if(MainActivity.context==null&&getActivity()==null){
+            mInterstitialAd = new InterstitialAd(container.getContext());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+        }
+        else {
+            mInterstitialAd = new InterstitialAd(getActivity());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+
+        }
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override

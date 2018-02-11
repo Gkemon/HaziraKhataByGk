@@ -302,7 +302,7 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                     AlertDialog alertDialog = new AlertDialog.Builder(ActActivity.this).create();
                     alertDialog.setTitle("ভুল সংশোধণ করুন");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
-                    alertDialog.setMessage("এখন আপনার ইনপুট দেয়া ক্লাসের নামটি আর আগের নামটি মিলেনি । পুনরায় সঠিক নামটি ইনপুট করুন।ধন্যবাদ");
+                    alertDialog.setMessage("আপনার দেয়া ইনপুটটি \"CONFIRM\" শব্দের সাথে মিলেনি । পুনরায় সঠিকভাবে \"CONFIRM\" শব্দটি ইনপুট করুন।ধন্যবাদ");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {

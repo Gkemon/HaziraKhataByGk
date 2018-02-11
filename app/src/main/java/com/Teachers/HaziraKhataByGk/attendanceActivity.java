@@ -56,7 +56,7 @@ public class attendanceActivity  extends AppCompatActivity {
    // public static ArrayList<Integer> checklist ;
     public static HashMap<Integer, Boolean> checkHash ;//For avoiding auto checking
     public static HashMap<String,ArrayList<AttendenceData>> perStudentTotalAttendenceData;//for creating month wise data sheet;
-    public ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
+    public static ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +131,7 @@ public class attendanceActivity  extends AppCompatActivity {
 
             }
         });
-
+        attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
 
 
 
@@ -174,10 +174,12 @@ public class attendanceActivity  extends AppCompatActivity {
 
                         attendenceData = dataSnapshot1.getValue(AttendenceData.class);
                         attendenceDataArrayListForPerStudent.add(attendenceData);
-                        if (attendenceData.getStatus()) attendClass++;
-                        temp1++;
-                        if(temp1==totalClass){
-                            previousClassAttendenceStatus=attendenceData.getStatus();
+                        if(attendenceData!=null) {
+                            if (attendenceData.getStatus()) attendClass++;
+                            temp1++;
+                            if (temp1 == totalClass) {
+                                previousClassAttendenceStatus = attendenceData.getStatus();
+                            }
                         }
                     }
 
@@ -203,7 +205,7 @@ public class attendanceActivity  extends AppCompatActivity {
 //                            //Handle possible errors.
 //                        }
 //                    });
-                    if (totalClass != 0)   //THIS IS FOR AVOID ARITHMETIC EXCEPTION
+                    if (totalClass != 0)  //THIS IS FOR AVOID ARITHMETIC EXCEPTION
                         totalAttendPersenten = (attendClass * 100) / totalClass;
 
                     attendencePercentage.add((int)totalAttendPersenten);//TO GET PERCENTAGE FOR COLOR
@@ -242,6 +244,7 @@ public class attendanceActivity  extends AppCompatActivity {
     }
         @Override
         protected void onResume () {
+            classitemAttendence = getIntent().getParcelableExtra("class_room");
             super.onResume();
         }
 
@@ -265,6 +268,7 @@ public class attendanceActivity  extends AppCompatActivity {
 
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                                     studentListForDeleteFromAttendenceActivity=new ArrayList<>();
                                     for (DataSnapshot StudentData : dataSnapshot.getChildren()){
                                         student student;
@@ -279,12 +283,21 @@ public class attendanceActivity  extends AppCompatActivity {
                                         Log.d("GK","REMOVE");
 
                                     }
+
+                                   Intent intent = new Intent(attendanceActivity.this,attendanceActivity.class);
+                                    intent.putExtra("DATE", time);
+                                    intent.putExtra("SUBJECT", subject);
+                                    intent.putExtra("class_room", classitemAttendence);
+                                    finish();
+                                    startActivity(intent);
+
                                 }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                 }
                             });
+
 
                         }
                     }
@@ -301,7 +314,6 @@ public class attendanceActivity  extends AppCompatActivity {
             case R.id.printer:
                 Intent intent=new Intent(attendanceActivity.this,printerActivity.class);
                 startActivity(intent);
-
 
             default:
                 return super.onOptionsItemSelected(item);

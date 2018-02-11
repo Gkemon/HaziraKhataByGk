@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
         android:largeHeap="true"
-        android:windowSoftInputMode="adjustPan|adjustResize">
+        android:windowSoftInputMode="stateHidden|adjustPan">
 
         <!-- for FB LOGIN -->
         <meta-data
@@ -76,7 +76,9 @@
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".studentAllInfoShowActiviy"
-            android:theme="@style/AppThemeForNoActionBar" />
+            />
+            <!--android:theme="@style/AppThemeForNoActionBar"-->
+
         <activity
             android:name=".noteAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
@@ -123,26 +125,33 @@
 
         <activity
             android:name=".modelTestChoose"
-            android:theme="@style/AppThemeForNoActionBar"></activity>
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
         <activity
             android:name=".model_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".result_activity"
-            android:theme="@style/AppThemeForNoActionBar"></activity>
+            android:theme="@style/AppThemeForNoActionBar">
+        </activity>
         <activity
             android:name=".about_activity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".ResetPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".MonthWiseClassDataActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".FeesAcitvity"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".FeesAcitvity">
+        </activity>
     </application>
 
 </manifest>

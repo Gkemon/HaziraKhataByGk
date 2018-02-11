@@ -36,11 +36,17 @@ public class TextBookFragment extends Fragment {
                 button11,button12,button13,button14,button15,button16,button17,button18,button19,button20,
         button21,button22,button23,button24,button25,button26;
 
-
-        //TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(MainActivity.context);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+//TODO: FOR INTERSTIALAD
+        if(MainActivity.context==null&&getActivity()==null){
+            mInterstitialAd = new InterstitialAd(container.getContext());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+        }
+        else {
+            mInterstitialAd = new InterstitialAd(getActivity());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+        }
 
         button1=(Button)view.findViewById(R.id.btn_dialog_1);
         button2=(Button)view.findViewById(R.id.btn_dialog_2);

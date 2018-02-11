@@ -106,6 +106,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
         else {
             final class_item classitem = classitemList.get(position);
+
             if (classitem != null) {
                 final Resources res = context.getResources();
                 final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);

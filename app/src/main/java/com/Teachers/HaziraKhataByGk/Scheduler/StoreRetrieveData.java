@@ -4,18 +4,26 @@ import android.content.Context;
 import android.util.Log;
 
 import com.Teachers.HaziraKhataByGk.MainActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
-
 public class StoreRetrieveData {
     private Context mContext;
     private String mFileName;
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
+
 
     public StoreRetrieveData(Context context, String filename){
         mContext = context;
@@ -32,6 +40,19 @@ public class StoreRetrieveData {
 //    }
 
     public void saveToFile(ArrayList<ToDoItem> items){
+
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+
         databaseReference.child("Users").child(mUserId).child("Schedule").removeValue();
         Log.e("eee","from saveToFile");
 
@@ -53,14 +74,28 @@ public class StoreRetrieveData {
 
     public static ArrayList<ToDoItem> loadFromFile(){
        final ArrayList<ToDoItem> items = new ArrayList<>();
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Schedule").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
+
+        MainActivity.databaseReference.child("Users").child(MainActivity.mUserId).child("Schedule").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("eee","from loadFromFile");
                 for(DataSnapshot toDoitemData:dataSnapshot.getChildren()){
                     ToDoItem toDoItem=new ToDoItem();
                     toDoItem=toDoitemData.getValue(ToDoItem.class);
-                    Log.d("eee",toDoItem.getToDoContent()+" FROM LOAD FOR LOOP");
                     items.add(toDoItem);
                 }
                 if(items.isEmpty())Log.e("eee","Item is empty");

@@ -3,6 +3,7 @@ package com.Teachers.HaziraKhataByGk.adapter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,10 +26,10 @@ import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 import static com.Teachers.HaziraKhataByGk.attendanceActivity.checkHash;
 
 public class AttendenceListAdapter extends BaseAdapter {
-    public  ArrayList<String> nameList;
+    private   ArrayList<String> nameList;
     public Activity activity;
-
-    ArrayList<Boolean> attendanceList;
+   // private static HashMap<Integer, Boolean> checkHashForPreviousClassAttend;
+    private ArrayList<Boolean> attendanceList;
     public AttendenceListAdapter(Activity activity, ArrayList<String> nameList) {
         this.nameList = nameList;
         this.activity = activity;
@@ -60,8 +61,16 @@ public class AttendenceListAdapter extends BaseAdapter {
             final int pos = position;
             Log.d("GK",position + " position");
             TextView textView = (TextView) v.findViewById(R.id.attendanceText);
-            textView.setText((nameList.get(position)));
+             String text;
+             text=(nameList.get(position));
+            textView.setText(text);
 
+
+      Boolean isAbsentPreviousClass=text.contains("(গতক্লাসে অনুপস্থিত)");
+
+      if(isAbsentPreviousClass){
+          v.setBackgroundColor(Color.RED);
+      }
             //TRYING TO SET THE TEXT COLOR BUT DOES NOT WORK
 //        LinearLayout viewForBackgroudColor=(LinearLayout) v.findViewById(R.id.attendanceLayout);
 //        int percentage=attendanceActivity.attendencePercentage.get(position);
@@ -197,7 +206,7 @@ public class AttendenceListAdapter extends BaseAdapter {
         }
         totalAbsentStudentNumberPersentage=(totalAttendendStudentNumber/nameList.size())*100.00;
         totalAbsentStudentNumber=nameList.size()-totalAttendendStudentNumber;
-        String massegeOfDailyPersentage="আজকের মোট উপস্থিত শিক্ষার্থীর সংখ্যা "+totalAttendendStudentNumber+",মোট অনুপস্থিত শিক্ষার্থীর সংখ্যা "+totalAbsentStudentNumber+", এবং শতকরা উপস্থিতির হার "+totalAbsentStudentNumberPersentage+"%";
+        String massegeOfDailyPersentage="আজকের মোট উপস্থিত শিক্ষার্থীর সংখ্যা "+(int)totalAttendendStudentNumber+",মোট অনুপস্থিত শিক্ষার্থীর সংখ্যা "+(int)totalAbsentStudentNumber+", এবং শতকরা উপস্থিতির হার "+(int)totalAbsentStudentNumberPersentage+"%";
 
 
         AlertDialog alertDialog = new AlertDialog.Builder(activity).create();

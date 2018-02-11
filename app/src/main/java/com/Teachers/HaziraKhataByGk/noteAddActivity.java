@@ -21,9 +21,17 @@ import com.Teachers.HaziraKhataByGk.model.Notes;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by uy on 9/7/2017.
@@ -32,12 +40,20 @@ import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 public class noteAddActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText title;
     private EditText content;
+    InterstitialAd mInterstitialAd;
     private com.Teachers.HaziraKhataByGk.model.Notes Notes;
     private Button ADD,Save, btnDelete;
-    public static String currentTitle,previousTitle;
+    public static String currentTitle,previousTitle,currentContent,previousContent;
     Activity activity;
-    public LinearLayout adlayout;
+    boolean isEdited;
+    public LinearLayout adlayout,ButtonLayout;
     public AdView mAdView;
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
 
     public static void start(Context context){
         Intent intent = new Intent(context,noteAddActivity.class);
@@ -55,6 +71,12 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
         activity = this;
         title = (EditText) findViewById(R.id.Title);
         content = (EditText) findViewById(R.id.content);
+        isEdited=false;
+
+
+        mInterstitialAd = new InterstitialAd(this);
+        // set the ad unit ID
+        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
 
         //ADD TEXT CHANGE LISTENER
         title.addTextChangedListener(new MyTextWatcher(title));
@@ -63,6 +85,7 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
         ADD=(Button) findViewById(R.id.ADD);
         Save = (Button) findViewById(R.id.SAVE);
         btnDelete = (Button) findViewById(R.id.DELETE);
+        ButtonLayout=(LinearLayout)findViewById(R.id.buttomLinearLayout);
         Notes = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
         ADD.setOnClickListener(this);
         Save.setOnClickListener(this);
@@ -72,6 +95,7 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
             title.setText(Notes.getheading());
             content.setText(Notes.getContent());
             previousTitle=Notes.getheading();
+            previousContent=Notes.getContent();
         }
         else{
             Save.setVisibility(View.GONE);
@@ -106,12 +130,64 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
             if (submitForm()) {
                 MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
                 Toast.makeText(this, "নোটটি সার্ভারে যুক্ত হয়েছে,ধন্যবাদ ।", Toast.LENGTH_SHORT).show();
-                finish();
+
+                //ADMOB
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                        // Check the LogCat to get your test device ID
+                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                        .build();
+
+                // Load ads into Interstitial Ads
+                mInterstitialAd.loadAd(adRequest);
+                mInterstitialAd.setAdListener(new AdListener() {
+                    public void onAdLoaded() {
+                        showInterstitial();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int i) {
+                        finish();
+                        super.onAdFailedToLoad(i);
+                    }
+
+                    @Override
+                    public void onAdClosed() {
+                        finish();
+                        super.onAdClosed();
+                    }
+                });
+
+
             }
         }
         else if(v == Save){
+
+
                Notes.setheading(title.getText().toString().trim());
                Notes.setContent(content.getText().toString().trim());
+
+
+            //FIREBASE
+            MainActivity.databaseReference=databaseReference;
+            MainActivity.mUserId=mUserId;
+
+            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<Notes> NotesList=new ArrayList<Notes>();
+                    for(DataSnapshot NoteData:dataSnapshot.getChildren()){
+                        Notes Notes=new Notes();
+                        Notes=NoteData.getValue(Notes.class);
+                        NotesList.add(Notes);
+                    }
+                    ClassRoom_activity.notesList=NotesList;
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
 
             //CHECK THAT THE ITEM IS UNIQUE
             for (int i = 0; i < ClassRoom_activity.notesList.size(); i++) {
@@ -142,8 +218,33 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
 
             Toast.makeText(this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();
             previousTitle=null;
-            finish();
 
+            //ADMOB
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    // Check the LogCat to get your test device ID
+                    .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                    .build();
+
+            // Load ads into Interstitial Ads
+            mInterstitialAd.loadAd(adRequest);
+            mInterstitialAd.setAdListener(new AdListener() {
+                public void onAdLoaded() {
+                    showInterstitial();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    finish();
+                    super.onAdFailedToLoad(i);
+                }
+
+                @Override
+                public void onAdClosed() {
+                    finish();
+                    super.onAdClosed();
+                }
+            });
 
         }else if(v == btnDelete){
             Notes.setheading(title.getText().toString());
@@ -181,14 +282,15 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
         }
 
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-
         }
 
         public void afterTextChanged(Editable editable) {
+
             switch (view.getId()) {
 
                 case R.id.title:
@@ -207,8 +309,10 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
             requestFocus(title);
             return false;
         }
+
         return true;
     }
+
 
     private void requestFocus(View view) {
         view.requestFocus();
@@ -238,7 +342,33 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
 
                     MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Notes").child(title.getText().toString()).removeValue();
                     Toast.makeText(noteAddActivity.this, "নোটটি ডিলিট হচ্ছে!", Toast.LENGTH_SHORT).show();
-                    finish();
+
+                    //ADMOB
+                    AdRequest adRequest = new AdRequest.Builder()
+                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                            // Check the LogCat to get your test device ID
+                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                            .build();
+
+                    // Load ads into Interstitial Ads
+                    mInterstitialAd.loadAd(adRequest);
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        public void onAdLoaded() {
+                            showInterstitial();
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(int i) {
+                            finish();
+                            super.onAdFailedToLoad(i);
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            finish();
+                            super.onAdClosed();
+                        }
+                    });
                 }
             }
         });
@@ -252,6 +382,8 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onStart() {
+
+
         //ADMOB
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -259,11 +391,11 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                 .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                 .build();
         adlayout=findViewById(R.id.ads);
-        adlayout.setVisibility(View.GONE);
         mAdView = (AdView) findViewById(R.id.adViewInHome);
         mAdView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
+
             }
 
             @Override
@@ -294,10 +426,26 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onResume() {
-        super.onResume();
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase= FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
+
         if (mAdView != null) {
             mAdView.resume();
         }
+
+        super.onResume();
+
     }
 
     @Override
@@ -308,5 +456,119 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
 
+        //TODO: Check the note is edited or not
+        currentTitle=title.getText().toString();
+        currentContent=content.getText().toString();
+
+        if(previousContent==null||previousTitle==null){
+            isEdited=false;
+        }
+        else {
+            if(previousTitle.equals(currentTitle)&&previousContent.equals(currentContent)){
+                isEdited=false;
+            }
+            else
+            {
+                isEdited=true;
+            }
+        }
+
+
+
+        if(isEdited) {
+
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("সতর্কীকরণ");
+            alertDialog.setIcon(R.drawable.warning_for_add);
+            alertDialog.setMessage("এই নোটটি পরিবর্তন করা হয়েছে। সেভ করতে চান?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "সেভ করুন",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+                            Notes.setheading(title.getText().toString().trim());
+                            Notes.setContent(content.getText().toString().trim());
+
+                            //CHECK THAT THE ITEM IS UNIQUE
+                            for (int i = 0; i < ClassRoom_activity.notesList.size(); i++) {
+                                if (ClassRoom_activity.notesList.get(i).getheading().equals(Notes.getheading()) && !previousTitle.equals(title.getText().toString())) {
+                                    AlertDialog alertDialog = new AlertDialog.Builder(noteAddActivity.this).create();
+                                    alertDialog.setTitle("সতর্কীকরণ");
+                                    alertDialog.setIcon(R.drawable.warning_for_add);
+                                    alertDialog.setMessage("এই একই শিরোনামের নোট ইতিমধ্যে এই ক্লাসের ডাটাবেজে রয়েছে।নতুন শিরোনাম ইনপুট দিন,ধন্যবাদ।");
+                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog.show();
+                                    return;
+                                }
+                            }
+
+                            if (submitForm()) {
+                                //Then remove the old student data
+                                databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
+                                //Then first reinstall previous student data;
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+                            }
+                            Toast.makeText(noteAddActivity.this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();
+                            finish();
+                            previousTitle = null;
+                        }
+                    });
+
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "বের হোন",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+                            //ADMOB
+                            AdRequest adRequest = new AdRequest.Builder()
+                                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                                    // Check the LogCat to get your test device ID
+                                    .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                                    .build();
+
+                            // Load ads into Interstitial Ads
+                            mInterstitialAd.loadAd(adRequest);
+                            mInterstitialAd.setAdListener(new AdListener() {
+                                public void onAdLoaded() {
+                                    showInterstitial();
+                                }
+
+                                @Override
+                                public void onAdFailedToLoad(int i) {
+                                    finish();
+   super.onAdFailedToLoad(i);
+                                }
+
+                                @Override
+                                public void onAdClosed() {
+                                    finish();
+                                    super.onAdClosed();
+                                }
+                            });
+
+                        }
+                        });
+            alertDialog.show();
+
+
+        }
+        else {
+            finish();
+        }
+
+
+    }
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
 }

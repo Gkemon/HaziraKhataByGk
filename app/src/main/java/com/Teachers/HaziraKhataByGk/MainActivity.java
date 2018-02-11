@@ -60,11 +60,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.Teachers.HaziraKhataByGk.LoginActivity.auth;
 
 //TODO: Tutorial for navigation drawer with tablayout:
 // 1)http://www.devexchanges.info/2016/05/android-basic-training-course-combining.html
@@ -85,14 +84,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DrawerLayout drawer;
+
+    public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
     static boolean calledAlready = false;
+    public static String mUserId,mEmail;
+    public static FirebaseUser mFirebaseUser;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
-    public static FirebaseUser mFirebaseUser;
-    public static String mUserId,mEmail;
+
     public PrefManagerForMain prefManagerForMain;
     public LinearLayout adlayout;
     public AdView mAdView;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        TapTargetView.showFor(this,TapTarget.forView(findViewById(R.drawable.ic_schedule), "This is a target", "We have the best targets, believe me"));
 
 //NOTIFICATION
-       // OneSignal.startInit(this) .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification) .unsubscribeWhenNotificationsAreDisabled(true) .init();
+        OneSignal.startInit(this) .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification) .unsubscribeWhenNotificationsAreDisabled(true) .init();
 
         //create default navigation drawer toggle
         drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -165,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
         mFirebaseUser = auth.getCurrentUser();
         databaseReference.keepSynced(true);
         mUserId=mFirebaseUser.getUid();
@@ -243,6 +246,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toDoItemsFromMainActivity =new ArrayList<>();
         storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
         toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
+
+
         setupTabIcons();
     }
 

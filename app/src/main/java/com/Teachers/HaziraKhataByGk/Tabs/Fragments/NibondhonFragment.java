@@ -40,11 +40,6 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(MainActivity.context);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
         initializeList();
     }
 
@@ -53,10 +48,23 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.nibondhon_corner_fragment, container, false);
         MyRecyclerView = (RecyclerView) view.findViewById(R.id.nibondhonRecycle);
         MyRecyclerView.setHasFixedSize(true);
+
+        //TODO: FOR INTERSTIALAD
+        if(MainActivity.context==null&&getActivity()==null){
+            mInterstitialAd = new InterstitialAd(container.getContext());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+        }
+        else {
+            mInterstitialAd = new InterstitialAd(getActivity());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+
+        }
+
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         if (listitems.size() > 0 & MyRecyclerView != null) {

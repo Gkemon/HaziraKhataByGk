@@ -24,19 +24,21 @@ import com.Teachers.HaziraKhataByGk.model.student;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
-
 public class studentAllInfoShowActiviy extends AppCompatActivity {
     private TextView studentName;
-    private Button studentPhoneNumber;
+    public Button studentPhoneNumber;
     private TextView parentsName;
-    private Button parentPhoneNumber;
+    public Button parentPhoneNumber;
     private ListView DatewiseAttendence;
     private ArrayList<String> attendenceListForSingleStudent;
     private ArrayList<Boolean> PresentAbsent;
@@ -44,6 +46,13 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     student student;
     public LinearLayout adlayout;
     public AdView mAdView;
+
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
 
     String roll;
     LinearLayout linearLayoutForEmptyView;
@@ -70,6 +79,17 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
 
 
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase= FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
+
 
 
         MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Student").child(roll).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -93,7 +113,11 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 AttendenceData attendenceData;
                 for(DataSnapshot dataSnapshot1:dataSnapshot.child("Attendance").getChildren()){
                     attendenceData = dataSnapshot1.getValue(AttendenceData.class);
-                    if(attendenceData.getStatus())attendClass++;
+
+                    if(attendenceData!=null){
+                        if(attendenceData.getStatus())attendClass++;
+                    }
+
                 }
 
                 if (totalClass != 0)   //THIS IS FOR AVOID ARITHMETIC EXCEPTION
@@ -156,24 +180,28 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 attendenceListForSingleStudent.clear();
                 PresentAbsent.clear();
-                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
                     AttendenceData attendenceData;
-                    attendenceData=dataSnapshot1.getValue(AttendenceData.class);
+                    attendenceData = dataSnapshot1.getValue(AttendenceData.class);
                     //check if subject is black or exist
 
 
                     String subject;
-                    if(attendenceData.getSubject().equals("")){
-                        subject="";
-                    }else
-                        subject="("+attendenceData.getSubject()+")";
+
+                    if (attendenceData != null) {
+                        if (attendenceData.getSubject().equals("")) {
+                            subject = "";
+                        } else
+                            subject = "(" + attendenceData.getSubject() + ")";
 
 
-                    if(attendenceData.getStatus())attendenceListForSingleStudent.add(attendenceData.getDate()+subject+"  উপস্থিত");
-                    else {
-                        attendenceListForSingleStudent.add(attendenceData.getDate() + subject + "  অনুপস্থিত");
+                        if (attendenceData.getStatus())
+                            attendenceListForSingleStudent.add(attendenceData.getDate() + subject + "  উপস্থিত");
+                        else {
+                            attendenceListForSingleStudent.add(attendenceData.getDate() + subject + "  অনুপস্থিত");
+                        }
+                        PresentAbsent.add(attendenceData.getStatus());
                     }
-                    PresentAbsent.add(attendenceData.getStatus());
                 }
                 singleStudentPresentDateListAdaper =new  SingleStudentPresentDateListAdaper(studentAllInfoShowActiviy.this,activity,attendenceListForSingleStudent,PresentAbsent);
 
@@ -210,7 +238,10 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                             MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue();
 
-                            finish();
+                            singleStudentPresentDateListAdaper.notifyDataSetChanged();
+
+                            linearLayoutForEmptyView.setVisibility(View.VISIBLE);
+
                         }
                     }
                 });

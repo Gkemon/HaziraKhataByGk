@@ -189,6 +189,7 @@ public class ReminderActivity extends AppCompatActivity {
 
     private void saveData(){
        // try{
+        if(mToDoItems!=null)
             storeRetrieveData.saveToFile(mToDoItems);
       //  }
        // catch (JSONException | IOException e){

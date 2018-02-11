@@ -26,21 +26,21 @@ public class printerActivity extends AppCompatActivity {
    public static String  jan,fab,mar,apr,may,june,july,aug,sep,oct,nov,dec;
    public Button janButton,febButton,marButton,aprButton,mayButton,juneButton,julyButton,augButton,sepButton,octButton,novButton,decButton;
 
-    public LinearLayout adlayout;
+    public LinearLayout adlayout,emptyView;
     public AdView mAdView;
 
 
     int janTotal=0,febTotal=0,marTotal=0,aprTotal=0,mayTotal=0,juneTotal=0,julyTotal=0,augTotal=0,sepTotal=0,octTotal=0,novTotal=0,decTotal=0;
     int janAttended=0,febAttended=0,marAttended=0,aprAttended=0,mayAttended=0,juneAttended=0,julyAttended=0,augAttended=0,sepAttended=0,novAttended=0,decAttended=0,octAttended=0;
 
- public static int JanAverage=0,FebAverage=0,MarAverage=0,AprAverage=0,MayAverage=0,JuneAverage=0,JulyAverage=0,AugAverage=0,SepAverage=0,OctAverage=0,NovAverage=0,DeceAverage=0,TotalStudent=0;
+ public  int JanAverage=0,FebAverage=0,MarAverage=0,AprAverage=0,MayAverage=0,JuneAverage=0,JulyAverage=0,AugAverage=0,SepAverage=0,OctAverage=0,NovAverage=0,DeceAverage=0,TotalStudent=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month_data);
         student student;
 
-
+        emptyView=findViewById(R.id.emptyViewOnPrintActivity);
         janButton=findViewById(R.id.jan);
         febButton=findViewById(R.id.fab);
         marButton=findViewById(R.id.mar);
@@ -54,10 +54,24 @@ public class printerActivity extends AppCompatActivity {
         novButton=findViewById(R.id.nov);
         decButton=findViewById(R.id.dec);
 
+        JanAverage=0;
+        FebAverage=0;
+        MarAverage=0;
+        AprAverage=0;
+        MayAverage=0;
+        JuneAverage=0;
+        JulyAverage=0;
+        AugAverage=0;
+        SepAverage=0;
+        OctAverage=0;
+        NovAverage=0;
+        DeceAverage=0;
+
 
         jan="জানুয়ারি ("+year+") মাসের রেকর্ড \n\n";fab ="ফেব্রুয়ারি ("+year+") মাসের রেকর্ড \n\n";mar="মার্চ ("+year+") মাসের রেকর্ড \n\n";apr="এপ্রিল ("+year+") মাসের রেকর্ড \n\n" ;may ="মে ("+year+") মাসের রেকর্ড \n\n";june ="জুন ("+year+") মাসের রেকর্ড \n\n";july="জুলাই ("+year+") মাসের রেকর্ড \n\n" ;aug="আগষ্ট ("+year+") মাসের রেকর্ড \n\n";sep="সেপ্টেম্বর ("+year+") মাসের রেকর্ড \n\n";oct =" অক্টোবর ("+year+") মাসের রেকর্ড \n\n";nov ="নভেম্বর ("+year+") মাসের রেকর্ড \n\n";dec="ডিসেম্বর ("+year+") মাসের রেকর্ড \n\n";
 
         //TODO: For debugging
+
 
 
 //        Log.d("GK",studentListForPrintActiviyFromAttendenceActivity.size()+ " student list name size" );
@@ -73,11 +87,11 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
 
             student = studentListForPrintActiviyFromAttendenceActivity.get(i);
 
-            Log.d("GK",student.getStudentName()+ " student name");
+           // Log.d("GK",student.getStudentName()+ " student name");
             ArrayList<AttendenceData> attendenceDatalist=new ArrayList<>();
 
             attendenceDatalist=perStudentTotalAttendenceData.get(student.getId());
-            Log.d("GK",attendenceDatalist.size()+ " attendenceDatalist.size()");
+           // Log.d("GK",attendenceDatalist.size()+ " attendenceDatalist.size()");
 
             long temp1=0,attendClass=0,totalAttendPersenten=0,totalClass=0;
             totalClass=attendenceDatalist.size();
@@ -108,18 +122,6 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
             decAttended=0;
             octAttended=0;
 
-            JanAverage=0;
-            FebAverage=0;
-            MarAverage=0;
-            AprAverage=0;
-            MayAverage=0;
-            JuneAverage=0;
-            JulyAverage=0;
-            AugAverage=0;
-            SepAverage=0;
-            OctAverage=0;
-            NovAverage=0;
-            DeceAverage=0;
 
             for (int j=0;j<attendenceDatalist.size();j++) {
                 AttendenceData attendenceData;
@@ -132,7 +134,6 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                 Log.d("GK",month + " month");
 
                 if(month.equals("Jan")){
-
                     janTotal++;
                     if(attendenceData.getStatus()){
                         janAttended++;
@@ -215,11 +216,12 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                 jan=jan + "\n\n" + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "\n" + " মোট ক্লাস :" + janTotal + " উপস্থিতি :"
                         + janAttended + " শতকরা :" + totalPercentage + "%\n";
                 JanAverage=JanAverage+totalPercentage;
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
+
+                //FOR Printing last line
+                if(i==(studentListForPrintActiviyFromAttendenceActivity.size()-1)&&TotalStudent!=0){
                     jan=jan+"\n\n এই মাসের গড় উপস্থিতি "+JanAverage/TotalStudent+" %";
                 }
             }
-
             if(febTotal!=0){
                 int totalPercentage=(febAttended*100)/febTotal;
 
@@ -227,8 +229,10 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         + febAttended + " শতকরা :" + totalPercentage + "%\n";
                 FebAverage=FebAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==(studentListForPrintActiviyFromAttendenceActivity.size()-1)&&TotalStudent!=0){
                     fab=fab+"\n\n এই মাসের গড় উপস্থিতি "+FebAverage/TotalStudent+" %";
+                    Log.d("GK",String.valueOf(FebAverage));
+                    Log.d("GK","\n\n"+String.valueOf(TotalStudent));
                 }
 
             }
@@ -240,7 +244,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         + marAttended + " শতকরা :" + totalPercentage + "%\n";
                 MarAverage=MarAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     mar=mar+"\n\n এই মাসের গড় উপস্থিতি "+MarAverage/TotalStudent+" %";
                 }
 
@@ -253,7 +257,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         + aprAttended + " শতকরা :" + totalPercentage + "%\n";
                 AprAverage=AprAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     apr=apr+"\n\n এই মাসের গড় উপস্থিতি "+AprAverage/TotalStudent+" %";
                 }
 
@@ -266,7 +270,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         + mayAttended + " শতকরা :" + totalPercentage + "%\n";
                 MayAverage=MayAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     may=may+"\n\n এই মাসের গড় উপস্থিতি "+MayAverage/TotalStudent+" %";
                 }
 
@@ -281,7 +285,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
 
                 JuneAverage=JuneAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     june=june+"\n\n এই মাসের গড় উপস্থিতি "+JuneAverage/TotalStudent+" %";
                 }
 
@@ -295,7 +299,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
 
                 JulyAverage=JulyAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     july=july+"\n\n এই মাসের গড় উপস্থিতি "+JulyAverage/TotalStudent+" %";
                 }
 
@@ -309,7 +313,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
 
                 AugAverage=AugAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     aug=aug+"\n\n এই মাসের গড় উপস্থিতি "+AugAverage/TotalStudent+" %";
                 }
 
@@ -323,7 +327,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
 
                 SepAverage=SepAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     sep=sep+"\n\n এই মাসের গড় উপস্থিতি "+SepAverage/TotalStudent+" %";
                 }
 
@@ -336,7 +340,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         + octAttended + " শতকরা :" + totalPercentage + "%\n";
                 OctAverage=OctAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     oct=oct+"\n\n এই মাসের গড় উপস্থিতি "+OctAverage/TotalStudent+" %";
                 }
 
@@ -352,7 +356,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
 
                 NovAverage=NovAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     nov=nov+"\n\n এই মাসের গড় উপস্থিতি "+NovAverage/TotalStudent+" %";
                 }
 
@@ -366,17 +370,10 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
 
                 DeceAverage=DeceAverage+totalPercentage;
 
-                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1){
+                if(i==studentListForPrintActiviyFromAttendenceActivity.size()-1&&TotalStudent!=0){
                     dec=dec+"\n\n এই মাসের গড় উপস্থিতি "+DeceAverage/TotalStudent+" %";
                 }
-
             }
-
-
-
-
-
-
         }
 
         Log.d("GK",jan);
@@ -418,6 +415,12 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
         if(decTotal==0){
             decButton.setVisibility(View.GONE);
         }
+
+        //FOR EMPTY VIEW
+        if(janTotal==0&&febTotal==0&&marTotal==0&& aprTotal==0&& mayTotal==0&& juneTotal==0 &&julyTotal==0&& augTotal==0
+                &&sepTotal==0 &&octTotal==0&& novTotal==0&& decTotal==0)
+            emptyView.setVisibility(View.VISIBLE);
+        else emptyView.setVisibility(View.GONE);
 
 
 

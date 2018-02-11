@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="#e3f2fd"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ads"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:orientation="vertical">
         <View
             android:layout_width="match_parent"
@@ -26,18 +32,20 @@
         </com.google.android.gms.ads.AdView>
 
         <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:layout_height="6sp">
         </View>
     </LinearLayout>
 <LinearLayout
+    android:id="@+id/main"
+    android:layout_above="@+id/buttomLinearLayout"
+    android:layout_below="@+id/ads"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:padding="6sp"
     android:weightSum="1"
-    android:background="#e3f2fd"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
         android:id="@+id/note_title_textinputLayout"
@@ -54,6 +62,9 @@
         android:ems="10"
         android:layout_marginBottom="@dimen/margin_10" />
     </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
         android:id="@+id/note_content_textinputLayout"
         android:layout_width="match_parent"
@@ -61,22 +72,32 @@
         android:gravity="center"
         app:hintTextAppearance="@style/Hints">
 
-        <EditText
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:gravity="left|top"
-            android:hint="@string/note_content_hint"
-            android:inputType="textMultiLine"
-            android:maxLength="1000"
-            app:layout_constraintTop_toTopOf="parent"
-            android:maxLines="1000" />
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:hint="@string/note_content_hint"
+                android:inputType="textMultiLine"
+                android:maxLength="1000"
+                android:maxLines="1000"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent" />
     </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+    </ScrollView>
+    </LinearLayout>
     <LinearLayout
+        android:id="@+id/buttomLinearLayout"
+        android:padding="4sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal"
+        >
         <Button
             android:id="@+id/ADD"
             android:backgroundTint="#4CAF50"
@@ -102,5 +123,4 @@
             android:layout_height="wrap_content"
             android:text="@string/DELETE" />
     </LinearLayout>
-</LinearLayout>
-</LinearLayout>
+</RelativeLayout>

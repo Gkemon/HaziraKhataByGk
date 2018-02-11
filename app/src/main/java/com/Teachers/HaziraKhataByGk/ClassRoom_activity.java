@@ -27,16 +27,18 @@ import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 
 public class ClassRoom_activity extends AppCompatActivity  implements RecyclerItemClickListener {
 
@@ -61,6 +63,11 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
     public AdView mAdView;
 
 
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +104,6 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
             }
         });
 
-
         //ADMOB
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -113,17 +119,17 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
 
             @Override
             public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+
             }
             @Override
             public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -221,14 +227,28 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
 
     @Override
     protected void onResume() {
-        super.onResume();
+
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
 
         //ADS
         if (mAdView != null) {
             mAdView.resume();
         }
 
+
         //FIREBASE
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
+
         MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -255,6 +275,7 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
 
             }
         });
+        super.onResume();
 
     }
     //    @Override
@@ -354,8 +375,10 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
 
     @Override
     protected void onStart() {
-        super.onStart();
+
         classitem = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
+        super.onStart();
+
     }
 }
 

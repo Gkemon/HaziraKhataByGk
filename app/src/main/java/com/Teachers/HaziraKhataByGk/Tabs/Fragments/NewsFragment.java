@@ -53,10 +53,6 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(MainActivity.context);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
         super.onCreate(savedInstanceState);
     }
     @Override
@@ -70,6 +66,20 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.news_fragment, container, false);
         NewsRecycle = (RecyclerView) view.findViewById(R.id.newsRecycle);
+
+        //TODO: FOR INTERSTIALAD
+        if(MainActivity.context==null&&getActivity()==null){
+            mInterstitialAd = new InterstitialAd(container.getContext());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+        }
+        else {
+            mInterstitialAd = new InterstitialAd(getActivity());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+
+        }
+
 
         databaseReference.child("News").addValueEventListener(new ValueEventListener() {
             @Override
@@ -258,6 +268,7 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
             mInterstitialAd.show();
         }
     }
+
 
 
 

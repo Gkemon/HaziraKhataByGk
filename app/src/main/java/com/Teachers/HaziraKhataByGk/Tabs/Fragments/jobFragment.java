@@ -46,11 +46,6 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        //TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(MainActivity.context);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
         super.onCreate(savedInstanceState);
     }
 
@@ -58,6 +53,8 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         jobRecycle = (RecyclerView) view.findViewById(R.id.jobFragmentRecycle);
+
+
         databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
             @Override
             public  void onDataChange(DataSnapshot dataSnapshot) {
@@ -90,6 +87,20 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //TODO: FOR INTERSTIALAD
+        if(MainActivity.context==null&&getActivity()==null){
+            mInterstitialAd = new InterstitialAd(container.getContext());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+        }
+        else {
+
+            mInterstitialAd = new InterstitialAd(getActivity());
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+
+        }
+
         // Inflate the layout for this fragment
         view =inflater.inflate(R.layout.job_fragment, container, false);
         return view;
