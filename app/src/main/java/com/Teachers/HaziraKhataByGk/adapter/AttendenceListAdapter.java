@@ -19,13 +19,28 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.attendanceActivity;
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.studentAllInfoShowActiviy;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 import static com.Teachers.HaziraKhataByGk.attendanceActivity.checkHash;
 
 public class AttendenceListAdapter extends BaseAdapter {
+
+
+    public InterstitialAd mInterstitialAd;
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
+
     private   ArrayList<String> nameList;
     public Activity activity;
    // private static HashMap<Integer, Boolean> checkHashForPreviousClassAttend;
@@ -185,6 +200,10 @@ public class AttendenceListAdapter extends BaseAdapter {
     }
     public void saveAll()
     {
+        mInterstitialAd = new InterstitialAd(activity);
+        // set the ad unit ID
+        mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
+
         double totalAttendendStudentNumber=0;
         double totalAbsentStudentNumberPersentage=0;
         double totalAbsentStudentNumber=0;
@@ -200,6 +219,20 @@ public class AttendenceListAdapter extends BaseAdapter {
             attendenceData.setStatus(sts);
             attendenceData.setSubject(attendanceActivity.subject);
             attendenceData.setDate(attendanceActivity.time);
+
+            //TODO:DATABASE CONNECTION
+            firebaseDatabase= FirebaseDatabase.getInstance();
+            databaseReference=firebaseDatabase.getReference();
+
+            //TODO: USER (for FB logic auth throw null pointer exception)
+            auth = FirebaseAuth.getInstance();
+            mFirebaseUser = auth.getCurrentUser();
+            databaseReference.keepSynced(true);
+            mUserId=mFirebaseUser.getUid();
+
+            MainActivity.databaseReference=databaseReference;
+            MainActivity.mUserId=mUserId;
+
             MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(attendanceActivity.classitemAttendence.getName()+attendanceActivity.classitemAttendence.getSection()).child("Student").child(attendanceActivity.rolls.get(i)).child("Attendance").push().setValue(attendenceData);
 
             //activity.finish();
@@ -215,11 +248,44 @@ public class AttendenceListAdapter extends BaseAdapter {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        activity.finish();
-                        Toast.makeText(attendanceActivity.context, " উপস্থিতি সার্ভারে সেভ হয়েছে । ", Toast.LENGTH_LONG).show();
+
+
+                        AdRequest adRequest = new AdRequest.Builder()
+                                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                                // Check the LogCat to get your test device ID
+                                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                                .build();
+
+                        // Load ads into Interstitial Ads
+                        mInterstitialAd.loadAd(adRequest);
+                        mInterstitialAd.setAdListener(new AdListener() {
+                            public void onAdLoaded() {
+                                showInterstitial();
+                            }
+
+                            @Override
+                            public void onAdFailedToLoad(int i) {
+                                activity.finish();
+                                Toast.makeText(attendanceActivity.context, " উপস্থিতি সার্ভারে সেভ হয়েছে । ", Toast.LENGTH_LONG).show();
+                                super.onAdFailedToLoad(i);
+                            }
+
+                            @Override
+                            public void onAdClosed() {
+                                activity.finish();
+                                Toast.makeText(attendanceActivity.context, " উপস্থিতি সার্ভারে সেভ হয়েছে । ", Toast.LENGTH_LONG).show();
+                                super.onAdClosed();
+                            }
+                        });
+
                     }
                 });
         alertDialog.show();
-
     }
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
+
 }

@@ -16,9 +16,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.model.class_item;
-
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class ActActivity extends AppCompatActivity implements View.OnClickListener {
@@ -27,8 +31,16 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
     private EditText phone;
     private Button btnAdd, btnEdit, btnDelete;
     private class_item classitem = null;
-   public static String previousClassName;
-   public static String prviousSectionName;
+    public static String previousClassName;
+    public static String prviousSectionName;
+    InterstitialAd mInterstitialAd;
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
+
     public static void start(Context context) {
         Intent intent = new Intent(context, ActActivity.class);
         context.startActivity(intent);
@@ -44,6 +56,15 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act);
+
+        //TODO: FOR INTERSTIALAD
+
+
+            mInterstitialAd = new InterstitialAd(this);
+            // set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+
+
 
         personName = (EditText) findViewById(R.id.classText);
         phone = (EditText) findViewById(R.id.sectionText);
@@ -121,6 +142,8 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+
+
                                     dialog.dismiss();
                                 }
                             });
@@ -239,6 +262,18 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
             public void onClick(DialogInterface dialog, int whichButton) {
                 if(edt.getText().toString().trim().equals("DELETE")){
 
+                    //TODO:DATABASE CONNECTION
+                    firebaseDatabase= FirebaseDatabase.getInstance();
+                    databaseReference=firebaseDatabase.getReference();
+
+                    //TODO: USER (for FB logic auth throw null pointer exception)
+                    auth = FirebaseAuth.getInstance();
+                    mFirebaseUser = auth.getCurrentUser();
+                    databaseReference.keepSynced(true);
+                    mUserId=mFirebaseUser.getUid();
+
+                    MainActivity.databaseReference=databaseReference;
+                    MainActivity.mUserId=mUserId;
                         //FOR DELETE
                     MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName()+classitem.getSection()).removeValue();
 //                        Query queryRef = databaseReference.child("Class").orderByChild("name").equalTo(previousClassName);
@@ -253,7 +288,34 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 //                            public void onCancelled(DatabaseError databaseError) {}});
                         Toast.makeText(ActActivity.this,"ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
                         previousClassName=null;
-                        finish();
+
+
+                    AdRequest adRequest = new AdRequest.Builder()
+                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                            // Check the LogCat to get your test device ID
+                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                            .build();
+
+                    // Load ads into Interstitial Ads
+                    mInterstitialAd.loadAd(adRequest);
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        public void onAdLoaded() {
+                            showInterstitial();
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(int i) {
+                            finish();
+                            super.onAdFailedToLoad(i);
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            finish();
+                            super.onAdClosed();
+                        }
+                    });
+
                     }
             }
         });
@@ -274,12 +336,26 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
         dialogBuilder.setIcon(R.drawable.warning_for_add);
         dialogBuilder.setTitle("সতর্কীকরণ");
-        dialogBuilder.setMessage("ক্লাসের নাম অংশটি সংবেদনশীল,তাই ক্লাসের নাম পরবর্তী পরিবর্তন করা যাবে না।নিশ্চিত হতে ইংরেজীতে \"CONFIRM\" শব্দটি লিখুন করন।");
+        dialogBuilder.setMessage("ক্লাসের নাম অংশটি সংবেদনশীল,তাই ক্লাসের নাম পরবর্তী পরিবর্তন করা যাবে না।নিশ্চিত হতে ইংরেজীতে \"C\" শব্দটি লিখুন করন।");
         dialogBuilder.setPositiveButton("ইনপুট করুন", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(edt.getText().toString().trim().equals("CONFIRM")){
+                if(edt.getText().toString().trim().equals("C")){
                     //Adding new class_room
-                    databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName()+classitem.getSection()).setValue(classitem);
+
+                    //TODO:DATABASE CONNECTION
+                    firebaseDatabase= FirebaseDatabase.getInstance();
+                    databaseReference=firebaseDatabase.getReference();
+
+                    //TODO: USER (for FB logic auth throw null pointer exception)
+                    auth = FirebaseAuth.getInstance();
+                    mFirebaseUser = auth.getCurrentUser();
+                    databaseReference.keepSynced(true);
+                    mUserId=mFirebaseUser.getUid();
+
+                    MainActivity.databaseReference=databaseReference;
+                    MainActivity.mUserId=mUserId;
+                    //FOR DELETE
+                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName()+classitem.getSection()).setValue(classitem);
                     Toast.makeText(ActActivity.this, "নতুন ক্লাসটির জন্য সার্ভারে ডাটাবেজ তৈরি হয়েছে,ধন্যবাদ",                       Toast.LENGTH_SHORT).show();
                     previousClassName=null;
 
@@ -291,7 +367,33 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    finish();
+                                    AdRequest adRequest = new AdRequest.Builder()
+                                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                                            // Check the LogCat to get your test device ID
+                                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                                            .build();
+
+                                    // Load ads into Interstitial Ads
+                                    mInterstitialAd.loadAd(adRequest);
+                                    mInterstitialAd.setAdListener(new AdListener() {
+                                        public void onAdLoaded() {
+                                            showInterstitial();
+                                        }
+
+                                        @Override
+                                        public void onAdFailedToLoad(int i) {
+                                            finish();
+                                            super.onAdFailedToLoad(i);
+                                        }
+
+                                        @Override
+                                        public void onAdClosed() {
+                                            finish();
+                                            super.onAdClosed();
+                                        }
+                                    });
+
+
                                 }
                             });
                     alertDialog.show();
@@ -302,7 +404,7 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                     AlertDialog alertDialog = new AlertDialog.Builder(ActActivity.this).create();
                     alertDialog.setTitle("ভুল সংশোধণ করুন");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
-                    alertDialog.setMessage("আপনার দেয়া ইনপুটটি \"CONFIRM\" শব্দের সাথে মিলেনি । পুনরায় সঠিকভাবে \"CONFIRM\" শব্দটি ইনপুট করুন।ধন্যবাদ");
+                    alertDialog.setMessage("আপনার দেয়া ইনপুটটি \"C\" শব্দের সাথে মিলেনি । পুনরায় সঠিকভাবে \"C\" শব্দটি ইনপুট করুন।ধন্যবাদ");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -321,6 +423,13 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
+
 
 
 

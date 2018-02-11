@@ -91,13 +91,13 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
         if(MainActivity.context==null&&getActivity()==null){
             mInterstitialAd = new InterstitialAd(container.getContext());
             // set the ad unit ID
-            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+            mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
         }
         else {
 
             mInterstitialAd = new InterstitialAd(getActivity());
             // set the ad unit ID
-            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+            mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
 
         }
 

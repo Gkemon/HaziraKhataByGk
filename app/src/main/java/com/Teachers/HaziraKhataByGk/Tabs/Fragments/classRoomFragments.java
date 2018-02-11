@@ -93,7 +93,7 @@ public class classRoomFragments extends Fragment implements RecyclerItemClickLis
 
 
         //For loading class_room from Server
-        databaseReference.child("Users").child(mUserId).child("Class").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Users").child(mUserId).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<class_item> class_items=new ArrayList<class_item>();

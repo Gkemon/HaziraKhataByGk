@@ -98,13 +98,13 @@
                         android:textColorHint="@color/white"
                         android:lines="2"
                         android:inputType="text"
-                        android:maxLines="10"
                         android:textColor="@color/icons"
                         android:gravity="start|bottom"
                         android:layout_marginRight="32dp"
                         android:layout_marginLeft="32dp"
                         android:ems="10"
-                        android:maxLength="140"
+                        android:maxLength="1000"
+                        android:maxLines="1000"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
