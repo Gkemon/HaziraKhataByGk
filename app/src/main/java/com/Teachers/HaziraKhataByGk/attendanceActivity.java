@@ -24,15 +24,17 @@ import com.Teachers.HaziraKhataByGk.model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.model.student;
 import com.Teachers.HaziraKhataByGk.widget.PrefManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 
 public class attendanceActivity  extends AppCompatActivity {
     private static final String Tag = attendanceActivity.class.getName();
@@ -57,6 +59,12 @@ public class attendanceActivity  extends AppCompatActivity {
     public static HashMap<Integer, Boolean> checkHash ;//For avoiding auto checking
     public static HashMap<String,ArrayList<AttendenceData>> perStudentTotalAttendenceData;//for creating month wise data sheet;
     public static ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +141,19 @@ public class attendanceActivity  extends AppCompatActivity {
         });
         attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
 
+
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase= FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
 
 
         MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {

@@ -18,33 +18,55 @@ import android.widget.Toast;
 import com.Teachers.HaziraKhataByGk.adapter.blogAdapter;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.model.blog_item;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blog_item_for_main;
 import static com.Teachers.HaziraKhataByGk.R.id.ClickerForBlog;
 import static com.Teachers.HaziraKhataByGk.R.id.SaveClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.ShareClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.loveClicker;
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
-import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blog_item_for_main;
 
 public class blog extends AppCompatActivity implements RecyclerItemClickListener {
     public static RecyclerView blogRecycle;
     public static Context context;
     public static Activity activity;
     public static ArrayList<blog_item> blog_items_list;
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog);
         blogRecycle=(RecyclerView) findViewById(R.id.blogRecycle);
         context=this;
+
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase= FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
 
         databaseReference.child("Blog").addValueEventListener(new ValueEventListener() {
             @Override
