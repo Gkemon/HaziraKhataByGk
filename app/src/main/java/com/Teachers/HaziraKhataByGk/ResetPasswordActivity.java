@@ -100,7 +100,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                                    AlertDialog alertDialog = new AlertDialog.Builder(ResetPasswordActivity.this).create();
                                     alertDialog.setMessage("পাসওয়ার্ড রিসেট করার জন্য প্রয়োজনীয় নির্দেশনা আপনার ইমেইল পাঠানো হয়েছে।আপনার ইমেইল ইনবক্স চেক করুন।");
                                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                                             new DialogInterface.OnClickListener() {
@@ -112,7 +112,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
                                 } else {
 
-                                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                                    AlertDialog alertDialog = new AlertDialog.Builder(ResetPasswordActivity.this).create();
                                     alertDialog.setIcon(R.drawable.warnig_for_delete);
                                     alertDialog.setMessage("আপনার ইমেল অথবা ফোন নম্বরটি রেজিস্টার্ড করা হয়নি অথবা অভ্যন্তরীণ কোন সমস্যা দেখা দিয়েছে এপে। একটু পর আবার চেষ্টা করুন,ধন্যবাদ।");
                                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",

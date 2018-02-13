@@ -62,7 +62,6 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
             mInterstitialAd = new InterstitialAd(getActivity());
             // set the ad unit ID
             mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
-
         }
 
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());

@@ -249,7 +249,6 @@ public class AttendenceListAdapter extends BaseAdapter {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
-
                         AdRequest adRequest = new AdRequest.Builder()
                                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                                 // Check the LogCat to get your test device ID
