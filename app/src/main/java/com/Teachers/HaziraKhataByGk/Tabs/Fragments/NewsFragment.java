@@ -19,7 +19,6 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.adapter.newsAdapter;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.model.news_item;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +40,7 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
 
     public static RecyclerView NewsRecycle;
     InterstitialAd mInterstitialAd;
+    //InterstitialAd mInterstitialAd;
     View view;
 //    String NewTitles[] = {"বেসরকারি শিক্ষক নিবন্ধন পরীক্ষা, সিলেবাস ও আবেদনের পদ্ধতি ।","বিগত শিক্ষক নিবন্ধন প্রশ্ন ব্যাংক","মডেল টেস্ট"};
 //    String URLS[] = {"বেসরকারি শিক্ষক নিবন্ধন পরীক্ষা, সিলেবাস ও আবেদনের পদ্ধতি ।","বিগত শিক্ষক নিবন্ধন প্রশ্ন ব্যাংক","মডেল টেস্ট"};
@@ -68,10 +68,13 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
         NewsRecycle = (RecyclerView) view.findViewById(R.id.newsRecycle);
 
         //TODO: FOR INTERSTIALAD
+
+
+
         if(MainActivity.context==null&&getActivity()==null){
             mInterstitialAd = new InterstitialAd(container.getContext());
             // set the ad unit ID
-            mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
+          //  mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
         }
         else {
             mInterstitialAd = new InterstitialAd(getActivity());
@@ -133,24 +136,26 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
 
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-                        openInAppBrowser(News_list.get(pos).getURL(),News_list.get(pos));
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-                        openInAppBrowser(News_list.get(pos).getURL(),News_list.get(pos));
-                        super.onAdClosed();
-                    }
-                });
+                openInAppBrowser(News_list.get(pos).getURL(),News_list.get(pos));
+//                mInterstitialAd.loadAd(adRequest);
+//                mInterstitialAd.setAdListener(new AdListener() {
+//                    public void onAdLoaded() {
+//                        showInterstitial();
+//                    }
+//
+//                    @Override
+//                    public void onAdFailedToLoad(int i) {
+//                        openInAppBrowser(News_list.get(pos).getURL(),News_list.get(pos));
+//                        super.onAdFailedToLoad(i);
+//                    }
+//
+//                    @Override
+//                    public void onAdClosed() {
+//                        openInAppBrowser(News_list.get(pos).getURL(),News_list.get(pos));
+//                        super.onAdClosed();
+//                    }
+//                });
 
                 break;
 
@@ -263,11 +268,11 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
 
     }
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-    }
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//        }
+//    }
 
 
 

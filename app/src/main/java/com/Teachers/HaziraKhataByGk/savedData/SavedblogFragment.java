@@ -201,8 +201,16 @@ public class SavedblogFragment extends Fragment implements RecyclerItemClickList
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                String url=Saved_Blog_list.get(pos).getURL();
+                //TODO: for opening default browser
+                if (!url.startsWith("http://") && !url.startsWith("https://"))
+                    url = "http://" + url;
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();

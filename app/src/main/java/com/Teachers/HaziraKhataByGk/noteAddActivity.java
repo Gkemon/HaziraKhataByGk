@@ -12,6 +12,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -40,6 +42,7 @@ import java.util.List;
 public class noteAddActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText title;
     private EditText content;
+    private Boolean isInterstitalAdEnable;
     InterstitialAd mInterstitialAd;
     private com.Teachers.HaziraKhataByGk.model.Notes Notes;
     private Button ADD,Save, btnDelete;
@@ -67,6 +70,12 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.note_add_activity);
         activity = this;
         title = (EditText) findViewById(R.id.Title);
@@ -138,8 +147,9 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                finish();
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -226,8 +236,10 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                     .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                     .build();
 
+            finish();
+
             // Load ads into Interstitial Ads
-            mInterstitialAd.loadAd(adRequest);
+            //mInterstitialAd.loadAd(adRequest);
             mInterstitialAd.setAdListener(new AdListener() {
                 public void onAdLoaded() {
                     showInterstitial();
@@ -350,8 +362,10 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                             .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                             .build();
 
+                    finish();
+
                     // Load ads into Interstitial Ads
-                    mInterstitialAd.loadAd(adRequest);
+                   // mInterstitialAd.loadAd(adRequest);
                     mInterstitialAd.setAdListener(new AdListener() {
                         public void onAdLoaded() {
                             showInterstitial();
@@ -534,8 +548,10 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                                     .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                                     .build();
 
+                            finish();
+
                             // Load ads into Interstitial Ads
-                            mInterstitialAd.loadAd(adRequest);
+                           // mInterstitialAd.loadAd(adRequest);
                             mInterstitialAd.setAdListener(new AdListener() {
                                 public void onAdLoaded() {
                                     showInterstitial();
@@ -567,8 +583,8 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
 
     }
     private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//        }
     }
 }

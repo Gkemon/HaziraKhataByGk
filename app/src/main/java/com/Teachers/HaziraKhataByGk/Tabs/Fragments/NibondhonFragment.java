@@ -20,7 +20,6 @@ import com.Teachers.HaziraKhataByGk.modelTestChoose;
 import com.Teachers.HaziraKhataByGk.previous_question_activity;
 import com.Teachers.HaziraKhataByGk.widget.text_show_activity;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
@@ -33,6 +32,7 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
     String nibondhonItems[] = {"বেসরকারি শিক্ষক নিবন্ধন পরীক্ষা, সিলেবাস ও আবেদনের পদ্ধতি ","শিক্ষক নিবন্ধন মডেল টেস্ট","বিগত শিক্ষক নিবন্ধন প্রশ্ন ব্যাংক"};
     int  Images[] = {R.drawable.nibondhon_details,R.drawable.model_test,R.drawable.previous_question};
     InterstitialAd mInterstitialAd;
+
     public NibondhonFragment() {
         // Required empty public constructor
     }
@@ -53,6 +53,8 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
         MyRecyclerView.setHasFixedSize(true);
 
         //TODO: FOR INTERSTIALAD
+
+
         if(MainActivity.context==null&&getActivity()==null){
             mInterstitialAd = new InterstitialAd(container.getContext());
             // set the ad unit ID
@@ -163,29 +165,35 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
                      .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                      .build();
 
+             Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
+             intent.putExtra("title","1");
+             startActivity(intent);
+
              // Load ads into Interstitial Ads
-             mInterstitialAd.loadAd(adRequest);
-             mInterstitialAd.setAdListener(new AdListener() {
-                 public void onAdLoaded() {
-                     showInterstitial();
-                 }
+          //   mInterstitialAd.loadAd(adRequest);
+//             mInterstitialAd.setAdListener(new AdListener() {
+//                 public void onAdLoaded() {
+//                     showInterstitial();
+//                 }
+//
+//                 @Override
+//                 public void onAdFailedToLoad(int i) {
+//                     Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
+//                     intent.putExtra("title","1");
+//                     startActivity(intent);
+//                     super.onAdFailedToLoad(i);
+//                 }
+//
+//                 @Override
+//                 public void onAdClosed() {
+//                     Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
+//                     intent.putExtra("title","1");
+//                     startActivity(intent);
+//                     super.onAdClosed();
+//                 }
+//             });
 
-                 @Override
-                 public void onAdFailedToLoad(int i) {
-                     Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
-                     intent.putExtra("title","1");
-                     startActivity(intent);
-                     super.onAdFailedToLoad(i);
-                 }
 
-                 @Override
-                 public void onAdClosed() {
-                     Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
-                     intent.putExtra("title","1");
-                     startActivity(intent);
-                     super.onAdClosed();
-                 }
-             });
          }
          else if(position==1){
              Intent intent = new Intent(MainActivity.context, modelTestChoose.class);

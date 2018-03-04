@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ActActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Boolean isInterstitalAdEnable;
     private EditText personName;
     private EditText phone;
     private Button btnAdd, btnEdit, btnDelete;
@@ -34,6 +36,8 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
     public static String previousClassName;
     public static String prviousSectionName;
     InterstitialAd mInterstitialAd;
+    public AdView mAdView;
+    public View adlayout;
 
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
@@ -276,6 +280,9 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                     MainActivity.mUserId=mUserId;
                         //FOR DELETE
                     MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName()+classitem.getSection()).removeValue();
+
+
+
 //                        Query queryRef = databaseReference.child("Class").orderByChild("name").equalTo(previousClassName);
 //                        queryRef.addListenerForSingleValueEvent( new ValueEventListener() {
 //                            @Override
@@ -286,6 +293,9 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 //                            }
 //                            @Override
 //                            public void onCancelled(DatabaseError databaseError) {}});
+
+
+
                         Toast.makeText(ActActivity.this,"ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
                         previousClassName=null;
 
@@ -295,9 +305,10 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                             // Check the LogCat to get your test device ID
                             .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                             .build();
+                    finish();
 
                     // Load ads into Interstitial Ads
-                    mInterstitialAd.loadAd(adRequest);
+                    //mInterstitialAd.loadAd(adRequest);
                     mInterstitialAd.setAdListener(new AdListener() {
                         public void onAdLoaded() {
                             showInterstitial();
@@ -372,9 +383,10 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                                             // Check the LogCat to get your test device ID
                                             .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                                             .build();
+                                    finish();
 
                                     // Load ads into Interstitial Ads
-                                    mInterstitialAd.loadAd(adRequest);
+                                   // mInterstitialAd.loadAd(adRequest);
                                     mInterstitialAd.setAdListener(new AdListener() {
                                         public void onAdLoaded() {
                                             showInterstitial();
@@ -425,13 +437,67 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//        }
+    }
+
+    @Override
+    protected void onStart() {
+        //ADMOB
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+                .build();
+        adlayout=findViewById(R.id.ads);
+        mAdView = (AdView) findViewById(R.id.adViewInHome);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                adlayout.setVisibility(View.GONE);
+
+            }
+            @Override
+            public void onAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+        mAdView.loadAd(adRequest);
+
+        super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
         }
+        super.onPause();
     }
 
 
 
-
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
 
 }

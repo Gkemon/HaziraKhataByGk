@@ -95,11 +95,12 @@ public class blog extends AppCompatActivity implements RecyclerItemClickListener
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
 
-
-
-
-
+    @Override
+    protected void onStart() {
+        context=this;
+        super.onStart();
     }
 
     //TODO: check news as if loved or not
@@ -162,6 +163,10 @@ public class blog extends AppCompatActivity implements RecyclerItemClickListener
 //                return true;
 //            }
 //        }
+
+        if(context==null){
+            context= BottomNavigationActivity.context;
+        }
         SharedPreferences pref = context.getSharedPreferences("teacher_blog_saved", 0);
 
         if(pref.getBoolean(blog_item.getURL(), false) && pref.getBoolean(blog_item.getHeading(), false) && pref.getBoolean(blog_item.getDate(), false)&&pref.getBoolean(blog_item.getWriter(), false) ){

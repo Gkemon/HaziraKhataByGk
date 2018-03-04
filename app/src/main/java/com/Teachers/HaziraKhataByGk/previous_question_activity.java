@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -24,11 +26,17 @@ public class previous_question_activity extends AppCompatActivity {
     public LinearLayout adlayout;
     public AdView mAdView;
     InterstitialAd mInterstitialAd;
+    private Boolean isInterstitalAdEnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity=this;
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         //setContentView(R.layout.text_view_with_share_fab_and_header_image);
         setContentView(R.layout.previous_year_questions);
         button1=(Button)findViewById(R.id.no1);
@@ -48,8 +56,12 @@ public class previous_question_activity extends AppCompatActivity {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                Intent intent=new Intent(activity,text_show_activity.class);
+                intent.putExtra("title","2");
+                startActivity(intent);
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+             //   mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -86,9 +98,12 @@ public class previous_question_activity extends AppCompatActivity {
                         // Check the LogCat to get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
+                Intent intent=new Intent(activity,text_show_activity.class);
+                intent.putExtra("title","3");
+                startActivity(intent);
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+             //   mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -126,8 +141,13 @@ public class previous_question_activity extends AppCompatActivity {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+
+                Intent intent=new Intent(activity,text_show_activity.class);
+                intent.putExtra("title","4");
+                startActivity(intent);
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+             //   mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -165,8 +185,14 @@ public class previous_question_activity extends AppCompatActivity {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+
+                Intent intent=new Intent(activity,text_show_activity.class);
+                intent.putExtra("title","5");
+                startActivity(intent);
+
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -205,8 +231,12 @@ public class previous_question_activity extends AppCompatActivity {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                Intent intent=new Intent(activity,text_show_activity.class);
+                intent.putExtra("title","6");
+                startActivity(intent);
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+             //   mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -299,9 +329,9 @@ public class previous_question_activity extends AppCompatActivity {
     }
 
     private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//        }
     }
 }
 

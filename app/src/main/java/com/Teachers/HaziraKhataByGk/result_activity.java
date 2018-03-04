@@ -12,7 +12,10 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static com.Teachers.HaziraKhataByGk.model_test.wrong_Answer_correct_list;
 
@@ -21,14 +24,25 @@ public class result_activity extends AppCompatActivity {
     TextView wrong_answer;
     Button score,share;
     public LinearLayout adlayout;
-    InterstitialAd mInterstitialAd;
+  //  InterstitialAd mInterstitialAd;
+    private Boolean isInterstitalAdEnable;
     public AdView mAdView;
+
+
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result_activity);
          wrong_answer_text="নিচে আপনার ভুল উত্তরগুলোর সঠিক উত্তরসমূহ দেয়া হল।\n\n";
+
 
 
         for(int i = 0; i< wrong_Answer_correct_list.size(); i++){
@@ -66,11 +80,6 @@ public class result_activity extends AppCompatActivity {
     @Override
     protected void onStart() {
 
-
-        //TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(this);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
 
         //ADMOB
         AdRequest adRequest = new AdRequest.Builder()
@@ -135,31 +144,33 @@ public class result_activity extends AppCompatActivity {
                 .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                 .build();
 
-        // Load ads into Interstitial Ads
-        mInterstitialAd.loadAd(adRequest);
-        mInterstitialAd.setAdListener(new AdListener() {
-            public void onAdLoaded() {
-                showInterstitial();
-            }
 
-            @Override
-            public void onAdFailedToLoad(int i) {
-
-                super.onAdFailedToLoad(i);
-            }
-
-            @Override
-            public void onAdClosed() {
-
-                super.onAdClosed();
-            }
-        });
+//        if(isInterstitalAdEnable)
+//        mInterstitialAd.loadAd(adRequest);
+//
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            public void onAdLoaded() {
+//                showInterstitial();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//
+//                super.onAdFailedToLoad(i);
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//
+//                super.onAdClosed();
+//            }
+//        });
         super.onBackPressed();
     }
     private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//        }
     }
 
 }

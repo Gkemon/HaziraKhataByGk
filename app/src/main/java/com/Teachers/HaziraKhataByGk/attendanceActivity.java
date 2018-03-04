@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -40,6 +42,7 @@ public class attendanceActivity  extends AppCompatActivity {
     private static final String Tag = attendanceActivity.class.getName();
     public static class_item classitemAttendence;
     public ListView listView;
+    private Boolean isInterstitalAdEnable;
     public static Context context;
     public static ArrayList<String> names;
     public static ArrayList<String> rolls;
@@ -70,6 +73,12 @@ public class attendanceActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // checklist = new ArrayList<Integer>();
+
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         checkHash = new HashMap<Integer, Boolean>();
 
@@ -136,7 +145,6 @@ public class attendanceActivity  extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AttendenceListAdapter.saveAll();
-
             }
         });
         attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();

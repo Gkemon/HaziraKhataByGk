@@ -219,8 +219,11 @@ public class SavedNewsFragment extends Fragment implements RecyclerItemClickList
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser(Saved_News_list.get(pos).getURL(),Saved_News_list.get(pos));
+
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();

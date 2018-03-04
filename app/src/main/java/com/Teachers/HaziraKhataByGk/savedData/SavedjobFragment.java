@@ -231,9 +231,10 @@ public class SavedjobFragment extends Fragment implements RecyclerItemClickListe
                         // Check the LogCat to get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
+                openInAppBrowser(Saved_job_list.get(pos).getURL(),Saved_job_list.get(pos));
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();

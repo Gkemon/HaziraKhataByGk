@@ -33,7 +33,7 @@ import static com.Teachers.HaziraKhataByGk.attendanceActivity.checkHash;
 
 public class AttendenceListAdapter extends BaseAdapter {
 
-
+    private Boolean isInterstitalAdEnable;
     public InterstitialAd mInterstitialAd;
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
@@ -202,7 +202,7 @@ public class AttendenceListAdapter extends BaseAdapter {
     {
         mInterstitialAd = new InterstitialAd(activity);
         // set the ad unit ID
-        mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
+        mInterstitialAd.setAdUnitId(activity.getString(R.string.Interstitial_info_activity));
 
         double totalAttendendStudentNumber=0;
         double totalAbsentStudentNumberPersentage=0;
@@ -255,8 +255,11 @@ public class AttendenceListAdapter extends BaseAdapter {
                                 .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                                 .build();
 
+                        activity.finish();
+
                         // Load ads into Interstitial Ads
-                        mInterstitialAd.loadAd(adRequest);
+
+                       // mInterstitialAd.loadAd(adRequest);
                         mInterstitialAd.setAdListener(new AdListener() {
                             public void onAdLoaded() {
                                 showInterstitial();

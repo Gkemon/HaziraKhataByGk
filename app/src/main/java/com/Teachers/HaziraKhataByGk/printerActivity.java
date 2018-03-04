@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -22,7 +24,11 @@ import static com.Teachers.HaziraKhataByGk.attendanceActivity.studentListForPrin
 import static com.Teachers.HaziraKhataByGk.attendanceActivity.year;
 
 public class printerActivity extends AppCompatActivity {
+
+    //AD
     InterstitialAd mInterstitialAd;
+    private Boolean isInterstitalAdEnable;
+
    public static String  jan,fab,mar,apr,may,june,july,aug,sep,oct,nov,dec;
    public Button janButton,febButton,marButton,aprButton,mayButton,juneButton,julyButton,augButton,sepButton,octButton,novButton,decButton;
 
@@ -34,9 +40,17 @@ public class printerActivity extends AppCompatActivity {
     int janAttended=0,febAttended=0,marAttended=0,aprAttended=0,mayAttended=0,juneAttended=0,julyAttended=0,augAttended=0,sepAttended=0,novAttended=0,decAttended=0,octAttended=0;
 
  public  int JanAverage=0,FebAverage=0,MarAverage=0,AprAverage=0,MayAverage=0,JuneAverage=0,JulyAverage=0,AugAverage=0,SepAverage=0,OctAverage=0,NovAverage=0,DeceAverage=0,TotalStudent=0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_month_data);
         student student;
 
@@ -435,8 +449,13 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",jan);
+                startActivity(intent);
+
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -476,8 +495,12 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",fab);
+                startActivity(intent);
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -518,8 +541,12 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",mar);
+                startActivity(intent);
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -562,8 +589,12 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",apr);
+                startActivity(intent);
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+              //  mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -605,7 +636,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -630,9 +661,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                     }
                 });
 
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",may);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",may);startActivity(intent);
             }
         });
 
@@ -647,7 +678,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -671,9 +702,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         super.onAdClosed();
                     }
                 });
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",june);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",june);startActivity(intent);
             }
         });
 
@@ -688,7 +719,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+              //  mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -712,9 +743,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         super.onAdClosed();
                     }
                 });
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",july);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",july);startActivity(intent);
             }
         });
 
@@ -729,7 +760,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+              //  mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -754,9 +785,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                     }
                 });
 
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",aug);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",aug);startActivity(intent);
             }
         });
 
@@ -772,7 +803,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+             //   mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -798,9 +829,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                 });
 
 
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",sep);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",sep);startActivity(intent);
             }
         });
         octButton.setOnClickListener(new View.OnClickListener() {
@@ -814,7 +845,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -839,9 +870,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                     }
                 });
 
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",oct);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",oct);startActivity(intent);
             }
         });
 
@@ -856,7 +887,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+                //mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -881,9 +912,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                     }
                 });
 //
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",nov);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",nov);startActivity(intent);
             }
         });
 
@@ -897,7 +928,7 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -922,9 +953,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
                 });
 
 
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",dec);startActivity(intent);
+
+                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
+                intent.putExtra("month",dec);startActivity(intent);
             }
         });
 
@@ -994,9 +1025,9 @@ TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();
     }
 
     private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//        }
     }
 
 

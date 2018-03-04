@@ -39,6 +39,7 @@ import static com.Teachers.HaziraKhataByGk.R.id.shareClickerForjob;
 public class jobFragment extends Fragment implements RecyclerItemClickListener {
     public static RecyclerView jobRecycle;
     InterstitialAd mInterstitialAd;
+
     View view;
     public jobFragment() {
         // Required empty public constructor
@@ -88,16 +89,18 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //TODO: FOR INTERSTIALAD
+
+
         if(MainActivity.context==null&&getActivity()==null){
             mInterstitialAd = new InterstitialAd(container.getContext());
             // set the ad unit ID
-            mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
+            //mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
         }
         else {
 
             mInterstitialAd = new InterstitialAd(getActivity());
             // set the ad unit ID
-            mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
+          //  mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
 
         }
 
@@ -163,10 +166,12 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
                         .build();
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+
+                openInAppBrowser(Job_list.get(pos).getURL(),Job_list.get(pos));
+              //  mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
-                        showInterstitial();
+                      //  showInterstitial();
                     }
 
                     @Override
@@ -192,12 +197,14 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
     }
 
     private void openInAppBrowser(String url,JobItems jobItems) {
+
 //        Intent intent = new Intent(MainActivity.activity, BrowsingActivity.class_room);
 //        intent.putExtra("URL", url);
 //        intent.putExtra("JOB",jobItems);
 //        intent.putExtra("TAG","JOB");
 //        Log.d("GK","passing job"+ jobItems.getClass());
 //        startActivity(intent);
+
 
         //TODO: for opening default browser
         if (!url.startsWith("http://") && !url.startsWith("https://"))
@@ -207,10 +214,12 @@ public class jobFragment extends Fragment implements RecyclerItemClickListener {
         startActivity(intent);
 
     }
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-    }
+
+
+//    private void showInterstitial() {
+//        if (mInterstitialAd.isLoaded()) {
+//            mInterstitialAd.show();
+//        }
+//    }
 
 }

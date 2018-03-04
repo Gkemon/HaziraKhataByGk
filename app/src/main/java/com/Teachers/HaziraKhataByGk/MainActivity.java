@@ -27,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -106,6 +108,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         activity=this;
         context = this;
 
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         //VIEWS
         setContentView(R.layout.activity_scrollable_tabs);
 
@@ -115,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //ADMOB
 
-        MobileAds.initialize(this, "ca-app-pub-8499573931707406~8545861593");
+        MobileAds.initialize(this, "ca-app-pub-1394807458826262~9259176415");
 
 //        //TABTARGETVIEW
 //        TapTargetView.showFor(this,TapTarget.forView(findViewById(R.drawable.ic_schedule), "This is a target", "We have the best targets, believe me"));
@@ -254,6 +262,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
+        super.onResume();
+
+
+        //TODO:DATABASE CONNECTION
+        if(!calledAlready) {
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            firebaseDatabase.setPersistenceEnabled(true);
+            databaseReference = firebaseDatabase.getReference();
+            calledAlready = true;
+        }
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+        mEmail=mFirebaseUser.getEmail();
+
+
         //FOR ADS
         if (mAdView != null) {
             mAdView.resume();
@@ -352,6 +382,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                .build();
        adlayout=findViewById(R.id.ads);
        mAdView = (AdView) findViewById(R.id.adViewInHome);
+       mAdView.loadAd(adRequest);
        mAdView.setAdListener(new AdListener() {
            @Override
            public void onAdLoaded() {
@@ -364,7 +395,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
            @Override
            public void onAdFailedToLoad(int errorCode) {
-               if(!isOnline())
                adlayout.setVisibility(View.GONE);
                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
            }
@@ -378,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                super.onAdOpened();
            }
        });
-       mAdView.loadAd(adRequest);
+
 
 
 

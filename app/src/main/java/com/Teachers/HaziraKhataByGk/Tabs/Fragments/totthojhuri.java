@@ -67,8 +67,10 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("http://www.moedu.gov.bd/");
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+              //  mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -99,8 +101,10 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("http://www.mopme.gov.bd/");
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -132,8 +136,10 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("http://www.educationboard.gov.bd/");
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -164,8 +170,10 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("http://www.dshe.gov.bd/");
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -196,8 +204,10 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("http://www.dpe.gov.bd/");
+
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+              //  mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -227,9 +237,9 @@ public class totthojhuri extends Fragment {
                         // Check the LogCat to get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
-
+                openInAppBrowser("http://www.dpe.gov.bd/");
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+              //  mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -260,8 +270,9 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("http://www.ntrca.gov.bd/");
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -292,8 +303,9 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("https://www.teachers.gov.bd/");
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -324,8 +336,9 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("http://shikkhok.com/");
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -356,8 +369,9 @@ public class totthojhuri extends Fragment {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
+                openInAppBrowser("https://bn.khanacademy.org/");
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();
@@ -387,9 +401,9 @@ public class totthojhuri extends Fragment {
                         // Check the LogCat to get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
-
+                openInAppBrowser("http://10minuteschool.com/");
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+               // mInterstitialAd.loadAd(adRequest);
                 mInterstitialAd.setAdListener(new AdListener() {
                     public void onAdLoaded() {
                         showInterstitial();

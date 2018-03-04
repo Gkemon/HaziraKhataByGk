@@ -13,6 +13,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,15 +25,16 @@ import com.Teachers.HaziraKhataByGk.model.student;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 
 
 public class StudentActActivity extends AppCompatActivity implements View.OnClickListener{
@@ -48,6 +51,16 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
     public LinearLayout adlayout;
     public AdView mAdView;
 
+
+
+    public static FirebaseAuth auth;
+    public static FirebaseDatabase firebaseDatabase;
+    public static DatabaseReference databaseReference;
+    public static String mUserId;
+    public static FirebaseUser mFirebaseUser;
+
+
+
     public static List<AttendenceData> attendenceDataListBeforeEdit;
     public static void start(Context context){
         Intent intent = new Intent(context,StudentActActivity.class);
@@ -63,6 +76,12 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_student_act);
         activity=this;
 
@@ -428,6 +447,21 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase= FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
+
+
         if (mAdView != null) {
             mAdView.resume();
         }

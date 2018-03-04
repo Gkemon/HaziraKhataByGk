@@ -1,9 +1,11 @@
 package com.Teachers.HaziraKhataByGk;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.Teachers.HaziraKhataByGk.adapter.FeesAdapter;
 
@@ -15,6 +17,12 @@ public class FeesAcitvity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_fees_acitvity);
         recyclerView=findViewById(R.id.toDoRecyclerViewForExamFees);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

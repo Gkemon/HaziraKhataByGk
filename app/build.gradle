@@ -11,8 +11,8 @@ android {
         applicationId "com.Teachers.HaziraKhataByGk"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 12
-        versionName "1.12"
+        versionCode 14
+        versionName "1.14"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [onesignal_app_id: "611c83ef-2af7-48c6-921c-f22f31e7ccd9", onesignal_google_project_number: "REMOTE"]
