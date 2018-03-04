@@ -256,7 +256,7 @@ public class attendanceActivity  extends AppCompatActivity {
                     attendClass = 0;
                     rolls.add(student.getId());
                 }
-                AttendenceListAdapter = new AttendenceListAdapter(activity, names);
+                AttendenceListAdapter = new AttendenceListAdapter(activity, names,classitemAttendence);
                 listView.setAdapter(AttendenceListAdapter);
             }
 

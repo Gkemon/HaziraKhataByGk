@@ -18,6 +18,7 @@ import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.attendanceActivity;
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
+import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.studentAllInfoShowActiviy;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -40,14 +41,16 @@ public class AttendenceListAdapter extends BaseAdapter {
     public static DatabaseReference databaseReference;
     public static String mUserId;
     public static FirebaseUser mFirebaseUser;
+    class_item class_item;
 
     private   ArrayList<String> nameList;
     public Activity activity;
    // private static HashMap<Integer, Boolean> checkHashForPreviousClassAttend;
     private ArrayList<Boolean> attendanceList;
-    public AttendenceListAdapter(Activity activity, ArrayList<String> nameList) {
+    public AttendenceListAdapter(Activity activity, ArrayList<String> nameList, class_item class_item) {
         this.nameList = nameList;
         this.activity = activity;
+        this.class_item=class_item;
         attendanceList = new ArrayList<>();
         for(int i=0; i<nameList.size(); i++)
         {
@@ -149,6 +152,8 @@ public class AttendenceListAdapter extends BaseAdapter {
                     String roll = attendanceActivity.rolls.get(pos);
                     Log.d("GK",pos + " pos in click listener of list view");
                     launchinIntent.putExtra("Roll", roll);
+                    launchinIntent.putExtra("classItem",class_item);
+                    attendanceActivity.activity=activity;
                     attendanceActivity.activity.startActivity(launchinIntent);
                 }
             });

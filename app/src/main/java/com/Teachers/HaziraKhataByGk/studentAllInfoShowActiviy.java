@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.adapter.SingleStudentPresentDateListAdaper;
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
+import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.model.student;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -50,8 +51,8 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     private ListView DatewiseAttendence;
     private ArrayList<String> attendenceListForSingleStudent;
     private ArrayList<Boolean> PresentAbsent;
-    private static SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
-    student student;
+    public static SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
+   public static student student;
     public LinearLayout adlayout;
     public AdView mAdView;
 
@@ -92,6 +93,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         attendenceListForSingleStudent = new ArrayList<>();
         PresentAbsent = new ArrayList<>();
 
+        ClassRoom_activity.classitem=getIntent().getParcelableExtra("classItem");
 
         //TODO:DATABASE CONNECTION
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -209,7 +211,6 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                     attendenceData = dataSnapshot1.getValue(AttendenceData.class);
                     //check if subject is black or exist
 
-
                     String subject;
 
                     if (attendenceData != null) {
@@ -227,8 +228,9 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                         PresentAbsent.add(attendenceData.getStatus());
                     }
                 }
-                singleStudentPresentDateListAdaper = new SingleStudentPresentDateListAdaper(studentAllInfoShowActiviy.this, activity, attendenceListForSingleStudent, PresentAbsent);
-
+                singleStudentPresentDateListAdaper = new SingleStudentPresentDateListAdaper
+                        (studentAllInfoShowActiviy.this, activity, attendenceListForSingleStudent,
+                                PresentAbsent,ClassRoom_activity.classitem,student);
                 DatewiseAttendence.setAdapter(singleStudentPresentDateListAdaper);
             }
 
@@ -280,6 +282,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
             case R.id.action_add_single_attendence:
                 FragmentManager fm = activity.getFragmentManager();
                 createRequest request = new createRequest();
+                request.addData(student,ClassRoom_activity.classitem);
                 request.show(fm, "Select");
 
             default:
@@ -339,16 +342,26 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     }
 
     public static class createRequest extends DialogFragment {
+        student student;
+        class_item class_item;
+
+        public void addData(student student,class_item class_item){
+            this.class_item=class_item;
+            this.student=student;
+        }
+
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
         }
 
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            final View v = inflater.inflate(R.layout.pick_period, null);
+            final View v = inflater.inflate(R.layout.dialoage_for_single_attendence_items, null);
             final EditText Subject = (EditText) v.findViewById(R.id.periodID);
             builder.setView(v).setPositiveButton("উপস্থিত", new DialogInterface.OnClickListener() {
                 @Override
@@ -357,7 +370,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                         final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
                         int day = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
-                        int year = datePicker.getYear() - 1900;
+                        int year = datePicker.getYear()-1900 ;
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                         String formatedDate = simpleDateFormat.format(new Date(year, month, day));
                         String date = year + "-" + month + "-" + day;
@@ -368,19 +381,27 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                         AttendenceData attendenceData = new AttendenceData();
                         attendenceData.setStatus(true);
                         attendenceData.setSubject(subject);
-                        attendenceData.setDate(date);
+                        attendenceData.setDate(formatedDate);
 
-                         singleStudentPresentDateListAdaper.notifyDataSetChanged();
+                        //Add to database
+                        MainActivity.databaseReference.child("Users").
+                                child(mUserId).child("Class").
+                                child(class_item.getName()+class_item.getSection())
+                                .child("Student").child(student.getId()).child("Attendance").push()
+                                .setValue(attendenceData);
+
+                        onResume();
+                        singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
                         dialog.dismiss();
                     }
                 }
-            }).setNegativeButton("anuposthit", new DialogInterface.OnClickListener() {
+            }).setNegativeButton("অনুপস্থিত", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
                     int day = datePicker.getDayOfMonth();
                     int month = datePicker.getMonth();
-                    int year = datePicker.getYear() - 1900;
+                    int year = datePicker.getYear()-1900 ;
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                     String formatedDate = simpleDateFormat.format(new Date(year, month, day));
                     String date = year + "-" + month + "-" + day;
@@ -392,7 +413,15 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                     AttendenceData attendenceData = new AttendenceData();
                     attendenceData.setStatus(false);
                     attendenceData.setSubject(subject);
-                    attendenceData.setDate(date);
+                    attendenceData.setDate(formatedDate);
+
+
+                    //Add to database
+                    MainActivity.databaseReference.child("Users").
+                            child(mUserId).child("Class").
+                            child(class_item.getName()+class_item.getSection())
+                            .child("Student").child(student.getId()).child("Attendance").push()
+                            .setValue(attendenceData);
 
                     singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
