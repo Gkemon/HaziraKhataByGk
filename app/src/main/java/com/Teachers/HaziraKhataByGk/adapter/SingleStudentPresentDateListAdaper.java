@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by uy on 9/7/2017.
@@ -161,7 +162,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
 
 
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy", Locale.ENGLISH);
                 date=sdf.parse(attendenceData.getDate());
                 Log.d("GK",String.valueOf(date.getYear()+1900)+ " - "+String.valueOf(date.getMonth())+ " - "+String.valueOf(date.getDay())+ " ");
 
