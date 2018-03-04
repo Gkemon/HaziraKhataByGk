@@ -60,6 +60,8 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeeHolder>{
     @Override
     public FeesAdapter.FeeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_for_exam_fee, parent, false);
+
+        
         final FeesAdapter.FeeHolder  holder = new FeesAdapter.FeeHolder(view);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

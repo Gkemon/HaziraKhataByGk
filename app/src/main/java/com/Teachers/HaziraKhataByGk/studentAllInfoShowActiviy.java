@@ -1,6 +1,9 @@
 package com.Teachers.HaziraKhataByGk;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,7 +38,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class studentAllInfoShowActiviy extends AppCompatActivity {
     private TextView studentName;
@@ -44,7 +50,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     private ListView DatewiseAttendence;
     private ArrayList<String> attendenceListForSingleStudent;
     private ArrayList<Boolean> PresentAbsent;
-    private SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
+    private static SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
     student student;
     public LinearLayout adlayout;
     public AdView mAdView;
@@ -59,6 +65,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     String roll;
     LinearLayout linearLayoutForEmptyView;
     Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,38 +76,36 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.student_info_show_activity);
-         studentName=(TextView) findViewById(R.id.studentName);
+        studentName = (TextView) findViewById(R.id.studentName);
         // parentsName=(TextView)findViewById(R.id.parentsName);
         //INITIALIZE THE TEXTVIEW
-         studentPhoneNumber=(Button) findViewById(R.id.studentPhoneNumber);
-         parentPhoneNumber=(Button) findViewById(R.id.parentPhoneNumber);
+        studentPhoneNumber = (Button) findViewById(R.id.studentPhoneNumber);
+        parentPhoneNumber = (Button) findViewById(R.id.parentPhoneNumber);
 
-         //EMPTY VIEW
-        linearLayoutForEmptyView=(LinearLayout)findViewById(R.id.toDoEmptyView);
+        //EMPTY VIEW
+        linearLayoutForEmptyView = (LinearLayout) findViewById(R.id.toDoEmptyView);
 
         //INITIALIZE THE BUTTON
-        DatewiseAttendence=(ListView) findViewById(R.id.DatewiseAttendence);
-        roll=getIntent().getStringExtra("Roll");
-        activity=this;
-        attendenceListForSingleStudent=new ArrayList<>();
-        PresentAbsent=new ArrayList<>();
-
+        DatewiseAttendence = (ListView) findViewById(R.id.DatewiseAttendence);
+        roll = getIntent().getStringExtra("Roll");
+        activity = this;
+        attendenceListForSingleStudent = new ArrayList<>();
+        PresentAbsent = new ArrayList<>();
 
 
         //TODO:DATABASE CONNECTION
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
         //TODO: USER (for FB logic auth throw null pointer exception)
         auth = FirebaseAuth.getInstance();
         mFirebaseUser = auth.getCurrentUser();
         databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-        MainActivity.databaseReference=databaseReference;
-        MainActivity.mUserId=mUserId;
+        mUserId = mFirebaseUser.getUid();
+        MainActivity.databaseReference = databaseReference;
+        MainActivity.mUserId = mUserId;
 
 
-
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Student").child(roll).addListenerForSingleValueEvent(new ValueEventListener() {
+        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -109,21 +114,20 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 long totalClass = dataSnapshot.child("Attendance").getChildrenCount();
 
                 //For Empty view
-                if(totalClass==0){
+                if (totalClass == 0) {
                     DatewiseAttendence.setVisibility(View.GONE);
                     linearLayoutForEmptyView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     DatewiseAttendence.setVisibility(View.VISIBLE);
                     linearLayoutForEmptyView.setVisibility(View.GONE);
                 }
-                long attendClass=0;
+                long attendClass = 0;
                 AttendenceData attendenceData;
-                for(DataSnapshot dataSnapshot1:dataSnapshot.child("Attendance").getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Attendance").getChildren()) {
                     attendenceData = dataSnapshot1.getValue(AttendenceData.class);
 
-                    if(attendenceData!=null){
-                        if(attendenceData.getStatus())attendClass++;
+                    if (attendenceData != null) {
+                        if (attendenceData.getStatus()) attendClass++;
                     }
 
                 }
@@ -132,45 +136,45 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                     totalAttendPersenten = (attendClass * 100) / totalClass;
 
                 String charSequence;
-                if(attendanceActivity.classitemAttendence!=null){
-                    String charSequence1=" শিক্ষার্থীর নাম: " + student.getStudentName() + " \n" +
+                if (attendanceActivity.classitemAttendence != null) {
+                    String charSequence1 = " শিক্ষার্থীর নাম: " + student.getStudentName() + " \n" +
                             " রোল :" + roll + "    ক্লাস :" + attendanceActivity.classitemAttendence.getName() + "\n মোট ক্লাস:" + totalClass + "  উপস্থিতি :" + attendClass + "   শতকরা :" + totalAttendPersenten + "% ";
-                        charSequence=charSequence1;
-                }
-                else {
-                    String charSequence2=" শিক্ষার্থীর নাম: " + student.getStudentName() + " \n" +
+                    charSequence = charSequence1;
+                } else {
+                    String charSequence2 = " শিক্ষার্থীর নাম: " + student.getStudentName() + " \n" +
                             " রোল :" + roll + "    ক্লাস :" + ClassRoom_activity.classitem.getName() + "\n মোট ক্লাস:" + totalClass + "  উপস্থিতি :" + attendClass + "   শতকরা :" + totalAttendPersenten + "% ";
-                    charSequence=charSequence2;
+                    charSequence = charSequence2;
                 }
                 studentName.setText(charSequence);
                 //parentsName.setText(student.getPhone());
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-            studentPhoneNumber.setOnClickListener(new OnClickListener() {
+        studentPhoneNumber.setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View arg0) {
-                    //ACTION_DIALER IS THE BEST SOLUTION TO MAKE CALL
-                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                    //The 'tel:' prefix is required  otherwhise the following exception will be thrown: java.lang.IllegalStateException: Could not execute method of the activity.
-                    callIntent.setData(Uri.parse("tel:"+student.getPhone()));
-                        startActivity(callIntent);
-                    }
+            @Override
+            public void onClick(View arg0) {
+                //ACTION_DIALER IS THE BEST SOLUTION TO MAKE CALL
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                //The 'tel:' prefix is required  otherwhise the following exception will be thrown: java.lang.IllegalStateException: Could not execute method of the activity.
+                callIntent.setData(Uri.parse("tel:" + student.getPhone()));
+                startActivity(callIntent);
+            }
 
-            });
-            parentPhoneNumber.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    //ACTION_DIALER IS THE BEST SOLUTION TO MAKE CALL
-                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                    //The 'tel:' prefix is required  otherwhise the following exception will be thrown: java.lang.IllegalStateException: Could not execute method of the activity.
-                    callIntent.setData(Uri.parse("tel:"+student.getParentContact()));
-                    startActivity(callIntent);
-                }
-            });
+        });
+        parentPhoneNumber.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                //ACTION_DIALER IS THE BEST SOLUTION TO MAKE CALL
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                //The 'tel:' prefix is required  otherwhise the following exception will be thrown: java.lang.IllegalStateException: Could not execute method of the activity.
+                callIntent.setData(Uri.parse("tel:" + student.getParentContact()));
+                startActivity(callIntent);
+            }
+        });
     }
 
 
@@ -183,12 +187,24 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         }
 
 
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").addValueEventListener(new ValueEventListener() {
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId = mFirebaseUser.getUid();
+        MainActivity.databaseReference = databaseReference;
+        MainActivity.mUserId = mUserId;
+
+
+        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 attendenceListForSingleStudent.clear();
                 PresentAbsent.clear();
-                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     AttendenceData attendenceData;
                     attendenceData = dataSnapshot1.getValue(AttendenceData.class);
                     //check if subject is black or exist
@@ -211,10 +227,11 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                         PresentAbsent.add(attendenceData.getStatus());
                     }
                 }
-                singleStudentPresentDateListAdaper =new  SingleStudentPresentDateListAdaper(studentAllInfoShowActiviy.this,activity,attendenceListForSingleStudent,PresentAbsent);
+                singleStudentPresentDateListAdaper = new SingleStudentPresentDateListAdaper(studentAllInfoShowActiviy.this, activity, attendenceListForSingleStudent, PresentAbsent);
 
                 DatewiseAttendence.setAdapter(singleStudentPresentDateListAdaper);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -242,9 +259,9 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");
                 dialogBuilder.setPositiveButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if(edt.getText().toString().trim().equals("DELETE")){
+                        if (edt.getText().toString().trim().equals("DELETE")) {
 
-                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue();
+                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue();
 
                             singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
@@ -260,11 +277,16 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 AlertDialog b = dialogBuilder.create();
                 b.show();
                 return true;
+            case R.id.action_add_single_attendence:
+                FragmentManager fm = activity.getFragmentManager();
+                createRequest request = new createRequest();
+                request.show(fm, "Select");
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     protected void onStart() {
         //ADMOB
@@ -273,7 +295,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 // Check the LogCat to get your test device ID
                 .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                 .build();
-        adlayout=findViewById(R.id.ads);
+        adlayout = findViewById(R.id.ads);
         mAdView = (AdView) findViewById(R.id.adViewInHome);
         mAdView.setAdListener(new AdListener() {
             @Override
@@ -290,6 +312,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 adlayout.setVisibility(View.GONE);
                 // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onAdLeftApplication() {
                 // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
@@ -307,7 +330,6 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onDestroy() {
         if (mAdView != null) {
@@ -316,7 +338,70 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public static class createRequest extends DialogFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
 
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            final View v = inflater.inflate(R.layout.pick_period, null);
+            final EditText Subject = (EditText) v.findViewById(R.id.periodID);
+            builder.setView(v).setPositiveButton("উপস্থিত", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    {
+                        final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+                        int day = datePicker.getDayOfMonth();
+                        int month = datePicker.getMonth();
+                        int year = datePicker.getYear() - 1900;
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+                        String formatedDate = simpleDateFormat.format(new Date(year, month, day));
+                        String date = year + "-" + month + "-" + day;
+                        String subject = Subject.getText().toString();
+                        if (subject.equals("")) subject = "অনির্ধারিত";
+
+                        //ADD ATTENDANCE
+                        AttendenceData attendenceData = new AttendenceData();
+                        attendenceData.setStatus(true);
+                        attendenceData.setSubject(subject);
+                        attendenceData.setDate(date);
+
+                         singleStudentPresentDateListAdaper.notifyDataSetChanged();
+
+                        dialog.dismiss();
+                    }
+                }
+            }).setNegativeButton("anuposthit", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+                    int day = datePicker.getDayOfMonth();
+                    int month = datePicker.getMonth();
+                    int year = datePicker.getYear() - 1900;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+                    String formatedDate = simpleDateFormat.format(new Date(year, month, day));
+                    String date = year + "-" + month + "-" + day;
+                    String subject = Subject.getText().toString();
+                    if (subject.equals("")) subject = "অনির্ধারিত";
+
+
+                    //ADD ATTENDANCE
+                    AttendenceData attendenceData = new AttendenceData();
+                    attendenceData.setStatus(false);
+                    attendenceData.setSubject(subject);
+                    attendenceData.setDate(date);
+
+                    singleStudentPresentDateListAdaper.notifyDataSetChanged();
+
+                    dialog.dismiss();
+                }
+            });
+            return builder.create();
+        }
+    }
 }
 
 

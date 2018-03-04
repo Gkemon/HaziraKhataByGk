@@ -13,7 +13,8 @@
     TODO: App themএ for Navigation drawer
 
 
-    <style name="AppThemeForNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeForNoActionBar"
+	parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/blueForAll</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

@@ -11,4 +11,9 @@
         android:title="delete"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_add_single_attendence"
+        android:icon="@drawable/ic_add_single_attendence"
+        android:title="delete"
+        app:showAsAction="always" />
 </menu>
