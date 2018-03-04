@@ -331,6 +331,7 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
                     Intent launchinIntent = new Intent(this, studentAllInfoShowActiviy.class);
                     String roll = previousId;
                     launchinIntent.putExtra("Roll", roll);
+                    launchinIntent.putExtra("classItem", studentActivity.contactofSA);
                     StudentActActivity.activity.startActivity(launchinIntent);
         }
     }

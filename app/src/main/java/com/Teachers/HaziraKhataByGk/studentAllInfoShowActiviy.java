@@ -52,9 +52,10 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     private ArrayList<String> attendenceListForSingleStudent;
     private ArrayList<Boolean> PresentAbsent;
     public static SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
-   public static student student;
+    public static student student;
     public LinearLayout adlayout;
     public AdView mAdView;
+    public ArrayList<AttendenceData> attendenceDataArrayList;
 
 
     public static FirebaseAuth auth;
@@ -125,10 +126,12 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 }
                 long attendClass = 0;
                 AttendenceData attendenceData;
+                attendenceDataArrayList=new ArrayList<>();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Attendance").getChildren()) {
                     attendenceData = dataSnapshot1.getValue(AttendenceData.class);
 
                     if (attendenceData != null) {
+                        attendenceDataArrayList.add(attendenceData);
                         if (attendenceData.getStatus()) attendClass++;
                     }
 
@@ -205,6 +208,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 attendenceListForSingleStudent.clear();
+                attendenceDataArrayList=new ArrayList<>();
                 PresentAbsent.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     AttendenceData attendenceData;
@@ -214,6 +218,8 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                     String subject;
 
                     if (attendenceData != null) {
+
+                        attendenceDataArrayList.add(attendenceData);
                         if (attendenceData.getSubject().equals("")) {
                             subject = "";
                         } else
@@ -230,7 +236,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 }
                 singleStudentPresentDateListAdaper = new SingleStudentPresentDateListAdaper
                         (studentAllInfoShowActiviy.this, activity, attendenceListForSingleStudent,
-                                PresentAbsent,ClassRoom_activity.classitem,student);
+                                PresentAbsent,ClassRoom_activity.classitem,student,attendenceDataArrayList);
                 DatewiseAttendence.setAdapter(singleStudentPresentDateListAdaper);
             }
 
@@ -371,6 +377,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                         int day = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
                         int year = datePicker.getYear()-1900 ;
+
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                         String formatedDate = simpleDateFormat.format(new Date(year, month, day));
                         String date = year + "-" + month + "-" + day;
@@ -390,7 +397,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                                 .child("Student").child(student.getId()).child("Attendance").push()
                                 .setValue(attendenceData);
 
-                        onResume();
+
                         singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
                         dialog.dismiss();

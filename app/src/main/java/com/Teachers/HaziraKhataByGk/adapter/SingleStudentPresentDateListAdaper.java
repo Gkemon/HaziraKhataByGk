@@ -18,24 +18,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.ClassRoom_activity;
-import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.model.student;
-import com.Teachers.HaziraKhataByGk.studentAllInfoShowActiviy;
 import com.bumptech.glide.Glide;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Locale;
-
-import static com.Teachers.HaziraKhataByGk.attendanceActivity.checkHash;
-import static com.Teachers.HaziraKhataByGk.studentAllInfoShowActiviy.student;
 
 /**
  * Created by uy on 9/7/2017.
@@ -47,15 +39,19 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
    public Context context;
    public class_item class_item;
    public student student;
+   public ArrayList<AttendenceData> attendenceDataArrayList;
    public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
 
-    public SingleStudentPresentDateListAdaper(Context context,Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent,class_item class_item,student student) {
+    public SingleStudentPresentDateListAdaper(Context context,Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent,class_item class_item,student student,ArrayList<AttendenceData> attendenceDataArrayList) {
         this.attendenceListForSingleStudent = attendenceListForSingleStudent;
         this.activity = activity;
         this.context=context;
         this.absentPresent=absentPresent;
         this.class_item=class_item;
         this.student=student;
+        this.attendenceDataArrayList=attendenceDataArrayList;
+
+        Collections.reverse(this.attendenceDataArrayList);//TO REVERSE THE ATTENDANCE LIST;
         Collections.reverse(this.absentPresent);//TO REVERSE THE BOOLEAN LIST;
         Collections.reverse(this.attendenceListForSingleStudent);//TO REVERSE THE ARRAY LIST;
 
@@ -93,7 +89,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
             public void onClick(View v) {
                 FragmentManager fm = activity.getFragmentManager();
                 createRequest request = new createRequest();
-                request.addData(student, class_item,AttendenceData at);
+                request.addData(student, class_item,attendenceDataArrayList.get(pos));
                 request.show(fm, "Select");
             }
         });
@@ -137,10 +133,12 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
     public static class createRequest extends DialogFragment {
         com.Teachers.HaziraKhataByGk.model.student student;
         com.Teachers.HaziraKhataByGk.model.class_item class_item;
+        AttendenceData attendenceData;
 
-        public void addData(student student,class_item class_item){
+        public void addData(student student,class_item class_item,AttendenceData attendenceData){
             this.class_item=class_item;
             this.student=student;
+            this.attendenceData=attendenceData;
         }
 
 
@@ -156,13 +154,29 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
             LayoutInflater inflater = getActivity().getLayoutInflater();
             final View v = inflater.inflate(R.layout.dialoage_for_edit_single_attendence_items, null);
             final EditText Subject = (EditText) v.findViewById(R.id.periodID);
-
             final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance
             final CheckBox checkBox1 =(CheckBox) v.findViewById(R.id.absentMarker);//For absent
+            final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+            Date date = new Date();
 
-            DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-            Date date = format.parse(string);
-            System.out.println(date);
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy");
+                date=sdf.parse(attendenceData.getDate());
+                Log.d("GK",String.valueOf(date.getYear()+1900)+ " - "+String.valueOf(date.getMonth())+ " - "+String.valueOf(date.getDay())+ " ");
+
+            }
+            catch (java.text.ParseException e){
+                e.printStackTrace();
+                Log.d("GK","Catch"+attendenceData.getDate());
+            }
+
+            datePicker.updateDate(date.getYear()+1900,date.getMonth(),date.getDay()+3);
+
+
+
+
+
 
             //Check and uncheck the check box vice versa
             checkBox.setOnClickListener(new View.OnClickListener() {
@@ -185,13 +199,13 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                     {
-                        final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+
                         int day = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
                         int year = datePicker.getYear()-1900 ;
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                         String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-                        String date = year + "-" + month + "-" + day;
+
                         String subject = Subject.getText().toString();
                         if (subject.equals("")) subject = "অনির্ধারিত";
 

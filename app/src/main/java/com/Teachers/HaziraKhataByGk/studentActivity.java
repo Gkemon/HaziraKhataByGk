@@ -125,7 +125,7 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
             mAdView.resume();
         }
         //FOR GETTING SPECIFIC CLASS'S STUDENTS
-
+        contactofSA = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
         MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

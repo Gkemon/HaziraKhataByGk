@@ -84,10 +84,10 @@
             ads:adUnitId="@string/Banner_ad_id">
         </com.google.android.gms.ads.AdView>
 
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
+        <!--</View>-->
     </LinearLayout>
 </RelativeLayout>
