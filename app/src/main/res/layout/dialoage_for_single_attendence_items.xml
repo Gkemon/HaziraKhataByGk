@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:weightSum="10">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="শিক্ষার্হীর একক উপস্থিতি "
+        android:textAlignment="center" />
     <DatePicker
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

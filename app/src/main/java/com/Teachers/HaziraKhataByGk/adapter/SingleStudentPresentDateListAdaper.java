@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by uy on 9/7/2017.
@@ -40,6 +39,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
    public Context context;
    public class_item class_item;
    public student student;
+   public static String time, subject,yearWithDate,year,month,day;
    public ArrayList<AttendenceData> attendenceDataArrayList;
    public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
 
@@ -120,10 +120,10 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
 //        v.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent launchinIntent = new Intent(attendanceActivity.activity, studentAllInfoShowActiviy.class_room);
-//                String roll = attendanceActivity.rolls.get(pos);
+//                Intent launchinIntent = new Intent(AttendanceActivity.activity, studentAllInfoShowActiviy.class_room);
+//                String roll = AttendanceActivity.rolls.get(pos);
 //                launchinIntent.putExtra("Roll", roll);
-//                attendanceActivity.activity.startActivity(launchinIntent);
+//                AttendanceActivity.activity.startActivity(launchinIntent);
 //
 //            }
 //        });
@@ -140,6 +140,47 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
             this.class_item=class_item;
             this.student=student;
             this.attendenceData=attendenceData;
+        }
+
+        public static int StringMonthToIntMonthConvertor(String month){
+
+            if(month.equals("Jan")){
+
+              return 0;
+            }
+            else if (month.equals("Feb")){
+                return 1;
+            }
+            else if (month.equals("Mar")){
+                return 2;
+            }
+            else if (month.equals("Apr")){
+                return 3;
+            }
+            else if (month.equals("May")){
+                return 4;
+            }
+            else if (month.equals("Jun")){
+                return 5;
+            }
+            else if (month.equals("Jul")){
+                return 6;
+            }
+            else if (month.equals("Aug")) {
+                return 7;
+            }
+            else if (month.equals("Sep")){
+                    return 8;
+            }
+            else if (month.equals("Oct")){
+                    return 9;
+            }
+            else if (month.equals("Nov")){
+                    return 10;
+            }
+            else return 11;
+
+
         }
 
 
@@ -160,11 +201,35 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
             final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
             Date date = new Date();
 
+            time=attendenceData.getDate();
+            yearWithDate = time.substring(Math.max(time.length() - 8, 0));
+            month = yearWithDate.substring(0,Math.min(yearWithDate.length(), 3));
+            year = time.substring(Math.max(time.length() - 4, 0));
+            if(time.substring(6,6).equals(" "))
+            {
+                day = time.substring(5,5);
+            }
+            else
+            {
+                day = time.substring(5,7);
+            }
+
+            int Month=StringMonthToIntMonthConvertor(month);
+
+
+
+            Log.d("GK", year + " year");
+            Log.d("GK", month + " month");
+            Log.d("GK", yearWithDate + " year With Date");
+            Log.d("GK", day + "Day");
 
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy", Locale.ENGLISH);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy");
+                sdf.setLenient(false);
+
                 date=sdf.parse(attendenceData.getDate());
-                Log.d("GK",String.valueOf(date.getYear()+1900)+ " - "+String.valueOf(date.getMonth())+ " - "+String.valueOf(date.getDay())+ " ");
+                Log.d("GK","Main Date"+attendenceData.getDate()+" "+String.valueOf(date.getYear()+1900)+ " - "+String.valueOf(date.getMonth())+ " - "+String.valueOf(date.getDay())+ " ");
 
             }
             catch (java.text.ParseException e){
@@ -172,7 +237,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
                 Log.d("GK","Catch"+attendenceData.getDate());
             }
 
-            datePicker.updateDate(date.getYear()+1900,date.getMonth(),date.getDay()+3);
+            datePicker.updateDate(Integer.valueOf(year.trim()),Month,Integer.valueOf(day.trim()));
 
 
 
@@ -264,6 +329,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
             return builder.create();
         }
     }
+
 
 
 }

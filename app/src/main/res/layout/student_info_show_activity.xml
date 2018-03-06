@@ -24,7 +24,7 @@
         android:id="@+id/studentName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="XXXXXXXX"
+        android:text=""
         android:textColor="@color/white"
         android:background="#2196F3"
         android:backgroundTint="#2196F3"
@@ -65,27 +65,40 @@
         android:textSize="10sp"
         android:text="অভিভাবককে ফোন করুন" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/HEADING_MAIN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="শিক্ষার্থীর রেকর্ড"
         android:gravity="center"
+        android:text="শিক্ষার্থীর রেকর্ড"
+        android:textAlignment="center"
         android:textColor="@color/red_secondary"
-        android:textSize="15sp"/>
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="(শিক্ষার্থীর উপস্থিতির ডাটা এককভাবে যুক্ত করতে চাইলে উপরের প্লাস বাটনটি প্রেস করুন এবং কোন শিক্ষার্থীর উপস্থিতির ডাটা পরিবর্তন করতে চাইলে তার সেই নির্ধারিত ডাটাটিতে প্রেস করুন।)"
+        android:textAlignment="center"
+        android:textColor="@color/gray_deep"
+        android:textSize="12sp" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2sp"
         android:background="#0d47a1"/>
+
     <TextView
         android:id="@+id/HEADING"
-        android:paddingTop="2sp"
-        android:paddingBottom="2sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="2sp"
+        android:paddingTop="2sp"
         android:text="তারিখ[বার/দিন/মাস/বছর]  (বিষয় অথবা টপিক)  উপস্থিত/অনুপস্থিত"
+        android:textAlignment="center"
         android:textColor="@color/gray_deep"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2sp"

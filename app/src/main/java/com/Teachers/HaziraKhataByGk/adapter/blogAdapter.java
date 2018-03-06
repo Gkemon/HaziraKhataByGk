@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.blog;
+import com.Teachers.HaziraKhataByGk.BlogActivity;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.model.blog_item;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -115,10 +115,10 @@ public class blogAdapter extends RecyclerView.Adapter<blogViewHolder> {
 
 
         //TODO: check if save or unsaved
-        if(blog.isBlogBookmarked(list.get(position))){
+        if(BlogActivity.isBlogBookmarked(list.get(position))){
             savedIcon.setImageResource(R.drawable.ic_saved_icon);
         }
-        if(blog.isBlogLove(list.get(position))){
+        if(BlogActivity.isBlogLove(list.get(position))){
             lovedIcon.setImageResource(R.drawable.ic_love_icon);
         }
 

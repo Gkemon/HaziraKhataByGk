@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoom_activity;
-import com.Teachers.HaziraKhataByGk.attendanceActivity;
 import com.Teachers.HaziraKhataByGk.constant.StudentField;
 import com.Teachers.HaziraKhataByGk.model.Notes;
 import com.Teachers.HaziraKhataByGk.model.class_item;
@@ -96,7 +96,7 @@ public class databaseHandler extends SQLiteOpenHelper{
 //        Cursor c = db.query(
 //                "ATTENDENCE",                    // The table to query
 //                projection,                                 // The columns to return
-//                StudentField.COLUMN_CLASS+" = '"+ attendanceActivity.classitemAttendence.getStudentName()+"'",                                       // The columns for the WHERE clause
+//                StudentField.COLUMN_CLASS+" = '"+ AttendanceActivity.classitemAttendence.getStudentName()+"'",                                       // The columns for the WHERE clause
 //                null,                                       // The values for the WHERE clause
 //                null,                                       // don't group the rows
 //                null,                                       // don't filter by row groups
@@ -226,7 +226,7 @@ public class databaseHandler extends SQLiteOpenHelper{
         Cursor c = db.query(
                 StudentField.TABLE_NAME,                    // The table to query
                 projection,                                 // The columns to return
- StudentField.COLUMN_CLASS+" = '"+ attendanceActivity.classitemAttendence.getName()
+ StudentField.COLUMN_CLASS+" = '"+ AttendanceActivity.classitemAttendence.getName()
          +"' AND "+StudentField.COLUMN_ID+" = '"+id+"'",                                       // The columns for the WHERE clause
                 null,                                       // The values for the WHERE clause
                 null,                                       // don't group the rows
@@ -240,7 +240,7 @@ public class databaseHandler extends SQLiteOpenHelper{
     public Cursor totalClassNumber(String id){
         SQLiteDatabase database;
         database=getReadableDatabase();
-        String qc = "SELECT * FROM ATTENDENCE WHERE student_class = '" +attendanceActivity.classitemAttendence.getName()+ "' AND student_roll = '"+id+"';";
+        String qc = "SELECT * FROM ATTENDENCE WHERE student_class = '" + AttendanceActivity.classitemAttendence.getName()+ "' AND student_roll = '"+id+"';";
 
             Cursor cursor =database.rawQuery(qc,null);
             return cursor;
@@ -249,14 +249,14 @@ public class databaseHandler extends SQLiteOpenHelper{
     public Cursor attendClass(String id){
         SQLiteDatabase database;
         database=getReadableDatabase();
-        String qc = "SELECT * FROM ATTENDENCE WHERE student_class = '" +attendanceActivity.classitemAttendence.getName()+ "' AND student_roll = '"+id+"' AND IsAttend = 1 ;";
+        String qc = "SELECT * FROM ATTENDENCE WHERE student_class = '" + AttendanceActivity.classitemAttendence.getName()+ "' AND student_roll = '"+id+"' AND IsAttend = 1 ;";
         Cursor cursor =database.rawQuery(qc,null);
         return cursor;
     }
     public Cursor AbsentClass(String id){
         SQLiteDatabase database;
         database=getReadableDatabase();
-        String qc = "SELECT * FROM ATTENDENCE WHERE student_class = '" +attendanceActivity.classitemAttendence.getName()+ "' AND student_roll = '"+id+"' AND IsAttend = 0 ;";
+        String qc = "SELECT * FROM ATTENDENCE WHERE student_class = '" + AttendanceActivity.classitemAttendence.getName()+ "' AND student_roll = '"+id+"' AND IsAttend = 0 ;";
         Cursor cursor =database.rawQuery(qc,null);
         return cursor;
     }
@@ -280,7 +280,7 @@ public class databaseHandler extends SQLiteOpenHelper{
         Cursor cursor = db.query(
                 StudentField.TABLE_NAME,                    // The table to query
                 projection,                                 // The columns to return
-                StudentField.COLUMN_CLASS+" = '"+ attendanceActivity.classitemAttendence.getName()+"'",                                       // The columns for the WHERE clause
+                StudentField.COLUMN_CLASS+" = '"+ AttendanceActivity.classitemAttendence.getName()+"'",                                       // The columns for the WHERE clause
                 null,                                       // The values for the WHERE clause
                 null,                                       // don't group the rows
                 null,                                       // don't filter by row groups
@@ -365,7 +365,7 @@ public class databaseHandler extends SQLiteOpenHelper{
 
         Cursor c = db.query("ATTENDENCE",                    // The table to query
                 projection,                                 // The columns to return
-                StudentField.COLUMN_CLASS+" = '"+attendanceActivity.classitemAttendence.getName()
+                StudentField.COLUMN_CLASS+" = '"+ AttendanceActivity.classitemAttendence.getName()
                         +"' AND "+StudentField.COLUMN_ID+" = '"+id+"'",                                       // The columns for the WHERE clause
                 null,                                       // The values for the WHERE clause
                 null,                                       // don't group the rows

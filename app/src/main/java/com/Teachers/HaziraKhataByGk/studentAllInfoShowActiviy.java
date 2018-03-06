@@ -141,9 +141,9 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                     totalAttendPersenten = (attendClass * 100) / totalClass;
 
                 String charSequence;
-                if (attendanceActivity.classitemAttendence != null) {
+                if (AttendanceActivity.classitemAttendence != null) {
                     String charSequence1 = " শিক্ষার্থীর নাম: " + student.getStudentName() + " \n" +
-                            " রোল :" + roll + "    ক্লাস :" + attendanceActivity.classitemAttendence.getName() + "\n মোট ক্লাস:" + totalClass + "  উপস্থিতি :" + attendClass + "   শতকরা :" + totalAttendPersenten + "% ";
+                            " রোল :" + roll + "    ক্লাস :" + AttendanceActivity.classitemAttendence.getName() + "\n মোট ক্লাস:" + totalClass + "  উপস্থিতি :" + attendClass + "   শতকরা :" + totalAttendPersenten + "% ";
                     charSequence = charSequence1;
                 } else {
                     String charSequence2 = " শিক্ষার্থীর নাম: " + student.getStudentName() + " \n" +
@@ -203,6 +203,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         MainActivity.databaseReference = databaseReference;
         MainActivity.mUserId = mUserId;
 
+        ClassRoom_activity.classitem=getIntent().getParcelableExtra("classItem");
 
         MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").addValueEventListener(new ValueEventListener() {
             @Override

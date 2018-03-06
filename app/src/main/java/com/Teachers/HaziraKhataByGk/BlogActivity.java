@@ -36,7 +36,7 @@ import static com.Teachers.HaziraKhataByGk.R.id.SaveClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.ShareClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.loveClicker;
 
-public class blog extends AppCompatActivity implements RecyclerItemClickListener {
+public class BlogActivity extends AppCompatActivity implements RecyclerItemClickListener {
     public static RecyclerView blogRecycle;
     public static Context context;
     public static Activity activity;
@@ -84,8 +84,8 @@ public class blog extends AppCompatActivity implements RecyclerItemClickListener
                 if(blog_items_list.size()>0&&blogRecycle!=null) {
                     Collections.reverse(blog_items_list);
                     blogAdapter blogAdapter = new blogAdapter(blog_items_list);
-                    blogAdapter.setOnItemClickListener(blog.this);
-                    LinearLayoutManager MyLayoutManager = new LinearLayoutManager(blog.context);
+                    blogAdapter.setOnItemClickListener(BlogActivity.this);
+                    LinearLayoutManager MyLayoutManager = new LinearLayoutManager(BlogActivity.context);
                     MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     blogRecycle.setAdapter(blogAdapter);
                     blogRecycle.setLayoutManager(MyLayoutManager);
@@ -117,7 +117,7 @@ public class blog extends AppCompatActivity implements RecyclerItemClickListener
 
 
 
-    //TODO: love blog
+    //TODO: love BlogActivity
     public static void loveBlog (blog_item blog_item){
 //        for(int i=0;i<saved_news_item_for_main.size();i++){
 //            if(news_item.getURL().equals(saved_news_item_for_main.get(i).getURL())&&news_item.getDate().equals(saved_news_item_for_main.get(i).getDate())&&news_item.getHeading().equals(saved_news_item_for_main.get(i).getHeading())){
@@ -287,7 +287,7 @@ public class blog extends AppCompatActivity implements RecyclerItemClickListener
 //                    }
 //                }
 
-                blog.saveBlog(blog.context,blog_item);
+                BlogActivity.saveBlog(BlogActivity.context,blog_item);
                 ImageView savedIcon=(ImageView)view.findViewById(R.id.SaveClickerIcon);
 //
 //                Query query=databaseReference.child("Saved_news");
@@ -310,7 +310,7 @@ public class blog extends AppCompatActivity implements RecyclerItemClickListener
 //                    public void onCancelled(DatabaseError databaseError) {
 //                    }
 //                });
-                if(blog.isBlogBookmarked(blog_item)){
+                if(BlogActivity.isBlogBookmarked(blog_item)){
                     savedIcon.setImageResource(R.drawable.ic_saved_icon);
                     Toast.makeText(MainActivity.activity, "সেভ হয়েছে", Toast.LENGTH_SHORT).show();
                 }
@@ -322,16 +322,16 @@ public class blog extends AppCompatActivity implements RecyclerItemClickListener
 
 
             case loveClicker:
-                blog.loveBlog(blog_item);
+                BlogActivity.loveBlog(blog_item);
                 ImageView loveIcon=(ImageView)view.findViewById(R.id.lovedIcon);
 
-                if(blog.isBlogLove(blog_item)){
+                if(BlogActivity.isBlogLove(blog_item)){
                     loveIcon.setImageResource(R.drawable.ic_love_icon);
-                    Toast.makeText(blog.context, "পছন্দ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BlogActivity.context, "পছন্দ", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     loveIcon.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    Toast.makeText(blog.context, "অপছন্দ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BlogActivity.context, "অপছন্দ", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

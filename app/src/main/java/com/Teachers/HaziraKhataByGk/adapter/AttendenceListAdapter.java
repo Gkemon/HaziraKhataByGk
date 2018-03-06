@@ -14,9 +14,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.attendanceActivity;
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.studentAllInfoShowActiviy;
@@ -30,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.attendanceActivity.checkHash;
+import static com.Teachers.HaziraKhataByGk.AttendanceActivity.checkHash;
 
 public class AttendenceListAdapter extends BaseAdapter {
 
@@ -91,7 +91,7 @@ public class AttendenceListAdapter extends BaseAdapter {
       }
             //TRYING TO SET THE TEXT COLOR BUT DOES NOT WORK
 //        LinearLayout viewForBackgroudColor=(LinearLayout) v.findViewById(R.id.attendanceLayout);
-//        int percentage=attendanceActivity.attendencePercentage.get(position);
+//        int percentage=AttendanceActivity.attendencePercentage.get(position);
 //        if(percentage>=80){
 //            viewForBackgroudColor.setBackgroundColor(0x81c784);
 //        }
@@ -148,13 +148,13 @@ public class AttendenceListAdapter extends BaseAdapter {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchinIntent = new Intent(attendanceActivity.activity, studentAllInfoShowActiviy.class);
-                    String roll = attendanceActivity.rolls.get(pos);
+                    Intent launchinIntent = new Intent(AttendanceActivity.activity, studentAllInfoShowActiviy.class);
+                    String roll = AttendanceActivity.rolls.get(pos);
                     Log.d("GK",pos + " pos in click listener of list view");
                     launchinIntent.putExtra("Roll", roll);
                     launchinIntent.putExtra("classItem",class_item);
-                    attendanceActivity.activity=activity;
-                    attendanceActivity.activity.startActivity(launchinIntent);
+                    AttendanceActivity.activity=activity;
+                    AttendanceActivity.activity.startActivity(launchinIntent);
                 }
             });
 
@@ -222,8 +222,8 @@ public class AttendenceListAdapter extends BaseAdapter {
             else sts = false;
             AttendenceData attendenceData = new AttendenceData();
             attendenceData.setStatus(sts);
-            attendenceData.setSubject(attendanceActivity.subject);
-            attendenceData.setDate(attendanceActivity.time);
+            attendenceData.setSubject(AttendanceActivity.subject);
+            attendenceData.setDate(AttendanceActivity.time);
 
             //TODO:DATABASE CONNECTION
             firebaseDatabase= FirebaseDatabase.getInstance();
@@ -238,7 +238,7 @@ public class AttendenceListAdapter extends BaseAdapter {
             MainActivity.databaseReference=databaseReference;
             MainActivity.mUserId=mUserId;
 
-            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(attendanceActivity.classitemAttendence.getName()+attendanceActivity.classitemAttendence.getSection()).child("Student").child(attendanceActivity.rolls.get(i)).child("Attendance").push().setValue(attendenceData);
+            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(AttendanceActivity.classitemAttendence.getName()+ AttendanceActivity.classitemAttendence.getSection()).child("Student").child(AttendanceActivity.rolls.get(i)).child("Attendance").push().setValue(attendenceData);
 
             //activity.finish();
         }
@@ -273,14 +273,14 @@ public class AttendenceListAdapter extends BaseAdapter {
                             @Override
                             public void onAdFailedToLoad(int i) {
                                 activity.finish();
-                                Toast.makeText(attendanceActivity.context, " উপস্থিতি সার্ভারে সেভ হয়েছে । ", Toast.LENGTH_LONG).show();
+                                Toast.makeText(AttendanceActivity.context, " উপস্থিতি সার্ভারে সেভ হয়েছে । ", Toast.LENGTH_LONG).show();
                                 super.onAdFailedToLoad(i);
                             }
 
                             @Override
                             public void onAdClosed() {
                                 activity.finish();
-                                Toast.makeText(attendanceActivity.context, " উপস্থিতি সার্ভারে সেভ হয়েছে । ", Toast.LENGTH_LONG).show();
+                                Toast.makeText(AttendanceActivity.context, " উপস্থিতি সার্ভারে সেভ হয়েছে । ", Toast.LENGTH_LONG).show();
                                 super.onAdClosed();
                             }
                         });

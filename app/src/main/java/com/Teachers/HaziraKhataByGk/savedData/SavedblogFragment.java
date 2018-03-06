@@ -18,11 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.BlogActivity;
 import com.Teachers.HaziraKhataByGk.BottomNavigationActivity;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.adapter.blogAdapter;
-import com.Teachers.HaziraKhataByGk.blog;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.model.blog_item;
 import com.google.android.gms.ads.AdListener;
@@ -277,7 +277,7 @@ public class SavedblogFragment extends Fragment implements RecyclerItemClickList
 //                        break;
 //                    }
 //                }
-                blog.saveBlog(blog.context,blog_item);
+                BlogActivity.saveBlog(BlogActivity.context,blog_item);
                 ImageView savedIcon=(ImageView)view.findViewById(R.id.SaveClickerIcon);
 //
 //                Query query=databaseReference.child("Saved_news");
@@ -300,7 +300,7 @@ public class SavedblogFragment extends Fragment implements RecyclerItemClickList
 //                    public void onCancelled(DatabaseError databaseError) {
 //                    }
 //                });
-                if(blog.isBlogBookmarked(blog_item)){
+                if(BlogActivity.isBlogBookmarked(blog_item)){
                     savedIcon.setImageResource(R.drawable.ic_saved_icon);
                     Toast.makeText(BottomNavigationActivity.activity, "সেভ হয়েছে", Toast.LENGTH_SHORT).show();
                 }
@@ -312,16 +312,16 @@ public class SavedblogFragment extends Fragment implements RecyclerItemClickList
 
 
             case loveClicker:
-                blog.loveBlog(blog_item);
+                BlogActivity.loveBlog(blog_item);
                 ImageView loveIcon=(ImageView)view.findViewById(R.id.lovedIcon);
 
-                if(blog.isBlogLove(blog_item)){
+                if(BlogActivity.isBlogLove(blog_item)){
                     loveIcon.setImageResource(R.drawable.ic_love_icon);
-                    Toast.makeText(blog.context, "পছন্দ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BlogActivity.context, "পছন্দ", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     loveIcon.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    Toast.makeText(blog.context, "অপছন্দ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BlogActivity.context, "অপছন্দ", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

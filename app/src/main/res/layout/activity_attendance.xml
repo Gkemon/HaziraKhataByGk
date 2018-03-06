@@ -6,7 +6,7 @@
     android:id="@+id/mainLayout"
     android:background="#e3f2fd"
     android:layout_height="match_parent"
-    tools:context="com.Teachers.HaziraKhataByGk.attendanceActivity">
+    tools:context="com.Teachers.HaziraKhataByGk.AttendanceActivity">
     <ListView
         android:id="@+id/attendanceListViwe"
         android:elevation="15sp"

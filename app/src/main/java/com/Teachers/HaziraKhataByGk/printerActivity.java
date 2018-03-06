@@ -19,9 +19,9 @@ import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.attendanceActivity.perStudentTotalAttendenceData;
-import static com.Teachers.HaziraKhataByGk.attendanceActivity.studentListForPrintActiviyFromAttendenceActivity;
-import static com.Teachers.HaziraKhataByGk.attendanceActivity.year;
+import static com.Teachers.HaziraKhataByGk.AttendanceActivity.perStudentTotalAttendenceData;
+import static com.Teachers.HaziraKhataByGk.AttendanceActivity.studentListForPrintActiviyFromAttendenceActivity;
+import static com.Teachers.HaziraKhataByGk.AttendanceActivity.year;
 
 public class printerActivity extends AppCompatActivity {
 

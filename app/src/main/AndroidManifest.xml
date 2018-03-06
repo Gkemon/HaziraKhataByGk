@@ -61,7 +61,7 @@
         <activity
             android:name=".ClassRoom_activity"
             android:theme="@style/AppThemeForNoActionBar" />
-        <activity android:name=".attendanceActivity">
+        <activity android:name=".AttendanceActivity">
 
             <!-- android:theme="@style/AppThemeForNoActionBar"> -->
         </activity>
@@ -102,7 +102,7 @@
         <activity
             android:name=".Browsing.BrowsingActivity"
             android:theme="@style/AppTheme.NoActionBarForBrowser" />
-        <activity android:name=".blog" />
+        <activity android:name=".BlogActivity" />
 
         <service android:name=".Scheduler.TodoNotificationService" />
         <service android:name=".Scheduler.DeleteNotificationService" />

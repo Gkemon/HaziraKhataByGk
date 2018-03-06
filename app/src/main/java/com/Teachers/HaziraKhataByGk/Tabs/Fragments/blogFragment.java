@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.MainActivity;
-import com.Teachers.HaziraKhataByGk.blog;
+import com.Teachers.HaziraKhataByGk.BlogActivity;
 
 
 public class blogFragment extends Fragment {
@@ -51,7 +51,7 @@ public class blogFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.activity, blog.class);
+                Intent intent = new Intent(MainActivity.activity, BlogActivity.class);
                 startActivity(intent);
             }
         });

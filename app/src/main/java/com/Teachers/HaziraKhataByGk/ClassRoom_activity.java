@@ -348,7 +348,7 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
                         String formatedDate = simpleDateFormat.format(new Date(year, month, day));
                         String date = year + "-" + month + "-" + day;
                         String subject = Subject.getText().toString();
-                        Intent launchinIntent = new Intent(ClassRoom_activity.activity, attendanceActivity.class);
+                        Intent launchinIntent = new Intent(ClassRoom_activity.activity, AttendanceActivity.class);
                         launchinIntent.putExtra("DATE", formatedDate);
                         launchinIntent.putExtra("SUBJECT", subject);
                         launchinIntent.putExtra("class_room", ClassRoom_activity.classitem);

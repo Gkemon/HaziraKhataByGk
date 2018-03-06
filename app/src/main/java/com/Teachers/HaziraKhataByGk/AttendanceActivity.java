@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class attendanceActivity  extends AppCompatActivity {
-    private static final String Tag = attendanceActivity.class.getName();
+public class AttendanceActivity extends AppCompatActivity {
+    private static final String Tag = AttendanceActivity.class.getName();
     public static class_item classitemAttendence;
     public ListView listView;
     private Boolean isInterstitalAdEnable;
@@ -103,7 +103,7 @@ public class attendanceActivity  extends AppCompatActivity {
         SharedPreferences pref = context.getSharedPreferences("IsFirst", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         if(pref.getBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),true)){
-            AlertDialog alertDialog = new AlertDialog.Builder(attendanceActivity.this).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(AttendanceActivity.this).create();
             alertDialog.setMessage("আপনি যদি কোন শিক্ষার্থীর সম্পূর্ণ ডাটা দেখতে চান তাহলে এখানে উপস্থাপিত লিস্ট থেকে তার নামের উপর ক্লিক করুন , আপনি যদি ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলিট করতে চান তাহলে উপরের ডানপাশের ডিলিট চিহ্ন ক্লিক করুন আর যদি মাসিক উপস্থিতির রেকর্ড দেখতে অথবা প্রিন্ট করতে চান তাহলে উপরের প্রিন্ট চিহ্ন ক্লিক করুন ");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                     new DialogInterface.OnClickListener() {
@@ -313,7 +313,7 @@ public class attendanceActivity  extends AppCompatActivity {
 
                                     }
 
-                                   Intent intent = new Intent(attendanceActivity.this,attendanceActivity.class);
+                                   Intent intent = new Intent(AttendanceActivity.this,AttendanceActivity.class);
                                     intent.putExtra("DATE", time);
                                     intent.putExtra("SUBJECT", subject);
                                     intent.putExtra("class_room", classitemAttendence);
@@ -341,7 +341,7 @@ public class attendanceActivity  extends AppCompatActivity {
 
 
             case R.id.printer:
-                Intent intent=new Intent(attendanceActivity.this,printerActivity.class);
+                Intent intent=new Intent(AttendanceActivity.this,printerActivity.class);
                 startActivity(intent);
 
             default:
