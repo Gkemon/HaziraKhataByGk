@@ -11,10 +11,11 @@
         android:text="শিক্ষার্থীর একক উপস্থিতি "
         android:textAlignment="center"
         android:textSize="16sp" />
+
     <DatePicker
+        android:id="@+id/datePicker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/datePicker" />
+        android:layout_height="wrap_content" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -127,33 +127,36 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
         //FOR GETTING SPECIFIC CLASS'S STUDENTS
         contactofSA = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
 
-        if(contactofSA!=null)
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                final ArrayList<student> studentListFromServer = new ArrayList<student>();
-                for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
-                    student student;
-                    student = StudentData.getValue(student.class);
-                    studentListFromServer.add(student);
+        if(contactofSA.getName()!=null&&contactofSA.getSection()!=null)
+        {
+            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    final ArrayList<student> studentListFromServer = new ArrayList<student>();
+                    for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
+                        student student;
+                        student = StudentData.getValue(student.class);
+                        studentListFromServer.add(student);
+                    }
+                    studentActivity.studentList = new ArrayList<>();
+                    studentActivity.studentList = studentListFromServer;
+                    if (studentList.size() == 0) {
+                        linearLayoutForEmptyView.setVisibility(View.VISIBLE);
+                    } else {
+                        linearLayoutForEmptyView.setVisibility(View.GONE);
+                    }
+                    studentListAdapter.clear();
+                    studentListAdapter.addAll(studentList);
+                    studentItems.setAdapter(studentListAdapter);
                 }
-                studentActivity.studentList = new ArrayList<>();
-                studentActivity.studentList = studentListFromServer;
-                if (studentList.size() == 0) {
-                    linearLayoutForEmptyView.setVisibility(View.VISIBLE);
-                } else {
-                    linearLayoutForEmptyView.setVisibility(View.GONE);
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
                 }
-                studentListAdapter.clear();
-                studentListAdapter.addAll(studentList);
-                studentItems.setAdapter(studentListAdapter);
-            }
+            });
+        }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 
