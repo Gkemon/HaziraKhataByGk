@@ -14,17 +14,19 @@
     android:paddingRight="5sp"
     android:paddingTop="5sp"
     >
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="1sp"
-        android:background="#ffffff"/>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:backgroundTint="#90caf9"
-    android:background="#90caf9"
-   >
-    <!--<TextView-->
+        android:layout_height="1dp"
+        android:background="#ffffff" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#90caf9"
+        android:backgroundTint="#90caf9"
+        android:orientation="horizontal">
+        <!--<TextView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="60dp"-->
         <!--android:textSize="10sp"-->
@@ -37,22 +39,25 @@
         <!--android:layout_weight="1"-->
         <!--android:text="A SINGLE RECORD "-->
         <!--/>-->
-    <ImageView
-        android:id="@+id/PresentOrAbsent"
-        android:layout_width="20dp"
-        android:layout_height="20sp"
-        android:elevation="10sp"
-         />
-    <TextView
-        android:id="@+id/SingleStudentAttendeceDateList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="20sp"
-        android:text="emon"
-        android:padding="3sp"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
-</LinearLayout>
+        <ImageView
+            android:id="@+id/PresentOrAbsent"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:elevation="10sp" />
+
+        <TextView
+            android:id="@+id/SingleStudentAttendeceDateList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="20sp"
+            android:padding="3sp"
+            android:text="emon"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1sp"

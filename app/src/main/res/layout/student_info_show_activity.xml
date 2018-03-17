@@ -103,8 +103,16 @@
         android:layout_width="match_parent"
         android:layout_height="2sp"
         android:background="#0d47a1"/>
+    <ProgressBar
+        android:id="@+id/progressBarInSingleStudentActivity"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
 
     <LinearLayout
+        android:visibility="invisible"
         android:id="@+id/toDoEmptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -129,6 +137,7 @@
             android:textColor="@color/secondary_text"
             android:textSize="13sp" />
     </LinearLayout>
+
     <ListView
         android:id="@+id/DatewiseAttendence"
         android:layout_width="match_parent"
@@ -136,36 +145,36 @@
         android:layout_centerHorizontal="true">
     </ListView>
 </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ads"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adViewInHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/Banner_ad_id">
-        </com.google.android.gms.ads.AdView>
-
-        <!--<View-->
+    <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
-        <!--android:background="@color/colorPrimaryDark"-->
-        <!--android:layout_height="6sp">-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/ads"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:orientation="vertical">-->
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
         <!--</View>-->
-    </LinearLayout>
+        <!--<com.google.android.gms.ads.AdView-->
+            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/adViewInHome"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--ads:adSize="SMART_BANNER"-->
+            <!--ads:adUnitId="@string/Banner_ad_id">-->
+        <!--</com.google.android.gms.ads.AdView>-->
+
+        <!--&lt;!&ndash;<View&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:background="@color/colorPrimaryDark"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="6sp">&ndash;&gt;-->
+        <!--&lt;!&ndash;</View>&ndash;&gt;-->
+    <!--</LinearLayout>-->
 </RelativeLayout>

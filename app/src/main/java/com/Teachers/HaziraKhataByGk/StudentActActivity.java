@@ -22,8 +22,6 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.model.student;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -111,39 +109,39 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
 
 
         //ADMOB
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-        adlayout=findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                .build();
+//        adlayout=findViewById(R.id.ads);
+//        mAdView = (AdView) findViewById(R.id.adViewInHome);
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                adlayout.setVisibility(View.GONE);
+//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
+//        mAdView.loadAd(adRequest);
 
 
 

@@ -11,13 +11,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.model.class_item;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,15 +59,22 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         setContentView(R.layout.activity_act);
 
         //TODO: FOR INTERSTIALAD
 
 
-            mInterstitialAd = new InterstitialAd(this);
-            // set the ad unit ID
-            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
-
+//            mInterstitialAd = new InterstitialAd(this);
+//            // set the ad unit ID
+//            mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
+//
 
 
         personName = (EditText) findViewById(R.id.classText);
@@ -298,34 +305,34 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
                         Toast.makeText(ActActivity.this,"ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
                         previousClassName=null;
-
-
-                    AdRequest adRequest = new AdRequest.Builder()
-                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                            // Check the LogCat to get your test device ID
-                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                            .build();
                     finish();
+
+//                    AdRequest adRequest = new AdRequest.Builder()
+//                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                            // Check the LogCat to get your test device ID
+//                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                            .build();
+
 
                     // Load ads into Interstitial Ads
                     //mInterstitialAd.loadAd(adRequest);
-                    mInterstitialAd.setAdListener(new AdListener() {
-                        public void onAdLoaded() {
-                            showInterstitial();
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(int i) {
-                            finish();
-                            super.onAdFailedToLoad(i);
-                        }
-
-                        @Override
-                        public void onAdClosed() {
-                            finish();
-                            super.onAdClosed();
-                        }
-                    });
+//                    mInterstitialAd.setAdListener(new AdListener() {
+//                        public void onAdLoaded() {
+//                            showInterstitial();
+//                        }
+//
+//                        @Override
+//                        public void onAdFailedToLoad(int i) {
+//                            finish();
+//                            super.onAdFailedToLoad(i);
+//                        }
+//
+//                        @Override
+//                        public void onAdClosed() {
+//                            finish();
+//                            super.onAdClosed();
+//                        }
+//                    });
 
                     }
             }
@@ -378,34 +385,35 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    AdRequest adRequest = new AdRequest.Builder()
-                                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                                            // Check the LogCat to get your test device ID
-                                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                                            .build();
+
                                     finish();
+
+//                                    AdRequest adRequest = new AdRequest.Builder()
+//                                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                                            // Check the LogCat to get your test device ID
+//                                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                                            .build();
+
 
                                     // Load ads into Interstitial Ads
                                    // mInterstitialAd.loadAd(adRequest);
-                                    mInterstitialAd.setAdListener(new AdListener() {
-                                        public void onAdLoaded() {
-                                            showInterstitial();
-                                        }
-
-                                        @Override
-                                        public void onAdFailedToLoad(int i) {
-                                            finish();
-                                            super.onAdFailedToLoad(i);
-                                        }
-
-                                        @Override
-                                        public void onAdClosed() {
-                                            finish();
-                                            super.onAdClosed();
-                                        }
-                                    });
-
-
+//                                    mInterstitialAd.setAdListener(new AdListener() {
+//                                        public void onAdLoaded() {
+//                                            showInterstitial();
+//                                        }
+//
+//                                        @Override
+//                                        public void onAdFailedToLoad(int i) {
+//                                            finish();
+//                                            super.onAdFailedToLoad(i);
+//                                        }
+//
+//                                        @Override
+//                                        public void onAdClosed() {
+//                                            finish();
+//                                            super.onAdClosed();
+//                                        }
+//                                    });
                                 }
                             });
                     alertDialog.show();
@@ -444,49 +452,49 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     protected void onStart() {
-        //ADMOB
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-        adlayout=findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-
-            }
-            @Override
-            public void onAdLeftApplication() {
-
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
+//        //ADMOB
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                .build();
+//        adlayout=findViewById(R.id.ads);
+//        mAdView = (AdView) findViewById(R.id.adViewInHome);
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                adlayout.setVisibility(View.GONE);
+//
+//            }
+//            @Override
+//            public void onAdLeftApplication() {
+//
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
+//        mAdView.loadAd(adRequest);
 
         super.onStart();
     }
 
     @Override
     public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
+//        if (mAdView != null) {
+//            mAdView.pause();
+//        }
         super.onPause();
     }
 
@@ -494,9 +502,9 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
         super.onDestroy();
     }
 

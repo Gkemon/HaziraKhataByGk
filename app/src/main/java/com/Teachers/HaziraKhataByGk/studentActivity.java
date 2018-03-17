@@ -11,13 +11,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.Teachers.HaziraKhataByGk.adapter.studentListAdapter;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.model.student;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +52,7 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
         setContentView(R.layout.student_activity);
         context = getApplicationContext();
         studentItems = (RecyclerView) findViewById(R.id.studentFromStudentActivity);
@@ -78,39 +78,39 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
         });
 
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-        adlayout=findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                .build();
+//        adlayout=findViewById(R.id.ads);
+//        mAdView = (AdView) findViewById(R.id.adViewInHome);
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                adlayout.setVisibility(View.GONE);
+//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
+//        mAdView.loadAd(adRequest);
 
 
 
@@ -121,10 +121,11 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
     protected void onResume() {
         super.onResume();
 
-        if (mAdView != null) {
-            mAdView.resume();
-        }
+//        if (mAdView != null) {
+//            mAdView.resume();
+//        }
         //FOR GETTING SPECIFIC CLASS'S STUDENTS
+
         contactofSA = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
 
         if(contactofSA.getName()!=null&&contactofSA.getSection()!=null)
@@ -132,6 +133,12 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
             MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    ProgressBar spinner;
+                    spinner = (ProgressBar)findViewById(R.id.progressBarInStudentActivity);
+                    spinner.setVisibility(View.GONE);
+
+
                     final ArrayList<student> studentListFromServer = new ArrayList<student>();
                     for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
                         student student;
@@ -140,11 +147,13 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
                     }
                     studentActivity.studentList = new ArrayList<>();
                     studentActivity.studentList = studentListFromServer;
+
                     if (studentList.size() == 0) {
                         linearLayoutForEmptyView.setVisibility(View.VISIBLE);
                     } else {
                         linearLayoutForEmptyView.setVisibility(View.GONE);
                     }
+
                     studentListAdapter.clear();
                     studentListAdapter.addAll(studentList);
                     studentItems.setAdapter(studentListAdapter);
@@ -172,17 +181,17 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
 
     @Override
     public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
+//        if (mAdView != null) {
+//            mAdView.pause();
+//        }
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
         super.onDestroy();
     }
 

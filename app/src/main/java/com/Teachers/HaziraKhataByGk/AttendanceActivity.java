@@ -74,196 +74,16 @@ public class AttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
        // checklist = new ArrayList<Integer>();
 
-
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        checkHash = new HashMap<Integer, Boolean>();
-
-        perStudentTotalAttendenceData=new HashMap<String, ArrayList<AttendenceData>>();
-
+        HideNotifiationBar();
 
         setContentView(R.layout.activity_attendance);
-        listView = (ListView) findViewById(R.id.attendanceListViwe);
-        linearLayoutForEmptyView=(LinearLayout)findViewById(R.id.toDoEmptyView);
-        Button btnx = (Button) findViewById(R.id.buttonSaveAttendance);
-        mainlayout=findViewById(R.id.mainLayout);
 
+        Initialization();
 
-        context = this;
-        activity = this;
+        ConnectWithServer();
 
-        classitemAttendence = getIntent().getParcelableExtra("class_room");
+        LoadData();
 
-
-        //TODO: For verifying this activity is newly opened or not and showing the instruction dialog
-
-        SharedPreferences pref = context.getSharedPreferences("IsFirst", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        if(pref.getBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),true)){
-            AlertDialog alertDialog = new AlertDialog.Builder(AttendanceActivity.this).create();
-            alertDialog.setMessage("আপনি যদি কোন শিক্ষার্থীর সম্পূর্ণ ডাটা দেখতে চান তাহলে এখানে উপস্থাপিত লিস্ট থেকে তার নামের উপর ক্লিক করুন , আপনি যদি ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলিট করতে চান তাহলে উপরের ডানপাশের ডিলিট চিহ্ন ক্লিক করুন আর যদি মাসিক উপস্থিতির রেকর্ড দেখতে অথবা প্রিন্ট করতে চান তাহলে উপরের প্রিন্ট চিহ্ন ক্লিক করুন ");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
-            editor.putBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),false);
-            editor.commit();
-            editor.apply();
-            Log.d("GK", " if");
-        }
-        else {
-            Log.d("GK", " else");
-        }
-
-        studentListFromAttendenceActivity=new ArrayList<>();
-        studentListForPrintActiviyFromAttendenceActivity=new ArrayList<>();
-        names = new ArrayList<>();
-        rolls = new ArrayList<>();
-        attendencePercentage=new ArrayList<Integer>();
-
-        time = getIntent().getStringExtra("DATE");
-        //"Wed, 3 Jan 2018"
-
-         yearWithDate = time.substring(Math.max(time.length() - 8, 0));
-         month=yearWithDate.substring(0,Math.min(yearWithDate.length(), 3));
-         year = time.substring(Math.max(time.length() - 4, 0));
-        Log.d("GK", year + " year");
-        Log.d("GK", month + " month");
-        Log.d("GK", yearWithDate + " year With Date");
-
-        subject = getIntent().getStringExtra("SUBJECT");
-        if (subject == null) subject = "অনির্ধারিত";
-
-        //Log.d("GK", classitemAttendence.getName() + " Class from attendence");
-        btnx.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AttendenceListAdapter.saveAll();
-            }
-        });
-        attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
-
-
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-
-        MainActivity.databaseReference=databaseReference;
-        MainActivity.mUserId=mUserId;
-
-
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                names.clear();
-                rolls.clear();
-                attendencePercentage.clear();
-                studentListFromAttendenceActivity.clear();
- if(dataSnapshot.getChildrenCount()==0){
-     listView.setVisibility(View.GONE);
-     linearLayoutForEmptyView.setVisibility(View.VISIBLE);
- }else {
-     listView.setVisibility(View.VISIBLE);
-     linearLayoutForEmptyView.setVisibility(View.GONE);
- }
-
-                for (DataSnapshot StudentData : dataSnapshot.getChildren()){
-                    student student;
-                    student = StudentData.getValue(student.class);
-                    studentListFromAttendenceActivity.add(student);
-                }
-
-                studentListForPrintActiviyFromAttendenceActivity=studentListFromAttendenceActivity;
-
-                long totalClass, attendClass = 0, totalAttendPersenten;
-                student student;
-                for (int i = 0; i < studentListFromAttendenceActivity.size(); i++) {
-                    student = studentListFromAttendenceActivity.get(i);
-                    totalAttendPersenten = 0;
-                    totalClass = dataSnapshot.child(student.getId()).child("Attendance").getChildrenCount();
-                    AttendenceData attendenceData = null;
-                    attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
-                    long temp1=0;
-
-
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child(student.getId()).child("Attendance").getChildren()) {
-
-                        attendenceData = dataSnapshot1.getValue(AttendenceData.class);
-                        attendenceDataArrayListForPerStudent.add(attendenceData);
-                        if(attendenceData!=null) {
-                            if (attendenceData.getStatus()) attendClass++;
-                            temp1++;
-                            if (temp1 == totalClass) {
-                                previousClassAttendenceStatus = attendenceData.getStatus();
-                            }
-                        }
-                    }
-
-                    Log.d("GK",attendenceDataArrayListForPerStudent.size()+ " attendenceDataArrayListForPerStudent.size for roll "+student.getId());
-
-
-                    perStudentTotalAttendenceData.put(student.getId(),attendenceDataArrayListForPerStudent);
-
-
-//
-//                    Query query = MainActivity.databaseReference.child(classitemAttendence.getName()+classitemAttendence.getSection()).child("Student").child(student.getId()).child("Attendance").orderByKey().limitToLast(1);
-//
-//                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            String status = dataSnapshot.child("status").getValue().toString();
-//                            previousClassAttendenceStatus=status;
-//                            Log.d("GK",status+" is the status");
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//                            //Handle possible errors.
-//                        }
-//                    });
-                    if (totalClass != 0)  //THIS IS FOR AVOID ARITHMETIC EXCEPTION
-                        totalAttendPersenten = (attendClass * 100) / totalClass;
-
-                    attendencePercentage.add((int)totalAttendPersenten);//TO GET PERCENTAGE FOR COLOR
-
-
-                    if(!dataSnapshot.child(student.getId()).child("Attendance").exists())
-                        previousClassAttendenceStatus=true;
-
-                    if(previousClassAttendenceStatus){
-                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "\n" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
-                                + attendClass + " শতকরা :" + totalAttendPersenten + "%");
-                    }
-                    else
-                    {
-                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "\n" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
-                                + attendClass + " শতকরা :" + totalAttendPersenten + "%\n(গতক্লাসে অনুপস্থিত)");
-                    }
-                    previousClassAttendenceStatus=true;
-                    attendClass = 0;
-                    rolls.add(student.getId());
-                }
-                AttendenceListAdapter = new AttendenceListAdapter(activity, names,classitemAttendence);
-                listView.setAdapter(AttendenceListAdapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
 
     }
     @Override
@@ -349,5 +169,203 @@ public class AttendanceActivity extends AppCompatActivity {
         }
     }
 
+    void ShowIntroDialoage(){
+        //TODO: For verifying this activity is newly opened or not and showing the instruction dialog
+
+        SharedPreferences pref = context.getSharedPreferences("IsFirst", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        if(pref.getBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),true)){
+            AlertDialog alertDialog = new AlertDialog.Builder(AttendanceActivity.this).create();
+            alertDialog.setMessage("আপনি যদি কোন শিক্ষার্থীর সম্পূর্ণ ডাটা দেখতে চান তাহলে এখানে উপস্থাপিত লিস্ট থেকে তার নামের উপর ক্লিক করুন , আপনি যদি ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলিট করতে চান তাহলে উপরের ডানপাশের ডিলিট চিহ্ন ক্লিক করুন আর যদি মাসিক উপস্থিতির রেকর্ড দেখতে অথবা প্রিন্ট করতে চান তাহলে উপরের প্রিন্ট চিহ্ন ক্লিক করুন ");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            editor.putBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),false);
+            editor.commit();
+            editor.apply();
+            Log.d("GK", " if");
+        }
+        else {
+            Log.d("GK", " else");
+        }
+    }
+
+    void Initialization(){
+        checkHash = new HashMap<Integer, Boolean>();
+        perStudentTotalAttendenceData=new HashMap<String, ArrayList<AttendenceData>>();
+
+        listView = (ListView) findViewById(R.id.attendanceListViwe);
+        linearLayoutForEmptyView=(LinearLayout)findViewById(R.id.toDoEmptyView);
+        Button saveAttendenceButton = (Button) findViewById(R.id.buttonSaveAttendance);
+        mainlayout=findViewById(R.id.mainLayout);
+        context = this;
+        activity = this;
+        classitemAttendence = getIntent().getParcelableExtra("class_room");
+
+        ShowIntroDialoage();
+
+
+        studentListFromAttendenceActivity=new ArrayList<>();
+        studentListForPrintActiviyFromAttendenceActivity=new ArrayList<>();
+
+        names = new ArrayList<>();
+        rolls = new ArrayList<>();
+        attendencePercentage=new ArrayList<Integer>();
+
+        time = getIntent().getStringExtra("DATE");
+        //"Wed, 3 Jan 2018"
+
+        yearWithDate = time.substring(Math.max(time.length() - 8, 0));
+        month=yearWithDate.substring(0,Math.min(yearWithDate.length(), 3));
+        year = time.substring(Math.max(time.length() - 4, 0));
+        Log.d("GK", year + " year");
+        Log.d("GK", month + " month");
+        Log.d("GK", yearWithDate + " year With Date");
+
+        subject = getIntent().getStringExtra("SUBJECT");
+        if (subject == null) subject = "অনির্ধারিত";
+        attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
+
+
+        //Log.d("GK", classitemAttendence.getName() + " Class from attendence");
+        saveAttendenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AttendenceListAdapter.saveAll();
+            }
+        });
+
+
+    }
+
+    void ConnectWithServer(){
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase= FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+        MainActivity.databaseReference=databaseReference;
+        MainActivity.mUserId=mUserId;
+
+    }
+
+    void LoadData(){
+        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                names.clear();
+                rolls.clear();
+                attendencePercentage.clear();
+                studentListFromAttendenceActivity.clear();
+                if(dataSnapshot.getChildrenCount()==0){
+                    listView.setVisibility(View.GONE);
+                    linearLayoutForEmptyView.setVisibility(View.VISIBLE);
+                }else {
+                    listView.setVisibility(View.VISIBLE);
+                    linearLayoutForEmptyView.setVisibility(View.GONE);
+                }
+
+                for (DataSnapshot StudentData : dataSnapshot.getChildren()){
+                    student student;
+                    student = StudentData.getValue(student.class);
+                    studentListFromAttendenceActivity.add(student);
+                }
+
+                studentListForPrintActiviyFromAttendenceActivity=studentListFromAttendenceActivity;
+
+                long totalClass, attendClass = 0, totalAttendPersenten;
+                student student;
+                for (int i = 0; i < studentListFromAttendenceActivity.size(); i++) {
+                    student = studentListFromAttendenceActivity.get(i);
+                    totalAttendPersenten = 0;
+                    totalClass = dataSnapshot.child(student.getId()).child("Attendance").getChildrenCount();
+                    AttendenceData attendenceData = null;
+                    attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
+                    long temp1=0;
+
+
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child(student.getId()).child("Attendance").getChildren()) {
+
+                        attendenceData = dataSnapshot1.getValue(AttendenceData.class);
+                        attendenceDataArrayListForPerStudent.add(attendenceData);
+                        if(attendenceData!=null) {
+                            if (attendenceData.getStatus()) attendClass++;
+                            temp1++;
+                            if (temp1 == totalClass) {
+                                previousClassAttendenceStatus = attendenceData.getStatus();
+                            }
+                        }
+                    }
+
+                    Log.d("GK",attendenceDataArrayListForPerStudent.size()+ " attendenceDataArrayListForPerStudent.size for roll "+student.getId());
+
+
+                    perStudentTotalAttendenceData.put(student.getId(),attendenceDataArrayListForPerStudent);
+
+
+//
+//                    Query query = MainActivity.databaseReference.child(classitemAttendence.getName()+classitemAttendence.getSection()).child("Student").child(student.getId()).child("Attendance").orderByKey().limitToLast(1);
+//
+//                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            String status = dataSnapshot.child("status").getValue().toString();
+//                            previousClassAttendenceStatus=status;
+//                            Log.d("GK",status+" is the status");
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//                            //Handle possible errors.
+//                        }
+//                    });
+                    if (totalClass != 0)  //THIS IS FOR AVOID ARITHMETIC EXCEPTION
+                        totalAttendPersenten = (attendClass * 100) / totalClass;
+
+                    attendencePercentage.add((int)totalAttendPersenten);//TO GET PERCENTAGE FOR COLOR
+
+
+                    if(!dataSnapshot.child(student.getId()).child("Attendance").exists())
+                        previousClassAttendenceStatus=true;
+
+                    if(previousClassAttendenceStatus){
+                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "\n" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
+                                + attendClass + " শতকরা :" + totalAttendPersenten + "%");
+                    }
+                    else
+                    {
+                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "\n" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
+                                + attendClass + " শতকরা :" + totalAttendPersenten + "%\n(গতক্লাসে অনুপস্থিত)");
+                    }
+                    previousClassAttendenceStatus=true;
+                    attendClass = 0;
+                    rolls.add(student.getId());
+                }
+                AttendenceListAdapter = new AttendenceListAdapter(activity, names,classitemAttendence);
+                listView.setAdapter(AttendenceListAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    void HideNotifiationBar(){
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 
     }

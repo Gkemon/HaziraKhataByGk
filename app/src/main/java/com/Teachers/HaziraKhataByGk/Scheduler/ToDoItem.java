@@ -10,6 +10,7 @@ public class ToDoItem implements Serializable {
     private boolean mHasReminder;
     private int mTodoColor;
     private Date mToDoDate;
+    private boolean isDaily=false;
     private UUID mTodoIdentifier;
 
     public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate,String content){
@@ -21,6 +22,12 @@ public class ToDoItem implements Serializable {
         mToDoContent=content;
     }
 
+    public  boolean isDaily(){
+        return this.isDaily;
+    }
+    public void setDaily(boolean isDaily){
+        this.isDaily=isDaily;
+    }
     public ToDoItem(){
        this("",true, null,"");
     }

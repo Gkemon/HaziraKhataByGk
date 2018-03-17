@@ -1,29 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.Teachers.HaziraKhataByGk.MainActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/lvContact"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:src="@drawable/ic_add_black_24dp"
-        android:tint="#FFFFFF"
-        app:rippleColor="#F48FB1" />
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5sp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:titleTextColor="@android:color/white"
+        />
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_above="@+id/ads"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="12sp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:tabMode="scrollable" />
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#bbdefb"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </android.support.v4.view.ViewPager>
+
+        </LinearLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/user_pro_pic"
+            app:menu="@menu/drawer_menu" />
+    </android.support.v4.widget.DrawerLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ads"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical">
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
+        <!--</View>-->
+        <!--<com.google.android.gms.ads.AdView-->
+            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/adViewInHome"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--ads:adSize="SMART_BANNER"-->
+            <!--ads:adUnitId="@string/Banner_ad_id">-->
+        <!--</com.google.android.gms.ads.AdView>-->
+
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
+        <!--</View>-->
+    </LinearLayout>
 </RelativeLayout>

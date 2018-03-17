@@ -61,15 +61,6 @@ public class StoreRetrieveData {
             Log.d("eee",toDoItem.getToDoContent()+" from for loop");
         }
 
-//        FileOutputStream fileOutputStream;
-//        OutputStreamWriter outputStreamWriter;
-//        fileOutputStream = mContext.openFileOutput(mFileName, Context.MODE_PRIVATE);
-//        outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-//        outputStreamWriter.write(toJSONArray(items).toString());
-//        outputStreamWriter.close();
-//        fileOutputStream.close();
-
-
     }
 
     public static ArrayList<ToDoItem> loadFromFile(){

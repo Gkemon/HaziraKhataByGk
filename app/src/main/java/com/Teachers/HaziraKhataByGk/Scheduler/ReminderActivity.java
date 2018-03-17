@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.R;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
@@ -56,6 +55,12 @@ public class ReminderActivity extends AppCompatActivity {
         storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
         mToDoItems = scheduleActivity.getLocallyStoredData(storeRetrieveData);
 
+//        //FOR SCHEDULES
+//        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
+//        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
+//        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
+
+
 
         Intent i = getIntent();
         UUID id = (UUID)i.getSerializableExtra(TodoNotificationService.TODOUUID);
@@ -73,6 +78,7 @@ public class ReminderActivity extends AppCompatActivity {
         mtoDoTextTextView = (TextView)findViewById(R.id.toDoReminderTextViewBody);
         mSnoozeTextView = (TextView)findViewById(R.id.reminderViewSnoozeTextView);
         mSnoozeSpinner = (MaterialSpinner)findViewById(R.id.todoReminderSnoozeSpinner);
+
         if (mItem!=null)
         mtoDoTextTextView.setText(mItem.getToDoText());
         else{
@@ -95,11 +101,16 @@ public class ReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              //   app.send(this, "Action", "Todo Removed from Reminder Activity");
+
+
+                if(!mItem.isDaily())
                 mToDoItems.remove(mItem);
+
+
                 changeOccurred();
                 saveData();
                 closeApp();
-//                finish();
+                finish();
             }
         });
 
@@ -130,15 +141,15 @@ public class ReminderActivity extends AppCompatActivity {
         return true;
     }
     private void changeOccurred(){
-        SharedPreferences sharedPreferences = getSharedPreferences(scheduleActivity.SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(scheduleActivity.CHANGE_OCCURED, true);
-//        editor.commit();
-        editor.apply();
+//        SharedPreferences sharedPreferences = getSharedPreferences(scheduleActivity.SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putBoolean(scheduleActivity.CHANGE_OCCURED, true);
+//        editor.apply();
     }
 
     private Date addTimeToDate(int mins){
      //   app.send(this, "Action", "Snoozed", "For "+mins+" minutes");
+        Log.d("GK",String.valueOf(mins)+" MIN");
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -150,6 +161,7 @@ public class ReminderActivity extends AppCompatActivity {
         switch (mSnoozeSpinner.getSelectedItemPosition()){
             case 0:
                 return 10;
+
             case 1:
                 return 30;
             case 2:
@@ -163,12 +175,23 @@ public class ReminderActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.toDoReminderDoneMenuItem:
-                Date date = addTimeToDate(valueFromSpinner());
+                Date date;
+                if(mItem.isDaily()&&valueFromSpinner()==0){
+                    date = addTimeToDate(50);
+                    Log.d("GK","HAS DAILY SCHEDULE");
+                }
+                else {
+                    date = addTimeToDate(valueFromSpinner());
+                }
+
+
                 mItem.setToDoDate(date);
                 mItem.setHasReminder(true);
+
                 changeOccurred();
                 saveData();
                 closeApp();
+
                 //foo
                 return true;
             default:
@@ -187,6 +210,30 @@ public class ReminderActivity extends AppCompatActivity {
 //        }
 //    }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Date date;
+        if(mItem.isDaily()){
+            date = addTimeToDate(50);
+            Log.d("GK","HAS DAILY SCHEDULE ON BACKPRESSED");
+        }
+        else {
+            date = addTimeToDate(valueFromSpinner());
+        }
+
+
+
+        mItem.setToDoDate(date);
+        mItem.setHasReminder(true);
+
+        changeOccurred();
+        saveData();
+        closeApp();
+    }
+
+
     private void saveData(){
        // try{
         if(mToDoItems!=null)
@@ -200,40 +247,40 @@ public class ReminderActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        //ADMOB
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-        adlayout=findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
+//        //ADMOB
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                .build();
+//        adlayout=findViewById(R.id.ads);
+//        mAdView = (AdView) findViewById(R.id.adViewInHome);
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                adlayout.setVisibility(View.GONE);
+//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
+//        mAdView.loadAd(adRequest);
 
 
         super.onStart();
@@ -242,16 +289,35 @@ public class ReminderActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
+//        if (mAdView != null) {
+//            mAdView.resume();
+//        }
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
         super.onDestroy();
+
+
+
+        Date date;
+        if(mItem.isDaily()){
+            date = addTimeToDate(50);
+            Log.d("GK","HAS DAILY SCHEDULE ON DESTROY");
+        }
+        else {
+            date = addTimeToDate(valueFromSpinner());
+        }
+
+
+        mItem.setToDoDate(date);
+        mItem.setHasReminder(true);
+
+        changeOccurred();
+        saveData();
+        closeApp();
     }
 }

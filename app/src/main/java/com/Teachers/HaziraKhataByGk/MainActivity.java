@@ -50,8 +50,6 @@ import com.Teachers.HaziraKhataByGk.model.blog_item;
 import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.model.news_item;
 import com.Teachers.HaziraKhataByGk.widget.PrefManagerForMain;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //VIEWS
-        setContentView(R.layout.activity_scrollable_tabs);
+        setContentView(R.layout.activity_main);
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -250,10 +248,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        //FOR SCHEDULES
-        toDoItemsFromMainActivity =new ArrayList<>();
-        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
 
 
         setupTabIcons();
@@ -284,10 +278,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mEmail=mFirebaseUser.getEmail();
 
 
-        //FOR ADS
-        if (mAdView != null) {
-            mAdView.resume();
-        }
+//        //FOR ADS
+//        if (mAdView != null) {
+//            mAdView.resume();
+//        }
         context = this;
 
 //        IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
@@ -302,6 +296,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}});
+
+
+        //FOR SCHEDULES
+        toDoItemsFromMainActivity =new ArrayList<>();
+        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
+        toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
 
 
 
@@ -375,39 +375,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
    public void onStart(){
        context = this;
         //ADMOB
-       AdRequest adRequest = new AdRequest.Builder()
-               .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-               // Check the LogCat to get your test device ID
-               .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-               .build();
-       adlayout=findViewById(R.id.ads);
-       mAdView = (AdView) findViewById(R.id.adViewInHome);
-       mAdView.loadAd(adRequest);
-       mAdView.setAdListener(new AdListener() {
-           @Override
-           public void onAdLoaded() {
-           }
-
-           @Override
-           public void onAdClosed() {
-               // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-           }
-
-           @Override
-           public void onAdFailedToLoad(int errorCode) {
-               adlayout.setVisibility(View.GONE);
-               // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-           }
-           @Override
-           public void onAdLeftApplication() {
-               // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-           }
-
-           @Override
-           public void onAdOpened() {
-               super.onAdOpened();
-           }
-       });
+//       AdRequest adRequest = new AdRequest.Builder()
+//               .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//               // Check the LogCat to get your test device ID
+//               .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//               .build();
+//       adlayout=findViewById(R.id.ads);
+//       mAdView = (AdView) findViewById(R.id.adViewInHome);
+//       mAdView.loadAd(adRequest);
+//       mAdView.setAdListener(new AdListener() {
+//           @Override
+//           public void onAdLoaded() {
+//           }
+//
+//           @Override
+//           public void onAdClosed() {
+//               // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+//           }
+//
+//           @Override
+//           public void onAdFailedToLoad(int errorCode) {
+//               adlayout.setVisibility(View.GONE);
+//               // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+//           }
+//           @Override
+//           public void onAdLeftApplication() {
+//               // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+//           }
+//
+//           @Override
+//           public void onAdOpened() {
+//               super.onAdOpened();
+//           }
+//       });
 
 
 
@@ -900,17 +900,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
+//        if (mAdView != null) {
+//            mAdView.pause();
+//        }
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
         super.onDestroy();
     }
 

@@ -36,7 +36,7 @@ import java.util.Date;
 
 public class AddToDoActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private EditText mToDoTextBodyEditText;
-    public SwitchCompat mToDoDateSwitch;
+    public SwitchCompat mToDoDateSwitch,switchCompatForDailyRemind;
     private LinearLayout mUserDateSpinnerContainingLinearLayout;
     private TextView mReminderTextView;
     private EditText mDateEditText;
@@ -53,7 +53,9 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     private String theme;
     public LinearLayout adlayout;
     public AdView mAdView;
+    public LinearLayout DailyRemainderLayout;
     public InterstitialAd mInterstitialAd;
+
 
     @SuppressWarnings("deprecation")
     @Override
@@ -73,6 +75,8 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         setContentView(R.layout.activity_todo_test);
         mDateEditText = (EditText)findViewById(R.id.newTodoDateEditText);
         mTimeEditText = (EditText)findViewById(R.id.newTodoTimeEditText);
+        DailyRemainderLayout=(LinearLayout)findViewById(R.id.dailyReminder);
+
 
 
         mUserToDoItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
@@ -325,7 +329,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         reminderCalendar.set(year, month, day);
         
         if(reminderCalendar.before(calendar)){
-            Toast.makeText(this, "My time-machine is a bit rusty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "আপনার ডিভাইসের তারিখ এবং সময় ঠিক নেই", Toast.LENGTH_LONG).show();
             return;
         }
         if(mUserReminderDate!=null){
@@ -482,13 +486,19 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public void setEnterDateLayoutVisible(boolean checked){
         if(checked){
             mUserDateSpinnerContainingLinearLayout.setVisibility(View.VISIBLE);
+            DailyRemainderLayout.setVisibility(View.VISIBLE);
         }
         else{
             mUserDateSpinnerContainingLinearLayout.setVisibility(View.INVISIBLE);
+            DailyRemainderLayout.setVisibility(View.INVISIBLE);
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ClickListenerForDailyRoutine();
+    }
 
     public void setEnterDateLayoutVisibleWithAnimations(boolean checked){
         if(checked){
@@ -498,6 +508,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                         @Override
                         public void onAnimationStart(Animator animation) {
                             mUserDateSpinnerContainingLinearLayout.setVisibility(View.VISIBLE);
+                            DailyRemainderLayout.setVisibility(View.VISIBLE);
                         }
                         @Override
                         public void onAnimationEnd(Animator animation) {}
@@ -507,6 +518,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                         public void onAnimationRepeat(Animator animation) {}
                     }
             );
+            DailyRemainderLayout.animate().alpha(1.0f).setDuration(500);
         }
         else{
             mUserDateSpinnerContainingLinearLayout.animate().alpha(0.0f).setDuration(500).setListener(
@@ -519,6 +531,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             mUserDateSpinnerContainingLinearLayout.setVisibility(View.INVISIBLE);
+                            DailyRemainderLayout.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -532,6 +545,8 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                         }
                     }
             );
+
+            DailyRemainderLayout.animate().alpha(1.0f).setDuration(500);
         }
 
     }
@@ -539,6 +554,19 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
+    }
+    public void ClickListenerForDailyRoutine(){
+        switchCompatForDailyRemind=findViewById(R.id.toDoHasDateSwitchCompatForDailyRemain);
+        switchCompatForDailyRemind.setChecked(mUserToDoItem!=null&&mUserToDoItem.hasReminder()&&mUserToDoItem.isDaily());
+        switchCompatForDailyRemind.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(mUserToDoItem!=null)
+                mUserToDoItem.setDaily(isChecked);
+                if(mUserToDoItem.isDaily())Log.d("GK","DAILY ROUTINE IS SET");
+            }
+        });
+
     }
 }
 

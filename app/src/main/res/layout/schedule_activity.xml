@@ -8,33 +8,33 @@
     android:background="@color/blueLight"
     android:layout_height="match_parent"
     android:id="@+id/parentLayout">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ads"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adViewInHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/Banner_ad_id">
-        </com.google.android.gms.ads.AdView>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/ads"-->
+        <!--android:orientation="vertical">-->
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
+        <!--</View>-->
+        <!--<com.google.android.gms.ads.AdView-->
+            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/adViewInHome"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--ads:adSize="SMART_BANNER"-->
+            <!--ads:adUnitId="@string/Banner_ad_id">-->
+        <!--</com.google.android.gms.ads.AdView>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
-    </LinearLayout>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
+        <!--</View>-->
+    <!--</LinearLayout>-->
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/myCoordinatorLayout"
         android:layout_width="match_parent"

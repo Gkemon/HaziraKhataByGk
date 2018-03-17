@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -29,8 +31,6 @@ import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
@@ -85,9 +85,16 @@ public class scheduleActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
+
+        //Empty View and set alarms
+        mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+        if(mToDoItemsArrayList.isEmpty())
+            Log.d("GK","LIST IS EMPTY IN RESUME");
+        adapter = new BasicListAdapter(mToDoItemsArrayList);
+        mRecyclerView.setAdapter(adapter);
+        setAlarms();
+
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
         if(sharedPreferences.getBoolean(ReminderActivity.EXIT, false)){
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -110,51 +117,44 @@ public class scheduleActivity extends AppCompatActivity {
     protected void onStart() {
 
         //ADMOB
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-        adlayout=findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
-
-
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                .build();
+//        adlayout=findViewById(R.id.ads);
+//        mAdView = (AdView) findViewById(R.id.adViewInHome);
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                adlayout.setVisibility(View.GONE);
+//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
+//        mAdView.loadAd(adRequest);
+//
+//
 
         super.onStart();
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-
-            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-        if(mToDoItemsArrayList.isEmpty())
-            Log.d("eee","LIST IS EMPTY");
-            adapter = new BasicListAdapter(mToDoItemsArrayList);
-          mRecyclerView.setAdapter(adapter);
-            setAlarms();
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(CHANGE_OCCURED, false);
             editor.apply();
@@ -168,10 +168,23 @@ public class scheduleActivity extends AppCompatActivity {
                         item.setToDoDate(null);
                         continue;
                     }
+
+                    Log.d("GK","SET ALARMS");
                     Intent i = new Intent(this, TodoNotificationService.class);
                     i.putExtra(TodoNotificationService.TODOUUID, item.getIdentifier());
                     i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
-                    createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime());
+
+                    //
+                    if(item.isDaily())
+                    i.putExtra(TodoNotificationService.IsDailyOrNot,item.isDaily() );
+                    else
+                        i.putExtra(TodoNotificationService.IsDailyOrNot,!item.isDaily() );
+
+                    //Is reapeated?
+                    if(item.isDaily())
+                    createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),true);
+                    else
+                        createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),false);
                 }
             }
         }
@@ -188,8 +201,16 @@ public class scheduleActivity extends AppCompatActivity {
         }
         this.setTheme(mTheme);
 
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_activity);
+
+
         mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity;
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -197,7 +218,13 @@ public class scheduleActivity extends AppCompatActivity {
         editor.apply();
 
         storeRetrieveData = new StoreRetrieveData(this, FILENAME);
-      mToDoItemsArrayList= getLocallyStoredData(storeRetrieveData);
+        mToDoItemsArrayList= getLocallyStoredData(storeRetrieveData);
+
+//        //FOR SCHEDULES
+//        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
+//        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
+//        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
+
 
         setAlarms();
         mCoordLayout = (CoordinatorLayout)findViewById(R.id.myCoordinatorLayout);
@@ -288,7 +315,14 @@ public class scheduleActivity extends AppCompatActivity {
                 Intent i = new Intent(this, TodoNotificationService.class);
                 i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
                 i.putExtra(TodoNotificationService.TODOUUID, item.getIdentifier());
-                createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime());
+
+                //Is reapeated?
+                if(item.isDaily())
+                    createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),true);
+                else
+                    createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),false);
+
+
             }
             for(int i = 0; i<mToDoItemsArrayList.size();i++){
                 if(item.getIdentifier().equals(mToDoItemsArrayList.get(i).getIdentifier())){
@@ -324,20 +358,38 @@ public class scheduleActivity extends AppCompatActivity {
         return pi!=null;
     }
 
-    private void createAlarm(Intent i, int requestCode, long timeInMillis){
+
+
+
+    private void createAlarm(Intent i, int requestCode, long timeInMillis,boolean willRepeate){
         AlarmManager am = getAlarmManager();
         PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.set(AlarmManager.RTC_WAKEUP, timeInMillis, pi);
-        Log.d("eee", "createAlarm "+requestCode+" time: "+timeInMillis+" PI "+pi.toString());
+
+        PendingIntent pendingIntent = PendingIntent.getService(this, requestCode, i, PendingIntent.FLAG_CANCEL_CURRENT);
+        am.cancel(pendingIntent);
+
+        if(!willRepeate)
+            am.set(AlarmManager.RTC_WAKEUP, timeInMillis, pi);
+        else
+        {
+            am.setRepeating(AlarmManager.RTC_WAKEUP,timeInMillis,100000,pi);
+        }
+
+
+        Log.d("GK", "createAlarm "+requestCode+" time: "+timeInMillis+" PI "+pi.toString());
 
     }
     private void deleteAlarm(Intent i, int requestCode){
         if(doesPendingIntentExist(i, requestCode)){
+
+            PendingIntent pendingIntent = PendingIntent.getService(this, requestCode, i, PendingIntent.FLAG_CANCEL_CURRENT);
+            getAlarmManager().cancel(pendingIntent);
+
             PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_NO_CREATE);
             pi.cancel();
             getAlarmManager().cancel(pi);
             Log.d("OskarSchindler", "PI Cancelled " + doesPendingIntentExist(i, requestCode));
-        }
+       }
     }
 
     private void addToDataStore(ToDoItem item) {
@@ -374,8 +426,10 @@ public class scheduleActivity extends AppCompatActivity {
             mJustDeletedToDoItem =  items.remove(position);
             Log.d("eee","from BasicListAdapter onItem Reoved ,item is "+mJustDeletedToDoItem.getToDoText());
             mIndexOfDeletedToDoItem = position;
+
             Intent i = new Intent(scheduleActivity.this,TodoNotificationService.class);
             deleteAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode());
+
             mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=items;
             adapter = new BasicListAdapter(mToDoItemsArrayList);
             mRecyclerView.setAdapter(adapter);
@@ -390,7 +444,13 @@ public class scheduleActivity extends AppCompatActivity {
                                 Intent i = new Intent(scheduleActivity.this, TodoNotificationService.class);
                                 i.putExtra(TodoNotificationService.TODOTEXT, mJustDeletedToDoItem.getToDoText());
                                 i.putExtra(TodoNotificationService.TODOUUID, mJustDeletedToDoItem.getIdentifier());
-                                createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(), mJustDeletedToDoItem.getToDoDate().getTime());
+
+                                //Is reapeated?
+                                if(mJustDeletedToDoItem.isDaily())
+                                    createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(),mJustDeletedToDoItem.getToDoDate().getTime(),true);
+                                else
+                                    createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(),mJustDeletedToDoItem.getToDoDate().getTime(),false);
+
                             }
                             mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=items;
                             adapter = new BasicListAdapter(mToDoItemsArrayList);
@@ -427,12 +487,16 @@ public class scheduleActivity extends AppCompatActivity {
             }
             holder.linearLayout.setBackgroundColor(bgColor);
 
-            if(item.hasReminder() && item.getToDoDate()!=null){
+            if((item.hasReminder() && item.getToDoDate()!=null)||item.isDaily()){
                 holder.mToDoTextview.setMaxLines(1);
                 holder.mTimeTextView.setVisibility(View.VISIBLE);
+                Log.d("GK","IS DAILY");
+               // Log.d("GK","DATE IS "+item.getToDoDate().toString());
 //                holder.mToDoTextview.setVisibility(View.GONE);
             }
             else{
+
+                Log.d("GK","IS NOT DAILY");
                 holder.mTimeTextView.setVisibility(View.GONE);
                 holder.mToDoTextview.setMaxLines(2);
             }
@@ -498,6 +562,11 @@ public class scheduleActivity extends AppCompatActivity {
                         ToDoItem item = items.get(ViewHolder.this.getAdapterPosition());
                         Log.d("eee","This content from scheduler activity "+item.getToDoContent());
                         Log.d("eee","This title from scheduler activity "+item.getToDoText());
+
+//                        if(items.get(0).isDaily()){
+////                            Log.d("GK","DATE "+items.get(0).getToDoDate().toString());
+//                        }
+                        Log.d("eee","This title from scheduler activity "+item.getToDoText());
                         Intent i = new Intent(scheduleActivity.this, AddToDoActivity.class);
                         i.putExtra(TODOITEM, item);
                         startActivityForResult(i, REQUEST_ID_TODO_ITEM);
@@ -521,9 +590,9 @@ public class scheduleActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
         super.onDestroy();
         mRecyclerView.removeOnScrollListener(customRecyclerScrollViewListener);
     }

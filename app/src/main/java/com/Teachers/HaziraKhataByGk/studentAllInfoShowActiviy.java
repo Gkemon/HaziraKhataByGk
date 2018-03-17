@@ -21,13 +21,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.adapter.SingleStudentPresentDateListAdaper;
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.model.student;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,7 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 public class studentAllInfoShowActiviy extends AppCompatActivity {
@@ -56,6 +54,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     public LinearLayout adlayout;
     public static String time, subject,yearWithDate,year,month,day;
     public AdView mAdView;
+    static boolean TriggeredAlready = true;
     public ArrayList<AttendenceData> attendenceDataArrayList;
     ArrayList<String> TempKEYlist;
     ArrayList<AttendenceData> TempDatalist;
@@ -87,6 +86,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         studentPhoneNumber = (Button) findViewById(R.id.studentPhoneNumber);
         parentPhoneNumber = (Button) findViewById(R.id.parentPhoneNumber);
 
+
         //EMPTY VIEW
         linearLayoutForEmptyView = (LinearLayout) findViewById(R.id.toDoEmptyView);
 
@@ -98,18 +98,29 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         attendenceListKEYForSingleStudent = new ArrayList<>();
         PresentAbsent = new ArrayList<>();
 
+        attendenceListForSingleStudent=new ArrayList<>();
+        attendenceDataArrayList=new ArrayList<>();
+
         ClassRoom_activity.classitem=getIntent().getParcelableExtra("classItem");
 
         //Get Main Head's data
-        GetHeadingData();
+//        GetHeadingData();
+//        GetAttendenceListData();
 
         DatewiseAttendence.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                Log.d("GK",String.valueOf(position)+" POSITION");
-                CreateDialogForEdit(position);
+//                GetHeadingData();
+//                GetAttendenceListData();
+
+          //      if(TriggeredAlready) {
+                    Log.d("GK",String.valueOf(position)+" POSITION");
+                    CreateDialogForEdit(position);
+//                    TriggeredAlready = false;
+//                }
+
             }
         });
 
@@ -122,10 +133,11 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (mAdView != null) {
-            mAdView.resume();
-        }
+//        if (mAdView != null) {
+//            mAdView.resume();
+//        }
         //Get List
+        GetHeadingData();
         GetAttendenceListData();
     }
 
@@ -174,9 +186,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 //                request.show(fm, "Select");
 //                GetAttendenceListData();
                 CreateDialogForAddAttendence();
-
-
-
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -185,6 +195,8 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
 
     public void GetAttendenceListData(){
+
+
         //TODO:DATABASE CONNECTION
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -201,9 +213,13 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.d("GK","GetAttendenceListData");
+
                 attendenceListForSingleStudent.clear();
-                attendenceDataArrayList=new ArrayList<>();
+                attendenceDataArrayList.clear();
                 PresentAbsent.clear();
+
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     AttendenceData attendenceData;
 
@@ -240,6 +256,8 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
+
             }
         });
     }
@@ -260,9 +278,14 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Log.d("GK","GetHeadingData");
                 student = dataSnapshot.getValue(student.class);
                 long totalAttendPersenten = 0;
                 long totalClass = dataSnapshot.child("Attendance").getChildrenCount();
+
+                ProgressBar spinner;
+                spinner = (ProgressBar)findViewById(R.id.progressBarInSingleStudentActivity);
+                spinner.setVisibility(View.GONE);
 
                 //For Empty view
                 if (totalClass == 0) {
@@ -274,8 +297,10 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 }
                 long attendClass = 0;
                 AttendenceData attendenceData;
-                attendenceDataArrayList=new ArrayList<>();
+
+                attendenceDataArrayList.clear();
                 attendenceListKEYForSingleStudent.clear();
+
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Attendance").getChildren()) {
                     attendenceData = dataSnapshot1.getValue(AttendenceData.class);
 
@@ -283,7 +308,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                         attendenceDataArrayList.add(attendenceData);
                         if (attendenceData.getStatus()) attendClass++;
                         attendenceListKEYForSingleStudent.add(dataSnapshot1.getKey());
-                        Log.d("GK",dataSnapshot1.getKey()+" KEY");
+                        Log.d("GK",dataSnapshot1.getKey()+" KEY "+attendenceData.getStatus());
                     }
 
                 }
@@ -326,7 +351,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                     String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-                    String date = year + "-" + month + "-" + day;
+                  //  String date = year + "-" + month + "-" + day;
                     String subject = Subject.getText().toString();
                     // if (subject.equals("")) subject = "অনির্ধারিত";
 
@@ -360,7 +385,6 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 int year = datePicker.getYear()-1900 ;
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                 String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-                String date = year + "-" + month + "-" + day;
                 String subject = Subject.getText().toString();
                 // if (subject.equals("")) subject = "অনির্ধারিত";
 
@@ -378,12 +402,12 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                         child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection())
                         .child("Student").child(student.getId()).child("Attendance").push()
                         .setValue(attendenceData);
+
                 if(singleStudentPresentDateListAdaper!=null)
                     singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
                 GetHeadingData();
                 GetAttendenceListData();
-
                 dialog.dismiss();
             }
         }).create().show();
@@ -392,15 +416,15 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //ADMOB AD
-        AdmobAd();
+       // AdmobAd();
     }
 
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
         super.onDestroy();
     }
 
@@ -507,43 +531,44 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 //        }
 //    }
 
-    public void AdmobAd(){
-        //ADMOB
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-        adlayout = findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
 
-            @Override
-            public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
-    }
+//    public void AdmobAd(){
+//        //ADMOB
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                .build();
+//        adlayout = findViewById(R.id.ads);
+//        mAdView = (AdView) findViewById(R.id.adViewInHome);
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                adlayout.setVisibility(View.GONE);
+//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
+//        mAdView.loadAd(adRequest);
+//    }
     public void InitializePhoneNumbers(){
         studentPhoneNumber.setOnClickListener(new View.OnClickListener() {
 
@@ -568,16 +593,19 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
             }
         });
     }
-    public void CreateDialogForEdit(final int pos){
+    public void CreateDialogForEdit( int pos1){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
+        final int pos2=attendenceListKEYForSingleStudent.size()-1-pos1;
+        final int pos=pos1;
         final View v = inflater.inflate(R.layout.dialoage_for_edit_single_attendence_items, null);
         final EditText Subject = (EditText) v.findViewById(R.id.periodID);
         final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance
         final CheckBox checkBox1 =(CheckBox) v.findViewById(R.id.absentMarker);//For absent
         final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
-        AttendenceData attendenceData;
 
+
+        AttendenceData attendenceData;
 
         TempKEYlist=new ArrayList<>();
         TempDatalist=new ArrayList<>();
@@ -585,18 +613,28 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         TempKEYlist=attendenceListKEYForSingleStudent;
         TempDatalist=attendenceDataArrayList;
 
-        //TO reverse arraylist
-        Collections.reverse(TempKEYlist);
-        Collections.reverse(TempDatalist);
+       // TO reverse arraylist
+//        Collections.reverse(TempKEYlist);
+//        Collections.reverse(TempDatalist);
 
         Log.d("GK",String.valueOf(TempKEYlist.size())+" SIZE KEY");
         Log.d("GK",String.valueOf(TempDatalist.size())+" SIZE DATA");
 
+        for(int i=0;i<TempKEYlist.size();i++){
+            Log.d("GK",String.valueOf(TempDatalist.get(i).getStatus())+" LIST");
+        }
+
         attendenceData=TempDatalist.get(pos);
+
+            Log.d("GK",String.valueOf(TempDatalist.get(pos).getStatus()+ " "+attendenceData.getDate()+" "+ attendenceData.getSubject() ));
+
+
+
         time=attendenceData.getDate();
         yearWithDate = time.substring(Math.max(time.length() - 8, 0));
         month = yearWithDate.substring(0,Math.min(yearWithDate.length(), 3));
         year = time.substring(Math.max(time.length() - 4, 0));
+
         if(time.substring(6,6).equals(" "))
         {
             day = time.substring(5,5);
@@ -630,14 +668,17 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
         datePicker.updateDate(Integer.valueOf(year.trim()),Month,Integer.valueOf(day.trim()));
 
-
         Subject.setText(attendenceData.getSubject());
+
+
         if(attendenceData.getStatus())
         {
+            Log.d("GK","TRUE");
             checkBox.setChecked(true);
             checkBox1.setChecked(false);
         }
         else {
+            Log.d("GK","FALSE");
             checkBox1.setChecked(true);
             checkBox.setChecked(false);
         }
@@ -684,6 +725,8 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                             //set date
                             if(student!=null){
 
+
+
 //                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
 //
 //                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).setValue(attendenceData);
@@ -692,19 +735,22 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                                 //REMOVE FIRST
 
                                 Log.d("GK","if "+roll+" "+student.getId());
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("date").removeValue();
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
                                 //set True or False
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("status").removeValue();
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").removeValue();
                                 //set subject
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("subject").removeValue();
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").removeValue();
 
                                 //THEN ADD DATA
                                 Log.d("GK","if "+roll+" "+student.getId());
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("date").setValue(formatedDate);
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").setValue(formatedDate);
                                 //set True or False
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("status").setValue(checkBox.isChecked());
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").setValue(checkBox.isChecked());
+
                                 //set subject
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("subject").setValue(subject);
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").setValue(subject);
+
+
                             }
 
                             else {
@@ -713,17 +759,17 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                                 //REMOVE FIRST
 
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos)).child("date").removeValue();
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos)).child("status").removeValue();
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos)).child("subject").removeValue();
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("status").removeValue();
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").removeValue();
 
 
                                 //THEN ADD DATA
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos)).child("date").setValue(formatedDate);
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("date").setValue(formatedDate);
                                 //set True or False
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos)).child("status").setValue(checkBox.isChecked());
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("status").setValue(checkBox.isChecked());
                                 //set subject
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos)).child("subject").setValue(subject);
+                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").setValue(subject);
 
                             }
 
@@ -740,18 +786,19 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                             GetHeadingData();
                             GetAttendenceListData();
-                            onResume();
-
                             dialog.dismiss();
                         }
                     }
                 }).setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                GetHeadingData();
+                GetAttendenceListData();
                 dialog.dismiss();
             }
         }).setNeutralButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 ConnectWithServer();
+
                 if(student!=null){
 
                     MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).removeValue();
@@ -764,8 +811,6 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                 GetHeadingData();
                 GetAttendenceListData();
-                onResume();
-
                 dialog.dismiss();
 
             }

@@ -24,33 +24,33 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:elevation="15dp">-->
     <!--</GridView>-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ads"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adViewInHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/Banner_ad_id">
-        </com.google.android.gms.ads.AdView>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/ads"-->
+        <!--android:orientation="vertical">-->
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
+        <!--</View>-->
+        <!--<com.google.android.gms.ads.AdView-->
+            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/adViewInHome"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--ads:adSize="SMART_BANNER"-->
+            <!--ads:adUnitId="@string/Banner_ad_id">-->
+        <!--</com.google.android.gms.ads.AdView>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
-    </LinearLayout>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:layout_height="6sp">-->
+        <!--</View>-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:layout_below="@+id/ads"
@@ -89,11 +89,27 @@
         android:textColor="@color/white"
         android:textSize="14sp" />
 
+    <Button
+        android:id="@+id/AttendenceRecordButtom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_alignLeft="@+id/feesButton"
+        android:layout_alignStart="@+id/feesButton"
+        android:layout_below="@+id/feesButton"
+        android:backgroundTint="#F44336"
+        android:elevation="20sp"
+        android:padding="15sp"
+        android:text="দৈনিক এবং মাসিক উপস্থিতির রেকর্ড"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
     <LinearLayout
         android:id="@+id/toDoEmptyView"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_below="@+id/feesButton"
+        android:visibility="invisible"
+        android:layout_below="@+id/AttendenceRecordButtom"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -116,7 +132,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/feesButton"
+        android:layout_below="@id/AttendenceRecordButtom"
         android:id="@+id/notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
