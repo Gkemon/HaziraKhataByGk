@@ -24,8 +24,9 @@ public class TodoNotificationService extends IntentService {
     public static final String IsDailyOrNot ="IsDailyOrNot";
     private String mTodoText;
     private UUID mTodoUUID;
-    private Boolean isDaily;
+    public String isDaily="false";
     private Context mContext;
+    MediaPlayer mp;
 
     public TodoNotificationService(){
         super("TodoNotificationService");
@@ -34,12 +35,14 @@ public class TodoNotificationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         mTodoText = intent.getStringExtra(TODOTEXT);
         mTodoUUID = (UUID)intent.getSerializableExtra(TODOUUID);
-        isDaily= intent.getBooleanExtra(IsDailyOrNot,false);
+        isDaily= intent.getStringExtra(IsDailyOrNot);
 
         Uri defaultRingone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 long [] vibration ={1000,2000,3000};
-        Log.d("eee", "onHandleIntent called");
+
+
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
         Intent i = new Intent(this, ReminderActivity.class);
         i.putExtra(TodoNotificationService.TODOUUID, mTodoUUID);
 
@@ -53,9 +56,45 @@ long [] vibration ={1000,2000,3000};
         deleteIntent.putExtra(TODOUUID, mTodoUUID);
 
 
+
         //if it is on daily so then no need to set delete intert
 
-        if(!isDaily){
+
+        if(isDaily.equals("true")){
+
+            Intent intentForGOToSchedule = new Intent(this, scheduleActivity.class);
+
+            //This is actually stop the ringtone because i cannot do this anymore
+           PendingIntent pendingIntent = PendingIntent.getService(this, mTodoUUID.hashCode(), deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+           pendingIntent.cancel();
+
+            Log.d("GK", "onHandleIntent called which was daily ");
+            Notification notification = new Notification.Builder(this)
+                    .setTicker("হাজিরা খাতা")
+                    .setContentTitle(mTodoText)
+                    .setSmallIcon(R.drawable.ic_schedule_new)
+                    .setAutoCancel(true)
+                    .setVibrate(vibration)
+                    .setDeleteIntent(pendingIntent)
+                    .setContentIntent(PendingIntent.getActivity(this, mTodoUUID.hashCode(), intentForGOToSchedule, PendingIntent.FLAG_UPDATE_CURRENT))
+                   .build();
+            manager.notify(100, notification);
+
+
+            //TODO DUMMY
+//
+//            Intent i1 = new Intent(this, TodoNotificationService.class);
+//            PendingIntent pi = PendingIntent.getService(this,mTodoUUID.hashCode(), i1, PendingIntent.FLAG_UPDATE_CURRENT);
+//            pi.cancel();
+//
+//            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+//            alarmManager.cancel(pi);
+//
+//            return;
+
+        }
+        else {
+            Log.d("GK", "onHandleIntent called which was not daily");
             Notification notification = new Notification.Builder(this)
                     .setTicker("হাজিরা খাতা")
                     .setContentTitle(mTodoText)
@@ -67,21 +106,10 @@ long [] vibration ={1000,2000,3000};
                     .build();
             manager.notify(100, notification);
         }
-        else{
-            Notification notification = new Notification.Builder(this)
-                    .setTicker("হাজিরা খাতা")
-                    .setContentTitle(mTodoText)
-                    .setSmallIcon(R.drawable.ic_schedule_new)
-                    .setAutoCancel(true)
-                    .setVibrate(vibration)
-                    .setContentIntent(PendingIntent.getActivity(this, mTodoUUID.hashCode(), i, PendingIntent.FLAG_UPDATE_CURRENT))
-                    .build();
-            manager.notify(100, notification);
-        }
 
 
 
-        MediaPlayer mp = new MediaPlayer();
+         mp = new MediaPlayer();
         try{
             mp.setDataSource(this, defaultRingone);
             mp.setAudioStreamType(AudioManager.STREAM_ALARM);
@@ -99,4 +127,18 @@ long [] vibration ={1000,2000,3000};
         }
 
     }
+
+    @Override
+    public void onDestroy() {
+        try {
+            mp.release();
+            mp.stop();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        super.onDestroy();
+    }
+
 }

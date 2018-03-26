@@ -299,8 +299,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
 
-                        String email = inputEmail.getText().toString();
-                        final String password = inputPassword.getText().toString();
+                        String email = inputEmail.getText().toString().trim();
+                        final String password = inputPassword.getText().toString().trim();
 
                         if (TextUtils.isEmpty(email)) {
                             Toast.makeText(getApplicationContext(), "ইমেইল এড্রেস দিন", Toast.LENGTH_SHORT).show();

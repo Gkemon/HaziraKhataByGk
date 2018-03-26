@@ -40,9 +40,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6sp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/toDoReminderExit"
         android:backgroundTint="#F44336"
         android:text="@string/remove"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
+    <Button
+        android:id="@+id/toDoReminderExit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6sp"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:text="আপাতত বাদ দিন"
         android:textColor="@android:color/white"
         android:textSize="16sp"/>
 

@@ -34,12 +34,13 @@
     <string name="choose_date">তারিখ</string>
     <string name="choose_time">সময়</string>
     <string name="remind_date_and_time">আপনাকে মনে করিয়ে দেয়া হবে  %1$s তারিখ  %2$s %3$s সময়</string>
+    <string name="remind_date_and_time_for_daily">আপনাকে %1$s তারিখ হতে প্রতিদিন %2$s %3$s সময় মনে করিয়ে দেয়া হবে </string>
     <string name="about">About</string>
     <string name="app_version">Version: %1$s</string>
     <string name="contact_me">You can contact me at</string>
     <string name="made_by">GK</string>
     <string name="done_label">হয়েছে</string>
-    <string name="date_reminder_default">Today</string>
+    <string name="date_reminder_default">আজকের সময়টি</string>
     <string name="date_error_check_again">The date you entered is in the past.</string>
     <string name="night_mode">Night Mode</string>
     <string name="night_mode_on_summary">Night mode is on</string>

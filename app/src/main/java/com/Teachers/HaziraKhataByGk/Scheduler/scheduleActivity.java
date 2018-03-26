@@ -2,6 +2,7 @@ package com.Teachers.HaziraKhataByGk.Scheduler;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -36,6 +38,7 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by uy on 9/9/2017.
@@ -68,8 +71,12 @@ public class scheduleActivity extends AppCompatActivity {
     public static final String LIGHTTHEME = "com.Teachers.HaziraKhataByGk.Scheduler.lighttheme";
     public static final String DARKTHEME = "com.Teachers.HaziraKhataByGk.Scheduler.darktheme";
   //  private AnalyticsApplication app;
-  public LinearLayout adlayout;
+    public LinearLayout adlayout;
     public AdView mAdView;
+    public Context context;
+    SharedPreferences prefForSchedule;
+    public static HashMap<String,Integer> HashForDailyScheduler  = new HashMap<>();
+
 
     public static ArrayList<ToDoItem> getLocallyStoredData(StoreRetrieveData storeRetrieveData){
         ArrayList<ToDoItem> items = MainActivity.toDoItemsFromMainActivity;
@@ -81,13 +88,34 @@ public class scheduleActivity extends AppCompatActivity {
         else Log.d("eee","From arraylist item is not null");
         return items;
     }
+public void CreatingHashMapForDailyScheduler(){
+    HashForDailyScheduler.clear();
+    mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+    //Hash for daily scheduler
+    for(int i=0;i<mToDoItemsArrayList.size();i++){
+        if(!HashForDailyScheduler.containsValue(i)&&mToDoItemsArrayList.get(i).isDaily())
+            HashForDailyScheduler.put(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText(),i);
+    }
+    for(int i=0;i<mToDoItemsArrayList.size();i++){
+        Log.d("GK","Hash element for daily scheduler "+HashForDailyScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
+    }
+
+}
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        context=this;
+
+
         //Empty View and set alarms
-        mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+
+        CreatingHashMapForDailyScheduler();
+
+
+        //TODO: Dummy for seeing HashMap
+
         if(mToDoItemsArrayList.isEmpty())
             Log.d("GK","LIST IS EMPTY IN RESUME");
         adapter = new BasicListAdapter(mToDoItemsArrayList);
@@ -174,15 +202,25 @@ public class scheduleActivity extends AppCompatActivity {
                     i.putExtra(TodoNotificationService.TODOUUID, item.getIdentifier());
                     i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
 
-                    //
+                    //TODO dummy
                     if(item.isDaily())
-                    i.putExtra(TodoNotificationService.IsDailyOrNot,item.isDaily() );
+                    {
+                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(item.isDaily()) );
+                        Log.d("GK","item.isDaily()");
+                    }
                     else
-                        i.putExtra(TodoNotificationService.IsDailyOrNot,!item.isDaily() );
+                    {
+                        Log.d("GK","not item.isDaily()");
+                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(!item.isDaily()) );
+                    }
+
 
                     //Is reapeated?
                     if(item.isDaily())
-                    createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),true);
+                    {
+                        if(HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent()))
+                        createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
+                    }
                     else
                         createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),false);
                 }
@@ -191,6 +229,8 @@ public class scheduleActivity extends AppCompatActivity {
     }
 
     protected void onCreate(Bundle savedInstanceState) {
+
+
 
         theme = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).getString(THEME_SAVED, LIGHTTHEME);
         if(theme.equals(LIGHTTHEME)){
@@ -211,6 +251,7 @@ public class scheduleActivity extends AppCompatActivity {
         setContentView(R.layout.schedule_activity);
 
 
+
         mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity;
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -229,6 +270,7 @@ public class scheduleActivity extends AppCompatActivity {
         setAlarms();
         mCoordLayout = (CoordinatorLayout)findViewById(R.id.myCoordinatorLayout);
         mAddToDoItemFAB = (FloatingActionButton)findViewById(R.id.addToDoItemFAB);
+
         if(mAddToDoItemFAB!=null)
                 mAddToDoItemFAB.setOnClickListener(new View.OnClickListener() {
             @SuppressWarnings("deprecation")
@@ -237,6 +279,7 @@ public class scheduleActivity extends AppCompatActivity {
                // app.send(this, "Action", "FAB pressed");
                 Intent newTodo = new Intent(scheduleActivity.this, AddToDoActivity.class);
                 ToDoItem item = new ToDoItem("", false, null,"");
+
                 int color = ColorGenerator.MATERIAL.getRandomColor();
                 item.setTodoColor(color);
                 newTodo.putExtra(TODOITEM, item);
@@ -281,26 +324,7 @@ public class scheduleActivity extends AppCompatActivity {
     }
 
 
-    //TODO: MENU
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.aboutMeMenuItem:
-//                return true;
-//            case R.id.preferences:
-//                return true;
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -316,12 +340,13 @@ public class scheduleActivity extends AppCompatActivity {
                 i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
                 i.putExtra(TodoNotificationService.TODOUUID, item.getIdentifier());
 
-                //Is reapeated?
                 if(item.isDaily())
-                    createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),true);
+                {
+                    if(HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent()))
+                        createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
+                }
                 else
                     createAlarm(i, item.getIdentifier().hashCode(), item.getToDoDate().getTime(),false);
-
 
             }
             for(int i = 0; i<mToDoItemsArrayList.size();i++){
@@ -349,7 +374,7 @@ public class scheduleActivity extends AppCompatActivity {
         }
     }
 
-    private AlarmManager getAlarmManager(){
+    public AlarmManager getAlarmManager(){
         return (AlarmManager)getSystemService(ALARM_SERVICE);
     }
 
@@ -359,37 +384,91 @@ public class scheduleActivity extends AppCompatActivity {
     }
 
 
-
-
     private void createAlarm(Intent i, int requestCode, long timeInMillis,boolean willRepeate){
         AlarmManager am = getAlarmManager();
         PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getService(this, requestCode, i, PendingIntent.FLAG_CANCEL_CURRENT);
-        am.cancel(pendingIntent);
-
         if(!willRepeate)
-            am.set(AlarmManager.RTC_WAKEUP, timeInMillis, pi);
-        else
         {
-            am.setRepeating(AlarmManager.RTC_WAKEUP,timeInMillis,100000,pi);
+            am.set(AlarmManager.RTC_WAKEUP, timeInMillis, pi);
+            Log.d("GK","NOT SCHEDULED ALARM IS FIXED");
         }
+        else {
 
 
+//             context=this;
+//             prefForSchedule = context.getSharedPreferences("IsDaily", 0); // 0 - for private mode
+//             SharedPreferences.Editor editor = prefForSchedule.edit();
+
+//            if(prefForSchedule.getBoolean(String.valueOf(requestCode),true)){
+//
+//                Log.d("GK","SCHEDULED ALARM IS FIXED AS A DAILY IN CREATE METHODE");
+            am.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 10000, pi);
+//
+//                editor.putBoolean(String.valueOf(requestCode),false);
+//                editor.commit();
+//                editor.apply();
+//            }
+//            else {
+//                Log.d("GK", " SCHEDULED ALARM IS NOT FIXED AS A DAILY IN CREATE METHODE");
+//            }
+//
+//        }
+
+        }
         Log.d("GK", "createAlarm "+requestCode+" time: "+timeInMillis+" PI "+pi.toString());
+
+    }
+
+    private void  deleteDaily(Intent i, int requestCode){
+
+        prefForSchedule = context.getSharedPreferences("IsDaily", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = prefForSchedule.edit();
+
+        Log.d("GK", "REQUEST CODE IN DELETE DAILY  "+requestCode + " "+doesPendingIntentExist(i, requestCode));
+
+        if(prefForSchedule.getBoolean(String.valueOf(requestCode),true)){
+
+
+            //TODO: dummy request code
+            PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
+            pi.cancel();
+
+            getAlarmManager().cancel(pi);
+
+            Log.d("GK", "PI Cancelled IN DELETE DAILY IF "+requestCode +" "+ doesPendingIntentExist(i, requestCode));
+
+            editor.putBoolean(String.valueOf(requestCode),false);
+            editor.commit();
+            editor.apply();
+
+        }
+        else {
+
+            //TODO: dummy request code
+            PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
+            pi.cancel();
+
+            getAlarmManager().cancel(pi);
+
+            Log.d("GK", "PI Cancelled IN DELETE DAILY ELSE "+requestCode + doesPendingIntentExist(i, requestCode));
+
+        }
 
     }
     private void deleteAlarm(Intent i, int requestCode){
         if(doesPendingIntentExist(i, requestCode)){
 
-            PendingIntent pendingIntent = PendingIntent.getService(this, requestCode, i, PendingIntent.FLAG_CANCEL_CURRENT);
-            getAlarmManager().cancel(pendingIntent);
-
+            Log.d("GK","if DELETE");
             PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_NO_CREATE);
             pi.cancel();
             getAlarmManager().cancel(pi);
-            Log.d("OskarSchindler", "PI Cancelled " + doesPendingIntentExist(i, requestCode));
+            Log.d("GK", "PI Cancelled + request code "+requestCode + doesPendingIntentExist(i, requestCode));
        }
+       else {
+            Log.d("GK","else DELETE");
+        }
+
     }
 
     private void addToDataStore(ToDoItem item) {
@@ -428,6 +507,13 @@ public class scheduleActivity extends AppCompatActivity {
             mIndexOfDeletedToDoItem = position;
 
             Intent i = new Intent(scheduleActivity.this,TodoNotificationService.class);
+
+//IF it is daily
+            if(mJustDeletedToDoItem.isDaily()){
+
+                deleteDaily(i,HashForDailyScheduler.get(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()));
+            }
+            else
             deleteAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode());
 
             mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=items;
@@ -445,11 +531,30 @@ public class scheduleActivity extends AppCompatActivity {
                                 i.putExtra(TodoNotificationService.TODOTEXT, mJustDeletedToDoItem.getToDoText());
                                 i.putExtra(TodoNotificationService.TODOUUID, mJustDeletedToDoItem.getIdentifier());
 
-                                //Is reapeated?
+                                //TODO dummy
                                 if(mJustDeletedToDoItem.isDaily())
-                                    createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(),mJustDeletedToDoItem.getToDoDate().getTime(),true);
+                                {
+                                    i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(mJustDeletedToDoItem.isDaily()) );
+                                    Log.d("GK","item.isDaily()");
+                                }
+                                else
+                                {
+                                    Log.d("GK","not item.isDaily()");
+                                    i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(!mJustDeletedToDoItem.isDaily()) );
+                                }
+
+
+                                //Is reapeated?
+
+
+                                if(mJustDeletedToDoItem.isDaily())
+                                {
+                                    if(HashForDailyScheduler.containsKey(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()))
+                                        createAlarm(i,HashForDailyScheduler.get(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()), mJustDeletedToDoItem.getToDoDate().getTime(),true);
+                                }
                                 else
                                     createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(),mJustDeletedToDoItem.getToDoDate().getTime(),false);
+
 
                             }
                             mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=items;
@@ -469,9 +574,11 @@ public class scheduleActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final BasicListAdapter.ViewHolder holder, final int position) {
             ToDoItem item = items.get(position);
-//            if(item.getToDoDate()!=null && item.getToDoDate().before(new Date())){
-//                item.setToDoDate(null);
-//            }
+
+            if(item.getToDoDate()!=null && item.getToDoDate().before(new Date())){
+                item.setToDoDate(null);
+            }
+
             SharedPreferences sharedPreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
             //Background color for each to-do item. Necessary for night/day mode
             int bgColor;
@@ -485,9 +592,30 @@ public class scheduleActivity extends AppCompatActivity {
                 bgColor = Color.DKGRAY;
                 todoTextColor = Color.WHITE;
             }
+
+            if(item.getToDoDate()!=null){
+
+                //Set Daily msg
+                if(item.getMassageForDailySchedule()!=null){
+                    holder.mTimeTextView.setText(item.getMassageForDailySchedule());
+                }
+                else {
+                    String timeToShow;
+                    if(android.text.format.DateFormat.is24HourFormat(scheduleActivity.this)){
+                        timeToShow = AddToDoActivity.formatDate(scheduleActivity.DATE_TIME_FORMAT_24_HOUR, item.getToDoDate());
+                    }
+                    else{
+                        timeToShow = AddToDoActivity.formatDate(scheduleActivity.DATE_TIME_FORMAT_12_HOUR, item.getToDoDate());
+                    }
+
+                    holder.mTimeTextView.setText(timeToShow);
+                }
+
+            }
+
             holder.linearLayout.setBackgroundColor(bgColor);
 
-            if((item.hasReminder() && item.getToDoDate()!=null)||item.isDaily()){
+            if((item.hasReminder() && item.getToDoDate()!=null)){
                 holder.mToDoTextview.setMaxLines(1);
                 holder.mTimeTextView.setVisibility(View.VISIBLE);
                 Log.d("GK","IS DAILY");
@@ -502,16 +630,6 @@ public class scheduleActivity extends AppCompatActivity {
             }
             holder.mToDoTextview.setText(item.getToDoText());
             holder.mToDoTextview.setTextColor(todoTextColor);
-//            holder.mColorTextView.setBackgroundColor(Color.parseColor(item.getTodoColor()));
-
-//            TextDrawable myDrawable = TextDrawable.builder().buildRoundRect(item.getToDoText().substring(0,1),Color.RED, 10);
-            //We check if holder.color is set or not
-//            if(item.getTodoColor() == null){
-//                ColorGenerator generator = ColorGenerator.MATERIAL;
-//                int color = generator.getRandomColor();
-//                item.setTodoColor(color+"");
-//            }
-//            Log.d("OskarSchindler", "Color: "+item.getTodoColor());
             TextDrawable myDrawable = TextDrawable.builder().beginConfig()
                     .textColor(Color.WHITE)
                     .useFont(Typeface.DEFAULT)
@@ -519,19 +637,7 @@ public class scheduleActivity extends AppCompatActivity {
                     .endConfig()
                     .buildRound(item.getToDoText().substring(0,1),item.getTodoColor());
 
-//            TextDrawable myDrawable = TextDrawable.builder().buildRound(item.getToDoText().substring(0,1),holder.color);
             holder.mColorImageView.setImageDrawable(myDrawable);
-            if(item.getToDoDate()!=null){
-                String timeToShow;
-                if(android.text.format.DateFormat.is24HourFormat(scheduleActivity.this)){
-                    timeToShow = AddToDoActivity.formatDate(scheduleActivity.DATE_TIME_FORMAT_24_HOUR, item.getToDoDate());
-                }
-                else{
-                    timeToShow = AddToDoActivity.formatDate(scheduleActivity.DATE_TIME_FORMAT_12_HOUR, item.getToDoDate());
-                }
-                holder.mTimeTextView.setText(timeToShow);
-            }
-
 
         }
 
@@ -560,13 +666,7 @@ public class scheduleActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         ToDoItem item = items.get(ViewHolder.this.getAdapterPosition());
-                        Log.d("eee","This content from scheduler activity "+item.getToDoContent());
-                        Log.d("eee","This title from scheduler activity "+item.getToDoText());
 
-//                        if(items.get(0).isDaily()){
-////                            Log.d("GK","DATE "+items.get(0).getToDoDate().toString());
-//                        }
-                        Log.d("eee","This title from scheduler activity "+item.getToDoText());
                         Intent i = new Intent(scheduleActivity.this, AddToDoActivity.class);
                         i.putExtra(TODOITEM, item);
                         startActivityForResult(i, REQUEST_ID_TODO_ITEM);

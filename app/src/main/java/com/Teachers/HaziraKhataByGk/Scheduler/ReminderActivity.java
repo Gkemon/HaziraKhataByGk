@@ -27,7 +27,7 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class ReminderActivity extends AppCompatActivity {
     private TextView mtoDoTextTextView;
-    private Button mRemoveToDoButton;
+    private Button mRemoveToDoButton,mExitButtom;
     private MaterialSpinner mSnoozeSpinner;
     private String[] snoozeOptionsArray;
     private StoreRetrieveData storeRetrieveData;
@@ -78,6 +78,14 @@ public class ReminderActivity extends AppCompatActivity {
         mtoDoTextTextView = (TextView)findViewById(R.id.toDoReminderTextViewBody);
         mSnoozeTextView = (TextView)findViewById(R.id.reminderViewSnoozeTextView);
         mSnoozeSpinner = (MaterialSpinner)findViewById(R.id.todoReminderSnoozeSpinner);
+        mExitButtom = (Button) findViewById(R.id.toDoReminderExit);
+
+        mExitButtom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         if (mItem!=null)
         mtoDoTextTextView.setText(mItem.getToDoText());
@@ -176,13 +184,13 @@ public class ReminderActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.toDoReminderDoneMenuItem:
                 Date date;
-                if(mItem.isDaily()&&valueFromSpinner()==0){
-                    date = addTimeToDate(50);
-                    Log.d("GK","HAS DAILY SCHEDULE");
-                }
-                else {
+//                if(mItem.isDaily()&&valueFromSpinner()==0){
+//                    date = addTimeToDate(50);
+//                    Log.d("GK","HAS DAILY SCHEDULE");
+//                }
+//                else {
                     date = addTimeToDate(valueFromSpinner());
-                }
+            //    }
 
 
                 mItem.setToDoDate(date);
@@ -215,13 +223,13 @@ public class ReminderActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Date date;
-        if(mItem.isDaily()){
-            date = addTimeToDate(50);
-            Log.d("GK","HAS DAILY SCHEDULE ON BACKPRESSED");
-        }
-        else {
+//        if(mItem.isDaily()){
+//            date = addTimeToDate(50);
+//            Log.d("GK","HAS DAILY SCHEDULE ON BACKPRESSED");
+//        }
+//        else {
             date = addTimeToDate(valueFromSpinner());
-        }
+      //  }
 
 
 
@@ -245,54 +253,9 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-//        //ADMOB
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                .build();
-//        adlayout=findViewById(R.id.ads);
-//        mAdView = (AdView) findViewById(R.id.adViewInHome);
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                adlayout.setVisibility(View.GONE);
-//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//        mAdView.loadAd(adRequest);
 
 
-        super.onStart();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        if (mAdView != null) {
-//            mAdView.resume();
-//        }
-    }
 
     @Override
     public void onDestroy() {
@@ -304,13 +267,13 @@ public class ReminderActivity extends AppCompatActivity {
 
 
         Date date;
-        if(mItem.isDaily()){
-            date = addTimeToDate(50);
-            Log.d("GK","HAS DAILY SCHEDULE ON DESTROY");
-        }
-        else {
+//        if(mItem.isDaily()){
+//            date = addTimeToDate(50);
+//            Log.d("GK","HAS DAILY SCHEDULE ON DESTROY");
+//        }
+//        else {
             date = addTimeToDate(valueFromSpinner());
-        }
+  //      }
 
 
         mItem.setToDoDate(date);

@@ -18,11 +18,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.R;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -33,6 +33,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class AddToDoActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private EditText mToDoTextBodyEditText;
@@ -55,6 +56,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public AdView mAdView;
     public LinearLayout DailyRemainderLayout;
     public InterstitialAd mInterstitialAd;
+    public ProgressBar progressBar;
 
 
     @SuppressWarnings("deprecation")
@@ -77,6 +79,9 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mTimeEditText = (EditText)findViewById(R.id.newTodoTimeEditText);
         DailyRemainderLayout=(LinearLayout)findViewById(R.id.dailyReminder);
 
+
+        progressBar=(ProgressBar)findViewById(R.id.progressBarInScheduleActivity);
+        progressBar.setVisibility(View.GONE);
 
 
         mUserToDoItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
@@ -105,8 +110,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mToDoTextBodyEditText = (EditText)findViewById(R.id.userToDoEditText);
         mToDoContentEditText =(EditText)findViewById(R.id.userToDoEditTextTask);
         mToDoDateSwitch = (SwitchCompat)findViewById(R.id.toDoHasDateSwitchCompat);
+        switchCompatForDailyRemind=(SwitchCompat)findViewById(R.id.toDoHasDateSwitchCompatForDailyRemain);
         mToDoSendFloatingActionButton = (FloatingActionButton)findViewById(R.id.makeToDoFloatingActionButton);
         mReminderTextView = (TextView)findViewById(R.id.newToDoDateTimeReminderTextView);
+
 
 
         mContainerLayout.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +128,11 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             setReminderTextView();
             setEnterDateLayoutVisibleWithAnimations(true);
         }
+        //for daily button
+        if(mUserHasReminder && (mUserReminderDate!=null)&&mUserToDoItem.isDaily())
+            switchCompatForDailyRemind.setChecked(true);
+        else switchCompatForDailyRemind.setChecked(false);
+
         if(mUserReminderDate==null){
             mToDoDateSwitch.setChecked(false);
             mReminderTextView.setVisibility(View.INVISIBLE);
@@ -187,7 +199,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                     makeResult(RESULT_CANCELED);
                 }
                 else{
+                   progressBar.setVisibility(View.VISIBLE);
                     makeResult(RESULT_OK);
+                   finish();
+
                    mInterstitialAd = new InterstitialAd(AddToDoActivity.this);
                    // set the ad unit ID
                    mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
@@ -199,25 +214,25 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                            .build();
 
                    // Load ads into Interstitial Ads
-                   mInterstitialAd.loadAd(adRequest);
-                   mInterstitialAd.setAdListener(new AdListener() {
-                       public void onAdLoaded() {
-                           showInterstitial();
-                       }
-
-                       @Override
-                       public void onAdFailedToLoad(int i) {
-                           finish();
-                           super.onAdFailedToLoad(i);
-                       }
-
-                       @Override
-                       public void onAdClosed() {
-                           finish();
-                           super.onAdClosed();
-                       }
-                   });
-
+//                   mInterstitialAd.loadAd(adRequest);
+//                   mInterstitialAd.setAdListener(new AdListener() {
+//                       public void onAdLoaded() {
+//                           showInterstitial();
+//                       }
+//
+//                       @Override
+//                       public void onAdFailedToLoad(int i) {
+//                           finish();
+//                           super.onAdFailedToLoad(i);
+//                       }
+//
+//                       @Override
+//                       public void onAdClosed() {
+//                           finish();
+//                           super.onAdClosed();
+//                       }
+//                   });
+//
 
                 }
                 hideKeyboard(mToDoTextBodyEditText);
@@ -294,7 +309,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         }
         else{
             mDateEditText.setText(getString(R.string.date_reminder_default));
-            Toast.makeText(AddToDoActivity.this,mDateEditText.getText().toString()+" Is set auto",Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddToDoActivity.this,mDateEditText.getText().toString()+" স্বংক্রিয়ভাবে সেট হল",Toast.LENGTH_SHORT).show();
             boolean time24 = DateFormat.is24HourFormat(this);
             Calendar cal = Calendar.getInstance();
             if(time24){
@@ -401,11 +416,30 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                 timeString = formatDate("h:mm", date);
                 amPmString = formatDate("a", date);
             }
-            String finalString = String.format(getResources().getString(R.string.remind_date_and_time), dateString, timeString, amPmString);
+            String finalString;
+            if(!mUserToDoItem.isDaily()){
+                finalString = String.format(getResources().getString(R.string.remind_date_and_time), dateString, timeString, amPmString);
+            }
+            else
+            {
+                finalString = String.format(getResources().getString(R.string.remind_date_and_time_for_daily), dateString, timeString, amPmString);
+                mUserToDoItem.setMassageForDailySchedule("প্রতিদিন "+timeString+" "+amPmString+" টায়");
+
+            }
+
+
             mReminderTextView.setTextColor(getResources().getColor(R.color.secondary_text));
             mReminderTextView.setText(finalString);
             mTimeEditText.setText(timeString+" "+amPmString);
+
+
+
+            if(switchCompatForDailyRemind.isChecked()){
+                mDateEditText.setText("প্রতিদিন");
+            }
+            else
             mDateEditText.setText(dateString);
+
         }
         else{
             mReminderTextView.setVisibility(View.INVISIBLE);
@@ -423,8 +457,6 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             mUserToDoItem.setToDoText(mUserEnteredText);
         }
         mUserToDoItem.setToDoContent(mTodoContent);
-        Log.d("eee","Todo is setted as "+mUserToDoItem.getToDoText());
-        Log.d("eee","Content is setted as "+mUserToDoItem.getToDoContent());
 
         if(mUserReminderDate!=null){
             Calendar calendar = Calendar.getInstance();
@@ -466,7 +498,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
     public static String formatDate(String formatString, Date dateToFormat){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatString);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatString, Locale.ENGLISH);
         return simpleDateFormat.format(dateToFormat);
     }
 
@@ -556,13 +588,24 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         }
     }
     public void ClickListenerForDailyRoutine(){
-        switchCompatForDailyRemind=findViewById(R.id.toDoHasDateSwitchCompatForDailyRemain);
+
+
         switchCompatForDailyRemind.setChecked(mUserToDoItem!=null&&mUserToDoItem.hasReminder()&&mUserToDoItem.isDaily());
         switchCompatForDailyRemind.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if(mUserToDoItem!=null)
-                mUserToDoItem.setDaily(isChecked);
+
+                    if(isChecked)
+                mUserToDoItem.setDaily(true);
+                else mUserToDoItem.setDaily(false);
+
+                if(mToDoDateSwitch.isChecked())
+                mUserToDoItem.setHasReminder(true);
+                else mUserToDoItem.setHasReminder(false);
+                setReminderTextView();
+
                 if(mUserToDoItem.isDaily())Log.d("GK","DAILY ROUTINE IS SET");
             }
         });

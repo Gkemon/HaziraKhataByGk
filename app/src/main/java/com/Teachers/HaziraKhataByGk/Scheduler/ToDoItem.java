@@ -12,6 +12,7 @@ public class ToDoItem implements Serializable {
     private Date mToDoDate;
     private boolean isDaily=false;
     private UUID mTodoIdentifier;
+    private String massageForDailySchedule;
 
     public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate,String content){
         mToDoText = todoBody;
@@ -28,6 +29,15 @@ public class ToDoItem implements Serializable {
     public void setDaily(boolean isDaily){
         this.isDaily=isDaily;
     }
+
+    public void setMassageForDailySchedule(String massageForDailySchedule) {
+        this.massageForDailySchedule = massageForDailySchedule;
+    }
+
+    public String getMassageForDailySchedule() {
+        return massageForDailySchedule;
+    }
+
     public ToDoItem(){
        this("",true, null,"");
     }
