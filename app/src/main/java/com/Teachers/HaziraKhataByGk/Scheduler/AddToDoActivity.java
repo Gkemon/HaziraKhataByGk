@@ -1,11 +1,13 @@
 package com.Teachers.HaziraKhataByGk.Scheduler;
 
 import android.animation.Animator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
@@ -22,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -57,7 +60,8 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public LinearLayout DailyRemainderLayout;
     public InterstitialAd mInterstitialAd;
     public ProgressBar progressBar;
-
+    private StoreRetrieveData storeRetrieveData;
+    private Boolean IsNewToDo;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -85,6 +89,15 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         mUserToDoItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
+
+
+        //To find that the to do item is newly created
+        if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
+            IsNewToDo=true;
+        }
+        else IsNewToDo=false;
+
+
         mUserEnteredText = mUserToDoItem.getToDoText().trim();
         mUserHasReminder = mUserToDoItem.hasReminder();
         mUserReminderDate = mUserToDoItem.getToDoDate();
@@ -134,6 +147,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         else switchCompatForDailyRemind.setChecked(false);
 
         if(mUserReminderDate==null){
+
             mToDoDateSwitch.setChecked(false);
             mReminderTextView.setVisibility(View.INVISIBLE);
         }
@@ -192,6 +206,38 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mToDoSendFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Get to do items
+                GetToDoItems();
+
+                String tempForTitle,tempForContent;
+                if(mUserEnteredText.length()>0){
+                     tempForTitle = Character.toUpperCase(mUserEnteredText.charAt(0))+mUserEnteredText.substring(1);
+                }
+                else{
+                    tempForTitle=mUserEnteredText;
+                }
+                tempForContent = mTodoContent;
+
+
+                //CHECK THAT THE ITEM IS UNIQUE
+                for (int i = 0; i <MainActivity.toDoItemsFromMainActivity.size(); i++) {
+                    if ((MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(getApplicationContext()).create();
+                        alertDialog.setTitle("সতর্কীকরণ");
+                        alertDialog.setIcon(R.drawable.warning_for_add);
+                        alertDialog.setMessage("এই একই শিডিউল ইতিমধ্যে এই ডাটাবেজে রয়েছে।নতুন শিডিউল ইনপুট দিন ,ধন্যবাদ।");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                        return;
+                    }
+                }
+
                if (mToDoTextBodyEditText.length() <= 0){
                     mToDoTextBodyEditText.setError(getString(R.string.todo_error));
                 }
@@ -610,6 +656,12 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             }
         });
 
+    }
+    public void GetToDoItems(){
+        //FOR SCHEDULES
+        MainActivity.toDoItemsFromMainActivity.clear();
+        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
+        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
     }
 }
 
