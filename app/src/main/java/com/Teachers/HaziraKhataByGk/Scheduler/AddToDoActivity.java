@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.Scheduler;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,6 +35,7 @@ import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -62,6 +64,9 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public ProgressBar progressBar;
     private StoreRetrieveData storeRetrieveData;
     private Boolean IsNewToDo;
+    public ArrayList<ToDoItem> mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
+    public Context context;
+
 
     @SuppressWarnings("deprecation")
     @Override
@@ -89,13 +94,21 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         mUserToDoItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
+        Log.d("GK","mToDoItemsArrayList "+mToDoItemsArrayList.size()+"in create");
 
+
+        mToDoItemsArrayList = (ArrayList<ToDoItem>)getIntent().getSerializableExtra("TODOLIST");
 
         //To find that the to do item is newly created
         if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
             IsNewToDo=true;
+          //  Log.d("GK","true");
         }
-        else IsNewToDo=false;
+        else
+        {
+          //  Log.d("GK","false");
+            IsNewToDo=false;
+        }
 
 
         mUserEnteredText = mUserToDoItem.getToDoText().trim();
@@ -210,33 +223,12 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                 //Get to do items
                 GetToDoItems();
 
-                String tempForTitle,tempForContent;
-                if(mUserEnteredText.length()>0){
-                     tempForTitle = Character.toUpperCase(mUserEnteredText.charAt(0))+mUserEnteredText.substring(1);
-                }
-                else{
-                    tempForTitle=mUserEnteredText;
-                }
-                tempForContent = mTodoContent;
+                //Check duplicate
 
-
-                //CHECK THAT THE ITEM IS UNIQUE
-                for (int i = 0; i <MainActivity.toDoItemsFromMainActivity.size(); i++) {
-                    if ((MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(getApplicationContext()).create();
-                        alertDialog.setTitle("সতর্কীকরণ");
-                        alertDialog.setIcon(R.drawable.warning_for_add);
-                        alertDialog.setMessage("এই একই শিডিউল ইতিমধ্যে এই ডাটাবেজে রয়েছে।নতুন শিডিউল ইনপুট দিন ,ধন্যবাদ।");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        alertDialog.show();
-                        return;
-                    }
+                if(CheckDuplicateForFAB()){
+                    return;
                 }
+
 
                if (mToDoTextBodyEditText.length() <= 0){
                     mToDoTextBodyEditText.setError(getString(R.string.todo_error));
@@ -503,6 +495,11 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             mUserToDoItem.setToDoText(mUserEnteredText);
         }
         mUserToDoItem.setToDoContent(mTodoContent);
+        mUserToDoItem.setDaily(switchCompatForDailyRemind.isChecked());
+        //If remainder is not check then there is no scope to do it as an daily remainder
+        if(!mToDoDateSwitch.isChecked())mUserToDoItem.setDaily(false);
+        mUserToDoItem.setHasReminder(mToDoDateSwitch.isChecked());
+
 
         if(mUserReminderDate!=null){
             Calendar calendar = Calendar.getInstance();
@@ -510,11 +507,13 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             calendar.set(Calendar.SECOND, 0);
             mUserReminderDate = calendar.getTime();
         }
+
         mUserToDoItem.setHasReminder(mUserHasReminder);
         mUserToDoItem.setToDoDate(mUserReminderDate);
         mUserToDoItem.setTodoColor(mUserColor);
         intent.putExtra(scheduleActivity.TODOITEM, mUserToDoItem);
         setResult(result, intent);
+
     }
 
     @Override
@@ -524,7 +523,15 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                 mUserToDoItem.setToDoDate(null);
             }
         }
+
+
+        //IF we get any duplicate element then we can ignore it.
+        Boolean isDuplicated= CheckDuplicateForOnBackPressed(true);
+        if(!isDuplicated)
         makeResult(RESULT_OK);
+        else makeResult(RESULT_CANCELED);
+
+
         super.onBackPressed();
     }
     @Override
@@ -576,6 +583,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     protected void onResume() {
         super.onResume();
         ClickListenerForDailyRoutine();
+        context=this;
     }
 
     public void setEnterDateLayoutVisibleWithAnimations(boolean checked){
@@ -628,11 +636,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         }
 
     }
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-    }
+
     public void ClickListenerForDailyRoutine(){
 
 
@@ -658,10 +662,110 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
     }
     public void GetToDoItems(){
-        //FOR SCHEDULES
-        MainActivity.toDoItemsFromMainActivity.clear();
-        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
+
+        if(mToDoItemsArrayList==null){
+            mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
+            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+
+            Log.d("GK","Total todo size : "+MainActivity.toDoItemsFromMainActivity.size());
+        }
+        else Log.d("GK","mToDoItemsArrayList not null in click");
+
+
+
+    }
+    public Boolean CheckDuplicateForOnBackPressed(Boolean isInBackPressed){
+
+
+        String tempForTitle,tempForContent;
+        if(mUserEnteredText.length()>0){
+            tempForTitle = Character.toUpperCase(mUserEnteredText.charAt(0))+mUserEnteredText.substring(1);
+        }
+        else{
+            tempForTitle=mUserEnteredText;
+        }
+        tempForContent = mTodoContent;
+
+        Log.d("GK","TODO "+tempForTitle+tempForContent);
+
+
+
+        //CHECK THAT THE ITEM IS UNIQUE
+        for (int i = 0; i <MainActivity.toDoItemsFromMainActivity.size(); i++) {
+            Log.d("GK","TODO NEXT"+MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
+            if ((MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
+
+                //when it is called from onbackpressed then don't need to show alertdialog
+                if(isInBackPressed) return true;
+                
+                Log.d("GK","GET MILL");
+                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                alertDialog.setTitle("সতর্কীকরণ");
+                alertDialog.setIcon(R.drawable.warning_for_add);
+                alertDialog.setMessage("এই একই শিডিউল ইতিমধ্যে এই ডাটাবেজে রয়েছে।নতুন শিডিউল ইনপুট দিন ,ধন্যবাদ।");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                makeResult(RESULT_CANCELED);
+                                finish();
+                            }
+                        });
+                alertDialog.show();
+                //TODO
+                //return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    //This is for fab button to check duplicate elements
+    public Boolean CheckDuplicateForFAB(){
+
+
+        String tempForTitle,tempForContent;
+        if(mUserEnteredText.length()>0){
+            tempForTitle = Character.toUpperCase(mUserEnteredText.charAt(0))+mUserEnteredText.substring(1);
+        }
+        else{
+            tempForTitle=mUserEnteredText;
+        }
+        tempForContent = mTodoContent;
+
+
+        Log.d("GK","TODO "+tempForTitle+tempForContent);
+
+
+
+        //CHECK THAT THE ITEM IS UNIQUE
+        for (int i = 0; i <MainActivity.toDoItemsFromMainActivity.size(); i++) {
+            Log.d("GK","TODO NEXT"+MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
+            if ((MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
+
+                //when it is called from onbackpressed then don't need to show alertdialog
+
+                Log.d("GK","GET MILL");
+                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                alertDialog.setTitle("সতর্কীকরণ");
+                alertDialog.setIcon(R.drawable.warning_for_add);
+                alertDialog.setMessage("এই একই শিডিউল ইতিমধ্যে এই ডাটাবেজে রয়েছে।নতুন শিডিউল ইনপুট দিন ,ধন্যবাদ।");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+//                                makeResult(RESULT_CANCELED);
+//                                finish();
+
+                            }
+                        });
+                alertDialog.show();
+
+                return true;
+            }
+        }
+return false;
     }
 }
 

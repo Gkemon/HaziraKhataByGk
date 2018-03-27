@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.ActActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoom_activity;
 import com.Teachers.HaziraKhataByGk.MainActivity;
+import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.adapter.ContactListAdapter;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.model.class_item;
@@ -81,6 +81,8 @@ public class classRoomFragments extends Fragment implements RecyclerItemClickLis
         recyclerViewForClass.setLayoutManager(gridLayoutManager);
         contactListAdapter = new ContactListAdapter(context);
         contactListAdapter.setOnItemClickListener(this);
+        classRoomFragments.recyclerViewForClass.setAdapter(contactListAdapter);
+
 
         //Class click listener
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -91,58 +93,14 @@ public class classRoomFragments extends Fragment implements RecyclerItemClickLis
         });
 
 
-
-        //For loading class_room from Server
-        databaseReference.child("Users").child(mUserId).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<class_item> class_items=new ArrayList<class_item>();
-                  for(DataSnapshot classData:dataSnapshot.getChildren()){
-                    class_item class_item=new class_item();
-                    class_item=classData.getValue(class_item.class);
-                    class_items.add(class_item);
-                }
-                MainActivity.TotalClassItems=new ArrayList<class_item>();
-                MainActivity.TotalClassItems=class_items;
-                    //IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
-                    Query queryReforSeeTheDataIsEmptyOrNot = databaseReference.child("Users").child(mUserId).child("Class");
-                    queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){MainActivity.isClassListEmpty=false;}
-                            else {MainActivity.isClassListEmpty=true;}
-
-                            //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
-                            if(MainActivity.isClassListEmpty){
-                                view.setVisibility(View.VISIBLE);
-                                view1.setVisibility(View.VISIBLE);
-                            }
-                            else {
-                                view.setVisibility(View.GONE);
-                                view1.setVisibility(View.GONE);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}});
-
-
-                    //SET ADAPTER
-                    classRoomFragments.contactListAdapter.clear();
-                    classRoomFragments.contactListAdapter.addAll(MainActivity.TotalClassItems);
-                    classRoomFragments.recyclerViewForClass.setAdapter(contactListAdapter);
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         return rootView;
     }
 
     @Override
     public void onResume() {
+
+        //For loading class_room from Server
+        LoadDataFromServer();
         super.onResume();
     }
 
@@ -154,5 +112,54 @@ public class classRoomFragments extends Fragment implements RecyclerItemClickLis
     @Override
     public void onItemLongPressed(int position, View view) {
         ActActivity.start(MainActivity.activity,contactListAdapter.getItem(position));
+    }
+
+    void LoadDataFromServer(){
+        //For loading class_room from Server
+        databaseReference.child("Users").child(mUserId).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<class_item> class_items=new ArrayList<class_item>();
+                for(DataSnapshot classData:dataSnapshot.getChildren()){
+                    class_item class_item=new class_item();
+                    class_item=classData.getValue(class_item.class);
+                    class_items.add(class_item);
+                }
+                MainActivity.TotalClassItems=new ArrayList<class_item>();
+                MainActivity.TotalClassItems=class_items;
+                //IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
+                Query queryReforSeeTheDataIsEmptyOrNot = databaseReference.child("Users").child(mUserId).child("Class");
+                queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){MainActivity.isClassListEmpty=false;}
+                        else {MainActivity.isClassListEmpty=true;}
+
+                        //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
+                        if(MainActivity.isClassListEmpty){
+                            view.setVisibility(View.VISIBLE);
+                            view1.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            view.setVisibility(View.GONE);
+                            view1.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}});
+
+
+                //SET ADAPTER
+                classRoomFragments.contactListAdapter.clear();
+                classRoomFragments.contactListAdapter.addAll(MainActivity.TotalClassItems);
+                classRoomFragments.contactListAdapter.notifyDataSetChanged();
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

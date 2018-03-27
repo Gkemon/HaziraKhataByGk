@@ -75,22 +75,13 @@ long [] vibration ={1000,2000,3000};
                     .setSmallIcon(R.drawable.ic_schedule_new)
                     .setAutoCancel(true)
                     .setVibrate(vibration)
-                    .setDeleteIntent(pendingIntent)
+                 //   .setDeleteIntent(pendingIntent)
                     .setContentIntent(PendingIntent.getActivity(this, mTodoUUID.hashCode(), intentForGOToSchedule, PendingIntent.FLAG_UPDATE_CURRENT))
                    .build();
             manager.notify(100, notification);
 
 
-            //TODO DUMMY
-//
-//            Intent i1 = new Intent(this, TodoNotificationService.class);
-//            PendingIntent pi = PendingIntent.getService(this,mTodoUUID.hashCode(), i1, PendingIntent.FLAG_UPDATE_CURRENT);
-//            pi.cancel();
-//
-//            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-//            alarmManager.cancel(pi);
-//
-//            return;
+
 
         }
         else {
@@ -131,10 +122,14 @@ long [] vibration ={1000,2000,3000};
     @Override
     public void onDestroy() {
         try {
-            mp.release();
+            mp.reset();
+            mp.prepare();
             mp.stop();
+            mp.release();
+            mp=null;
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 

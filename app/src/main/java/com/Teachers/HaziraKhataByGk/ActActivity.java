@@ -154,7 +154,6 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
-
                                     dialog.dismiss();
                                 }
                             });

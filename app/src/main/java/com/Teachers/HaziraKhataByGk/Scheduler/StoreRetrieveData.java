@@ -83,7 +83,7 @@ public class StoreRetrieveData {
         MainActivity.databaseReference.child("Users").child(MainActivity.mUserId).child("Schedule").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("eee","from loadFromFile");
+                Log.e("GK","from loadFromFile");
                 for(DataSnapshot toDoitemData:dataSnapshot.getChildren()){
                     ToDoItem toDoItem=new ToDoItem();
                     toDoItem=toDoitemData.getValue(ToDoItem.class);

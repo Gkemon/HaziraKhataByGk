@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static boolean isClassListEmpty;
     public static ArrayList<news_item> saved_news_item_for_main;
     public static ArrayList<blog_item> saved_blog_item_for_main;
-    public static ArrayList<ToDoItem> toDoItemsFromMainActivity =new ArrayList<>();
+    public static ArrayList<ToDoItem> toDoItemsFromMainActivity;
     private StoreRetrieveData storeRetrieveData;
     public static Context context;
     private TabLayout tabLayout;
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //FOR SCHEDULES
-        toDoItemsFromMainActivity.clear();
+        toDoItemsFromMainActivity =new ArrayList<>();
         storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
         toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
 
