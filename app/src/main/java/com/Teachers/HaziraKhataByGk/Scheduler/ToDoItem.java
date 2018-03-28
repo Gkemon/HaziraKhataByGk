@@ -57,6 +57,11 @@ public class ToDoItem implements Serializable {
         this.mHasReminder = mHasReminder;
     }
 
+    public boolean getHasReminder() {
+        return mHasReminder;
+    }
+
+
     public Date getToDoDate() {
         return mToDoDate;
     }

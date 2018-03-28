@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -78,83 +77,11 @@ public class scheduleActivity extends AppCompatActivity {
     public static HashMap<String,Integer> HashForDailyScheduler  = new HashMap<>();
     public static HashMap<String,Integer> HashForNormalScheduler  = new HashMap<>();
 
-
-    public static ArrayList<ToDoItem> getLocallyStoredData(StoreRetrieveData storeRetrieveData){
-        ArrayList<ToDoItem> items = MainActivity.toDoItemsFromMainActivity;
-     //   items  = storeRetrieveData.loadFromFile();
-        if(items == null) {
-            items = new ArrayList<>();
-            Log.d("eee","From arraylist item == null");
-        }
-        else Log.d("eee","From arraylist item is not null");
-        return items;
-    }
-public void CreatingHashMapForDailyScheduler(){
-    HashForDailyScheduler.clear();
-    HashForNormalScheduler.clear();
-    mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-
-    Log.d("GK","ELEMENT is "+mToDoItemsArrayList.get(0).isDaily()+" Remainder "+mToDoItemsArrayList.get(0).hasReminder());
-    //Hash for daily scheduler
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-        if(!HashForDailyScheduler.containsValue(i)&&mToDoItemsArrayList.get(i).isDaily())
-            HashForDailyScheduler.put(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText(),i);
-    }
-
-    //Hash for daily scheduler
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-        if(!HashForNormalScheduler.containsValue(i)&&!mToDoItemsArrayList.get(i).isDaily())
-            HashForNormalScheduler.put(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText(),i);
-    }
-
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-        Log.d("GK","Hash element for daily scheduler "+HashForDailyScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
-    }
-
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-        Log.d("GK","Hash element for Normal scheduler "+HashForNormalScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
-    }
-
-}
-
     @Override
     protected void onResume() {
         super.onResume();
 
-        context=this;
-
-
-        //Empty View and set alarms
-
-        CreatingHashMapForDailyScheduler();
-
-
-        //TODO: Dummy for seeing HashMap
-
-        if(mToDoItemsArrayList.isEmpty())
-            Log.d("GK","LIST IS EMPTY IN RESUME");
-
-
-        adapter = new BasicListAdapter(mToDoItemsArrayList);
-        mRecyclerView.setAdapter(adapter);
-        setAlarms();
-
-
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-        if(sharedPreferences.getBoolean(ReminderActivity.EXIT, false)){
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(ReminderActivity.EXIT,false);
-            editor.apply();
-            finish();
-        }
-
-        if(getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).getBoolean(RECREATE_ACTIVITY, false)){
-            SharedPreferences.Editor editor = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).edit();
-            editor.putBoolean(RECREATE_ACTIVITY, false);
-            editor.apply();
-            recreate();
-        }
-
+        Refreshing();
 
     }
 
@@ -200,60 +127,9 @@ public void CreatingHashMapForDailyScheduler(){
 
         super.onStart();
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(CHANGE_OCCURED, false);
-            editor.apply();
-    }
-
-    private void setAlarms(){
-        if(mToDoItemsArrayList!=null){
-            for(ToDoItem item : mToDoItemsArrayList){
-                if(item.hasReminder() && item.getToDoDate()!=null){
-                    if(item.getToDoDate().before(new Date())){
-                        item.setToDoDate(null);
-                        continue;
-                    }
-
-                    Log.d("GK","SET ALARMS");
-                    Intent i = new Intent(this, TodoNotificationService.class);
-
-                    i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
-
-                    //TODO dummy
-                    if(item.isDaily())
-                    {
-                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(item.isDaily()) );
-                        Log.d("GK","item.isDaily()");
-                    }
-                    else
-                    {
-                        Log.d("GK","not item.isDaily()");
-                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(!item.isDaily()) );
-                    }
-
-
-                    //Is reapeated?
-                    if(item.isDaily())
-                    {
-                        if(!HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent()))
-                        {
-                            i.putExtra(TodoNotificationService.TODOUUID, HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()));
-                            createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
-                        }
-
-                    }
-                    else
-                    {
-                        if(!HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())){
-                            i.putExtra(TodoNotificationService.TODOUUID, HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()));
-                            createAlarm(i,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),false);
-                        }
-
-                    }
-
-                }
-            }
-        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(CHANGE_OCCURED, false);
+        editor.apply();
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -300,30 +176,30 @@ public void CreatingHashMapForDailyScheduler(){
         mAddToDoItemFAB = (FloatingActionButton)findViewById(R.id.addToDoItemFAB);
 
         if(mAddToDoItemFAB!=null)
-                mAddToDoItemFAB.setOnClickListener(new View.OnClickListener() {
-            @SuppressWarnings("deprecation")
-            @Override
-            public void onClick(View v) {
-               // app.send(this, "Action", "FAB pressed");
-                Intent newTodo = new Intent(scheduleActivity.this, AddToDoActivity.class);
-                ToDoItem item = new ToDoItem("", false, null,"");
+            mAddToDoItemFAB.setOnClickListener(new View.OnClickListener() {
+                @SuppressWarnings("deprecation")
+                @Override
+                public void onClick(View v) {
+                    // app.send(this, "Action", "FAB pressed");
+                    Intent newTodo = new Intent(scheduleActivity.this, AddToDoActivity.class);
+                    ToDoItem item = new ToDoItem("", false, null,"");
 
-                int color = ColorGenerator.MATERIAL.getRandomColor();
-                item.setTodoColor(color);
-                newTodo.putExtra(TODOITEM, item);
-                newTodo.putExtra("TODOLIST",mToDoItemsArrayList);
-                startActivityForResult(newTodo, REQUEST_ID_TODO_ITEM);
-            }
-        });
+                    int color = ColorGenerator.MATERIAL.getRandomColor();
+                    item.setTodoColor(color);
+                    newTodo.putExtra(TODOITEM, item);
+                    newTodo.putExtra("TODOLIST",mToDoItemsArrayList);
+                    startActivityForResult(newTodo, REQUEST_ID_TODO_ITEM);
+                }
+            });
         mRecyclerView = (RecyclerViewEmptySupport)findViewById(R.id.toDoRecyclerView);
 
-                if (theme.equals(LIGHTTHEME)) {
-                    mRecyclerView.setBackgroundColor(getResources().getColor(R.color.primary_lightest));
-                }
-                mRecyclerView.setEmptyView(findViewById(R.id.toDoEmptyView));
-                mRecyclerView.setHasFixedSize(true);
-                mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (theme.equals(LIGHTTHEME)) {
+            mRecyclerView.setBackgroundColor(getResources().getColor(R.color.primary_lightest));
+        }
+        mRecyclerView.setEmptyView(findViewById(R.id.toDoEmptyView));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         customRecyclerScrollViewListener = new CustomRecyclerScrollViewListener() {
@@ -342,24 +218,26 @@ public void CreatingHashMapForDailyScheduler(){
                 mAddToDoItemFAB.animate().translationY(mAddToDoItemFAB.getHeight()+fabMargin).setInterpolator(new AccelerateInterpolator(2.0f)).start();
             }
         };
+
+
         if(mRecyclerView!=null)
-        mRecyclerView.addOnScrollListener(customRecyclerScrollViewListener);
+            mRecyclerView.addOnScrollListener(customRecyclerScrollViewListener);
         adapter = new BasicListAdapter(mToDoItemsArrayList);
         ItemTouchHelper.Callback callback = new ItemTouchHelperClass(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        Log.d("eee","onCreate");
+        //  Log.d("GK","onCreate");
         mRecyclerView.setAdapter(adapter);
+
     }
-
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode!= RESULT_CANCELED && requestCode == REQUEST_ID_TODO_ITEM){
             ToDoItem item =(ToDoItem) data.getSerializableExtra(TODOITEM);
-            Log.d("eee","item return from add activity,so title is "+item.getToDoText()+" and content "+item.getToDoContent());
+
+
+            Log.d("GK","item return from add activity,so title is "+item.getToDoText()+" and content "+item.getToDoContent()+" Has remainder "+item.hasReminder()+" Is daily "+item.isDaily());
             if(item.getToDoText().length()<=0){
                 return;
             }
@@ -369,31 +247,36 @@ public void CreatingHashMapForDailyScheduler(){
                 i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
 
 
-
                 if(item.isDaily())
                 {
 
                     //Check first that actually we have the element
-                    if(!HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent()))
+                    if(!HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
                     {
                         i.putExtra(TodoNotificationService.TODOUUID,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()) );
                         createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
                     }
-
-
+                    else {
+                        Log.d("GK","NOT CREATE DAILY ALARM");
+                    }
 
                 }
                 else{
-                    if(!HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent()))
+                    if(!HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
                     {
                         i.putExtra(TodoNotificationService.TODOUUID,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()) );
                         createAlarm(i,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),false);
+                    }
+                    else {
+                        Log.d("GK","NOT CREATE NORMAL ALARM");
                     }
 
                 }
 
 
             }
+
+            //This is for save the to do items to the server
             for(int i = 0; i<mToDoItemsArrayList.size();i++){
                 if((item.getToDoText()+item.getToDoContent()).equals(mToDoItemsArrayList.get(i).getToDoText()+mToDoItemsArrayList.get(i).getToDoContent())){
 
@@ -401,7 +284,7 @@ public void CreatingHashMapForDailyScheduler(){
                     existed = true;
                     adapter.notifyDataSetChanged();
                     MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-                    Log.d("GK","CHANGED");
+                    Log.d("GK","CHANGED and existed:"+existed);
                     storeRetrieveData.saveToFile(mToDoItemsArrayList);
                     Log.d("eee","Get similarity with Content "+mToDoItemsArrayList.get(i).getToDoContent());
                     break;
@@ -410,15 +293,174 @@ public void CreatingHashMapForDailyScheduler(){
             if(!existed){
                 addToDataStore(item);
             }
-               mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-                Log.d("eee","Result");
-                adapter = new BasicListAdapter(mToDoItemsArrayList);
-                MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-                if(adapter.getItemCount()!=0)Log.d("eee","adapers item from result which is not zero");
-                mRecyclerView.setAdapter(adapter);
-                setAlarms();
+            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+            Log.d("eee","Result");
+            adapter = new BasicListAdapter(mToDoItemsArrayList);
+            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+            if(adapter.getItemCount()!=0)Log.d("eee","adapers item from result which is not zero");
+            mRecyclerView.setAdapter(adapter);
+            setAlarms();
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        storeRetrieveData.saveToFile(mToDoItemsArrayList);
+    }
+
+    @Override
+    protected void onDestroy() {
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
+        super.onDestroy();
+        mRecyclerView.removeOnScrollListener(customRecyclerScrollViewListener);
+    }
+
+
+
+    public static ArrayList<ToDoItem> getLocallyStoredData(StoreRetrieveData storeRetrieveData){
+
+
+        ArrayList<ToDoItem> items = MainActivity.toDoItemsFromMainActivity;
+     //   items  = storeRetrieveData.loadFromFile();
+        if(items == null) {
+            items = new ArrayList<>();
+            Log.d("eee","From arraylist item == null");
+        }
+        else Log.d("eee","From arraylist item is not null");
+        return items;
+
+    }
+    public void CreatingHashMapForDailyScheduler(){
+
+
+    HashForDailyScheduler.clear();
+    HashForNormalScheduler.clear();
+    mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+
+
+    //Hash for daily scheduler
+    for(int i=0;i<mToDoItemsArrayList.size();i++){
+
+        ToDoItem Item=mToDoItemsArrayList.get(i);
+        String key=Item.getToDoContent()+Item.getToDoText();
+
+
+        if(!HashForDailyScheduler.containsValue(i)&&Item.isDaily()){
+            Log.d("GK","A daily remainder is added to hashmap");
+            HashForDailyScheduler.put(key,i);
+        }
+
+
+
+        //"REMOVE THE NON DAILY REMAINDERS "
+
+        if(!Item.isDaily()&&!Item.hasReminder()&&HashForDailyScheduler.get(key)!=null){
+
+            Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
+            deleteDaily(in,HashForDailyScheduler.get(key));
+            HashForDailyScheduler.remove(key);
+            Log.d("GK","REMOVE THE NON DAILY REMAINDERS");
+        }
+
+
+    }
+
+    //Hash for normal scheduler
+    for(int i=0;i<mToDoItemsArrayList.size();i++){
+
+        ToDoItem Item=mToDoItemsArrayList.get(i);
+        String key=Item.getToDoContent()+Item.getToDoText();
+
+
+        if(!HashForNormalScheduler.containsValue(i)&&(!Item.isDaily()&&Item.hasReminder())){
+            HashForNormalScheduler.put(Item.getToDoContent()+Item.getToDoText(),i);
+            Log.d("GK","A normal remainder is added to hashmap");
+        }
+
+
+
+        //REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY
+
+        if(!Item.hasReminder()&&!Item.isDaily()&&HashForNormalScheduler.get(key)!=null){
+
+            Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
+            deleteAlarm(in,HashForNormalScheduler.get(key));
+            HashForNormalScheduler.remove(key);
+            Log.d("GK","REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY");
+        }
+
+    }
+
+    for(int i=0;i<mToDoItemsArrayList.size();i++){
+        Log.d("GK","Hash element for daily scheduler "+HashForDailyScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
+    }
+
+    for(int i=0;i<mToDoItemsArrayList.size();i++){
+        Log.d("GK","Hash element for Normal scheduler "+HashForNormalScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
+    }
+
+}
+
+
+    private void setAlarms(){
+        if(mToDoItemsArrayList!=null){
+            for(ToDoItem item : mToDoItemsArrayList){
+                if(item.hasReminder() && item.getToDoDate()!=null){
+                    if(item.getToDoDate().before(new Date())){
+                        item.setToDoDate(null);
+                        continue;
+                    }
+
+                    Log.d("GK","SET ALARMS");
+                    Intent i = new Intent(this, TodoNotificationService.class);
+
+                    i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
+
+                    //TODO dummy
+                    if(item.isDaily())
+                    {
+                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(item.isDaily()) );
+                        Log.d("GK","item.isDaily()");
+                    }
+                    else
+                    {
+                        Log.d("GK","not item.isDaily()");
+                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(!item.isDaily()) );
+                    }
+
+
+                    //Is reapeated?
+                    if(item.isDaily())
+                    {
+                        if(!HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
+                        {
+                            i.putExtra(TodoNotificationService.TODOUUID, HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()));
+                            createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
+                        }
+
+                    }
+                    else
+                    {
+                        if(!HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null){
+
+
+                            i.putExtra(TodoNotificationService.TODOUUID, HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()));
+                                createAlarm(i,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),false);
+
+
+
+                        }
+
+                    }
+
+                }
+            }
+        }
+    }
+
 
     public AlarmManager getAlarmManager(){
         return (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -733,20 +775,43 @@ public void CreatingHashMapForDailyScheduler(){
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        storeRetrieveData.saveToFile(mToDoItemsArrayList);
-    }
 
 
-    @Override
-    protected void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
-        super.onDestroy();
-        mRecyclerView.removeOnScrollListener(customRecyclerScrollViewListener);
+    public void Refreshing(){
+        context=this;
+
+        Log.d("GK","Refreshing");
+
+        //Empty View and set alarms
+
+        CreatingHashMapForDailyScheduler();
+
+
+        //TODO: Dummy for seeing HashMap
+
+        if(mToDoItemsArrayList.isEmpty())
+            Log.d("GK","LIST IS EMPTY IN RESUME");
+
+
+        adapter = new BasicListAdapter(mToDoItemsArrayList);
+        mRecyclerView.setAdapter(adapter);
+        setAlarms();
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
+        if(sharedPreferences.getBoolean(ReminderActivity.EXIT, false)){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(ReminderActivity.EXIT,false);
+            editor.apply();
+            finish();
+        }
+
+        if(getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).getBoolean(RECREATE_ACTIVITY, false)){
+            SharedPreferences.Editor editor = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).edit();
+            editor.putBoolean(RECREATE_ACTIVITY, false);
+            editor.apply();
+            recreate();
+        }
     }
 
 

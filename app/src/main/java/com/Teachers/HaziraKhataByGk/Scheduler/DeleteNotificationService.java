@@ -1,13 +1,8 @@
-package com.Teachers.HaziraKhataByGk;
+package com.Teachers.HaziraKhataByGk.Scheduler;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
-import com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData;
-import com.Teachers.HaziraKhataByGk.Scheduler.ToDoItem;
-import com.Teachers.HaziraKhataByGk.Scheduler.TodoNotificationService;
-import com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity;
 
 import java.util.ArrayList;
 import java.util.UUID;

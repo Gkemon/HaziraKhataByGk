@@ -208,7 +208,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                 if (!isChecked) {
                     mUserReminderDate = null;
                 }
+
                 mUserHasReminder = isChecked;
+                mUserToDoItem.setHasReminder(isChecked);
+
                 setDateAndTimeEditText();
                 setEnterDateLayoutVisibleWithAnimations(isChecked);
                 hideKeyboard(mToDoTextBodyEditText);

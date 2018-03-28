@@ -12,7 +12,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 
-import com.Teachers.HaziraKhataByGk.DeleteNotificationService;
 import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 

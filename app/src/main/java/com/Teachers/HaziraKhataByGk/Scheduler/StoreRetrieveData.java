@@ -93,6 +93,7 @@ public class StoreRetrieveData {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.e("GK","FIREBASE ERROR :"+databaseError.getMessage()+" Details :"+databaseError.getDetails());
             }
         });
 

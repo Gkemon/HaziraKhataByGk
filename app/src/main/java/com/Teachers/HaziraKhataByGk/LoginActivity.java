@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     public  static String email;
     Activity activity;
     private CallbackManager callbackManager;
-    public static Context context;
+    public Context context;
     LoginButton loginButton;
 
 
@@ -175,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
                 btnSignOut.setVisibility(View.GONE);
 
 
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
                 alertDialog.setMessage("আপনার তথ্যের সুরক্ষার জন্য আপনাকে অবশ্যই সাইন-ইন অথবা সাইন-আপ করতে হবে ।আগে একাউন্ট না খুলে থাকলে \"একাউন্ট খুলুন \" বাটনে ক্লিক করুন আর একাউন্ট করা থাকলে ইমেইল এবং পাসওয়ার্ড ব্যবহার করে \"লগিন করুন\" বাটন ক্লিক করুন");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                         new DialogInterface.OnClickListener() {
@@ -271,7 +271,7 @@ public class LoginActivity extends AppCompatActivity {
                 help.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent4 =  getFacebookIntent("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/");
+                        Intent intent4 =  getFacebookIntent("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/",context);
 
                         startActivity(intent4);
 
@@ -356,9 +356,9 @@ public class LoginActivity extends AppCompatActivity {
         return cm!=null&&cm.getActiveNetworkInfo() != null &&
                 cm.getActiveNetworkInfo().isConnected();
     }
-    public static Intent getFacebookIntent(String url) {
+    public static Intent getFacebookIntent(String url,Context context) {
 
-        PackageManager pm = LoginActivity.context.getPackageManager();
+        PackageManager pm = context.getPackageManager();
         Uri uri = Uri.parse(url);
         try {
             ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);

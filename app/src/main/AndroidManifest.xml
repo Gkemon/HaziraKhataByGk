@@ -105,7 +105,7 @@
         <activity android:name=".BlogActivity" />
 
         <service android:name=".Scheduler.TodoNotificationService" />
-        <service android:name=".DeleteNotificationService" />
+        <service android:name=".Scheduler.DeleteNotificationService" />
 
         <activity
             android:name=".BottomNavigationActivity"

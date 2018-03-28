@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static ArrayList<news_item> saved_news_item_for_main;
     public static ArrayList<blog_item> saved_blog_item_for_main;
     public static ArrayList<ToDoItem> toDoItemsFromMainActivity;
-    private StoreRetrieveData storeRetrieveData;
+    public static StoreRetrieveData storeRetrieveData;
     public static Context context;
     private TabLayout tabLayout;
     private ViewPager viewPager;
