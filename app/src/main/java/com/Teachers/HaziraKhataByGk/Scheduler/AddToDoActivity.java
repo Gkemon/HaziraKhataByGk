@@ -666,13 +666,13 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     }
     public void GetToDoItems(){
 
-        if(mToDoItemsArrayList==null){
-            mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
-            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+        mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
+        MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
 
+        if(mToDoItemsArrayList==null){
             Log.d("GK","Total todo size : "+MainActivity.toDoItemsFromMainActivity.size());
         }
-        else Log.d("GK","mToDoItemsArrayList not null in click");
+        else Log.d("GK","mToDoItemsArrayList not null in click. size is "+MainActivity.toDoItemsFromMainActivity.size());
 
 
 
