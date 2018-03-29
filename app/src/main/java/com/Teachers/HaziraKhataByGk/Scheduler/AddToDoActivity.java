@@ -40,6 +40,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.FILENAME;
+import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.getLocallyStoredData;
+
 public class AddToDoActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private EditText mToDoTextBodyEditText;
     public SwitchCompat mToDoDateSwitch,switchCompatForDailyRemind;
@@ -511,9 +514,46 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             mUserReminderDate = calendar.getTime();
         }
 
+
         mUserToDoItem.setHasReminder(mUserHasReminder);
         mUserToDoItem.setToDoDate(mUserReminderDate);
         mUserToDoItem.setTodoColor(mUserColor);
+
+
+
+        //WE HAVE A BUG AT FIRST SO WE DO THAT
+        storeRetrieveData = new StoreRetrieveData(this, FILENAME);
+
+        if(IsNewToDo){
+            Log.d("GK","IsNewToDo YES");
+
+
+            storeRetrieveData.saveToFile(mUserToDoItem);
+            mToDoItemsArrayList.add(mUserToDoItem);
+            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+            storeRetrieveData.saveToFile(mToDoItemsArrayList);
+            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+
+
+        }
+        else {
+            Log.d("GK","IsNewToDo NO");
+            //This is for save the to do items to the server
+            for(int i = 0; i<mToDoItemsArrayList.size();i++){
+                ToDoItem item =mUserToDoItem;
+                if((item.getToDoText()+item.getToDoContent()).equals(mToDoItemsArrayList.get(i).getToDoText()+mToDoItemsArrayList.get(i).getToDoContent())){
+                    mToDoItemsArrayList.set(i, item);
+                    MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+                    storeRetrieveData.saveToFile(mToDoItemsArrayList);
+                    break;
+                }
+            }
+
+            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+        }
+
         intent.putExtra(scheduleActivity.TODOITEM, mUserToDoItem);
         setResult(result, intent);
 

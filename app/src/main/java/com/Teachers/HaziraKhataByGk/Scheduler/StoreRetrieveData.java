@@ -63,6 +63,24 @@ public class StoreRetrieveData {
 
     }
 
+    public void saveToFile(ToDoItem items){
+
+        //TODO:DATABASE CONNECTION
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
+
+        //TODO: USER (for FB logic auth throw null pointer exception)
+        auth = FirebaseAuth.getInstance();
+        mFirebaseUser = auth.getCurrentUser();
+        databaseReference.keepSynced(true);
+        mUserId=mFirebaseUser.getUid();
+
+        Log.d("GK","Single Todo Pushed");
+        databaseReference.child("Users").child(mUserId).child("Schedule").push().setValue(items);
+
+    }
+
     public static ArrayList<ToDoItem> loadFromFile(){
        final ArrayList<ToDoItem> items = new ArrayList<>();
 

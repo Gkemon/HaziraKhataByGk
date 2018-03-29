@@ -381,7 +381,7 @@ public class scheduleActivity extends AppCompatActivity {
                     //Is reapeated?
                     if(item.isDaily())
                     {
-                        if(!HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
+                        if(HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
                         {
                             i.putExtra(TodoNotificationService.TODOUUID, HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()));
                             createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
@@ -390,7 +390,7 @@ public class scheduleActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        if(!HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null){
+                        if(HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null){
 
 
                             i.putExtra(TodoNotificationService.TODOUUID, HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()));
@@ -778,7 +778,7 @@ public class scheduleActivity extends AppCompatActivity {
             {
 
                 //Check first that actually we have the element
-                if(!HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
+                if(HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
                 {
                     i.putExtra(TodoNotificationService.TODOUUID,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()) );
                     createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
@@ -791,9 +791,11 @@ public class scheduleActivity extends AppCompatActivity {
             else{
 
 
-                if(!HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
+                if(HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
                 {
+
                     i.putExtra(TodoNotificationService.TODOUUID,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()) );
+
                     createAlarm(i,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),false);
                 }
                 else {
