@@ -68,7 +68,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public InterstitialAd mInterstitialAd;
     public ProgressBar progressBar;
     private StoreRetrieveData storeRetrieveData;
-    private Boolean IsNewToDo;
+    private Boolean IsNewToDo;//For dialog showing because we don't need to show warning for a new to do item
     public ArrayList<ToDoItem> mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
     public Context context;
 
@@ -459,6 +459,8 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             String timeString;
             String amPmString = "";
 
+
+
             if(DateFormat.is24HourFormat(this)){
                 timeString = formatDate("k:mm", date);
             }
@@ -476,6 +478,14 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                 mUserToDoItem.setMassageForDailySchedule("প্রতিদিন "+timeString+" "+amPmString+" টায়");
 
             }
+
+
+            //When is is Daily then it is will be fill with the bangla text
+            if(mUserToDoItem.isDaily())
+            {
+                mDateEditText.setText("প্রতিদিন");
+            }
+            else mDateEditText.setText(dateString);
 
 
             mReminderTextView.setTextColor(getResources().getColor(R.color.secondary_text));
@@ -511,6 +521,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mUserToDoItem.setToDoContent(mTodoContent);
         mUserToDoItem.setDaily(switchCompatForDailyRemind.isChecked());
         //If remainder is not check then there is no scope to do it as an daily remainder
+
         if(!mToDoDateSwitch.isChecked())mUserToDoItem.setDaily(false);
         mUserToDoItem.setHasReminder(mToDoDateSwitch.isChecked());
 
