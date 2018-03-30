@@ -40,7 +40,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData.loadFromFile;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.FILENAME;
+import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.PREVIOUS_ITEM;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.getLocallyStoredData;
 
 public class AddToDoActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
@@ -51,7 +53,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     private EditText mDateEditText;
     private EditText mTimeEditText;
     public EditText mToDoContentEditText;
-    private ToDoItem mUserToDoItem;
+    private ToDoItem mUserToDoItem,mPreviousItem;
     public FloatingActionButton mToDoSendFloatingActionButton;
     private String mUserEnteredText;
     private boolean mUserHasReminder;
@@ -97,6 +99,9 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         mUserToDoItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
+        mPreviousItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
+
+
         Log.d("GK","mToDoItemsArrayList "+mToDoItemsArrayList.size()+"in create");
 
 
@@ -105,6 +110,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         //To find that the to do item is newly created
         if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
             IsNewToDo=true;
+            mPreviousItem=mUserToDoItem;
           //  Log.d("GK","true");
         }
         else
@@ -487,12 +493,12 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         }
         else{
             mReminderTextView.setVisibility(View.INVISIBLE);
-
         }
     }
 
     public void makeResult(int result) {
         Intent intent = new Intent();
+
         if(mUserEnteredText.length()>0){
             String capitalizedString = Character.toUpperCase(mUserEnteredText.charAt(0))+mUserEnteredText.substring(1);
             mUserToDoItem.setToDoText(capitalizedString);
@@ -500,6 +506,8 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         else{
             mUserToDoItem.setToDoText(mUserEnteredText);
         }
+
+
         mUserToDoItem.setToDoContent(mTodoContent);
         mUserToDoItem.setDaily(switchCompatForDailyRemind.isChecked());
         //If remainder is not check then there is no scope to do it as an daily remainder
@@ -518,6 +526,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mUserToDoItem.setHasReminder(mUserHasReminder);
         mUserToDoItem.setToDoDate(mUserReminderDate);
         mUserToDoItem.setTodoColor(mUserColor);
+
+
+        //TODO dummy
+        setReminderTextView();
 
 
 
@@ -539,6 +551,13 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         }
         else {
             Log.d("GK","IsNewToDo NO");
+
+            //Re collecting to avoid error
+            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+            mToDoItemsArrayList = loadFromFile();
+            Log.e("GK","Array size :"+mToDoItemsArrayList.size());
+            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+
             //This is for save the to do items to the server
             for(int i = 0; i<mToDoItemsArrayList.size();i++){
                 ToDoItem item =mUserToDoItem;
@@ -555,6 +574,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         }
 
         intent.putExtra(scheduleActivity.TODOITEM, mUserToDoItem);
+        intent.putExtra(PREVIOUS_ITEM,mPreviousItem);
         setResult(result, intent);
 
     }
@@ -755,7 +775,6 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                             }
                         });
                 alertDialog.show();
-                //TODO
                 //return true;
             }
         }

@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
-    static boolean calledAlready = false;
+    public static boolean calledAlready = false;
     public static String mUserId,mEmail;
     public static FirebaseUser mFirebaseUser;
 

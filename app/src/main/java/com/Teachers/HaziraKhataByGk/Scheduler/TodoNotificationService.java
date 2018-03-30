@@ -15,14 +15,12 @@ import android.util.Log;
 import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
-import java.util.UUID;
-
 public class TodoNotificationService extends IntentService {
     public static final String TODOTEXT = "com.avjindersekhon.todonotificationservicetext";
     public static final String TODOUUID = "com.avjindersekhon.todonotificationserviceuuid";
     public static final String IsDailyOrNot ="IsDailyOrNot";
     private String mTodoText;
-    private UUID mTodoUUID;
+    private int mTodoUUID;
     public String isDaily="false";
     private Context mContext;
     MediaPlayer mp;
@@ -33,7 +31,7 @@ public class TodoNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         mTodoText = intent.getStringExtra(TODOTEXT);
-        mTodoUUID = (UUID)intent.getSerializableExtra(TODOUUID);
+        mTodoUUID = (Integer)intent.getSerializableExtra(TODOUUID);
         isDaily= intent.getStringExtra(IsDailyOrNot);
 
         Uri defaultRingone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
@@ -64,7 +62,7 @@ long [] vibration ={1000,2000,3000};
             Intent intentForGOToSchedule = new Intent(this, scheduleActivity.class);
 
             //This is actually stop the ringtone because i cannot do this anymore
-           PendingIntent pendingIntent = PendingIntent.getService(this, mTodoUUID.hashCode(), deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+           PendingIntent pendingIntent = PendingIntent.getService(this, mTodoUUID, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
            pendingIntent.cancel();
 
             Log.d("GK", "onHandleIntent called which was daily ");
@@ -75,7 +73,7 @@ long [] vibration ={1000,2000,3000};
                     .setAutoCancel(true)
                     .setVibrate(vibration)
                  //   .setDeleteIntent(pendingIntent)
-                    .setContentIntent(PendingIntent.getActivity(this, mTodoUUID.hashCode(), intentForGOToSchedule, PendingIntent.FLAG_UPDATE_CURRENT))
+                    .setContentIntent(PendingIntent.getActivity(this, mTodoUUID, intentForGOToSchedule, PendingIntent.FLAG_UPDATE_CURRENT))
                    .build();
             manager.notify(100, notification);
 
@@ -91,8 +89,8 @@ long [] vibration ={1000,2000,3000};
                     .setSmallIcon(R.drawable.ic_schedule_new)
                     .setAutoCancel(true)
                     .setVibrate(vibration)
-                    .setDeleteIntent(PendingIntent.getService(this, mTodoUUID.hashCode(), deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT))
-                    .setContentIntent(PendingIntent.getActivity(this, mTodoUUID.hashCode(), i, PendingIntent.FLAG_UPDATE_CURRENT))
+                    .setDeleteIntent(PendingIntent.getService(this, mTodoUUID, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                    .setContentIntent(PendingIntent.getActivity(this, mTodoUUID, i, PendingIntent.FLAG_UPDATE_CURRENT))
                     .build();
             manager.notify(100, notification);
         }

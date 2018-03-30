@@ -52,10 +52,14 @@ public class scheduleActivity extends AppCompatActivity {
     public static final String TODOITEM = "com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity";
     private BasicListAdapter adapter;
     private static final int REQUEST_ID_TODO_ITEM = 100;
-    private ToDoItem mJustDeletedToDoItem,mResultTodo=new ToDoItem();
+    private ToDoItem mJustDeletedToDoItem,mResultTodo=new ToDoItem(),mPreviousItem = new ToDoItem();
     private int mIndexOfDeletedToDoItem;
     public static final String DATE_TIME_FORMAT_12_HOUR = "MMM d, yyyy  h:mm a";
     public static final String DATE_TIME_FORMAT_24_HOUR = "MMM d, yyyy  k:mm";
+    public static final String ITEMS_PREVIOUS_POS="pos";
+    public static final String HAVE_ITEMS_DAILY_REMAINDER="daily_remainder";
+    public static final String HAVE_ITEMS_NORMAL_REMAINDER="normal_remainder";
+    public static final String PREVIOUS_ITEM="PREVIOUS_ITEM";
     public static final String FILENAME = "todoitems.json";
     private StoreRetrieveData storeRetrieveData;
     public ItemTouchHelper itemTouchHelper;
@@ -245,6 +249,7 @@ public class scheduleActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode!= RESULT_CANCELED && requestCode == REQUEST_ID_TODO_ITEM){
             mResultTodo =(ToDoItem) data.getSerializableExtra(TODOITEM);
+            mPreviousItem =(ToDoItem)data.getSerializableExtra(PREVIOUS_ITEM);
         }
     }
 
@@ -301,14 +306,16 @@ public class scheduleActivity extends AppCompatActivity {
 
 
 
-        //"REMOVE THE NON DAILY REMAINDERS "
+        //REMOVE THE NON DAILY REMAINDERS
 
-        if(!Item.isDaily()&&!Item.hasReminder()&&HashForDailyScheduler.get(key)!=null){
+        if((!Item.isDaily()&&!Item.hasReminder()&&(mPreviousItem.isDaily()&&mPreviousItem.hasReminder()))&&
+                (Item.isDaily()&&Item.hasReminder()&&(!mPreviousItem.isDaily()&&!mPreviousItem.hasReminder()))   ){
 
             Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
             deleteDaily(in,HashForDailyScheduler.get(key));
             HashForDailyScheduler.remove(key);
             Log.d("GK","REMOVE THE NON DAILY REMAINDERS");
+
         }
 
 
@@ -330,7 +337,7 @@ public class scheduleActivity extends AppCompatActivity {
 
         //REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY
 
-        if(!Item.hasReminder()&&!Item.isDaily()&&HashForNormalScheduler.get(key)!=null){
+        if((!Item.hasReminder()&&Item.isDaily())&&(mPreviousItem.isDaily()&&!mPreviousItem.hasReminder())){
 
             Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
             deleteAlarm(in,HashForNormalScheduler.get(key));
@@ -373,8 +380,10 @@ public class scheduleActivity extends AppCompatActivity {
                     }
                     else
                     {
+
                         Log.d("GK","not item.isDaily()");
                         i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(!item.isDaily()) );
+
                     }
 
 
@@ -392,9 +401,8 @@ public class scheduleActivity extends AppCompatActivity {
                     {
                         if(HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null){
 
-
                             i.putExtra(TodoNotificationService.TODOUUID, HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()));
-                                createAlarm(i,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),false);
+                            createAlarm(i,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),false);
 
 
 
@@ -432,10 +440,13 @@ public class scheduleActivity extends AppCompatActivity {
 
         if(!willRepeate)
         {
+
             am.set(AlarmManager.RTC_WAKEUP, timeInMillis, pi);
             Log.d("GK","NOT SCHEDULED ALARM IS FIXED");
+
         }
         else {
+
             Log.d("GK","SCHEDULED ALARM IS FIXED AS A DAILY IN CREATE METHODE");
             am.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 10000, pi);
 
@@ -455,19 +466,29 @@ public class scheduleActivity extends AppCompatActivity {
 
     }
 
+    private boolean doesDailyPendingIntentExist(Intent i, int requestCode){
+        PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        boolean b =pi!=null;
+        Log.d("GK","DOES DAILY EXIST "+b);
+        return pi!=null;
+    }
     private void  deleteDaily(Intent i, int requestCode){
 
-        PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
-        pi.cancel();
-        getAlarmManager().cancel(pi);
+        if(doesDailyPendingIntentExist(i,requestCode)){
+            PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
+            pi.cancel();
+            getAlarmManager().cancel(pi);
 
 
-        prefForSchedule = context.getSharedPreferences("IsDaily", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = prefForSchedule.edit();
+            Log.d("GK", "DAILY PI Cancelled + request code "+requestCode + doesDailyPendingIntentExist(i, requestCode)+" "+prefForSchedule.getBoolean(String.valueOf(requestCode),false));
 
-        editor.remove(String.valueOf(requestCode));
-        editor.commit();
-        editor.apply();
+            prefForSchedule = context.getSharedPreferences("IsDaily", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = prefForSchedule.edit();
+
+            editor.remove(String.valueOf(requestCode));
+            editor.commit();
+            editor.apply();
+        }
 
 
     }
@@ -619,6 +640,7 @@ public class scheduleActivity extends AppCompatActivity {
                 item.setToDoDate(null);
             }
 
+
             SharedPreferences sharedPreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
             //Background color for each to-do item. Necessary for night/day mode
             int bgColor;
@@ -709,6 +731,10 @@ public class scheduleActivity extends AppCompatActivity {
 
                         Intent i = new Intent(scheduleActivity.this, AddToDoActivity.class);
                         i.putExtra(TODOITEM, item);
+//                        i.putExtra(ITEMS_PREVIOUS_POS,ViewHolder.this.getAdapterPosition());
+//                        i.putExtra(HAVE_ITEMS_DAILY_REMAINDER,item.hasReminder());
+//                        i.putExtra(HAVE_ITEMS_DAILY_REMAINDER,item.isDaily());
+//
                         startActivityForResult(i, REQUEST_ID_TODO_ITEM);
                     }
                 });
