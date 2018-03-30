@@ -37,7 +37,6 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created by uy on 9/9/2017.
@@ -78,8 +77,8 @@ public class scheduleActivity extends AppCompatActivity {
     public AdView mAdView;
     public Context context;
     public SharedPreferences prefForSchedule;
-    public static HashMap<String,Integer> HashForDailyScheduler  = new HashMap<>();
-    public static HashMap<String,Integer> HashForNormalScheduler  = new HashMap<>();
+  //  public static HashMap<String,Integer> HashForDailyScheduler  = new HashMap<>();
+  //  public static HashMap<String,Integer> HashForNormalScheduler  = new HashMap<>();
     public static int EditedToDoPossition;
 
     @Override
@@ -293,10 +292,10 @@ public class scheduleActivity extends AppCompatActivity {
     public void CreatingHashMapForDailyScheduler(){
 
 
-    HashForDailyScheduler.clear();
-    HashForNormalScheduler.clear();
+    //HashForDailyScheduler.clear();
+   // HashForNormalScheduler.clear();
 
-    mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+
 
 
     //Hash for daily scheduler
@@ -306,13 +305,21 @@ public class scheduleActivity extends AppCompatActivity {
         String key=Item.getToDoContent()+Item.getToDoText();
 
 
-        //TODO dummy
-        if(EditedToDoPossition==i&&Item.equals(mPreviousItem))
 
-        if(!HashForDailyScheduler.containsValue(i)&&Item.isDaily()){
-            Log.d("GK","A daily remainder is added to hashmap");
-            HashForDailyScheduler.put(key,i);
-        }
+
+
+        //TODO dummy
+      //  if(EditedToDoPossition==i&&Item.equals(mPreviousItem))
+
+
+
+//        if(!HashForDailyScheduler.containsValue(i)&&Item.isDaily()){
+//          // Log.d("GK","A daily remainder is added to hashmap");
+//            HashForDailyScheduler.put(key,i);
+//        }
+
+
+
 
 
 
@@ -320,15 +327,15 @@ public class scheduleActivity extends AppCompatActivity {
 
         //REMOVE THE NON DAILY REMAINDERS
 
-        if((!Item.isDaily()&&!Item.hasReminder()&&(mPreviousItem.isDaily()&&mPreviousItem.hasReminder()))&&
-                (Item.isDaily()&&Item.hasReminder()&&(!mPreviousItem.isDaily()&&!mPreviousItem.hasReminder()))   ){
-
-            Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
-            deleteDaily(in,HashForDailyScheduler.get(key));
-            HashForDailyScheduler.remove(key);
-            Log.d("GK","REMOVE THE NON DAILY REMAINDERS");
-
-        }
+//        if((!Item.isDaily()&&!Item.hasReminder()&&(mPreviousItem.isDaily()&&mPreviousItem.hasReminder()))&&
+//                (Item.isDaily()&&Item.hasReminder()&&(!mPreviousItem.isDaily()&&!mPreviousItem.hasReminder()))   ){
+//
+//           // Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
+//            deleteDaily(in,HashForDailyScheduler.get(key));
+//            HashForDailyScheduler.remove(key);
+//            Log.d("GK","REMOVE THE NON DAILY REMAINDERS");
+//
+//        }
 
 
     }
@@ -340,105 +347,117 @@ public class scheduleActivity extends AppCompatActivity {
         String key=Item.getToDoContent()+Item.getToDoText();
 
 
-        if(!HashForNormalScheduler.containsValue(i)&&(!Item.isDaily()&&Item.hasReminder())){
-            HashForNormalScheduler.put(Item.getToDoContent()+Item.getToDoText(),i);
-            Log.d("GK","A normal remainder is added to hashmap");
-        }
+//        if(!HashForNormalScheduler.containsValue(i)&&(!Item.isDaily()&&Item.hasReminder())){
+//            HashForNormalScheduler.put(Item.getToDoContent()+Item.getToDoText(),i);
+//           // Log.d("GK","A normal remainder is added to hashmap");
+//        }
 
 
 
         //REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY
 
-        if((!Item.hasReminder()&&Item.isDaily())&&(mPreviousItem.isDaily()&&!mPreviousItem.hasReminder())){
-
-            Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
-            deleteAlarm(in,HashForNormalScheduler.get(key));
-            HashForNormalScheduler.remove(key);
-            Log.d("GK","REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY");
-        }
+//        if((!Item.hasReminder()&&Item.isDaily())&&(mPreviousItem.isDaily()&&!mPreviousItem.hasReminder())){
+//
+//            Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
+//            deleteNormalAlarm(in,HashForNormalScheduler.get(key));
+//            HashForNormalScheduler.remove(key);
+//            Log.d("GK","REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY");
+//        }
 
     }
 
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-        Log.d("GK","Hash element for daily scheduler "+HashForDailyScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
-    }
+//    for(int i=0;i<mToDoItemsArrayList.size();i++){
+//        Log.d("GK","Hash element for daily scheduler "+HashForDailyScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
+//    }
 
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-        Log.d("GK","Hash element for Normal scheduler "+HashForNormalScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
-    }
+//    for(int i=0;i<mToDoItemsArrayList.size();i++){
+//        Log.d("GK","Hash element for Normal scheduler "+HashForNormalScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
+//    }
 
 }
 
 
-    private void setAlarms(){
-        if(mToDoItemsArrayList!=null){
-            for(ToDoItem item : mToDoItemsArrayList){
-                if(item.hasReminder() && item.getToDoDate()!=null){
-                    if(item.getToDoDate().before(new Date())){
+    private void setAlarms() {
+
+        //First Load Data
+        mToDoItemsArrayList = getLocallyStoredData(storeRetrieveData);
+        Log.d("GK", "TODO LIST SIZE IN SET ALARM IS " + mToDoItemsArrayList.size());
+
+        if (mToDoItemsArrayList != null) {
+            for (int i = 0; i < mToDoItemsArrayList.size(); i++) {
+
+                ToDoItem item = mToDoItemsArrayList.get(i);
+                if (item.hasReminder() && item.getToDoDate() != null) {
+                    if (item.getToDoDate().before(new Date())) {
                         item.setToDoDate(null);
                         continue;
                     }
 
-                    Log.d("GK","SET ALARMS");
-                    Intent i = new Intent(this, TodoNotificationService.class);
-
-                    i.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
+                    Intent in = new Intent(scheduleActivity.this, TodoNotificationService.class);
+                    in.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
 
                     //TODO dummy
-                    if(item.isDaily())
-                    {
-                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(item.isDaily()) );
-                        Log.d("GK","item.isDaily()");
+                    if (item.isDaily()) {
+                        in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(item.isDaily()));
+                        Log.d("GK", "DAILY ALARM IN SET ALARM");
+                    } else {
+
+                        Log.d("GK", "NORMAL ALARM  IN SET ALARM");
+                        in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(!item.isDaily()));
+
                     }
-                    else
-                    {
 
-                        Log.d("GK","not item.isDaily()");
-                        i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(!item.isDaily()) );
 
+                    //First delete all alarm
+                    if (doesDailyPendingIntentExist(in, i)) {
+                        deleteDaily(in, i);
+                    } else if (doesNormalPendingIntentExist(in, i)) {
+                        deleteNormalAlarm(in, i);
                     }
 
 
                     //Is reapeated?
-                    if(item.isDaily())
-                    {
-                        if(HashForDailyScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent())!=null)
-                        {
-                            i.putExtra(TodoNotificationService.TODOUUID, HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()));
-                            createAlarm(i,HashForDailyScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),true);
-                        }
-
+                    if (item.isDaily()) {
+                        createAlarm(in, i, item.getToDoDate().getTime(), true);
                     }
-                    else
-                    {
-                        if(HashForNormalScheduler.containsKey(item.getToDoText()+item.getToDoContent())&&HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent())!=null){
+                } else {
 
-                            i.putExtra(TodoNotificationService.TODOUUID, HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()));
-                            createAlarm(i,HashForNormalScheduler.get(item.getToDoText()+item.getToDoContent()), item.getToDoDate().getTime(),false);
+                    createAlarm(in, i, item.getToDoDate().getTime(), false);
 
-
-
-                        }
-
-                    }
 
                 }
+
             }
+
         }
     }
-
 
     public AlarmManager getAlarmManager(){
         return (AlarmManager)getSystemService(ALARM_SERVICE);
     }
 
-    private boolean doesPendingIntentExist(Intent i, int requestCode){
+
+    private boolean doesNormalPendingIntentExist(Intent i, int requestCode){
         PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_NO_CREATE);
+        boolean b =pi!=null;
+        Log.d("GK","A NORMAL REMINDER EXIST "+b+" WHERE REQUEST CODE IS "+requestCode);
+
         return pi!=null;
     }
 
 
-    private void createAlarm(Intent i, int requestCode, long timeInMillis,boolean willRepeate){
+
+    public boolean doesDailyPendingIntentExist(Intent i, int requestCode){
+
+        PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        boolean b =pi!=null;
+        Log.d("GK","A DAILY REMINDER EXIST "+b+" WHERE REQUEST CODE IS "+requestCode);
+
+        return pi!=null;
+    }
+
+
+    public void createAlarm(Intent i, int requestCode, long timeInMillis,boolean willRepeate){
 
         AlarmManager am = getAlarmManager();
         PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -478,13 +497,8 @@ public class scheduleActivity extends AppCompatActivity {
 
     }
 
-    private boolean doesDailyPendingIntentExist(Intent i, int requestCode){
-        PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        boolean b =pi!=null;
-        Log.d("GK","DOES DAILY EXIST "+b);
-        return pi!=null;
-    }
-    private void  deleteDaily(Intent i, int requestCode){
+
+    public void  deleteDaily(Intent i, int requestCode){
 
         if(doesDailyPendingIntentExist(i,requestCode)){
             PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -504,8 +518,8 @@ public class scheduleActivity extends AppCompatActivity {
 
 
     }
-    private void deleteAlarm(Intent i, int requestCode){
-        if(doesPendingIntentExist(i, requestCode)){
+    public void deleteNormalAlarm(Intent i, int requestCode){
+        if(doesNormalPendingIntentExist(i, requestCode)){
 
             Log.d("GK","IF  DELETE");
             PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_NO_CREATE);
@@ -522,7 +536,7 @@ public class scheduleActivity extends AppCompatActivity {
 
 
 
-            Log.d("GK", "PI Cancelled + request code "+requestCode + doesPendingIntentExist(i, requestCode)+" "+prefForSchedule.getBoolean(String.valueOf(requestCode),false));
+            Log.d("GK", "PI Cancelled + request code "+requestCode + doesNormalPendingIntentExist(i, requestCode)+" "+prefForSchedule.getBoolean(String.valueOf(requestCode),false));
        }
        else {
             Log.d("GK","else DELETE");
@@ -569,22 +583,16 @@ public class scheduleActivity extends AppCompatActivity {
 
 //IF it is daily
 
-            if(mJustDeletedToDoItem.isDaily()){
+            if(mJustDeletedToDoItem.isDaily()) {
 
-                if(HashForDailyScheduler.containsKey(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent())){
-                    deleteDaily(i,HashForDailyScheduler.get(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()));
-                    HashForDailyScheduler.remove(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent());
-                }
+                    deleteDaily(i,position);
 
             }
             else
             {
 
-                if(HashForNormalScheduler.containsKey(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()))
-                {
-                    deleteAlarm(i,HashForNormalScheduler.get(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()));
-                    HashForNormalScheduler.remove(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent());
-                }
+                    deleteNormalAlarm(i,position);
+
 
             }
 
@@ -622,11 +630,11 @@ public class scheduleActivity extends AppCompatActivity {
 
                                 if(mJustDeletedToDoItem.isDaily())
                                 {
-                                    if(HashForDailyScheduler.containsKey(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()))
-                                        createAlarm(i,HashForDailyScheduler.get(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()), mJustDeletedToDoItem.getToDoDate().getTime(),true);
+
+                                        createAlarm(i,,true);
                                 }
                                 else
-                                    createAlarm(i,HashForNormalScheduler.get(mJustDeletedToDoItem.getToDoText()+mJustDeletedToDoItem.getToDoContent()),mJustDeletedToDoItem.getToDoDate().getTime(),false);
+                                    createAlarm(i,,false);
 
 
                             }
