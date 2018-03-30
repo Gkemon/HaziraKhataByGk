@@ -80,6 +80,7 @@ public class scheduleActivity extends AppCompatActivity {
     public SharedPreferences prefForSchedule;
     public static HashMap<String,Integer> HashForDailyScheduler  = new HashMap<>();
     public static HashMap<String,Integer> HashForNormalScheduler  = new HashMap<>();
+    public static int EditedToDoPossition;
 
     @Override
     protected void onResume() {
@@ -90,10 +91,10 @@ public class scheduleActivity extends AppCompatActivity {
         if(mResultTodo!=null){
             ResultCreate(mResultTodo);
             mResultTodo=null;
-            Log.d("GK","mResultTodo!=null");
+           // Log.d("GK","mResultTodo!=null");
         }
         else {
-            Log.d("GK","mResultTodo==null");
+         //   Log.d("GK","mResultTodo==null");
         }
 
     }
@@ -137,7 +138,7 @@ public class scheduleActivity extends AppCompatActivity {
 //        mAdView.loadAd(adRequest);
 //
 //
-        Log.d("GK","onStart");
+     //   Log.d("GK","onStart");
         Refreshing();
 
         super.onStart();
@@ -283,6 +284,12 @@ public class scheduleActivity extends AppCompatActivity {
         return items;
 
     }
+
+
+
+
+
+
     public void CreatingHashMapForDailyScheduler(){
 
 
@@ -299,10 +306,15 @@ public class scheduleActivity extends AppCompatActivity {
         String key=Item.getToDoContent()+Item.getToDoText();
 
 
+        //TODO dummy
+        if(EditedToDoPossition==i&&Item.equals(mPreviousItem))
+
         if(!HashForDailyScheduler.containsValue(i)&&Item.isDaily()){
             Log.d("GK","A daily remainder is added to hashmap");
             HashForDailyScheduler.put(key,i);
         }
+
+
 
 
 
@@ -590,7 +602,7 @@ public class scheduleActivity extends AppCompatActivity {
                             if(mJustDeletedToDoItem.getToDoDate()!=null && mJustDeletedToDoItem.hasReminder()){
                                 Intent i = new Intent(scheduleActivity.this, TodoNotificationService.class);
                                 i.putExtra(TodoNotificationService.TODOTEXT, mJustDeletedToDoItem.getToDoText());
-                                i.putExtra(TodoNotificationService.TODOUUID, mJustDeletedToDoItem.getIdentifier());
+                                i.putExtra(TodoNotificationService.TODOUUID,position);
 
                                 //TODO dummy
                                 if(mJustDeletedToDoItem.isDaily())
@@ -731,6 +743,7 @@ public class scheduleActivity extends AppCompatActivity {
 
                         Intent i = new Intent(scheduleActivity.this, AddToDoActivity.class);
                         i.putExtra(TODOITEM, item);
+                        EditedToDoPossition=ViewHolder.this.getAdapterPosition();
 //                        i.putExtra(ITEMS_PREVIOUS_POS,ViewHolder.this.getAdapterPosition());
 //                        i.putExtra(HAVE_ITEMS_DAILY_REMAINDER,item.hasReminder());
 //                        i.putExtra(HAVE_ITEMS_DAILY_REMAINDER,item.isDaily());

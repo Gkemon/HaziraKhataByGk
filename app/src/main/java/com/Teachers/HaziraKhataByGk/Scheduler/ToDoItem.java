@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Scheduler;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 public class ToDoItem implements Serializable {
     private String mToDoText;
@@ -11,7 +10,7 @@ public class ToDoItem implements Serializable {
     private int mTodoColor;
     private Date mToDoDate;
     private boolean isDaily=false;
-    private UUID mTodoIdentifier;
+  //  private UUID mTodoIdentifier;
     private String massageForDailySchedule;
 
     public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate,String content){
@@ -19,7 +18,7 @@ public class ToDoItem implements Serializable {
         mHasReminder = hasReminder;
         mToDoDate = toDoDate;
         mTodoColor = 1677725;
-        mTodoIdentifier = UUID.randomUUID();
+      //  mTodoIdentifier = UUID.randomUUID();
         mToDoContent=content;
     }
 
@@ -85,8 +84,8 @@ public class ToDoItem implements Serializable {
     }
 
 
-    public UUID getIdentifier(){
-        return mTodoIdentifier;
-    }
+//    public UUID getIdentifier(){
+//        return mTodoIdentifier;
+//    }
 }
 
