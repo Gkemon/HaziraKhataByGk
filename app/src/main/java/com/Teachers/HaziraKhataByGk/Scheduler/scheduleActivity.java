@@ -76,9 +76,6 @@ public class scheduleActivity extends AppCompatActivity {
     public LinearLayout adlayout;
     public AdView mAdView;
     public Context context;
-    public SharedPreferences prefForSchedule;
-  //  public static HashMap<String,Integer> HashForDailyScheduler  = new HashMap<>();
-  //  public static HashMap<String,Integer> HashForNormalScheduler  = new HashMap<>();
     public static int EditedToDoPossition;
 
     @Override
@@ -89,7 +86,7 @@ public class scheduleActivity extends AppCompatActivity {
 
         if(mResultTodo!=null){
             ResultCreate(mResultTodo);
-            mResultTodo=null;
+            mResultTodo=new ToDoItem();
            // Log.d("GK","mResultTodo!=null");
         }
         else {
@@ -172,6 +169,8 @@ public class scheduleActivity extends AppCompatActivity {
 
 
         mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity;
+
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(CHANGE_OCCURED, false);
@@ -185,7 +184,8 @@ public class scheduleActivity extends AppCompatActivity {
 //        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
 //        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
 
-        setAlarms();
+        //todo dummy
+       // setAlarms();
         mCoordLayout = (CoordinatorLayout)findViewById(R.id.myCoordinatorLayout);
         mAddToDoItemFAB = (FloatingActionButton)findViewById(R.id.addToDoItemFAB);
 
@@ -205,6 +205,7 @@ public class scheduleActivity extends AppCompatActivity {
                     startActivityForResult(newTodo, REQUEST_ID_TODO_ITEM);
                 }
             });
+
         mRecyclerView = (RecyclerViewEmptySupport)findViewById(R.id.toDoRecyclerView);
 
         if (theme.equals(LIGHTTHEME)) {
@@ -230,6 +231,7 @@ public class scheduleActivity extends AppCompatActivity {
                 CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)mAddToDoItemFAB.getLayoutParams();
                 int fabMargin = lp.bottomMargin;
                 mAddToDoItemFAB.animate().translationY(mAddToDoItemFAB.getHeight()+fabMargin).setInterpolator(new AccelerateInterpolator(2.0f)).start();
+
             }
         };
 
@@ -307,7 +309,6 @@ public class scheduleActivity extends AppCompatActivity {
 
 
 
-        //TODO dummy
       //  if(EditedToDoPossition==i&&Item.equals(mPreviousItem))
 
 
@@ -380,6 +381,8 @@ public class scheduleActivity extends AppCompatActivity {
 
         //First Load Data
         mToDoItemsArrayList = getLocallyStoredData(storeRetrieveData);
+        //to do dummy
+       // mToDoItemsArrayList= StoreRetrieveData.loadFromFile();
         Log.d("GK", "TODO LIST SIZE IN SET ALARM IS " + mToDoItemsArrayList.size());
 
         if (mToDoItemsArrayList != null) {
@@ -396,11 +399,10 @@ public class scheduleActivity extends AppCompatActivity {
                     in.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
                     in.putExtra(TodoNotificationService.TODOUUID,i);
 
-                    //TODO dummy
                     if (item.isDaily()) {
                         in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(item.isDaily()));
                         Log.d("GK", "DAILY ALARM IN SET ALARM");
-                    } else {
+                    } else if(item.hasReminder()){
 
                         Log.d("GK", "NORMAL ALARM  IN SET ALARM");
                         in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(!item.isDaily()));
@@ -414,7 +416,7 @@ public class scheduleActivity extends AppCompatActivity {
                     //First delete all alarm
                     if (item.isDaily()) {
                         deleteDaily(in, i);
-                    } else {
+                    } else if(item.hasReminder()) {
                         deleteNormalAlarm(in, i);
                     }
 
@@ -623,7 +625,7 @@ public class scheduleActivity extends AppCompatActivity {
             if(mJustDeletedToDoItem.isDaily()) {
                     deleteDaily(i,position);
             }
-            else
+            else if(mJustDeletedToDoItem.hasReminder())
             {
                     deleteNormalAlarm(i,position);
             }
@@ -645,7 +647,6 @@ public class scheduleActivity extends AppCompatActivity {
                                 i.putExtra(TodoNotificationService.TODOUUID,position);
 
 
-                                //TODO dummy
                                 if(mJustDeletedToDoItem.isDaily())
                                 {
                                     i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(mJustDeletedToDoItem.isDaily()) );
@@ -710,7 +711,7 @@ public class scheduleActivity extends AppCompatActivity {
             if(item.getToDoDate()!=null){
 
                 //Set Daily msg
-                if(item.getMassageForDailySchedule()!=null&&item.isDaily()){
+                if(item.getMassageForDailySchedule()!=null){
                     holder.mTimeTextView.setText(item.getMassageForDailySchedule());
                 }
                 else if(item.hasReminder()){
@@ -807,11 +808,12 @@ public class scheduleActivity extends AppCompatActivity {
         Log.d("GK","Refreshing");
 
         //Empty View and set alarms
+        mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
 
-        CreatingHashMapForDailyScheduler();
-
-
-        //TODO: Dummy for seeing HashMap
+        //FOR SAFETY AGAINST NULL POINTER EXCEPTION
+        if(mToDoItemsArrayList.size()==0||mToDoItemsArrayList==null){
+            mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=StoreRetrieveData.loadFromFile();
+        }
 
         if(mToDoItemsArrayList.isEmpty())
             Log.d("GK","LIST IS EMPTY IN RESUME");
@@ -873,16 +875,16 @@ public class scheduleActivity extends AppCompatActivity {
 
             if(item.isDaily())
             {
-
-                //Check first that actually we have the element
-
+                    //Check first that actually we have the element
                     in.putExtra(TodoNotificationService.TODOUUID,EditedToDoPossition);
                     createAlarm(in,EditedToDoPossition, item.getToDoDate().getTime(),true);
 
             }
             else{
+
                     in.putExtra(TodoNotificationService.TODOUUID,EditedToDoPossition);
                     createAlarm(in,EditedToDoPossition, item.getToDoDate().getTime(),false);
+
             }
 
 
@@ -891,27 +893,34 @@ public class scheduleActivity extends AppCompatActivity {
         Log.d("GK","EditedToDoPossition : "+EditedToDoPossition);
 
         //This is for save the to do items to the server
-        for(int i = 0; i<mToDoItemsArrayList.size();i++){
-            if(EditedToDoPossition==i){
+//        for(int i = 0; i<mToDoItemsArrayList.size();i++){
+//            if(EditedToDoPossition==i){
+//
+//                mToDoItemsArrayList.set(i, item);
+//                existed = true;
+//                adapter.notifyDataSetChanged();
+//                MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+//               // Log.d("GK","CHANGED and existed:"+existed);
+//                storeRetrieveData.saveToFile(mToDoItemsArrayList);
+//                break;
+//            }
+//        }
+//        if(!existed){
+//            addToDataStore(item);
+//        }
 
-                mToDoItemsArrayList.set(i, item);
-                existed = true;
-                adapter.notifyDataSetChanged();
-                MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-               // Log.d("GK","CHANGED and existed:"+existed);
-                storeRetrieveData.saveToFile(mToDoItemsArrayList);
-                break;
-            }
-        }
-        if(!existed){
-            addToDataStore(item);
-        }
-        mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-        MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+
+        //FOR SCHEDULES
+
+
+        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
+        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
+        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
+
+        Log.d("GK","List size is : "+mToDoItemsArrayList.size()+" in Result create");
        // Log.d("eee","Result");
 
         adapter = new BasicListAdapter(mToDoItemsArrayList);
-
       //  if(adapter.getItemCount()!=0)Log.d("eee","adapers item from result which is not zero");
         mRecyclerView.setAdapter(adapter);
         setAlarms();

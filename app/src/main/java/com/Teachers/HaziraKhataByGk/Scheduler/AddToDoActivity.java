@@ -39,9 +39,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.Teachers.HaziraKhataByGk.MainActivity.toDoItemsFromMainActivity;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.EditedToDoPossition;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.FILENAME;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.PREVIOUS_ITEM;
+import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.getLocallyStoredData;
 
 public class AddToDoActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private EditText mToDoTextBodyEditText;
@@ -100,10 +102,13 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mPreviousItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
 
 
-        Log.d("GK","mToDoItemsArrayList "+mToDoItemsArrayList.size()+"in create");
+        //mToDoItemsArrayList = (ArrayList<ToDoItem>)getIntent().getSerializableExtra("TODOLIST");
+       // Log.d("GK","mToDoItemsArrayList "+mToDoItemsArrayList.size()+" in create");
 
-
-        mToDoItemsArrayList = (ArrayList<ToDoItem>)getIntent().getSerializableExtra("TODOLIST");
+//        if(mToDoItemsArrayList==null||mToDoItemsArrayList.size()==0){
+//            mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
+//            Log.d("GK","mToDoItemsArrayList "+mToDoItemsArrayList.size()+" in create when it was zero sized");
+//        }
 
         //To find that the to do item is newly created
         if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
@@ -239,7 +244,6 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                     return;
                 }
 
-
                if (mToDoTextBodyEditText.length() <= 0){
                     mToDoTextBodyEditText.setError(getString(R.string.todo_error));
                 }
@@ -250,7 +254,6 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                    progressBar.setVisibility(View.VISIBLE);
                     makeResult(RESULT_OK);
                    finish();
-
 //                   mInterstitialAd = new InterstitialAd(AddToDoActivity.this);
 //                   // set the ad unit ID
 //                   mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
@@ -281,7 +284,6 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 //                       }
 //                   });
 //
-
                 }
                 hideKeyboard(mToDoTextBodyEditText);
             }
@@ -545,46 +547,39 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
         //WE HAVE A BUG AT FIRST SO WE DO THAT
         storeRetrieveData = new StoreRetrieveData(this, FILENAME);
-        mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
 
         if(IsNewToDo){
             Log.d("GK","IsNewToDo YES");
 
 
             storeRetrieveData.saveToFile(mUserToDoItem);
-          //  mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-          //  mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
-          //  mToDoItemsArrayList.add(mUserToDoItem);
-            mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
+            mToDoItemsArrayList.add(mUserToDoItem);
             MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+            storeRetrieveData.saveToFile(mToDoItemsArrayList);
+            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+
 
         }
         else {
             Log.d("GK","IsNewToDo NO");
 
             //Re collecting to avoid error
-           // mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-          //  mToDoItemsArrayList = StoreRetrieveData.loadFromFile();
+            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
             Log.e("GK","Array size :"+mToDoItemsArrayList.size());
 
             //This is for save the to do items to the server
-//            for(int i = 0; i<mToDoItemsArrayList.size();i++){
-//                ToDoItem item =mUserToDoItem;
-//                if((item.getToDoText()+item.getToDoContent()).equals(mToDoItemsArrayList.get(i).getToDoText()+mToDoItemsArrayList.get(i).getToDoContent())){
-//                    mToDoItemsArrayList.set(i, item);
-//                    MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-//                    storeRetrieveData.saveToFile(mToDoItemsArrayList);
-//                    break;
-//                }
-//            }
-
-            mToDoItemsArrayList.set(EditedToDoPossition, mUserToDoItem);
-            storeRetrieveData.saveToFile(mToDoItemsArrayList);
-            //mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-            mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
-            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-
+            for(int i = 0; i<mToDoItemsArrayList.size();i++){
+                ToDoItem item =mUserToDoItem;
+                if(EditedToDoPossition==i){
+                    mToDoItemsArrayList.set(i, item);
+                    MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+                    storeRetrieveData.saveToFile(mToDoItemsArrayList);
+                    break;
+                }
+            }
         }
+        Log.d("GK","List size is : "+ toDoItemsFromMainActivity.size()+" in makeresult");
 
         intent.putExtra(scheduleActivity.TODOITEM, mUserToDoItem);
         intent.putExtra(PREVIOUS_ITEM,mPreviousItem);
@@ -740,12 +735,12 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public void GetToDoItems(){
 
         mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
-        MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+        toDoItemsFromMainActivity=mToDoItemsArrayList;
 
         if(mToDoItemsArrayList==null){
-            Log.d("GK","Total todo size : "+MainActivity.toDoItemsFromMainActivity.size());
+            Log.d("GK","Total todo size : "+ toDoItemsFromMainActivity.size());
         }
-        else Log.d("GK","mToDoItemsArrayList not null in click. size is "+MainActivity.toDoItemsFromMainActivity.size());
+        else Log.d("GK","mToDoItemsArrayList not null in click. size is : "+ toDoItemsFromMainActivity.size());
 
 
 
@@ -767,9 +762,9 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         //CHECK THAT THE ITEM IS UNIQUE
-        for (int i = 0; i <MainActivity.toDoItemsFromMainActivity.size(); i++) {
-            Log.d("GK","TODO NEXT"+MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
-            if ((MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
+        for (int i = 0; i < toDoItemsFromMainActivity.size(); i++) {
+            Log.d("GK","TODO NEXT"+ toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
+            if ((toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
 
                 //when it is called from onbackpressed then don't need to show alertdialog
                 if(isInBackPressed) return true;
@@ -813,11 +808,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         Log.d("GK","TODO "+tempForTitle+tempForContent);
 
 
-
         //CHECK THAT THE ITEM IS UNIQUE
-        for (int i = 0; i <MainActivity.toDoItemsFromMainActivity.size(); i++) {
-            Log.d("GK","TODO NEXT"+MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
-            if ((MainActivity.toDoItemsFromMainActivity.get(i).getToDoText()+MainActivity.toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
+        for (int i = 0; i < toDoItemsFromMainActivity.size(); i++) {
+            Log.d("GK","TODO NEXT "+ toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
+            if ((toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
 
                 //when it is called from onbackpressed then don't need to show alertdialog
 

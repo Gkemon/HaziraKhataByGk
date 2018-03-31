@@ -84,21 +84,24 @@ public class StoreRetrieveData {
     public static ArrayList<ToDoItem> loadFromFile(){
        final ArrayList<ToDoItem> items = new ArrayList<>();
 
-        //TODO:DATABASE CONNECTION
+        //DATABASE CONNECTION
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference();
 
 
-        //TODO: USER (for FB logic auth throw null pointer exception)
+        // USER (for FB logic auth throw null pointer exception)
         auth = FirebaseAuth.getInstance();
         mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
+
+        //todo dummy
+      databaseReference.keepSynced(true);
         mUserId=mFirebaseUser.getUid();
 
         MainActivity.databaseReference=databaseReference;
         MainActivity.mUserId=mUserId;
 
-        MainActivity.databaseReference.child("Users").child(MainActivity.mUserId).child("Schedule").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("GK","from loadFromFile "+dataSnapshot.getChildrenCount());
@@ -113,7 +116,14 @@ public class StoreRetrieveData {
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("GK","FIREBASE ERROR :"+databaseError.getMessage()+" Details :"+databaseError.getDetails());
             }
-        });
+        };
+
+        databaseReference.child("Users").child(mUserId).child("Schedule").removeEventListener(valueEventListener);
+        databaseReference.child("Users").child(mUserId).child("Schedule").addListenerForSingleValueEvent(valueEventListener);
+
+
+
+
 
 //        ArrayList<ToDoItem> items = new ArrayList<>();
 //        BufferedReader bufferedReader = null;
