@@ -20,10 +20,10 @@ public class DeleteNotificationService extends IntentService {
         mToDoItems = loadData();
         if(mToDoItems!=null){
             for(ToDoItem item : mToDoItems){
-                if(item.getIdentifier().equals(todoID)){
-                    mItem = item;
-                    break;
-                }
+//                if(item.getIdentifier().equals(todoID)){
+//                    mItem = item;
+//                    break;
+//                }
             }
             if(mItem!=null){
                 mToDoItems.remove(mItem);

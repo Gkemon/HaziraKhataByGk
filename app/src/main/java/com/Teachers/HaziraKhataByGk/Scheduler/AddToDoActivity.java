@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -40,10 +39,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData.loadFromFile;
+import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.EditedToDoPossition;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.FILENAME;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.PREVIOUS_ITEM;
-import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.getLocallyStoredData;
 
 public class AddToDoActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private EditText mToDoTextBodyEditText;
@@ -253,15 +251,15 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                     makeResult(RESULT_OK);
                    finish();
 
-                   mInterstitialAd = new InterstitialAd(AddToDoActivity.this);
-                   // set the ad unit ID
-                   mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
-
-                   AdRequest adRequest = new AdRequest.Builder()
-                           .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                           // Check the LogCat to get your test device ID
-                           .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                           .build();
+//                   mInterstitialAd = new InterstitialAd(AddToDoActivity.this);
+//                   // set the ad unit ID
+//                   mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
+//
+//                   AdRequest adRequest = new AdRequest.Builder()
+//                           .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                           // Check the LogCat to get your test device ID
+//                           .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
+//                           .build();
 
                    // Load ads into Interstitial Ads
 //                   mInterstitialAd.loadAd(adRequest);
@@ -520,8 +518,9 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
         mUserToDoItem.setToDoContent(mTodoContent);
         mUserToDoItem.setDaily(switchCompatForDailyRemind.isChecked());
-        //If remainder is not check then there is no scope to do it as an daily remainder
 
+
+        //If remainder is not check then there is no scope to do it as an daily remainder
         if(!mToDoDateSwitch.isChecked())mUserToDoItem.setDaily(false);
         mUserToDoItem.setHasReminder(mToDoDateSwitch.isChecked());
 
@@ -546,42 +545,45 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
         //WE HAVE A BUG AT FIRST SO WE DO THAT
         storeRetrieveData = new StoreRetrieveData(this, FILENAME);
+        mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
 
         if(IsNewToDo){
             Log.d("GK","IsNewToDo YES");
 
 
             storeRetrieveData.saveToFile(mUserToDoItem);
-            mToDoItemsArrayList.add(mUserToDoItem);
+          //  mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+          //  mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
+          //  mToDoItemsArrayList.add(mUserToDoItem);
+            mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
             MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-            storeRetrieveData.saveToFile(mToDoItemsArrayList);
-            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-
 
         }
         else {
             Log.d("GK","IsNewToDo NO");
 
             //Re collecting to avoid error
-            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-            mToDoItemsArrayList = loadFromFile();
+           // mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+          //  mToDoItemsArrayList = StoreRetrieveData.loadFromFile();
             Log.e("GK","Array size :"+mToDoItemsArrayList.size());
-            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
 
             //This is for save the to do items to the server
-            for(int i = 0; i<mToDoItemsArrayList.size();i++){
-                ToDoItem item =mUserToDoItem;
-                if((item.getToDoText()+item.getToDoContent()).equals(mToDoItemsArrayList.get(i).getToDoText()+mToDoItemsArrayList.get(i).getToDoContent())){
-                    mToDoItemsArrayList.set(i, item);
-                    MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-                    storeRetrieveData.saveToFile(mToDoItemsArrayList);
-                    break;
-                }
-            }
+//            for(int i = 0; i<mToDoItemsArrayList.size();i++){
+//                ToDoItem item =mUserToDoItem;
+//                if((item.getToDoText()+item.getToDoContent()).equals(mToDoItemsArrayList.get(i).getToDoText()+mToDoItemsArrayList.get(i).getToDoContent())){
+//                    mToDoItemsArrayList.set(i, item);
+//                    MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+//                    storeRetrieveData.saveToFile(mToDoItemsArrayList);
+//                    break;
+//                }
+//            }
 
-            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+            mToDoItemsArrayList.set(EditedToDoPossition, mUserToDoItem);
+            storeRetrieveData.saveToFile(mToDoItemsArrayList);
+            //mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
+            mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
             MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
+
         }
 
         intent.putExtra(scheduleActivity.TODOITEM, mUserToDoItem);
