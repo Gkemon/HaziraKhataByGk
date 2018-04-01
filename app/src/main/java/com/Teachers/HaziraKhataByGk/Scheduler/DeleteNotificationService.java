@@ -5,26 +5,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class DeleteNotificationService extends IntentService {
     private StoreRetrieveData storeRetrieveData;
     private ArrayList<ToDoItem> mToDoItems;
     private ToDoItem mItem;
+    private int position;
     public DeleteNotificationService(){
         super("DeleteNotificationService");
     }     @Override
     protected void onHandleIntent(Intent intent) {
         storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        UUID todoID = (UUID)intent.getSerializableExtra(TodoNotificationService.TODOUUID);
+        int position = (int)intent.getSerializableExtra(scheduleActivity.ITEM_POSITION);
         mToDoItems = loadData();
         if(mToDoItems!=null){
-            for(ToDoItem item : mToDoItems){
-//                if(item.getIdentifier().equals(todoID)){
-//                    mItem = item;
-//                    break;
-//                }
+
+
+            for(int i=0;i<mToDoItems.size();i++){
+                if(position==i){
+                    mItem = mToDoItems.get(i);
+                    break;
+                }
             }
+
+
             if(mItem!=null){
                 mToDoItems.remove(mItem);
                 dataChanged();
@@ -47,7 +51,9 @@ public class DeleteNotificationService extends IntentService {
             storeRetrieveData.saveToFile(mToDoItems);
         }         catch (Exception e) {
             e.printStackTrace();
-        }     }     @Override     public void onDestroy() {
+        }     }
+
+        @Override     public void onDestroy() {
             super.onDestroy();
             saveData();
     }

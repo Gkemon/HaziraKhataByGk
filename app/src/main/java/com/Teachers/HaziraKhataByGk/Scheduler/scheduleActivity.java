@@ -56,6 +56,7 @@ public class scheduleActivity extends AppCompatActivity {
     public static final String DATE_TIME_FORMAT_12_HOUR = "MMM d, yyyy  h:mm a";
     public static final String DATE_TIME_FORMAT_24_HOUR = "MMM d, yyyy  k:mm";
     public static final String ITEMS_PREVIOUS_POS="pos";
+    public static final String ITEM_POSITION="POSITION";
     public static final String HAVE_ITEMS_DAILY_REMAINDER="daily_remainder";
     public static final String HAVE_ITEMS_NORMAL_REMAINDER="normal_remainder";
     public static final String PREVIOUS_ITEM="PREVIOUS_ITEM";
@@ -76,7 +77,7 @@ public class scheduleActivity extends AppCompatActivity {
     public LinearLayout adlayout;
     public AdView mAdView;
     public Context context;
-    public static int EditedToDoPossition;
+    public static int EditedToDoPosition;
 
     @Override
     protected void onResume() {
@@ -84,13 +85,10 @@ public class scheduleActivity extends AppCompatActivity {
 
         Refreshing();
 
-        if(mResultTodo!=null){
+        //If it's title and content are blank so we don't need to create the result
+        if(mResultTodo!=null&&mResultTodo.getToDoContent().equals("")&&mResultTodo.getToDoText().equals("")){
             ResultCreate(mResultTodo);
-            mResultTodo=new ToDoItem();
-           // Log.d("GK","mResultTodo!=null");
-        }
-        else {
-         //   Log.d("GK","mResultTodo==null");
+            mResultTodo=null;
         }
 
     }
@@ -287,96 +285,6 @@ public class scheduleActivity extends AppCompatActivity {
 
 
 
-
-
-
-    public void CreatingHashMapForDailyScheduler(){
-
-
-    //HashForDailyScheduler.clear();
-   // HashForNormalScheduler.clear();
-
-
-
-
-    //Hash for daily scheduler
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-
-        ToDoItem Item=mToDoItemsArrayList.get(i);
-        String key=Item.getToDoContent()+Item.getToDoText();
-
-
-
-
-
-      //  if(EditedToDoPossition==i&&Item.equals(mPreviousItem))
-
-
-
-//        if(!HashForDailyScheduler.containsValue(i)&&Item.isDaily()){
-//          // Log.d("GK","A daily remainder is added to hashmap");
-//            HashForDailyScheduler.put(key,i);
-//        }
-
-
-
-
-
-
-
-
-        //REMOVE THE NON DAILY REMAINDERS
-
-//        if((!Item.isDaily()&&!Item.hasReminder()&&(mPreviousItem.isDaily()&&mPreviousItem.hasReminder()))&&
-//                (Item.isDaily()&&Item.hasReminder()&&(!mPreviousItem.isDaily()&&!mPreviousItem.hasReminder()))   ){
-//
-//           // Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
-//            deleteDaily(in,HashForDailyScheduler.get(key));
-//            HashForDailyScheduler.remove(key);
-//            Log.d("GK","REMOVE THE NON DAILY REMAINDERS");
-//
-//        }
-
-
-    }
-
-    //Hash for normal scheduler
-    for(int i=0;i<mToDoItemsArrayList.size();i++){
-
-        ToDoItem Item=mToDoItemsArrayList.get(i);
-        String key=Item.getToDoContent()+Item.getToDoText();
-
-
-//        if(!HashForNormalScheduler.containsValue(i)&&(!Item.isDaily()&&Item.hasReminder())){
-//            HashForNormalScheduler.put(Item.getToDoContent()+Item.getToDoText(),i);
-//           // Log.d("GK","A normal remainder is added to hashmap");
-//        }
-
-
-
-        //REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY
-
-//        if((!Item.hasReminder()&&Item.isDaily())&&(mPreviousItem.isDaily()&&!mPreviousItem.hasReminder())){
-//
-//            Intent in = new Intent(scheduleActivity.this,TodoNotificationService.class);
-//            deleteNormalAlarm(in,HashForNormalScheduler.get(key));
-//            HashForNormalScheduler.remove(key);
-//            Log.d("GK","REMOVE THE NON PREVIOUS REMAINDERS BECAUSE OF CHANGING FROM ADD ACTIVITY");
-//        }
-
-    }
-
-//    for(int i=0;i<mToDoItemsArrayList.size();i++){
-//        Log.d("GK","Hash element for daily scheduler "+HashForDailyScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
-//    }
-
-//    for(int i=0;i<mToDoItemsArrayList.size();i++){
-//        Log.d("GK","Hash element for Normal scheduler "+HashForNormalScheduler.get(mToDoItemsArrayList.get(i).getToDoContent()+mToDoItemsArrayList.get(i).getToDoText()));
-//    }
-
-}
-
-
     private void setAlarms() {
 
         //First Load Data
@@ -398,6 +306,8 @@ public class scheduleActivity extends AppCompatActivity {
                     Intent in = new Intent(scheduleActivity.this, TodoNotificationService.class);
                     in.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
                     in.putExtra(TodoNotificationService.TODOUUID,i);
+                    in.putExtra(scheduleActivity.ITEM_POSITION,i);
+
 
                     if (item.isDaily()) {
                         in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(item.isDaily()));
@@ -408,8 +318,6 @@ public class scheduleActivity extends AppCompatActivity {
                         in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(!item.isDaily()));
 
                     }
-
-
 
 
 
@@ -711,7 +619,7 @@ public class scheduleActivity extends AppCompatActivity {
             if(item.getToDoDate()!=null){
 
                 //Set Daily msg
-                if(item.getMassageForDailySchedule()!=null){
+                if(item.getMassageForDailySchedule()!=null&&item.isDaily()){
                     holder.mTimeTextView.setText(item.getMassageForDailySchedule());
                 }
                 else if(item.hasReminder()){
@@ -787,7 +695,7 @@ public class scheduleActivity extends AppCompatActivity {
 
                         Intent i = new Intent(scheduleActivity.this, AddToDoActivity.class);
                         i.putExtra(TODOITEM, item);
-                        EditedToDoPossition=ViewHolder.this.getAdapterPosition();
+                        EditedToDoPosition =ViewHolder.this.getAdapterPosition();
                         startActivityForResult(i, REQUEST_ID_TODO_ITEM);
                     }
                 });
@@ -852,6 +760,7 @@ public class scheduleActivity extends AppCompatActivity {
         if(item.hasReminder() && item.getToDoDate()!=null){
             Intent in = new Intent(this, TodoNotificationService.class);
             in.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
+            in.putExtra(scheduleActivity.ITEM_POSITION, EditedToDoPosition);
 
 
             //TODO dummy
@@ -867,34 +776,34 @@ public class scheduleActivity extends AppCompatActivity {
 
             //First delete all alarm
             if (item.isDaily()) {
-                deleteDaily(in, EditedToDoPossition);
+                deleteDaily(in, EditedToDoPosition);
             } else {
-                deleteNormalAlarm(in, EditedToDoPossition);
+                deleteNormalAlarm(in, EditedToDoPosition);
             }
 
 
             if(item.isDaily())
             {
                     //Check first that actually we have the element
-                    in.putExtra(TodoNotificationService.TODOUUID,EditedToDoPossition);
-                    createAlarm(in,EditedToDoPossition, item.getToDoDate().getTime(),true);
+                    in.putExtra(TodoNotificationService.TODOUUID, EditedToDoPosition);
+                    createAlarm(in, EditedToDoPosition, item.getToDoDate().getTime(),true);
 
             }
             else{
 
-                    in.putExtra(TodoNotificationService.TODOUUID,EditedToDoPossition);
-                    createAlarm(in,EditedToDoPossition, item.getToDoDate().getTime(),false);
+                    in.putExtra(TodoNotificationService.TODOUUID, EditedToDoPosition);
+                    createAlarm(in, EditedToDoPosition, item.getToDoDate().getTime(),false);
 
             }
 
 
         }
 
-        Log.d("GK","EditedToDoPossition : "+EditedToDoPossition);
+        Log.d("GK","EditedToDoPosition : "+ EditedToDoPosition);
 
         //This is for save the to do items to the server
 //        for(int i = 0; i<mToDoItemsArrayList.size();i++){
-//            if(EditedToDoPossition==i){
+//            if(EditedToDoPosition==i){
 //
 //                mToDoItemsArrayList.set(i, item);
 //                existed = true;

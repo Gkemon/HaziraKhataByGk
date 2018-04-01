@@ -118,6 +118,7 @@ public class StoreRetrieveData {
             }
         };
 
+        //todo dummy
         databaseReference.child("Users").child(mUserId).child("Schedule").removeEventListener(valueEventListener);
         databaseReference.child("Users").child(mUserId).child("Schedule").addListenerForSingleValueEvent(valueEventListener);
 

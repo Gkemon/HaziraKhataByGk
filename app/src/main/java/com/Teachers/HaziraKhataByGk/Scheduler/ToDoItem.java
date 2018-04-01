@@ -38,7 +38,7 @@ public class ToDoItem implements Serializable {
     }
 
     public ToDoItem(){
-       this("",false, null,"");
+       this("",true, null,"");
     }
     public String getToDoText() {
         return mToDoText;

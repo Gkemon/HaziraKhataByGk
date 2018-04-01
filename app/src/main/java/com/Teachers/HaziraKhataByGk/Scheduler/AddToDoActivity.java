@@ -17,6 +17,8 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,7 +42,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.Teachers.HaziraKhataByGk.MainActivity.toDoItemsFromMainActivity;
-import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.EditedToDoPossition;
+import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.EditedToDoPosition;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.FILENAME;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.PREVIOUS_ITEM;
 import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.getLocallyStoredData;
@@ -87,6 +89,14 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         else{
             setTheme(R.style.CustomStyle_DarkTheme);
         }
+
+
+        //HIDING NOTIFICATION BAR
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_test);
         mDateEditText = (EditText)findViewById(R.id.newTodoDateEditText);
@@ -167,7 +177,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             setEnterDateLayoutVisibleWithAnimations(true);
         }
         //for daily button
-        if(mUserHasReminder && (mUserReminderDate!=null)&&mUserToDoItem.isDaily())
+        if((mUserHasReminder && (mUserReminderDate!=null))&&(mUserToDoItem.isDaily()))
             switchCompatForDailyRemind.setChecked(true);
         else switchCompatForDailyRemind.setChecked(false);
 
@@ -571,7 +581,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             //This is for save the to do items to the server
             for(int i = 0; i<mToDoItemsArrayList.size();i++){
                 ToDoItem item =mUserToDoItem;
-                if(EditedToDoPossition==i){
+                if(EditedToDoPosition ==i){
                     mToDoItemsArrayList.set(i, item);
                     MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
                     storeRetrieveData.saveToFile(mToDoItemsArrayList);
@@ -595,6 +605,11 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             }
         }
 
+//When there is no to do text is setted
+        if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
+            super.onBackPressed();
+            finish();
+        }
 
         //IF we get any duplicate element then we can ignore it.
         Boolean isDuplicated= CheckDuplicateForOnBackPressed(true);
@@ -602,8 +617,8 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         makeResult(RESULT_OK);
         else makeResult(RESULT_CANCELED);
 
-
         super.onBackPressed();
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -712,6 +727,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         switchCompatForDailyRemind.setChecked(mUserToDoItem!=null&&mUserToDoItem.hasReminder()&&mUserToDoItem.isDaily());
+
         switchCompatForDailyRemind.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
