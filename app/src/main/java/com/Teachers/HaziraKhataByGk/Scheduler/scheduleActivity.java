@@ -86,7 +86,7 @@ public class scheduleActivity extends AppCompatActivity {
         Refreshing();
 
         //If it's title and content are blank so we don't need to create the result
-        if(mResultTodo!=null&&mResultTodo.getToDoContent().equals("")&&mResultTodo.getToDoText().equals("")){
+        if(mResultTodo!=null&&!mResultTodo.getToDoText().equals("")){
             ResultCreate(mResultTodo);
             mResultTodo=null;
         }
@@ -618,11 +618,15 @@ public class scheduleActivity extends AppCompatActivity {
 
             if(item.getToDoDate()!=null){
 
+                Log.d("GK",item.isDaily()+" IS DAILY ?");
+                Log.d("GK",item.getMassageForDailySchedule()+" HAS MASSEGE ?");
+                Log.d("GK",item.hasReminder()+" HAS reminder ?");
+
                 //Set Daily msg
-                if(item.getMassageForDailySchedule()!=null&&item.isDaily()){
+                if(item.getMassageForDailySchedule()!=null&&item.isDaily()&&item.hasReminder()){
                     holder.mTimeTextView.setText(item.getMassageForDailySchedule());
                 }
-                else if(item.hasReminder()){
+                else if(item.hasReminder()&&(!item.isDaily())){
                     String timeToShow;
                     if(android.text.format.DateFormat.is24HourFormat(scheduleActivity.this)){
                         timeToShow = AddToDoActivity.formatDate(scheduleActivity.DATE_TIME_FORMAT_24_HOUR, item.getToDoDate());
@@ -642,8 +646,6 @@ public class scheduleActivity extends AppCompatActivity {
                 holder.mToDoTextview.setMaxLines(1);
                 holder.mTimeTextView.setVisibility(View.VISIBLE);
                 Log.d("GK","IS DAILY");
-               // Log.d("GK","DATE IS "+item.getToDoDate().toString());
-//                holder.mToDoTextview.setVisibility(View.GONE);
             }
             else{
 

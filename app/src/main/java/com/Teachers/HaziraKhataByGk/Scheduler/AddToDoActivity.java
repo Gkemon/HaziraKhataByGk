@@ -506,6 +506,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
             if(switchCompatForDailyRemind.isChecked()){
                 mDateEditText.setText("প্রতিদিন");
+
             }
             else
             mDateEditText.setText(dateString);

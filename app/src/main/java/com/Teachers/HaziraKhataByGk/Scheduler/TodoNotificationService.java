@@ -61,8 +61,8 @@ long [] vibration ={1000,2000,3000};
             Intent intentForGOToSchedule = new Intent(this, scheduleActivity.class);
 
           //  This is actually stop the ringtone because i cannot do this anymore
-           PendingIntent pendingIntent = PendingIntent.getService(this, -11, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-           pendingIntent.cancel();
+          // PendingIntent pendingIntent = PendingIntent.getService(this, -11, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+       //    pendingIntent.cancel();
 
             Log.d("GK", "onHandleIntent called which was daily ");
             Notification notification = new Notification.Builder(this)
@@ -71,7 +71,7 @@ long [] vibration ={1000,2000,3000};
                     .setSmallIcon(R.drawable.ic_schedule_new)
                     .setAutoCancel(true)
                     .setVibrate(vibration)
-                    .setDeleteIntent(pendingIntent)
+                    .setDeleteIntent(PendingIntent.getService(this, -11, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT))//-11 because there is no possibility to exit and -11 intexed items.we don't want to remove the item because this is daily
                     .setContentIntent(PendingIntent.getActivity(this, mTodoUUID, intentForGOToSchedule, PendingIntent.FLAG_UPDATE_CURRENT))
                    .build();
             manager.notify(100, notification);
@@ -79,6 +79,7 @@ long [] vibration ={1000,2000,3000};
 
         }
         else {
+
             Log.d("GK", "onHandleIntent called which was not daily");
             Notification notification = new Notification.Builder(this)
                     .setTicker("হাজিরা খাতা")
@@ -90,6 +91,7 @@ long [] vibration ={1000,2000,3000};
                     .setContentIntent(PendingIntent.getActivity(this, mTodoUUID, i, PendingIntent.FLAG_UPDATE_CURRENT))
                     .build();
             manager.notify(100, notification);
+
         }
 
 
