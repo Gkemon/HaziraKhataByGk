@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         activity=this;
         context=this;
+
         if(getIntent()!=null) {
             if (!getIntent().getStringExtra("FLAG").equals("INSIDE")) {
                 if (auth.getCurrentUser() != null) {
@@ -188,11 +189,10 @@ public class LoginActivity extends AppCompatActivity {
 
             }
 
-
+ 
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
 
 
         btnChangeEmail.setOnClickListener(new View.OnClickListener() {
@@ -315,30 +315,60 @@ public class LoginActivity extends AppCompatActivity {
 
                         progressBar.setVisibility(View.VISIBLE);
 
-                        //authenticate user
-                        auth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                        // If sign in fails, display a message to the user. If sign in succeeds
-                                        // the auth state listener will be notified and logic to handle the
-                                        // signed in user can be handled in the listener.
-                                        progressBar.setVisibility(View.GONE);
-                                        if (!task.isSuccessful()) {
-                                            // there was an error
-                                            if (password.length() < 6) {
-                                                inputPassword.setError(getString(R.string.minimum_password));
+                        try {
+
+                            auth = FirebaseAuth.getInstance();
+                            //authenticate user
+                            auth.signInWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                            // If sign in fails, display a message to the user. If sign in succeeds
+                                            // the auth state listener will be notified and logic to handle the
+                                            // signed in user can be handled in the listener.
+                                            progressBar.setVisibility(View.GONE);
+                                            if (!task.isSuccessful()) {
+                                                // there was an error
+                                                if (password.length() < 6) {
+                                                    inputPassword.setError(getString(R.string.minimum_password));
+                                                } else {
+                                                    Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                                }
                                             } else {
-                                                Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
                                             }
-                                        } else {
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
                                         }
-                                    }
-                                });
+                                    });
+                        }
+                        catch (Exception e){
+
+
+                            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                            alertDialog.setMessage(" আপনার ডিভাইসের সমস্যার কারনে লগিন হচ্ছেনা । দয়া করে আবার চেষ্টা করুন অথবা ডেভেলপারকে জানান ফেসবুক গ্রুপে পোস্ট করে,ধন্যবাদ । সমস্যাটি হল : "+e.getMessage());
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"পোস্ট দিন",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            Intent intent5 =  getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",LoginActivity.this);
+
+                                            try {
+                                                startActivity(intent5);
+                                            }
+                                            catch (Exception e){
+                                                Toast.makeText(LoginActivity.this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+                                            }
+
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+
+                        }
+
                     }
                 });
 

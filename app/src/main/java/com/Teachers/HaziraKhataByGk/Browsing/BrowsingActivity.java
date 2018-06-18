@@ -198,9 +198,9 @@ public class BrowsingActivity extends AppCompatActivity{
 //
 //        if (item.getItemId() == R.id.action_bookmark) {
 //
-//            //TODO: For getting web title
+//            //TODO: For getting web subjectName
 //            if(!webView.getUrl().equals(url)){
-//                title=webView.getTitle();
+//                subjectName=webView.getTitle();
 //                url=webView.getUrl();
 //                TAG="OTHER";
 //                Log.d("GK","TAG is other now "+url);
@@ -248,13 +248,13 @@ public class BrowsingActivity extends AppCompatActivity{
 //            Intent intent = new Intent();
 //            intent.setAction(Intent.ACTION_SEND);
 //
-//            //TODO: For getting web title
+//            //TODO: For getting web subjectName
 //            if(!webView.getUrl().equals(url)){
-//                title=webView.getTitle();
+//                subjectName=webView.getTitle();
 //                url=webView.getUrl();
 //            }
 //
-//            intent.putExtra(Intent.EXTRA_TEXT,title+"\n"+"লিংক :"+url+"\n\n সংগ্রহ : #হাজিরা_খাতা \n বাংলাভাষায় প্রথম ক্লাস ম্যানেজমেন্ট এপ ।\n ডাউনলোড লিংক : ");
+//            intent.putExtra(Intent.EXTRA_TEXT,subjectName+"\n"+"লিংক :"+url+"\n\n সংগ্রহ : #হাজিরা_খাতা \n বাংলাভাষায় প্রথম ক্লাস ম্যানেজমেন্ট এপ ।\n ডাউনলোড লিংক : ");
 //            intent.setType("text/plain");
 //            startActivity(Intent.createChooser(intent,"শেয়ার করুন।"));
 //

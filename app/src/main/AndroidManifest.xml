@@ -7,12 +7,12 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/main_icon_hd_half"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
-        android:largeHeap="true"
         android:windowSoftInputMode="stateHidden|adjustPan">
 
         <!-- for FB LOGIN -->
@@ -40,8 +40,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
+            android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/AppThemeForNoActionBar">
@@ -53,8 +52,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
+            android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".ActActivity"
             android:theme="@style/AppThemeForNoActionBar" />
@@ -74,10 +72,8 @@
         <activity
             android:name=".StudentActActivity"
             android:theme="@style/AppThemeForNoActionBar" />
-        <activity
-            android:name=".studentAllInfoShowActiviy"
-            />
-            <!--android:theme="@style/AppThemeForNoActionBar"-->
+        <activity android:name=".studentAllInfoShowActiviy" />
+        <!-- android:theme="@style/AppThemeForNoActionBar" -->
 
         <activity
             android:name=".noteAddActivity"
@@ -125,32 +121,33 @@
 
         <activity
             android:name=".modelTestChoose"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
+            android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".model_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".result_activity"
-            android:theme="@style/AppThemeForNoActionBar">
-        </activity>
+            android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".about_activity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ResetPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MonthWiseClassDataActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FeesAcitvity" />
+        <activity
+            android:name=".MarkSheetHomeActivity"
+            android:label="@string/title_activity_mark_sheet_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MarksheetEditActivity"
             android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".FeesAcitvity">
+
         </activity>
     </application>
 

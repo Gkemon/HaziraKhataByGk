@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.Teachers.HaziraKhataByGk.ClassRoom_activity.FLAG_OF_CLASSROOM_ACTIVITY;
+
 public class AttendanceActivity extends AppCompatActivity {
     private static final String Tag = AttendanceActivity.class.getName();
     public static class_item classitemAttendence;
@@ -93,7 +95,7 @@ public class AttendanceActivity extends AppCompatActivity {
     }
         @Override
         protected void onResume () {
-            classitemAttendence = getIntent().getParcelableExtra("class_room");
+            classitemAttendence = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
             super.onResume();
         }
 
@@ -136,7 +138,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                    Intent intent = new Intent(AttendanceActivity.this,AttendanceActivity.class);
                                     intent.putExtra("DATE", time);
                                     intent.putExtra("SUBJECT", subject);
-                                    intent.putExtra("class_room", classitemAttendence);
+                                    intent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY, classitemAttendence);
                                     finish();
                                     startActivity(intent);
 
@@ -162,6 +164,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
             case R.id.printer:
                 Intent intent=new Intent(AttendanceActivity.this,printerActivity.class);
+                intent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY,classitemAttendence);
                 startActivity(intent);
 
             default:
@@ -195,6 +198,7 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     void Initialization(){
+
         checkHash = new HashMap<Integer, Boolean>();
         perStudentTotalAttendenceData=new HashMap<String, ArrayList<AttendenceData>>();
 
@@ -204,7 +208,8 @@ public class AttendanceActivity extends AppCompatActivity {
         mainlayout=findViewById(R.id.mainLayout);
         context = this;
         activity = this;
-        classitemAttendence = getIntent().getParcelableExtra("class_room");
+
+        classitemAttendence = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
 
         ShowIntroDialoage();
 
@@ -313,22 +318,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     perStudentTotalAttendenceData.put(student.getId(),attendenceDataArrayListForPerStudent);
 
 
-//
-//                    Query query = MainActivity.databaseReference.child(classitemAttendence.getName()+classitemAttendence.getSection()).child("Student").child(student.getId()).child("Attendance").orderByKey().limitToLast(1);
-//
-//                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            String status = dataSnapshot.child("status").getValue().toString();
-//                            previousClassAttendenceStatus=status;
-//                            Log.d("GK",status+" is the status");
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//                            //Handle possible errors.
-//                        }
-//                    });
+
                     if (totalClass != 0)  //THIS IS FOR AVOID ARITHMETIC EXCEPTION
                         totalAttendPersenten = (attendClass * 100) / totalClass;
 

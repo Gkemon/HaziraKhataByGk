@@ -166,7 +166,7 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
                      .build();
 
              Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
-             intent.putExtra("title","1");
+             intent.putExtra("subjectName","1");
              startActivity(intent);
 
              // Load ads into Interstitial Ads
@@ -179,7 +179,7 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
 //                 @Override
 //                 public void onAdFailedToLoad(int i) {
 //                     Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
-//                     intent.putExtra("title","1");
+//                     intent.putExtra("subjectName","1");
 //                     startActivity(intent);
 //                     super.onAdFailedToLoad(i);
 //                 }
@@ -187,7 +187,7 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
 //                 @Override
 //                 public void onAdClosed() {
 //                     Intent intent=new Intent(MainActivity.activity,text_show_activity.class);
-//                     intent.putExtra("title","1");
+//                     intent.putExtra("subjectName","1");
 //                     startActivity(intent);
 //                     super.onAdClosed();
 //                 }

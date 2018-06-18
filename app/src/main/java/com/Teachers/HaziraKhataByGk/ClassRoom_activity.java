@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.adapter.noteListAdapter;
+import com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.model.Notes;
@@ -61,9 +62,10 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
     private LinearLayout linearLayoutForPresent, linearLayoutForStudentProfile;
     public static class_item classitem;
     public static List<Notes> notesList;
-    public Button feesButton,DailyAndMontlyRecord;
+    public Button feesButton,DailyAndMontlyRecord,marksheetButton;
     View EmptyView;
     public LinearLayout adlayout;
+    public static String FLAG_OF_CLASSROOM_ACTIVITY="class_room";
 
     //for class activity to class record
     public static List<student> studentListFromAttendenceActivity;
@@ -102,33 +104,6 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
         ClickListenerForDailyAndMonthlyRecord();
 
     }
-    //    @Override
-//    protected void onStart() {
-//        super.onStart();
-//       // LoadNotes();
-//    }
-//    private void LoadNotes(){
-//        databaseHandler = new databaseHandler(this);
-//
-//        List<Notes> Notelist = new ArrayList<>();
-//
-//        Cursor cursor = databaseHandler.retrieveNotes();
-//        Notes Notes;
-//        cursor.moveToFirst();
-//        if (cursor.moveToFirst()) {
-//            do {
-//                //add here the total info of student in to the STUDENT class_room from DATABASE
-//                Notes = new Notes();
-//                Notes.setheading(cursor.getString(0));
-//                Notes.setContent(cursor.getString(1));
-//                Notelist.add(Notes);
-//            }while (cursor.moveToNext());
-//        }
-//
-//        noteListAdapter.clear();
-//        noteListAdapter.addAll(Notelist);
-//
-//    }
 
     @Override
     public void onItemClick(int position, View view) {
@@ -166,7 +141,7 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
                         Intent launchinIntent = new Intent(ClassRoom_activity.activity, AttendanceActivity.class);
                         launchinIntent.putExtra("DATE", formatedDate);
                         launchinIntent.putExtra("SUBJECT", subject);
-                        launchinIntent.putExtra("class_room", ClassRoom_activity.classitem);
+                        launchinIntent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY, ClassRoom_activity.classitem);
                         ClassRoom_activity.activity.startActivity(launchinIntent);
                     }
                 }
@@ -179,23 +154,8 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
         }
     }
 
-    @Override
-    public void onPause() {
-//        if (mAdView != null) {
-//            mAdView.pause();
-//        }
-        super.onPause();
-    }
 
 
-
-    @Override
-    public void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
-        super.onDestroy();
-    }
 
     @Override
     protected void onStart() {
@@ -295,6 +255,8 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
         feesButton=(Button)findViewById(R.id.feesButton);
         feesButton.setVisibility(View.GONE);
 
+        marksheetButton = (Button) findViewById(R.id.marksheet);
+
 
         studentListFromAttendenceActivity=new ArrayList<>();
         studentListForPrintActiviyFromAttendenceActivity=new ArrayList<>();
@@ -316,6 +278,16 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(ClassRoom_activity.activity,FeesAcitvity.class);
+                activity.startActivity(intent);
+            }
+        });
+
+        marksheetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(ClassRoom_activity.activity,MarkSheetHomeActivity.class);
+                intent.putExtra(ContantsForGlobal.CLASS_NAME,classitem.getName());
+                intent.putExtra(ContantsForGlobal.CLASS_SECTION,classitem.getSection());
                 activity.startActivity(intent);
             }
         });
@@ -396,6 +368,7 @@ public class ClassRoom_activity extends AppCompatActivity  implements RecyclerIt
     }
 
     void LoadData(){
+
         MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

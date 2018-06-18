@@ -113,6 +113,12 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
 
             //CHECK THAT THE ITEM IS UNIQUE
+
+            //for avoiding null pointer exeption
+            if(MainActivity.TotalClassItems==null)
+                startActivity(new Intent(this,MainActivity.class));
+
+
             for(int i=0;i<MainActivity.TotalClassItems.size();i++){
                 if(MainActivity.TotalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.TotalClassItems.get(i).getSection().equals(classitem.getSection())){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -164,46 +170,7 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
             DeleteDialog();
         }
-//        else if (v == btnEdit) {
-//            classitem = new class_item();
-//            classitem.setName(personName.getText().toString());
-//            classitem.setSection(phone.getText().toString());
-//
-//            //CHECK THAT THE ITEM IS UNIQUE
-//            for(int i=0;i<MainActivity.TotalClassItems.size();i++){
-//                if(MainActivity.TotalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.TotalClassItems.get(i).getSection().equals(classitem.getSection())){
-//                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-//                    alertDialog.setTitle("");
-//                    alertDialog.setMessage("এই একই নামের আরেকটি ক্লাসের নাম ইতিমধ্যে ডাটাবেজে রয়েছে।নতুন নাম ইনপুট দিন,ধন্যবাদ।");
-//                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.dismiss();
-//                                }
-//                            });
-//                    alertDialog.show();
-//                    return;
-//                }
-//            }
-//
-//            //FOR VALIDATION
-//            if(submitForm()){
-//                //FOR MODIFICATION
-//    Query queryRef = databaseReference.child("Class").orderByChild("name").equalTo(previousClassName);
-//     queryRef.addListenerForSingleValueEvent( new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                            snapshot.getRef().child("name").setValue(personName.getText().toString());
-//                            snapshot.getRef().child("section").setValue(phone.getText().toString());
-//                        }
-//                        }
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {}});
-//                Toast.makeText(this,"নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
-//                previousClassName=null;
-//                finish();
-//            }
+
 
         }
 
@@ -288,50 +255,10 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
                     MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName()+classitem.getSection()).removeValue();
 
 
-
-//                        Query queryRef = databaseReference.child("Class").orderByChild("name").equalTo(previousClassName);
-//                        queryRef.addListenerForSingleValueEvent( new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                                    snapshot.getRef().removeValue();
-//                                }
-//                            }
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {}});
-
-
-
                         Toast.makeText(ActActivity.this,"ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
                         previousClassName=null;
                     finish();
 
-//                    AdRequest adRequest = new AdRequest.Builder()
-//                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                            // Check the LogCat to get your test device ID
-//                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                            .build();
-
-
-                    // Load ads into Interstitial Ads
-                    //mInterstitialAd.loadAd(adRequest);
-//                    mInterstitialAd.setAdListener(new AdListener() {
-//                        public void onAdLoaded() {
-//                            showInterstitial();
-//                        }
-//
-//                        @Override
-//                        public void onAdFailedToLoad(int i) {
-//                            finish();
-//                            super.onAdFailedToLoad(i);
-//                        }
-//
-//                        @Override
-//                        public void onAdClosed() {
-//                            finish();
-//                            super.onAdClosed();
-//                        }
-//                    });
 
                     }
             }
@@ -371,8 +298,39 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
                     MainActivity.databaseReference=databaseReference;
                     MainActivity.mUserId=mUserId;
-                    //FOR DELETE
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName()+classitem.getSection()).setValue(classitem);
+
+                    try {
+
+                        //FOR DELETE
+                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName() + classitem.getSection()).setValue(classitem);
+
+                    }
+                     catch (Exception e){
+
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(ActActivity.this).create();
+                        alertDialog.setMessage(" আপনার ডিভাইসের সমস্যার কারনে লগিন হচ্ছেনা । দয়া করে আবার চেষ্টা করুন অথবা ডেভেলপারকে জানান ফেসবুক গ্রুপে পোস্ট করে,ধন্যবাদ । সমস্যাটি হল : "+e.getMessage());
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"পোস্ট দিন",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Intent intent5 =  LoginActivity.getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",getBaseContext());
+
+                                        try {
+                                            startActivity(intent5);
+                                        }
+                                        catch (Exception e){
+                                            Toast.makeText(ActActivity.this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+                                        }
+
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+
+                    }
+
+
                     Toast.makeText(ActActivity.this, "নতুন ক্লাসটির জন্য সার্ভারে ডাটাবেজ তৈরি হয়েছে,ধন্যবাদ",                       Toast.LENGTH_SHORT).show();
                     previousClassName=null;
 
@@ -387,32 +345,6 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
                                     finish();
 
-//                                    AdRequest adRequest = new AdRequest.Builder()
-//                                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                                            // Check the LogCat to get your test device ID
-//                                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                                            .build();
-
-
-                                    // Load ads into Interstitial Ads
-                                   // mInterstitialAd.loadAd(adRequest);
-//                                    mInterstitialAd.setAdListener(new AdListener() {
-//                                        public void onAdLoaded() {
-//                                            showInterstitial();
-//                                        }
-//
-//                                        @Override
-//                                        public void onAdFailedToLoad(int i) {
-//                                            finish();
-//                                            super.onAdFailedToLoad(i);
-//                                        }
-//
-//                                        @Override
-//                                        public void onAdClosed() {
-//                                            finish();
-//                                            super.onAdClosed();
-//                                        }
-//                                    });
                                 }
                             });
                     alertDialog.show();
@@ -443,68 +375,7 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
         b.show();
     }
 
-    private void showInterstitial() {
-//        if (mInterstitialAd.isLoaded()) {
-//            mInterstitialAd.show();
-//        }
-    }
-
-    @Override
-    protected void onStart() {
-//        //ADMOB
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                .build();
-//        adlayout=findViewById(R.id.ads);
-//        mAdView = (AdView) findViewById(R.id.adViewInHome);
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                adlayout.setVisibility(View.GONE);
-//
-//            }
-//            @Override
-//            public void onAdLeftApplication() {
-//
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//        mAdView.loadAd(adRequest);
-
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-//        if (mAdView != null) {
-//            mAdView.pause();
-//        }
-        super.onPause();
-    }
 
 
-
-    @Override
-    public void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
-        super.onDestroy();
-    }
 
 }

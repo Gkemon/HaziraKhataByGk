@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.model.AttendenceData;
+import com.Teachers.HaziraKhataByGk.model.class_item;
 import com.Teachers.HaziraKhataByGk.model.student;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -29,8 +30,13 @@ public class printerActivity extends AppCompatActivity {
     InterstitialAd mInterstitialAd;
     private Boolean isInterstitalAdEnable;
 
+
+   public static  String INTENT_FLAG="FLAG";
+   public static String PRINT_ACTIVITY="print activity";
    public static String  jan,fab,mar,apr,may,june,july,aug,sep,oct,nov,dec;
    public Button janButton,febButton,marButton,aprButton,mayButton,juneButton,julyButton,augButton,sepButton,octButton,novButton,decButton;
+
+    public static  class_item class_item;
 
     public LinearLayout adlayout,emptyView;
     public AdView mAdView;
@@ -117,6 +123,9 @@ public class printerActivity extends AppCompatActivity {
 //        if (mAdView != null) {
 //            mAdView.resume();
 //        }
+
+
+       // class_item = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
 
         SeparatingData();
 
@@ -709,8 +718,11 @@ public class printerActivity extends AppCompatActivity {
 
     public void SeparatingData(){
 
+
         //if we come from class room activity to print activity directly
         if(studentListForPrintActiviyFromAttendenceActivity==null){
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
             studentListForPrintActiviyFromAttendenceActivity=ClassRoom_activity.studentListForPrintActiviyFromAttendenceActivity;
         }
         TotalStudent=studentListForPrintActiviyFromAttendenceActivity.size();

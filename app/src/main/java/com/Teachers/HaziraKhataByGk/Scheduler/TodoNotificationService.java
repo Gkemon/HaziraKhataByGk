@@ -28,10 +28,13 @@ public class TodoNotificationService extends IntentService {
     public TodoNotificationService(){
         super("TodoNotificationService");
     }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         mTodoText = intent.getStringExtra(TODOTEXT);
         mTodoUUID = (Integer)intent.getSerializableExtra(scheduleActivity.ITEM_POSITION);
+
+
 
         isDaily= intent.getStringExtra(IsDailyOrNot);
 
@@ -77,6 +80,29 @@ long [] vibration ={1000,2000,3000};
             manager.notify(100, notification);
 
 
+
+
+          //  MusicControl.getInstance(getApplicationContext()).playMusic();
+
+            MediaPlayer  mp = new MediaPlayer();
+            try{
+                mp.setDataSource(this, defaultRingone);
+                mp.setAudioStreamType(AudioManager.STREAM_ALARM);
+                mp.prepare();
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.release();
+                        mp.stop();
+                    }
+                });
+                mp.start();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
         }
         else {
 
@@ -92,28 +118,33 @@ long [] vibration ={1000,2000,3000};
                     .build();
             manager.notify(100, notification);
 
-        }
+           // MusicControl.getInstance(getApplicationContext()).playMusic();
 
 
+          MediaPlayer  mp = new MediaPlayer();
 
-         mp = new MediaPlayer();
-        try{
-            mp.setDataSource(this, defaultRingone);
-            mp.setAudioStreamType(AudioManager.STREAM_ALARM);
-            mp.prepare();
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mp.release();
-                }
-            });
-            mp.start();
+            try{
+                mp.setDataSource(this, defaultRingone);
+                mp.setAudioStreamType(AudioManager.STREAM_ALARM);
+                mp.prepare();
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.release();
+                        mp.stop();
+                    }
+                });
+                mp.start();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+
 
     }
+
 
     @Override
     public void onDestroy() {
@@ -129,6 +160,7 @@ long [] vibration ={1000,2000,3000};
             e.printStackTrace();
         }
 
+      //  MusicControl.getInstance(getApplicationContext()).stopMusic();
         super.onDestroy();
     }
 

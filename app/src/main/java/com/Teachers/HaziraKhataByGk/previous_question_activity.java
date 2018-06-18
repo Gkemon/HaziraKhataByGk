@@ -57,7 +57,7 @@ public class previous_question_activity extends AppCompatActivity {
                         .build();
 
                 Intent intent=new Intent(activity,text_show_activity.class);
-                intent.putExtra("title","2");
+                intent.putExtra("subjectName","2");
                 startActivity(intent);
 
                 // Load ads into Interstitial Ads
@@ -71,7 +71,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdFailedToLoad(int i) {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","2");
+                        intent.putExtra("subjectName","2");
                         startActivity(intent);
                         super.onAdFailedToLoad(i);
                     }
@@ -80,7 +80,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdClosed() {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","2");
+                        intent.putExtra("subjectName","2");
                         startActivity(intent);
                         super.onAdClosed();
                     }
@@ -99,7 +99,7 @@ public class previous_question_activity extends AppCompatActivity {
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
                 Intent intent=new Intent(activity,text_show_activity.class);
-                intent.putExtra("title","3");
+                intent.putExtra("subjectName","3");
                 startActivity(intent);
 
                 // Load ads into Interstitial Ads
@@ -113,7 +113,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdFailedToLoad(int i) {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","3");
+                        intent.putExtra("subjectName","3");
                         startActivity(intent);
                         super.onAdFailedToLoad(i);
                     }
@@ -122,7 +122,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdClosed() {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","3");
+                        intent.putExtra("subjectName","3");
                         startActivity(intent);
                         super.onAdClosed();
                     }
@@ -143,7 +143,7 @@ public class previous_question_activity extends AppCompatActivity {
 
 
                 Intent intent=new Intent(activity,text_show_activity.class);
-                intent.putExtra("title","4");
+                intent.putExtra("subjectName","4");
                 startActivity(intent);
 
                 // Load ads into Interstitial Ads
@@ -157,7 +157,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdFailedToLoad(int i) {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","4");
+                        intent.putExtra("subjectName","4");
                         startActivity(intent);
                         super.onAdFailedToLoad(i);
                     }
@@ -166,7 +166,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdClosed() {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","4");
+                        intent.putExtra("subjectName","4");
                         startActivity(intent);
                         super.onAdClosed();
                     }
@@ -187,7 +187,7 @@ public class previous_question_activity extends AppCompatActivity {
 
 
                 Intent intent=new Intent(activity,text_show_activity.class);
-                intent.putExtra("title","5");
+                intent.putExtra("subjectName","5");
                 startActivity(intent);
 
 
@@ -202,7 +202,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdFailedToLoad(int i) {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","5");
+                        intent.putExtra("subjectName","5");
                         startActivity(intent);
                         super.onAdFailedToLoad(i);
                     }
@@ -211,7 +211,7 @@ public class previous_question_activity extends AppCompatActivity {
                     public void onAdClosed() {
 
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","5");
+                        intent.putExtra("subjectName","5");
                         startActivity(intent);
                         super.onAdClosed();
                     }
@@ -232,7 +232,7 @@ public class previous_question_activity extends AppCompatActivity {
                         .build();
 
                 Intent intent=new Intent(activity,text_show_activity.class);
-                intent.putExtra("title","6");
+                intent.putExtra("subjectName","6");
                 startActivity(intent);
 
                 // Load ads into Interstitial Ads
@@ -245,7 +245,7 @@ public class previous_question_activity extends AppCompatActivity {
                     @Override
                     public void onAdFailedToLoad(int i) {
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","6");
+                        intent.putExtra("subjectName","6");
                         startActivity(intent);
                         super.onAdFailedToLoad(i);
                     }
@@ -253,7 +253,7 @@ public class previous_question_activity extends AppCompatActivity {
                     @Override
                     public void onAdClosed() {
                         Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("title","6");
+                        intent.putExtra("subjectName","6");
                         startActivity(intent);
                         super.onAdClosed();
                     }

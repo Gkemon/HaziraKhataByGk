@@ -114,7 +114,7 @@ public class classRoomFragments extends Fragment implements RecyclerItemClickLis
         ActActivity.start(MainActivity.activity,contactListAdapter.getItem(position));
     }
 
-    void LoadDataFromServer(){
+     public  void LoadDataFromServer(){
         //For loading class_room from Server
         databaseReference.child("Users").child(mUserId).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.FirebaseWorks.MyFirebaseMessagingService;
 import com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData;
@@ -70,6 +71,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     public static ArrayList<class_item> TotalClassItems;
     public static ArrayList<news_item> News_list;
     public static ArrayList<JobItems> Job_list;
@@ -162,11 +164,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //TODO:DATABASE CONNECTION
+
         if(!calledAlready) {
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            firebaseDatabase.setPersistenceEnabled(true);
-            databaseReference = firebaseDatabase.getReference();
-            calledAlready = true;
+            //avoid setPersistenceEnabled twich click
+            try {
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseDatabase.setPersistenceEnabled(true);
+                databaseReference = firebaseDatabase.getReference();
+                calledAlready = true;
+            }catch (Exception e){
+                recreate();
+            }
+
         }
             firebaseDatabase=FirebaseDatabase.getInstance();
             databaseReference=firebaseDatabase.getReference();
@@ -456,14 +465,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.savedUrl:
-                intent.setClass(this, BottomNavigationActivity.class);
+                intent.setClass(MainActivity.this, BottomNavigationActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.instruction:
                 Intent intent4 =  getFacebookIntent("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/");
 
-                startActivity(intent4);
+                try {
+                    startActivity(intent4);
+                }
+                catch (Exception e){
+                    Toast.makeText(this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+                }
+
                // openInAppBrowser("https://www.facebook.com/groups/2035798976667483?view=permalink&id=2039661282947919");
 //                intent.setClass(this, ScrollingActivity.class_room);
 //                startActivity(intent);
@@ -472,7 +487,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.questuon_answer:
 
                 Intent intent3 =  getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/");
-                startActivity(intent3);
+
+                try {
+                    startActivity(intent3);
+                }
+                catch (Exception e){
+                    Toast.makeText(this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+                }
 
                 //openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2039659689614745/");
 //                intent.setClass(this, FullscreenActivity.class_room);
@@ -487,7 +508,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent5 =  getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/");
-                                startActivity(intent5);
+
+                                try {
+                                    startActivity(intent5);
+                                }
+                                catch (Exception e){
+                                    Toast.makeText(MainActivity.this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+                                }
+
+
                             }
                         });
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,"বাদ দিন",new DialogInterface.OnClickListener() {
@@ -882,7 +911,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //TODO: for opeing in fb app if it is installed.
     public static Intent getFacebookIntent(String url) {
 
-        PackageManager pm = MainActivity.context.getPackageManager();
+
+        PackageManager pm;
+
+            pm = MainActivity.context.getPackageManager();
+
+
         Uri uri = Uri.parse(url);
         try {
             ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.listener.RecyclerItemClickListener;
@@ -111,32 +112,41 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 final Resources res = context.getResources();
                 final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
 
-                //FOR TEXTDRAWABLE IMAGE CREATING
-                ColorGenerator generator = ColorGenerator.MATERIAL;
-                int color = generator.getRandomColor();
-                TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
-                        .textColor(Color.WHITE)
-                        .useFont(Typeface.DEFAULT)
-                        .toUpperCase()
-                        .endConfig()
-                        .buildRoundRect(classitem.getName().substring(0,1), color,12);
+
+                try {
+                    //FOR TEXTDRAWABLE IMAGE CREATING
+                    ColorGenerator generator = ColorGenerator.MATERIAL;
+                    int color = generator.getRandomColor();
+
+                    TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
+                            .textColor(Color.WHITE)
+                            .useFont(Typeface.DEFAULT)
+                            .toUpperCase()
+                            .endConfig()
+                            .buildRoundRect(classitem.getName().substring(0,1), color,12);
+
+                    holder.thumb.setImageDrawable(myDrawable);
+                    String className="ক্লাস: "+classitem.getName();
+                    String sectionName="";
+
+                    if(classitem.getSection().equals("")){
+                        sectionName="";
+                    }
+                    else {
+                        sectionName="সেকশন/সেশন: "+classitem.getSection();
+                    }
 
 
-                holder.thumb.setImageDrawable(myDrawable);
-                String className="ক্লাস: "+classitem.getName();
-                String sectionName="";
+                    holder.name.setText(className);
+                    //holder.name.setTextColor(color);
+                    holder.phone.setText(sectionName);
 
-                if(classitem.getSection().equals("")){
-                     sectionName="";
+                }catch (Exception e){
+                    Toast.makeText(context,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+
                 }
-                else {
-                     sectionName="সেকশন/সেশন: "+classitem.getSection();
-                }
 
 
-                holder.name.setText(className);
-                //holder.name.setTextColor(color);
-                holder.phone.setText(sectionName);
             }
         }
     }

@@ -257,7 +257,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                if (mToDoTextBodyEditText.length() <= 0){
                     mToDoTextBodyEditText.setError(getString(R.string.todo_error));
                 }
-                else if(mUserReminderDate!=null && mUserReminderDate.before(new Date())){
+                else if(mUserReminderDate!=null && mUserReminderDate.before(new Date())||mToDoTextBodyEditText.getText().toString().equals("")){
                     makeResult(RESULT_CANCELED);
                 }
                 else{
@@ -404,7 +404,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         reminderCalendar.set(year, month, day);
         
         if(reminderCalendar.before(calendar)){
-            Toast.makeText(this, "আপনার ডিভাইসের তারিখ এবং সময় ঠিক নেই", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "দয়া করে সঠিক সময় নির্বাচন করুন", Toast.LENGTH_LONG).show();
             return;
         }
         if(mUserReminderDate!=null){
@@ -458,11 +458,15 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public void setReminderTextView(){
         if(mUserReminderDate!=null){
             mReminderTextView.setVisibility(View.VISIBLE);
-            if(mUserReminderDate.before(new Date())){
+            if(mUserReminderDate.before(new Date())&&!mUserToDoItem.isDaily()){
                 Log.d("OskarSchindler", "DATE is "+mUserReminderDate);
                 mReminderTextView.setText(getString(R.string.date_error_check_again));
                 mReminderTextView.setTextColor(Color.RED);
                 return;
+            }
+            if(mUserToDoItem.isDaily())
+            {
+                mDateEditText.setText("প্রতিদিন");
             }
             Date date = mUserReminderDate;
             String dateString = formatDate("d MMM, yyyy", date);
@@ -607,9 +611,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         }
 
 //When there is no to do text is setted
-        if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
+        if(mUserToDoItem.getToDoText().equals("")){
             super.onBackPressed();
             finish();
+            return;
         }
 
         //IF we get any duplicate element then we can ignore it.

@@ -74,10 +74,13 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         //HIDING NOTIFICATION BAR
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
 
         setContentView(R.layout.student_info_show_activity);
         studentName = (TextView) findViewById(R.id.studentName);
@@ -103,23 +106,15 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
         ClassRoom_activity.classitem=getIntent().getParcelableExtra("classItem");
 
-        //Get Main Head's data
-//        GetHeadingData();
-//        GetAttendenceListData();
 
         DatewiseAttendence.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-//                GetHeadingData();
-//                GetAttendenceListData();
-
-          //      if(TriggeredAlready) {
                     Log.d("GK",String.valueOf(position)+" POSITION");
                     CreateDialogForEdit(position);
-//                    TriggeredAlready = false;
-//                }
+
 
             }
         });
@@ -133,9 +128,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-//        if (mAdView != null) {
-//            mAdView.resume();
-//        }
+
         //Get List
         GetHeadingData();
         GetAttendenceListData();
@@ -180,11 +173,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
                 b.show();
                 return true;
             case R.id.action_add_single_attendence:
-//                FragmentManager fm = activity.getFragmentManager();
-//                createRequest request = new createRequest();
-//                request.addData(student,ClassRoom_activity.classitem,activity);
-//                request.show(fm, "Select");
-//                GetAttendenceListData();
+
                 CreateDialogForAddAttendence();
                 return true;
 
@@ -428,6 +417,7 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
         super.onDestroy();
     }
 
+
 //    public static class createRequest extends DialogFragment {
 //        student student;
 //        class_item class_item;
@@ -530,8 +520,6 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 //            return builder.create();
 //        }
 //    }
-
-
 //    public void AdmobAd(){
 //        //ADMOB
 //        AdRequest adRequest = new AdRequest.Builder()
@@ -569,6 +557,8 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 //        });
 //        mAdView.loadAd(adRequest);
 //    }
+
+
     public void InitializePhoneNumbers(){
         studentPhoneNumber.setOnClickListener(new View.OnClickListener() {
 
@@ -724,16 +714,12 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                             //set date
                             if(student!=null){
-
-
-
 //                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
 //
 //                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).setValue(attendenceData);
 //
 
                                 //REMOVE FIRST
-
                                 Log.d("GK","if "+roll+" "+student.getId());
                                 MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
                                 //set True or False
@@ -801,12 +787,12 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                 if(student!=null){
 
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).removeValue();
+                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).removeValue();
 
                 }
                 else {
                     Log.d("GK","Else "+roll);
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos)).removeValue();
+                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).removeValue();
                 }
 
                 GetHeadingData();

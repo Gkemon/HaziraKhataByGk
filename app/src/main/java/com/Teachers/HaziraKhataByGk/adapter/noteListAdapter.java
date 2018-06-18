@@ -104,7 +104,7 @@ public class noteListAdapter extends RecyclerView.Adapter<noteListAdapter.notesH
                 .buildRound(Notes.getheading().substring(0,1), color);
         holder.thumbOfNote.setImageDrawable(myDrawable);
 
-//        String title="শিরোনাম: "+Notes.getheading();
+//        String subjectName="শিরোনাম: "+Notes.getheading();
 //        String content;
 //        if(Notes.getContent().equals("")){
 //            content="";

@@ -21,7 +21,6 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -53,7 +52,10 @@ public class ReminderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_layout);
         storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        mToDoItems = scheduleActivity.getLocallyStoredData(storeRetrieveData);
+
+        mToDoItems = storeRetrieveData.loadFromFile();
+
+        if(mToDoItems.size()==0) mToDoItems = scheduleActivity.getLocallyStoredData(storeRetrieveData);
 
 //        //FOR SCHEDULES
 //        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
@@ -63,13 +65,13 @@ public class ReminderActivity extends AppCompatActivity {
 
 
         Intent i = getIntent();
-        UUID id = (UUID)i.getSerializableExtra(TodoNotificationService.TODOUUID);
+        int id = (Integer) i.getSerializableExtra(TodoNotificationService.TODOUUID);
         mItem = new ToDoItem();
-        for(ToDoItem toDoItem : mToDoItems){
-//            if (toDoItem.getIdentifier().equals(id)){
-//                mItem = toDoItem;
-//                break;
-//            }
+        for(int j=0;j<mToDoItems.size();j++){
+            if (j==id){
+                mItem = mToDoItems.get(j);
+                break;
+            }
         }
 
         snoozeOptionsArray = getResources().getStringArray(R.array.snooze_options);

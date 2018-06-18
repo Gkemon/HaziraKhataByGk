@@ -90,6 +90,19 @@
         android:textSize="14sp" />
 
     <Button
+        android:layout_below="@+id/TitleOfClassNote"
+        android:id="@+id/marksheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F44336"
+        android:elevation="20sp"
+        android:padding="15sp"
+        android:layout_margin="10sp"
+        android:text="পরিক্ষার মার্কশীট তৈরী"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <Button
         android:id="@+id/AttendenceRecordButtom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -132,7 +145,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/AttendenceRecordButtom"
+        android:layout_below="@id/marksheet"
         android:id="@+id/notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -48,10 +48,10 @@ public class text_show_activity extends AppCompatActivity {
 
         //Initialize toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.text_toolbar);
-        title=getIntent().getStringExtra("title");
-        Log.d("GK",title+" title");
-       // heading.setText(title);
-        //Set custom title
+        title=getIntent().getStringExtra("subjectName");
+        Log.d("GK",title+" subjectName");
+       // heading.setText(subjectName);
+        //Set custom subjectName
 
 
 

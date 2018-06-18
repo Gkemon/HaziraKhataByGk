@@ -51,14 +51,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        try {
 //            JSONObject data = json.getJSONObject("data");
 //
-//            String title = data.getString("title");
+//            String subjectName = data.getString("subjectName");
 //            String message = data.getString("message");
 //            boolean isBackground = data.getBoolean("is_background");
 //            String imageUrl = data.getString("image");
 //            String timestamp = data.getString("timestamp");
 //            JSONObject payload = data.getJSONObject("payload");
 //
-//            Log.e(TAG, "title: " + title);
+//            Log.e(TAG, "subjectName: " + subjectName);
 //            Log.e(TAG, "message: " + message);
 //            Log.e(TAG, "isBackground: " + isBackground);
 //            Log.e(TAG, "payload: " + payload.toString());
@@ -80,10 +80,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //
 //                // check for image attachment
 //                if (TextUtils.isEmpty(imageUrl)) {
-//                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+//                    showNotificationMessage(getApplicationContext(), subjectName, message, timestamp, resultIntent);
 //                } else {
 //                    // image is present, show notification with image
-//                    //showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+//                    //showNotificationMessageWithBigImage(getApplicationContext(), subjectName, message, timestamp, resultIntent, imageUrl);
 //                }
 //            }
 //        } catch (JSONException e) {

@@ -34,7 +34,7 @@
         <item name="titleTextAppearance">@style/ToolbarTitleTextAppearanceLight</item>
     </style>
 
-    <!--Change color of title on Toolbar-->
+    <!--Change colorsubjectNameitle on Toolbar-->
     <style name="ToolbarTitleTextAppearanceLight" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
 

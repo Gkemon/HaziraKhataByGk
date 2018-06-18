@@ -85,7 +85,7 @@ public class scheduleActivity extends AppCompatActivity {
 
         Refreshing();
 
-        //If it's title and content are blank so we don't need to create the result
+        //If it's subjectName and content are blank so we don't need to create the result
         if(mResultTodo!=null&&!mResultTodo.getToDoText().equals("")){
             ResultCreate(mResultTodo);
             mResultTodo=null;
@@ -166,7 +166,6 @@ public class scheduleActivity extends AppCompatActivity {
 
 
 
-        mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity;
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
@@ -176,6 +175,14 @@ public class scheduleActivity extends AppCompatActivity {
 
         storeRetrieveData = new StoreRetrieveData(this, FILENAME);
         mToDoItemsArrayList= getLocallyStoredData(storeRetrieveData);
+
+        mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity;
+
+        //Avoiding empty view from notification
+//        if(mToDoItemsArrayList.size()==0)
+//        {
+//                mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
+//        }
 
 //        //FOR SCHEDULES
 //        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
@@ -230,13 +237,21 @@ public class scheduleActivity extends AppCompatActivity {
                 int fabMargin = lp.bottomMargin;
                 mAddToDoItemFAB.animate().translationY(mAddToDoItemFAB.getHeight()+fabMargin).setInterpolator(new AccelerateInterpolator(2.0f)).start();
 
+
             }
         };
 
 
+
         if(mRecyclerView!=null)
             mRecyclerView.addOnScrollListener(customRecyclerScrollViewListener);
+
+        if(mToDoItemsArrayList!=null)
         adapter = new BasicListAdapter(mToDoItemsArrayList);
+        else {
+            startActivity(new Intent(this,MainActivity.class));
+        }
+
         ItemTouchHelper.Callback callback = new ItemTouchHelperClass(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -297,7 +312,7 @@ public class scheduleActivity extends AppCompatActivity {
             for (int i = 0; i < mToDoItemsArrayList.size(); i++) {
 
                 ToDoItem item = mToDoItemsArrayList.get(i);
-                if (item.hasReminder() && item.getToDoDate() != null) {
+                if (item.hasReminder() && item.getToDoDate() != null&&!item.isDaily()) {
                     if (item.getToDoDate().before(new Date())) {
                         item.setToDoDate(null);
                         continue;
@@ -310,12 +325,15 @@ public class scheduleActivity extends AppCompatActivity {
 
 
                     if (item.isDaily()) {
-                        in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(item.isDaily()));
+                        in.putExtra(TodoNotificationService.IsDailyOrNot, "true");
                         Log.d("GK", "DAILY ALARM IN SET ALARM");
+                        Log.d("GK","item.isDaily() "+String.valueOf(item.isDaily()));
+
                     } else if(item.hasReminder()){
 
                         Log.d("GK", "NORMAL ALARM  IN SET ALARM");
-                        in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(!item.isDaily()));
+                        Log.d("GK","item.isDaily() "+String.valueOf(!item.isDaily()));
+                        in.putExtra(TodoNotificationService.IsDailyOrNot,"false");
 
                     }
 
@@ -392,7 +410,7 @@ public class scheduleActivity extends AppCompatActivity {
 //            if(prefForSchedule.getBoolean(""+requestCode,true)) {
 
                 Log.d("GK", "A DAILY IS ALARM CREATED");
-                am1.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 10000, pi);
+                am1.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 86400000, pi);
 
                 //deleteDaily( i, requestCode);
 
@@ -558,12 +576,12 @@ public class scheduleActivity extends AppCompatActivity {
                                 if(mJustDeletedToDoItem.isDaily())
                                 {
                                     i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(mJustDeletedToDoItem.isDaily()) );
-                                    Log.d("GK","item.isDaily()");
+                                    Log.d("GK","item.isDaily() "+String.valueOf(mJustDeletedToDoItem.isDaily()));
                                 }
                                 else
                                 {
-                                    Log.d("GK","not item.isDaily()");
-                                    i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(!mJustDeletedToDoItem.isDaily()) );
+                                    Log.d("GK","not item.isDaily() "+String.valueOf(!mJustDeletedToDoItem.isDaily()));
+                                    i.putExtra(TodoNotificationService.IsDailyOrNot,String.valueOf(false) );
                                 }
 
 
@@ -572,7 +590,7 @@ public class scheduleActivity extends AppCompatActivity {
 
                                 if(mJustDeletedToDoItem.isDaily())
                                 {
-                                        createAlarm(i,position,mJustDeletedToDoItem.getToDoDate().getTime(),true);
+                                    createAlarm(i,position,mJustDeletedToDoItem.getToDoDate().getTime(),true);
                                 }
                                 else
                                     createAlarm(i,position,mJustDeletedToDoItem.getToDoDate().getTime(),false);
@@ -597,7 +615,9 @@ public class scheduleActivity extends AppCompatActivity {
         public void onBindViewHolder(final BasicListAdapter.ViewHolder holder, final int position) {
             ToDoItem item = items.get(position);
 
-            if(item.getToDoDate()!=null && item.getToDoDate().before(new Date())){
+
+            //todo THERE was a bug which create the date 2015
+            if((item.getToDoDate()!=null && item.getToDoDate().before(new Date()))&&!item.isDaily()){
                 item.setToDoDate(null);
             }
 
@@ -605,7 +625,7 @@ public class scheduleActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
             //Background color for each to-do item. Necessary for night/day mode
             int bgColor;
-            //color of title text in our to-do item. White for night mode, dark gray for day mode
+            //color of subjectName text in our to-do item. White for night mode, dark gray for day mode
             int todoTextColor;
             if(sharedPreferences.getString(THEME_SAVED, LIGHTTHEME).equals(LIGHTTHEME)){
                 bgColor = Color.WHITE;
@@ -698,6 +718,7 @@ public class scheduleActivity extends AppCompatActivity {
                         Intent i = new Intent(scheduleActivity.this, AddToDoActivity.class);
                         i.putExtra(TODOITEM, item);
                         EditedToDoPosition =ViewHolder.this.getAdapterPosition();
+                        i.putExtra(scheduleActivity.ITEM_POSITION,EditedToDoPosition);
                         startActivityForResult(i, REQUEST_ID_TODO_ITEM);
                     }
                 });
@@ -754,7 +775,7 @@ public class scheduleActivity extends AppCompatActivity {
     //Create The To do from add activity
     public void ResultCreate(ToDoItem item){
 //
-//        Log.d("GK","item return from add activity,so title is "+item.getToDoText()+" and content "+item.getToDoContent()+" Has remainder "+item.hasReminder()+" Is daily "+item.isDaily());
+//        Log.d("GK","item return from add activity,so subjectName is "+item.getToDoText()+" and content "+item.getToDoContent()+" Has remainder "+item.hasReminder()+" Is daily "+item.isDaily());
         if(item.getToDoText().length()<=0){
             return;
         }
@@ -767,12 +788,14 @@ public class scheduleActivity extends AppCompatActivity {
 
             //TODO dummy
             if (item.isDaily()) {
-                in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(item.isDaily()));
+                in.putExtra(TodoNotificationService.IsDailyOrNot,"true");
                 Log.d("GK", "DAILY ALARM IN SET ALARM");
-            } else {
+                Log.d("GK","item.isDaily() "+String.valueOf(item.isDaily()));
+            } else if(item.hasReminder()){
 
                 Log.d("GK", "NORMAL ALARM  IN SET ALARM");
-                in.putExtra(TodoNotificationService.IsDailyOrNot, String.valueOf(!item.isDaily()));
+                in.putExtra(TodoNotificationService.IsDailyOrNot, "false");
+                Log.d("GK","item.isDaily() "+String.valueOf(false));
 
             }
 

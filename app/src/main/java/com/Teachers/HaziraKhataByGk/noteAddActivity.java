@@ -140,33 +140,8 @@ public class noteAddActivity extends AppCompatActivity implements View.OnClickLi
                 MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
                 Toast.makeText(this, "নোটটি সার্ভারে যুক্ত হয়েছে,ধন্যবাদ ।", Toast.LENGTH_SHORT).show();
 
-                //ADMOB
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
 
                 finish();
-                // Load ads into Interstitial Ads
-               // mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-                        finish();
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-                        finish();
-                        super.onAdClosed();
-                    }
-                });
 
 
             }

@@ -10,13 +10,13 @@ public class DeleteNotificationService extends IntentService {
     private StoreRetrieveData storeRetrieveData;
     private ArrayList<ToDoItem> mToDoItems;
     private ToDoItem mItem;
-    private int position;
     public DeleteNotificationService(){
         super("DeleteNotificationService");
-    }     @Override
+    }
+    @Override
     protected void onHandleIntent(Intent intent) {
         storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        int position = (int)intent.getSerializableExtra(scheduleActivity.ITEM_POSITION);
+        Integer position = (Integer) intent.getSerializableExtra(scheduleActivity.ITEM_POSITION);
         mToDoItems = loadData();
         if(mToDoItems!=null){
 

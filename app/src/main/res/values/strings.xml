@@ -7,6 +7,11 @@
     <string name="DELETE">ডিলিট করুন</string>
     <string name="SAVE">সেভ করুন</string>
     <string name="action_settings">Settings</string>
+
+
+
+    <string name="hint_for_distribution_entry"><font size="12"> নং বন্টনের নাম দিন (যেমন : ক্লাস টেস্ট)</font></string>
+
     FOR EMPTY VIEW
     <string name="no_to_dos">এখানে যাবতীয় শিডিউল যুক্ত করে রাখুন।</string>
     <string name="no_to_dos_in_class_fragment">আপনি এখনো কোন ক্লাসের ডাটাবেজ তৈরি করেননি । \n নিচের বাটনটি চেপে কোন ক্লাসের জন্য ডাটাবেজ তৈরি করুন।কোনো ক্লাসের ডাটাবেজ ডিলিট করতে চাইলে ক্লাসের নামের উপর লং প্রেস করুন।</string>
@@ -41,7 +46,7 @@
     <string name="made_by">GK</string>
     <string name="done_label">হয়েছে</string>
     <string name="date_reminder_default">আজকের সময়টি</string>
-    <string name="date_error_check_again">The date you entered is in the past.</string>
+    <string name="date_error_check_again">আপনি যে তারিখ/সময়টি সিলেক্ট করেছেন তা অতীত হয়েছে।নতুন তারিখ ইনপুট দিন,ধন্যবাদ।</string>
     <string name="night_mode">Night Mode</string>
     <string name="night_mode_on_summary">Night mode is on</string>
     <string name="night_mode_off_summary">Night mode is off</string>
@@ -1623,6 +1628,7 @@ Ans: কর্মধারয় সমাস\n
     <string name="facebook_app_id">894265497409006</string>
     <string name="fb_login_protocol_scheme">fb894265497409006</string>
     <string name="title_activity_month_wise_class_data">MonthWiseClassDataActivity</string>
+    <string name="title_activity_mark_sheet_home">MarkSheetHomeActivity</string>
 
 
 </resources>
