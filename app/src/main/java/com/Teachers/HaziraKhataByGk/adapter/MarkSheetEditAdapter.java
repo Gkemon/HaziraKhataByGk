@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout;
+import com.Teachers.HaziraKhataByGk.model.DistributionVSnumberTable;
+import com.Teachers.HaziraKhataByGk.model.StudentVsDistributionTable;
 import com.Teachers.HaziraKhataByGk.model.SubjectMarkSheet;
 import com.Teachers.HaziraKhataByGk.model.student;
 
@@ -31,6 +33,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
     public ArrayList<student>  students;
     public SubjectMarkSheet subjectMarkSheet;
+    public ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList;
     private Activity activity;
     public static HashMap<Integer, Boolean> checkHash ;//For avoiding auto checking
 
@@ -39,7 +42,16 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
         this.activity = activity;
         this.students = students;
         this.subjectMarkSheet=subjectMarkSheet;
-        checkHash = new HashMap<Integer, Boolean>();
+        this.studentVsDistributionTableArrayList=new ArrayList<>();
+
+        for (int i=0;i<students.size();i++){
+            StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
+            studentVsDistributionTable.setStudentID(students.get(i).getId());
+            studentVsDistributionTableArrayList.add(studentVsDistributionTable);
+        }
+
+        Log.d("GK","studentVsDistributionTableArrayList size : "+studentVsDistributionTableArrayList.size());
+       // checkHash = new HashMap<Integer, Boolean>();
     }
 
     private void add(student item) {
@@ -118,30 +130,35 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
         String name="নাম: "+student.getStudentName()+" ( রোল: "+student.getId()+" )";
         holder.name.setText(name);
 
-        if(checkHash.containsKey(position)){
-            if(checkHash.get(position)) {
-                Log.d("GK",position + " position true");
-            }
-            else {
-                Log.d("GK",position + " position false");
-
-            }
-        }else {
-        }
+//        if(checkHash.containsKey(position)){
+//            if(checkHash.get(position)) {
+//                Log.d("GK",position + " position true");
+//            }
+//            else {
+//                Log.d("GK",position + " position false");
+//
+//            }
+//        }else {
+//        }
 
        EditText editText = (EditText)holder.itemView.findViewById(0);
+       editText.addTextChangedListener(new MyTextWatcher(editText,position));
+
        if(editText.getText().toString()==null){
            Log.d("GK","Edit text is null");
        }else {
-           Log.d("GK","Edit text is not null : "+editText.getText().toString());
+           Log.d("GK","Edit text is not null : "+editText.getText().toString()+" possition : "+position+ " :"+subjectMarkSheet.getDistributionVSnumberTable().get(0).getDistributionNumber());
 
        }
 
     }
     @Override
+    public int getItemViewType(int position) { return  position; }
+    @Override
     public int getItemCount() {
         return students.size();
     }
+
 
 
 
@@ -154,23 +171,53 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
             name=itemView.findViewById(R.id.subject_name);
         }
     }
-}
-class MyTextWatcher implements TextWatcher {
+    class MyTextWatcher implements TextWatcher {
 
-    private View view;
+        private View view;
 
-    private MyTextWatcher(View view) {
-        this.view = view;
+        private int position;
+
+
+
+        private MyTextWatcher(View view,int position) {
+            this.view = view;
+            this.position=position;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        public void afterTextChanged(Editable editable) {
+            subjectMarkSheet.getDistributionVSnumberTable().get(0).setDistributionName(editable.toString());
+
+            try {
+                Integer.valueOf(editable.toString());
+            }
+            catch (Exception e){
+                return;
+            }
+
+            ArrayList<DistributionVSnumberTable> distributionVSnumberTableArrayList =new ArrayList<>();
+            for(int i=0;i<subjectMarkSheet.getDistributionVSnumberTable().size();i++){
+                DistributionVSnumberTable distributionVSnumberTable = new DistributionVSnumberTable();
+                distributionVSnumberTable.setDistributionName(subjectMarkSheet.getDistributionVSnumberTable().get(i).distributionName);
+                Log.d("GK","Distribution name :"+distributionVSnumberTable.getDistributionNumber());
+
+                distributionVSnumberTable.setDistributionNumber(Integer.valueOf(editable.toString()));
+                distributionVSnumberTableArrayList.add(i,distributionVSnumberTable);
+            }
+            StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
+            studentVsDistributionTable.setStudentID(students.get(position).getId());
+            studentVsDistributionTable.setDistributionVSnumberTableArrayList(distributionVSnumberTableArrayList);
+
+
+            studentVsDistributionTableArrayList.set(position,studentVsDistributionTable);
+            Log.d("GK","Number :"+editable.toString()+" :"+position);
+        }
     }
 
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-    }
-
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    public void afterTextChanged(Editable editable) {
-
-    }
 }

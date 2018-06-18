@@ -264,11 +264,8 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
                                     Log.d("GK","Not error");
                                 }
                             }
-
                             b.dismiss();
-
                         }
-
 
                         Log.d("GK","listDistribution : "+ listDistribution.size());
 

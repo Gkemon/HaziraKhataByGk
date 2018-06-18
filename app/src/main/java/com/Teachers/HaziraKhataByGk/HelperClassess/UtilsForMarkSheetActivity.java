@@ -60,7 +60,9 @@ text+=temp;
 
         //Which means a field is blank
         if(listOfDistribution.size()!=listOfDistributionNumber.size()){
+            Log.d("GK","Which means a field is blank");
             return null;
+
         }
 
           for(int i=0;i<numOfDistribution;i++){
