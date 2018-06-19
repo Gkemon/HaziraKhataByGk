@@ -78,6 +78,16 @@ public class SubjectMarkSheetAdaper extends RecyclerView.Adapter<SubjectMarkShee
                 activity.startActivity(intent);
             }
         });
+
+        holder.Subject.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+
+                return false;
+            }
+        });
     }
 
     @Override

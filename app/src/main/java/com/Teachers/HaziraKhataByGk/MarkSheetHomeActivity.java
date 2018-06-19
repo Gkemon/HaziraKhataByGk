@@ -263,7 +263,7 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
 
 
                                     FirebaseCaller firebaseCaller = new FirebaseCaller();
-                                    firebaseCaller.pushSubjectToServer(className,sectionName,subjectMarkSheet,null);
+                                    firebaseCaller.pushSubjectToServer(className,sectionName,subjectMarkSheet);
 
                                     firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this);
 

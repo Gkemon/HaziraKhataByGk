@@ -57,18 +57,24 @@ public class FirebaseCaller {
     }
 
 
-    public  void pushSubjectToServer(String className, String sectionName,SubjectMarkSheet subjectMarkSheet,String key){
+    public  void pushSubjectToServer(String className, String sectionName,SubjectMarkSheet subjectMarkSheet){
+
+        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").push().setValue(subjectMarkSheet);
+
+    }
+    public  void pushAndRemoveSubjectToServer(String className, String sectionName,SubjectMarkSheet subjectMarkSheet,String key){
 
         if(key==null)key="";
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).removeValue();
+        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).keepSynced(true);
 
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").push().setValue(subjectMarkSheet);
 
     }
 
-
     public static void getTotalSubject(final String className,final String sectionName, final RecyclerView recyclerView, final Activity activity) {
 
+        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").keepSynced(true);
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -144,9 +144,21 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
         //for get the right edit text which i created on on create view because i need the righ edit text to set the data to appropiate position
 
+
         ArrayList<EditText> editTextArrayList = new ArrayList<>();
         for (int i = 0; i < subjectMarkSheet.getDistributionVSnumberTable().size(); i++) {
             EditText editText = (EditText) holder.itemView.findViewById(i);
+
+
+            String number="";
+            if(subjectMarkSheet.getStudentVsDistributionTableArrayList()!=null)
+             number=subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i).distributionNumber.toString();
+            if(number==null)
+            editText.setText("");
+            else editText.setText(number);
+
+
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
             editText.addTextChangedListener(new MyTextWatcher(editText, position, i));
             editTextArrayList.add(editText);
 
@@ -276,7 +288,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
         Log.d("GK","KEY :"+key);
 
         FirebaseCaller firebaseCaller = new  FirebaseCaller();
-        firebaseCaller.pushSubjectToServer(className,sectionName,subjectMarkSheet,key);
+        firebaseCaller.pushAndRemoveSubjectToServer(className,sectionName,subjectMarkSheet,key);
         activity.finish();
     }
 
