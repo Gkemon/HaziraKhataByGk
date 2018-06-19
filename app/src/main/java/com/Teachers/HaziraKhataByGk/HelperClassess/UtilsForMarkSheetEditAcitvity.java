@@ -26,7 +26,7 @@ public class UtilsForMarkSheetEditAcitvity {
     public static int count=0;
 
 
-    public static void getStudentList(final String className, final String sectionName, final RecyclerView recyclerView, final Activity activity, final SubjectMarkSheet subjectMarkSheet, final String key, final Button button) {
+    public static void getStudentList(final String className, final String sectionName, final RecyclerView recyclerView, final Activity activity, final SubjectMarkSheet subjectMarkSheet, final String key, final Button saveButton,final Button printButton) {
 FirebaseCaller firebaseCaller =new FirebaseCaller();
 
 firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -54,11 +54,19 @@ firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addL
                     recyclerView.setAdapter(markSheetEditAdapter);
                     recyclerView.setLayoutManager(MyLayoutManager);
 
-                    button.setOnClickListener(new View.OnClickListener() {
+                    saveButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             markSheetEditAdapter.saveDataToServer();
-                            Log.d("GK","Onclick");
+
+                        }
+                    });
+
+                    printButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            markSheetEditAdapter.printData();
+
                         }
                     });
                 }

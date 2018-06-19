@@ -9,6 +9,7 @@
     tools:showIn="@layout/activity_mark_sheet_home">
 
     <TextView
+        android:id="@+id/empty_text_for_mark_sheet_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"

@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.R;
@@ -39,6 +41,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
     public SubjectMarkSheet subjectMarkSheet;
     public ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList;
     private Activity activity;
+    String mainNumberSheetText ="";
     public String className, sectionName, key;
     public static HashMap<Integer, ArrayList<EditText>> editTextHashMap;//For avoiding auto checking
 
@@ -95,7 +98,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
     @Override
     public markEditHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject_card_mark_sheet, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_mark_card, parent, false);
 
 
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.student_mark_edit_layout);
@@ -258,18 +261,51 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
     public void saveDataToServer() {
 
+        doProcessOfAllData();
+
+        Toast.makeText(activity,"সেভ করা হয়েছে",Toast.LENGTH_LONG).show();
+        activity.finish();
+    }
+
+    public void printData(){
+
+        doProcessOfAllData();
+        String temp="বিষয় :"+subjectMarkSheet.getSubjectName()+"\n"+"মোট নাম্বার :"+subjectMarkSheet.getTotalNumber()+"\n"+"মোট বন্টন সংখ্যা : "+subjectMarkSheet.getDistributionVSnumberTable().size()+" টি "+"\n"+"বন্টনের নামগুলো এবং প্রতিটি বন্টনের মোট নাম্বারগুলো নিচে দেয়া হল \n\n";
+
+        for(int i=0;i<subjectMarkSheet.getDistributionVSnumberTable().size();i++){
+            temp+=(i+1+") "+subjectMarkSheet.getDistributionVSnumberTable().get(i).distributionName +" ("+subjectMarkSheet.getDistributionVSnumberTable().get(i).distributionNumber +" নাম্বার )\n");
+        }
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                temp+ mainNumberSheetText);
+        sendIntent.setType("text/plain");
+        activity.startActivity(sendIntent);
+
+    }
+
+   public void doProcessOfAllData(){
+        mainNumberSheetText ="";
+
         for (int i = 0; i < editTextHashMap.size(); i++) {
             ArrayList<DistributionVSnumberTable> distributionVSnumberTableArrayList = new ArrayList<>();
+
+            String temp2="";
             for (int j = 0; j < editTextHashMap.get(i).size(); j++) {
                 Log.d("GK", "editTextHashMap :[ " + i + " ] [ " + j + " ] " + editTextHashMap.get(i).get(j).getText().toString());
 
                 DistributionVSnumberTable distributionVSnumberTable = new DistributionVSnumberTable();
 
                 distributionVSnumberTable.setDistributionName(subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName);
+                temp2+="\n"+subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName+" ( "+editTextHashMap.get(i).get(j).getText().toString()+" নাম্বার )";
                 distributionVSnumberTable.setDistributionNumber(Integer.valueOf(editTextHashMap.get(i).get(j).getText().toString()));
                 distributionVSnumberTableArrayList.add(distributionVSnumberTable);
 
             }
+
+            String temp1 ="\n নাম : "+students.get(i).getStudentName()+ " ( রোল :"+students.get(i).getId()+" )\n";
+             mainNumberSheetText +=(temp1+temp2)+"\n";
 
             StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
             studentVsDistributionTable.setStudentID(students.get(i).getId());
@@ -285,11 +321,12 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
         }
 
-        Log.d("GK","KEY :"+key);
+       Log.d("GK","KEY :"+key);
 
-        FirebaseCaller firebaseCaller = new  FirebaseCaller();
-        firebaseCaller.pushAndRemoveSubjectToServer(className,sectionName,subjectMarkSheet,key);
-        activity.finish();
+       FirebaseCaller firebaseCaller = new  FirebaseCaller();
+       firebaseCaller.pushAndRemoveSubjectToServer(className,sectionName,subjectMarkSheet,key);
+
+
     }
 
 }

@@ -25,7 +25,8 @@
         <TextView
             android:paddingTop="2sp"
             android:paddingBottom="2sp"
-            android:id="@+id/studentName"
+            android:textSize="12sp"
+            android:id="@+id/top_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
@@ -54,10 +55,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="নাম্বার বন্টনের নামগুলো এবং তাদের নাম্বার"
+                android:text="নিচে শিক্ষার্থীদের প্রতিটি বন্টনের জন্য নম্বর ইনপুট দেয়ার ব্যবস্থা করা হয়েছে "
                 android:textAlignment="center"
                 android:textColor="@color/red_secondary"
-                android:textSize="15sp" />
+                android:textSize="10sp" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2sp"

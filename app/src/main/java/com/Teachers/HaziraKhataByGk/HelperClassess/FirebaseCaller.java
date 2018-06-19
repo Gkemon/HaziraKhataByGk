@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.adapter.SubjectMarkSheetAdaper;
 import com.Teachers.HaziraKhataByGk.model.SubjectMarkSheet;
@@ -64,15 +66,15 @@ public class FirebaseCaller {
     }
     public  void pushAndRemoveSubjectToServer(String className, String sectionName,SubjectMarkSheet subjectMarkSheet,String key){
 
-        if(key==null)key="";
-        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).removeValue();
+//        if(key==null)key="";
+//        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).removeValue();
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).keepSynced(true);
 
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").push().setValue(subjectMarkSheet);
 
     }
 
-    public static void getTotalSubject(final String className,final String sectionName, final RecyclerView recyclerView, final Activity activity) {
+    public static void getTotalSubject(final String className,final String sectionName, final RecyclerView recyclerView, final Activity activity,final TextView emptyText) {
 
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").keepSynced(true);
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -95,6 +97,10 @@ public class FirebaseCaller {
                     }
 
                 }
+                if(subjectList.size()==0){
+                    emptyText.setVisibility(View.VISIBLE);
+                }
+                else emptyText.setVisibility(View.GONE);
 
 
                 if(subjectList.size()>0&&recyclerView!=null) {

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebaseCaller;
@@ -41,13 +42,14 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
 
     public Context context;
     private FloatingActionButton fab;
+    private TextView emptyText;
 
     @Override
     protected void onResume() {
         super.onResume();
 
         FirebaseCaller firebaseCaller =new FirebaseCaller();
-        firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this);
+        firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this,emptyText);
 
     }
 
@@ -56,6 +58,8 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_mark_sheet_home);
+        emptyText=findViewById(R.id.empty_text_for_mark_sheet_home);
+
         context=this;
 
         recyclerViewOfSubject=findViewById(R.id.recycler_view_subject);
@@ -265,7 +269,7 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
                                     FirebaseCaller firebaseCaller = new FirebaseCaller();
                                     firebaseCaller.pushSubjectToServer(className,sectionName,subjectMarkSheet);
 
-                                    firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this);
+                                    firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this,emptyText);
 
 
 
