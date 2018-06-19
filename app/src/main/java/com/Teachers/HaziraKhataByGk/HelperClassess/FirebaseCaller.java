@@ -57,10 +57,15 @@ public class FirebaseCaller {
     }
 
 
-    public  void pushSubjectToServer(String className, String sectionName,SubjectMarkSheet subjectMarkSheet){
+    public  void pushSubjectToServer(String className, String sectionName,SubjectMarkSheet subjectMarkSheet,String key){
+
+        if(key==null)key="";
+        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).removeValue();
+
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").push().setValue(subjectMarkSheet);
 
     }
+
 
     public static void getTotalSubject(final String className,final String sectionName, final RecyclerView recyclerView, final Activity activity) {
 

@@ -57,6 +57,8 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.google.firebase:firebase-ads:11.8.0'
     compile 'com.google.android.gms:play-services-ads:11.8.0'
+    implementation 'com.orhanobut:logger:2.2.0'
+    compile 'com.google.code.gson:gson:2.6.2'
 
 }
 apply plugin: 'com.google.gms.google-services'

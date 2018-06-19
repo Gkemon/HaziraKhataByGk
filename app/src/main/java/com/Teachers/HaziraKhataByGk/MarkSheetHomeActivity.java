@@ -42,6 +42,14 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
     public Context context;
     private FloatingActionButton fab;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        FirebaseCaller firebaseCaller =new FirebaseCaller();
+        firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +70,6 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
         }
 
 
-          FirebaseCaller firebaseCaller =new FirebaseCaller();
-          firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this);
 
 
 
@@ -257,7 +263,9 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
 
 
                                     FirebaseCaller firebaseCaller = new FirebaseCaller();
-                                    firebaseCaller.pushSubjectToServer(className,sectionName,subjectMarkSheet);
+                                    firebaseCaller.pushSubjectToServer(className,sectionName,subjectMarkSheet,null);
+
+                                    firebaseCaller.getTotalSubject(className,sectionName,recyclerViewOfSubject,MarkSheetHomeActivity.this);
 
 
 

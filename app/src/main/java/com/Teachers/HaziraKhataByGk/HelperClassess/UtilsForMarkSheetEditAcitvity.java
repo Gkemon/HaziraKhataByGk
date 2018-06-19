@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.Teachers.HaziraKhataByGk.adapter.MarkSheetEditAdapter;
 import com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal;
@@ -12,6 +14,7 @@ import com.Teachers.HaziraKhataByGk.model.student;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
 
 import static com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal.GLOBAL_STUDENT_LIST;
 
@@ -22,33 +25,8 @@ import static com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal.GLOBAL_STU
 public class UtilsForMarkSheetEditAcitvity {
     public static int count=0;
 
-//public static boolean ReCallNetWorkForStudentList(final String className, final String sectionName){
-//    final FirebaseCaller firebaseCaller = new FirebaseCaller();
-//    firebaseCaller.getStudentList(className,sectionName);
-//
-//    if(GLOBAL_STUDENT_LIST==null){
-//        Log.d("GK","GLOBAL_STUDENT_LIST==null");
-//
-//         Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                count++;
-//                Log.d("GK",count + " : count");
-//                if(count==6)return;
-//                ReCallNetWorkForStudentList(className,sectionName);
-//            }
-//        }, 500);
-//
-//    }
-//    if(count>=6)
-//        return false;
-//    else return true;
-//
-//}
 
-
-    public static void getStudentList(String className, String sectionName, final RecyclerView recyclerView, final Activity activity, final SubjectMarkSheet subjectMarkSheet) {
+    public static void getStudentList(final String className, final String sectionName, final RecyclerView recyclerView, final Activity activity, final SubjectMarkSheet subjectMarkSheet, final String key, final Button button) {
 FirebaseCaller firebaseCaller =new FirebaseCaller();
 
 firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -68,11 +46,21 @@ firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addL
                 if(ContantsForGlobal.GLOBAL_STUDENT_LIST!=null){
                     Log.d("GK","student list size in oncreate :"+GLOBAL_STUDENT_LIST.size());
 
-                    MarkSheetEditAdapter markSheetEditAdapter = new MarkSheetEditAdapter(activity,GLOBAL_STUDENT_LIST,subjectMarkSheet);
+                    UtilsCommon.logString(key);
+
+                  final MarkSheetEditAdapter markSheetEditAdapter = new MarkSheetEditAdapter(activity,GLOBAL_STUDENT_LIST,subjectMarkSheet,className,sectionName,key);
                     LinearLayoutManager MyLayoutManager = new LinearLayoutManager(activity);
                     MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setAdapter(markSheetEditAdapter);
                     recyclerView.setLayoutManager(MyLayoutManager);
+
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            markSheetEditAdapter.saveDataToServer();
+                            Log.d("GK","Onclick");
+                        }
+                    });
                 }
 
             }

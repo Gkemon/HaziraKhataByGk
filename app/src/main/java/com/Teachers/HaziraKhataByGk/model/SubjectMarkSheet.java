@@ -13,6 +13,15 @@ public class SubjectMarkSheet implements Serializable {
     public Integer totalNumber;
     public ArrayList<DistributionVSnumberTable> distributionVSnumberTable;// example: "home work" <--> 15
 
+    public ArrayList<StudentVsDistributionTable> getStudentVsDistributionTableArrayList() {
+        return studentVsDistributionTableArrayList;
+    }
+
+    public void setStudentVsDistributionTableArrayList(ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList) {
+        this.studentVsDistributionTableArrayList = studentVsDistributionTableArrayList;
+    }
+
+    public ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList;
 
 
     public ArrayList<DistributionVSnumberTable> getDistributionVSnumberTable() {

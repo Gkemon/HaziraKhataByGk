@@ -62,6 +62,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OneSignal;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         activity=this;
         context = this;
+
+        Logger.addLogAdapter(new AndroidLogAdapter());
 
         //HIDING NOTIFICATION BAR
         requestWindowFeature(Window.FEATURE_NO_TITLE);
