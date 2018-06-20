@@ -1,13 +1,16 @@
 package com.Teachers.HaziraKhataByGk.adapter;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.MarksheetEditActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal;
@@ -26,7 +29,7 @@ public class SubjectMarkSheetAdaper extends RecyclerView.Adapter<SubjectMarkShee
 
     private List<SubjectMarkSheet> subjectList;
     private List<String> keys;
-    private Activity activity;
+    public Activity activity;
     private String className;
     private String sectionName;
 
@@ -62,7 +65,7 @@ public class SubjectMarkSheetAdaper extends RecyclerView.Adapter<SubjectMarkShee
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        SubjectMarkSheet subjectMarkSheet = subjectList.get(position);
+        final SubjectMarkSheet subjectMarkSheet = subjectList.get(position);
         holder.subjectName.setText(subjectMarkSheet.getSubjectName());
 
         holder.Subject.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +85,36 @@ public class SubjectMarkSheetAdaper extends RecyclerView.Adapter<SubjectMarkShee
         holder.Subject.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+
+                // setup the alert builder
+                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle("সতর্কীকরণ");
+                builder.setIcon(R.drawable.warnig_for_delete);
+                builder.setMessage("আপনি কি "+subjectMarkSheet.getSubjectName()+" এর সকল তথ্য ডিলিট করতে চান?");
+
+                // add the buttons
+                builder.setPositiveButton("ডিলিট", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        FirebaseCaller firebaseCaller =new  FirebaseCaller ();
+                        firebaseCaller.deleteData(className,sectionName,keys.get(position));
+                        subjectList.remove(position);
+                        notifyDataSetChanged();
+
+                    }
+                });
+                builder.setNegativeButton("না", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
 
 
 

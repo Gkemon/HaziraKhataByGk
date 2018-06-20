@@ -70,8 +70,14 @@ public class FirebaseCaller {
 //        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).removeValue();
         databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).keepSynced(true);
 
-        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").push().setValue(subjectMarkSheet);
+        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).setValue(subjectMarkSheet);
 
+    }
+
+
+    public static void deleteData(String className,String sectionName,String key){
+        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).keepSynced(true);
+        databaseReference.child("Users").child(getUserID()).child("Class").child(className+sectionName).child("Subject").child(key).removeValue();
     }
 
     public static void getTotalSubject(final String className,final String sectionName, final RecyclerView recyclerView, final Activity activity,final TextView emptyText) {

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SubjectMarkSheet implements Serializable {
 
     public String subjectName;
-    public Integer totalNumber;
+    public Double totalNumber;
     public ArrayList<DistributionVSnumberTable> distributionVSnumberTable;// example: "home work" <--> 15
 
     public ArrayList<StudentVsDistributionTable> getStudentVsDistributionTableArrayList() {
@@ -36,7 +36,7 @@ public class SubjectMarkSheet implements Serializable {
     }
 
 
-    public void setTotalNumber(Integer totalNumber) {
+    public void setTotalNumber(Double totalNumber) {
         this.totalNumber = totalNumber;
     }
 
@@ -52,7 +52,7 @@ public class SubjectMarkSheet implements Serializable {
         return subjectName;
     }
 
-    public Integer getTotalNumber() {
+    public Double getTotalNumber() {
         return totalNumber;
     }
 

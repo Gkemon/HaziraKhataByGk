@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class UtilsForMarkSheetActivity {
 
 
-    public static Integer getTotalNumberOfUserDistributionEntity(ArrayList<Integer> integers){
-        Integer totalNumber=0;
+    public static Double getTotalNumberOfUserDistributionEntity(ArrayList<Double> integers){
+        Double totalNumber=0.00;
 
         for(int i=0;i<integers.size();i++){
             totalNumber+=integers.get(i);
@@ -30,7 +30,7 @@ public class UtilsForMarkSheetActivity {
         return totalNumber;
     }
 
-    public static void CreateErrorDialog(Activity activity,ArrayList<String> distributions,ArrayList<Integer> numOfDistributions,Integer totalNumber){
+    public static void CreateErrorDialog(Activity activity,ArrayList<String> distributions,ArrayList<Double> numOfDistributions,Double totalNumber){
 
 
         String text="নাম্বার বন্টনে আপনার ইনপুট দেয়া নাম্বারগুলোর সমষ্টি মোট নাম্বারের সমান নয় ।ইনপুট দেয়া নাম্বারগুলোর সমষ্টি অবশ্যই মোট নাম্বারের সমান হতে হবে। । নিচে আপনার ইনপুটগুলো দেখানো হল :\n\n";
@@ -54,7 +54,7 @@ text+=temp;
         dialog.show();
     }
 
-    public static ArrayList<DistributionVSnumberTable> createDistributionObjectList(Integer numOfDistribution, ArrayList<String> listOfDistribution, ArrayList<Integer> listOfDistributionNumber){
+    public static ArrayList<DistributionVSnumberTable> createDistributionObjectList(Integer numOfDistribution, ArrayList<String> listOfDistribution, ArrayList<Double> listOfDistributionNumber){
 
         ArrayList<DistributionVSnumberTable> temp = new ArrayList<>();
 

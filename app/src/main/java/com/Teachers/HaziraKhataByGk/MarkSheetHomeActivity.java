@@ -30,13 +30,13 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
 
     public String subjectName;
     public Integer numberOfDistribution;
-    public Integer totalNumberOfDistribution;
+    public Double totalNumberOfDistribution;
     public RecyclerView recyclerViewOfSubject;
     public ArrayList<String> listDistribution;//example HW ,CT
-    public ArrayList<Integer> listOfNumOfDistribution;// HW 's number 15 ,CT's number 20
+    public ArrayList<Double> listOfNumOfDistribution;// HW 's number 15 ,CT's number 20
 
-    public HashMap<String,Integer> distributionVSnumberTable;// example: "home work" <--> 15
-    public HashMap<String,HashMap<String,Integer>> studentVsDistributionTable; //example: roll 1 get 5 in HW    FloatingActionButton fab;
+    public HashMap<String,Double> distributionVSnumberTable;// example: "home work" <--> 15
+
     String className,sectionName;
 
 
@@ -166,7 +166,7 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
                     String num = edt.getText().toString().trim();
 
                     numberOfDistribution=Integer.valueOf(num);
-                    totalNumberOfDistribution=Integer.valueOf(totalNumberEditText.getText().toString().trim());
+                    totalNumberOfDistribution=Double.valueOf(totalNumberEditText.getText().toString().trim());
                     CreatingDistributionNameIntakeDialog();
                     b.dismiss();
 
@@ -248,8 +248,8 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
                         }
                         else {
                             listDistribution.add( name);
-                            listOfNumOfDistribution.add(Integer.valueOf(number));
-                            distributionVSnumberTable.put(name,Integer.valueOf(number));
+                            listOfNumOfDistribution.add(Double.valueOf(number));
+                            distributionVSnumberTable.put(name,Double.valueOf(number));
 
                             if(i1==1){
                                 if(!UtilsForMarkSheetActivity.getTotalNumberOfUserDistributionEntity(listOfNumOfDistribution).equals(totalNumberOfDistribution)){

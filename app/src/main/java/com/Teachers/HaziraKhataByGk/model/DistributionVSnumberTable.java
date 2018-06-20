@@ -9,17 +9,17 @@ import java.io.Serializable;
 public class DistributionVSnumberTable implements Serializable {
 
     public String distributionName;
-    public Integer distributionNumber;
+    public Double distributionNumber;
 
     public void setDistributionName(String distributionName) {
         this.distributionName = distributionName;
     }
 
-    public void setDistributionNumber(Integer distributionNumber) {
+    public void setDistributionNumber(Double distributionNumber) {
         this.distributionNumber = distributionNumber;
     }
 
-    public Integer getDistributionNumber() {
+    public Double getDistributionNumber() {
         return distributionNumber;
     }
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout;
 import com.Teachers.HaziraKhataByGk.model.DistributionVSnumberTable;
@@ -299,7 +300,9 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
                 distributionVSnumberTable.setDistributionName(subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName);
                 temp2+="\n"+subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName+" ( "+editTextHashMap.get(i).get(j).getText().toString()+" নাম্বার )";
-                distributionVSnumberTable.setDistributionNumber(Integer.valueOf(editTextHashMap.get(i).get(j).getText().toString()));
+
+                if(UtilsCommon.isNumeric(editTextHashMap.get(i).get(j).getText().toString()))
+                distributionVSnumberTable.setDistributionNumber(Double.valueOf(editTextHashMap.get(i).get(j).getText().toString()));
                 distributionVSnumberTableArrayList.add(distributionVSnumberTable);
 
             }

@@ -15,7 +15,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-
 import static com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal.GLOBAL_STUDENT_LIST;
 
 /**
@@ -65,6 +64,8 @@ firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addL
                     printButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+
+
                             markSheetEditAdapter.printData();
 
                         }
