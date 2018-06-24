@@ -156,7 +156,13 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
             String number="";
             if(subjectMarkSheet.getStudentVsDistributionTableArrayList()!=null)
+                if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position)!=null)
+                    if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList()!=null)
+                        if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i)!=null)
+                            if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i).distributionNumber!=null)
              number=subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i).distributionNumber.toString();
+
+
             if(number==null)
             editText.setText("");
             else editText.setText(number);

@@ -275,7 +275,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO:DATABASE CONNECTION
         if(!calledAlready) {
             firebaseDatabase = FirebaseDatabase.getInstance();
-            firebaseDatabase.setPersistenceEnabled(true);
+            try {
+                firebaseDatabase.setPersistenceEnabled(true);
+            }catch (Exception e){
+                calledAlready=true;
+            }
+
             databaseReference = firebaseDatabase.getReference();
             calledAlready = true;
         }

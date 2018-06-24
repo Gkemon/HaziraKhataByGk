@@ -39,7 +39,14 @@ public class FirebaseCaller {
 
         if (!calledAlready) {
             firebaseDatabase = FirebaseDatabase.getInstance();
-            firebaseDatabase.setPersistenceEnabled(true);
+
+            try {
+                firebaseDatabase.setPersistenceEnabled(true);
+            }
+            catch (Exception e){
+                calledAlready = true;
+            }
+
             databaseReference = firebaseDatabase.getReference();
             calledAlready = true;
         }

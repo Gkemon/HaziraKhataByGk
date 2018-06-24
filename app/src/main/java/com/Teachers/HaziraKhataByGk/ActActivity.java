@@ -151,6 +151,10 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
 
             //FOR AVOID SQL INJECTION
             for(int i=0;i<MainActivity.TotalClassItems.size();i++){
+
+                //TODO: have to fix
+                if(MainActivity.TotalClassItems==null)startActivity(new Intent(ActActivity.this,MainActivity.class));
+
                 if(MainActivity.TotalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.TotalClassItems.get(i).getSection().equals(classitem.getSection())&&!(previousClassName.equals(personName.getText().toString())&&prviousSectionName.equals(phone.getText().toString()))){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
