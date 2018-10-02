@@ -192,23 +192,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mEmail=mFirebaseUser.getEmail();
 
 
-        //TODO: For round pic in nav with profile name(must be exist in Firebase project,not Google)
-        //Uri profilePicURI=mFirebaseUser.getPhotoUrl();
-      //  String username=mFirebaseUser.getDisplayName();
-//        for (UserInfo userInfo : mFirebaseUser.getProviderData()) {
-//            if (username == null && userInfo.getDisplayName() != null) {
-//                username = userInfo.getDisplayName();
-//                Toast.makeText(this,username+" user in",Toast.LENGTH_LONG).show();
-//            }
-//            if (profilePicURI == null && userInfo.getPhotoUrl() != null) {
-//                profilePicURI = userInfo.getPhotoUrl();
-//                Toast.makeText(this,profilePicURI+" user pro in",Toast.LENGTH_LONG).show();
-//            }
-//        }
-//        Picasso.with(context)
-//                .load(profilePicURI)
-//                .into(profile);
-
 
         View headerView = navigationView.getHeaderView(0);
         RelativeLayout nav_header = (RelativeLayout) headerView.findViewById(R.id.user_pro_pic);
@@ -218,24 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         emailText.setText(mEmail);
-
-//TODO: For default pro pic
-//        if(mFirebaseUser.getDisplayName()!=null) {
-//            //FOR TEXTDRAWABLE IMAGE CREATING
-//            ColorGenerator generator = ColorGenerator.MATERIAL;
-//            int color = generator.getRandomColor();
-//            TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(75).width(75)
-//                    .textColor(Color.WHITE)
-//                    .useFont(Typeface.DEFAULT)
-//                    .toUpperCase()
-//                    .endConfig()
-//                    .buildRound(mFirebaseUser.getDisplayName().substring(0, 1), color);
-//            Picasso.with(context)
-//                    .load(mFirebaseUser.getPhotoUrl())
-//                    .error(myDrawable)
-//                    .into(profile);
-//        }
-
 
 
         nav_header.setOnClickListener(new View.OnClickListener() {
@@ -472,6 +437,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent();
 
         switch (item.getItemId()) {
+            case R.id.privacy_policy:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/1Yj7XyuCfGIkJ5S0Qqi0f9Xo1z6a0j19uVP_n0k_tnCE/edit?usp=sharing")));
+                break;
             case R.id.savedUrl:
                 intent.setClass(MainActivity.this, BottomNavigationActivity.class);
                 startActivity(intent);
@@ -487,9 +455,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
                 }
 
-               // openInAppBrowser("https://www.facebook.com/groups/2035798976667483?view=permalink&id=2039661282947919");
-//                intent.setClass(this, ScrollingActivity.class_room);
-//                startActivity(intent);
                 break;
 
             case R.id.questuon_answer:

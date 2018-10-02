@@ -19,6 +19,11 @@
         android:id="@+id/questuon_answer"
         android:icon="@drawable/ic_action_question_answer"
         android:title="প্রশ্নোত্তর" />
+
+        <item
+            android:id="@+id/privacy_policy"
+            android:icon="@drawable/ic_privacy"
+            android:title="Privacy Policy" />
     </group>
 
 

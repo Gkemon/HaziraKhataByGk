@@ -99,7 +99,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
     @Override
     public markEditHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_mark_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject_card_mark_sheet, parent, false);
 
 
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.student_mark_edit_layout);
