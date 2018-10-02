@@ -73,9 +73,8 @@ public class scheduleActivity extends AppCompatActivity {
     public static final String THEME_SAVED = "com.Teachers.HaziraKhataByGk.Schedulerrktheme";
     public static final String LIGHTTHEME = "com.Teachers.HaziraKhataByGk.Scheduler.lighttheme";
     public static final String DARKTHEME = "com.Teachers.HaziraKhataByGk.Scheduler.darktheme";
-  //  private AnalyticsApplication app;
-    public LinearLayout adlayout;
-    public AdView mAdView;
+
+
     public Context context;
     public static int EditedToDoPosition;
 

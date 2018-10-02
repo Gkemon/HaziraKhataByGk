@@ -36,7 +36,7 @@ public class ReminderActivity extends AppCompatActivity {
     private TextView mSnoozeTextView;
     String theme;
     public LinearLayout adlayout;
-    public AdView mAdView;
+
    // AnalyticsApplication app;
 
     @Override
@@ -57,10 +57,6 @@ public class ReminderActivity extends AppCompatActivity {
 
         if(mToDoItems.size()==0) mToDoItems = scheduleActivity.getLocallyStoredData(storeRetrieveData);
 
-//        //FOR SCHEDULES
-//        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
-//        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-//        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
 
 
 

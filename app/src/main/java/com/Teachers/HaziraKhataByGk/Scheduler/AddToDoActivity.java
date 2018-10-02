@@ -64,10 +64,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     private int mUserColor;
     public LinearLayout mContainerLayout;
     private String theme;
-    public LinearLayout adlayout;
-    public AdView mAdView;
+
+
     public LinearLayout DailyRemainderLayout;
-    public InterstitialAd mInterstitialAd;
+
     public ProgressBar progressBar;
     private StoreRetrieveData storeRetrieveData;
     private Boolean IsNewToDo;//For dialog showing because we don't need to show warning for a new to do item
