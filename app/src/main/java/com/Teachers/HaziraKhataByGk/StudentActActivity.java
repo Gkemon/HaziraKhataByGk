@@ -46,8 +46,8 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
     private student student;
     public   String previousId,currentId;
     public  static Activity activity;
-    public LinearLayout adlayout;
-    public AdView mAdView;
+
+
 
 
 
@@ -437,9 +437,6 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
     }
     @Override
     public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
         super.onPause();
     }
 
@@ -461,16 +458,10 @@ public class StudentActActivity extends AppCompatActivity implements View.OnClic
         MainActivity.mUserId=mUserId;
 
 
-        if (mAdView != null) {
-            mAdView.resume();
-        }
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
         super.onDestroy();
     }
 }

@@ -100,8 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth.AuthStateListener authListener;
 
     public PrefManagerForMain prefManagerForMain;
-    public LinearLayout adlayout;
-    public AdView mAdView;
+
 
 
     @Override
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //ADMOB
 
-        MobileAds.initialize(this, "ca-app-pub-1394807458826262~9259176415");
+
 
 //        //TABTARGETVIEW
 //        TapTargetView.showFor(this,TapTarget.forView(findViewById(R.drawable.ic_schedule), "This is a target", "We have the best targets, believe me"));

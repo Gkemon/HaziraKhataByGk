@@ -51,9 +51,9 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
     private ArrayList<Boolean> PresentAbsent;
     public static SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
     public static student student;
-    public LinearLayout adlayout;
+
     public static String time, subject,yearWithDate,year,month,day;
-    public AdView mAdView;
+
     static boolean TriggeredAlready = true;
     public ArrayList<AttendenceData> attendenceDataArrayList;
     ArrayList<String> TempKEYlist;
@@ -759,16 +759,6 @@ public class studentAllInfoShowActiviy extends AppCompatActivity {
 
                             }
 
-
-                            //Add to database
-//                        MainActivity.databaseReference.child("Users").
-//                                child(mUserId).child("Class").
-//                                child(class_item.getName()+class_item.getSection())
-//                                .child("Student").child(student.getId()).child("Attendance").push()
-//                                .setValue(attendenceData);
-//
-//                        onResume();
-                            //                 singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
                             GetHeadingData();
                             GetAttendenceListData();

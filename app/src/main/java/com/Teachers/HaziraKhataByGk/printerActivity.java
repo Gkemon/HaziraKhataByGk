@@ -27,8 +27,8 @@ import static com.Teachers.HaziraKhataByGk.AttendanceActivity.year;
 public class printerActivity extends AppCompatActivity {
 
     //AD
-    InterstitialAd mInterstitialAd;
-    private Boolean isInterstitalAdEnable;
+
+
 
 
    public static  String INTENT_FLAG="FLAG";
@@ -39,7 +39,7 @@ public class printerActivity extends AppCompatActivity {
     public static  class_item class_item;
 
     public LinearLayout adlayout,emptyView;
-    public AdView mAdView;
+
     static student student;
 
     int janTotal=0,febTotal=0,marTotal=0,aprTotal=0,mayTotal=0,juneTotal=0,julyTotal=0,augTotal=0,sepTotal=0,octTotal=0,novTotal=0,decTotal=0;
@@ -109,9 +109,6 @@ public class printerActivity extends AppCompatActivity {
 
 
 //TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(this);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
 
 
     }
@@ -184,42 +181,13 @@ public class printerActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
+
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",jan);
                 startActivity(intent);
 
 
-                // Load ads into Interstitial Ads
-                // mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",jan);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",jan);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
 
 
@@ -230,45 +198,13 @@ public class printerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
+
 
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",fab);
                 startActivity(intent);
-                // Load ads into Interstitial Ads
-                // mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
 
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",fab);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",fab);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",fab);
-//                startActivity(intent);
             }
         });
 
@@ -276,47 +212,12 @@ public class printerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",mar);
                 startActivity(intent);
-                // Load ads into Interstitial Ads
-                // mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",mar);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",mar);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
 
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",mar);
-//                startActivity(intent);
             }
         });
 
@@ -324,84 +225,18 @@ public class printerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
+
 
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",apr);
                 startActivity(intent);
-                // Load ads into Interstitial Ads
-                //  mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",apr);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",apr);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
-//
-//                Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-//                intent.putExtra("month",apr);startActivity(intent);
             }
         });
 
         mayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                //mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",may);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",may);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",may);startActivity(intent);
@@ -411,39 +246,6 @@ public class printerActivity extends AppCompatActivity {
         juneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                //mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",june);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",june);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",june);startActivity(intent);
             }
@@ -453,79 +255,15 @@ public class printerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                //  mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",july);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",july);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",july);startActivity(intent);
+
             }
         });
 
         augButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                //  mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",aug);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",aug);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",aug);startActivity(intent);
@@ -536,80 +274,14 @@ public class printerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                //   mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",sep);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",sep);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
-
-
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",sep);startActivity(intent);
+
             }
         });
         octButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                //mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",oct);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",oct);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
@@ -621,39 +293,6 @@ public class printerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                //mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",nov);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",nov);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-//
-
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",nov);startActivity(intent);
             }
@@ -662,38 +301,6 @@ public class printerActivity extends AppCompatActivity {
         decButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
-                // Load ads into Interstitial Ads
-                // mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",dec);
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
-                        intent.putExtra("month",dec);
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
-
-
 
                 Intent intent =new Intent(printerActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",dec);startActivity(intent);
@@ -704,17 +311,10 @@ public class printerActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
+
         super.onDestroy();
     }
 
-    private void showInterstitial() {
-//        if (mInterstitialAd.isLoaded()) {
-//            mInterstitialAd.show();
-//        }
-    }
 
     public void SeparatingData(){
 

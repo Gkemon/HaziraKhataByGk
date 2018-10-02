@@ -39,8 +39,7 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
     public static List<student> studentList;
     public static Activity Activity;
 
-    public LinearLayout adlayout;
-    public AdView mAdView;
+
 
 
     @Override
@@ -78,39 +77,6 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
         });
 
 
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                .build();
-//        adlayout=findViewById(R.id.ads);
-//        mAdView = (AdView) findViewById(R.id.adViewInHome);
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                adlayout.setVisibility(View.GONE);
-//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//        mAdView.loadAd(adRequest);
 
 
 
@@ -121,9 +87,7 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
     protected void onResume() {
         super.onResume();
 
-//        if (mAdView != null) {
-//            mAdView.resume();
-//        }
+
         //FOR GETTING SPECIFIC CLASS'S STUDENTS
 
         contactofSA = getIntent().getParcelableExtra(ClassRoom_activity.class.getSimpleName());
@@ -181,17 +145,13 @@ public class studentActivity extends AppCompatActivity implements RecyclerItemCl
 
     @Override
     public void onPause() {
-//        if (mAdView != null) {
-//            mAdView.pause();
-//        }
+
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
+
         super.onDestroy();
     }
 

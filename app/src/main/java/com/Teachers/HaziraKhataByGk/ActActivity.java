@@ -35,9 +35,9 @@ public class ActActivity extends AppCompatActivity implements View.OnClickListen
     private class_item classitem = null;
     public static String previousClassName;
     public static String prviousSectionName;
-    InterstitialAd mInterstitialAd;
-    public AdView mAdView;
-    public View adlayout;
+
+
+
 
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;

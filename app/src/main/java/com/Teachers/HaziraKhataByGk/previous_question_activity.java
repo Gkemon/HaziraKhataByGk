@@ -24,7 +24,7 @@ public class previous_question_activity extends AppCompatActivity {
     Activity activity;
     Button button1,button2,button3,button4,button5;
     public LinearLayout adlayout;
-    public AdView mAdView;
+
     InterstitialAd mInterstitialAd;
     private Boolean isInterstitalAdEnable;
 
@@ -50,41 +50,11 @@ public class previous_question_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
 
                 Intent intent=new Intent(activity,text_show_activity.class);
                 intent.putExtra("subjectName","2");
                 startActivity(intent);
 
-                // Load ads into Interstitial Ads
-             //   mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","2");
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","2");
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
             }
         });
@@ -93,40 +63,10 @@ public class previous_question_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
                 Intent intent=new Intent(activity,text_show_activity.class);
                 intent.putExtra("subjectName","3");
                 startActivity(intent);
 
-                // Load ads into Interstitial Ads
-             //   mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","3");
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","3");
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
             }
         });
@@ -135,42 +75,13 @@ public class previous_question_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
+
 
 
                 Intent intent=new Intent(activity,text_show_activity.class);
                 intent.putExtra("subjectName","4");
                 startActivity(intent);
 
-                // Load ads into Interstitial Ads
-             //   mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","4");
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","4");
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
             }
         });
@@ -179,43 +90,10 @@ public class previous_question_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
-
 
                 Intent intent=new Intent(activity,text_show_activity.class);
                 intent.putExtra("subjectName","5");
                 startActivity(intent);
-
-
-                // Load ads into Interstitial Ads
-                //mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","5");
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","5");
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
 
             }
@@ -225,39 +103,11 @@ public class previous_question_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
-                        .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                        .build();
 
                 Intent intent=new Intent(activity,text_show_activity.class);
                 intent.putExtra("subjectName","6");
                 startActivity(intent);
 
-                // Load ads into Interstitial Ads
-             //   mInterstitialAd.loadAd(adRequest);
-                mInterstitialAd.setAdListener(new AdListener() {
-                    public void onAdLoaded() {
-                        showInterstitial();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","6");
-                        startActivity(intent);
-                        super.onAdFailedToLoad(i);
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-                        Intent intent=new Intent(activity,text_show_activity.class);
-                        intent.putExtra("subjectName","6");
-                        startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
 
             }
@@ -266,72 +116,17 @@ public class previous_question_activity extends AppCompatActivity {
     }
     @Override
     protected void onStart() {
-        //ADMOB
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-
-
-//TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(this);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
-
-        adlayout=findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
-
-
         super.onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
         super.onDestroy();
-    }
-
-    private void showInterstitial() {
-//        if (mInterstitialAd.isLoaded()) {
-//            mInterstitialAd.show();
-//        }
     }
 }
 
