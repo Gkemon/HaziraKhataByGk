@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.model.DistributionVSnumberTable;
+import com.Teachers.HaziraKhataByGk.Model.DistributionVSnumberTable;
 
 import java.util.ArrayList;
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e3f2fd"
-    tools:context="com.Teachers.HaziraKhataByGk.Tabs.Fragments.jobFragment"
+    tools:context="com.Teachers.HaziraKhataByGk.Tabs.Fragments.JobFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/jobFragmentRecycle"

@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.widget.PrefManager;
+import com.Teachers.HaziraKhataByGk.Widget.PrefManager;
 
 /**
  * Created by uy on 12/1/2017.

@@ -21,11 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.Teachers.HaziraKhataByGk.adapter.AttendenceListAdapter;
-import com.Teachers.HaziraKhataByGk.model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.model.class_item;
-import com.Teachers.HaziraKhataByGk.model.student;
-import com.Teachers.HaziraKhataByGk.widget.PrefManager;
+import com.Teachers.HaziraKhataByGk.Adapter.AttendenceListAdapter;
+import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
+import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.Widget.PrefManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,11 +38,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.Teachers.HaziraKhataByGk.ClassRoom_activity.FLAG_OF_CLASSROOM_ACTIVITY;
+import static com.Teachers.HaziraKhataByGk.ClassRoomActivity.FLAG_OF_CLASSROOM_ACTIVITY;
 
 public class AttendanceActivity extends AppCompatActivity {
     private static final String Tag = AttendanceActivity.class.getName();
-    public static class_item classitemAttendence;
+    public static ClassIitem classitemAttendence;
     public ListView listView;
     private Boolean isInterstitalAdEnable;
     public static Context context;
@@ -115,7 +115,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if(edt.getText().toString().trim().equals("DELETE")){
 
-                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,7 +130,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                     student student;
                                     for (int i = 0; i < studentListForDeleteFromAttendenceActivity.size(); i++) {
                                         student = studentListForDeleteFromAttendenceActivity.get(i);
-                                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName()+ClassRoom_activity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
+                                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
                                         Log.d("GK","REMOVE");
 
                                     }
@@ -163,7 +163,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
 
             case R.id.printer:
-                Intent intent=new Intent(AttendanceActivity.this,printerActivity.class);
+                Intent intent=new Intent(AttendanceActivity.this, PrinterActivity.class);
                 intent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY,classitemAttendence);
                 startActivity(intent);
 
@@ -264,7 +264,7 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     void LoadData(){
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoom_activity.classitem.getName() + ClassRoom_activity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

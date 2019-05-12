@@ -11,9 +11,9 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.Teachers.HaziraKhataByGk.model.JobItems;
-import com.Teachers.HaziraKhataByGk.model.blog_item;
-import com.Teachers.HaziraKhataByGk.model.news_item;
+import com.Teachers.HaziraKhataByGk.Model.JobItems;
+import com.Teachers.HaziraKhataByGk.Model.NewsItem;
+import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 
 /**
  * Created by uy on 10/29/2017.
@@ -24,9 +24,9 @@ public class BrowsingActivity extends AppCompatActivity{
     private WebView webView;
     private ProgressBar progressBar;
     private float m_downX;
-    private news_item news_item;
+    private NewsItem NewsItem;
     private JobItems jobItems;
-    private blog_item blog_item;
+    private BlogItem BlogItem;
     public static Activity activity;
 
     CoordinatorLayout coordinatorLayout;
@@ -47,18 +47,18 @@ public class BrowsingActivity extends AppCompatActivity{
         if(TAG!=null) {
             if (TAG.equals("NEWS")) {
                 Log.d("GK", "TAG IS NEWS");
-                news_item = new news_item();
-                news_item = i.getParcelableExtra("NEWS");
-                title = news_item.getHeading();
+                NewsItem = new NewsItem();
+                NewsItem = i.getParcelableExtra("NEWS");
+                title = NewsItem.getHeading();
             } else if (TAG.equals("JOB")) {
                 Log.d("GK", "TAG IS +NEWS");
                 jobItems = new JobItems();
                 jobItems = i.getParcelableExtra("JOB");
                 title = jobItems.getPost();
             } else if (TAG.equals("BLOG")) {
-                blog_item = new blog_item();
-                blog_item = i.getParcelableExtra("BLOG");
-                title = blog_item.getHeading();
+                BlogItem = new BlogItem();
+                BlogItem = i.getParcelableExtra("BLOG");
+                title = BlogItem.getHeading();
             } else if (TAG.equals("OTHER")) {
                 title = webView.getTitle();
             }
@@ -325,11 +325,11 @@ public class BrowsingActivity extends AppCompatActivity{
 //    public void bookmarkUrl(Context context, String url) {
 //
 //        if(TAG.equals("NEWS")){
-//            MainActivity.saveNews(MainActivity.context,news_item);
+//            MainActivity.saveNews(getContext(),NewsItem);
 //        }
 //        else if(TAG.equals("JOB"))
 //        {
-//            MainActivity.saveJob(MainActivity.context,jobItems.getPost(),jobItems.getInstitute(),jobItems.getPlace(),jobItems.getURL());
+//            MainActivity.saveJob(getContext(),jobItems.getPost(),jobItems.getInstitute(),jobItems.getPlace(),jobItems.getURL());
 //
 //        }
 //        else if(TAG.equals("BLOG"))

@@ -16,10 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsForMarkSheetActivity;
-import com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal;
-import com.Teachers.HaziraKhataByGk.model.SubjectMarkSheet;
+import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,8 +69,8 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
             sectionName=getIntent().getExtras().getString(ContantsForGlobal.CLASS_SECTION);
 
         }catch (Exception c){
-            className=ClassRoom_activity.classitem.getName();
-            sectionName=ClassRoom_activity.classitem.getSection();
+            className= ClassRoomActivity.classitem.getName();
+            sectionName= ClassRoomActivity.classitem.getSection();
         }
 
 

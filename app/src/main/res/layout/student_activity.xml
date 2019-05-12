@@ -5,7 +5,7 @@
     android:background="@color/blueLight"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.Teachers.HaziraKhataByGk.studentActivity">
+    tools:context="com.Teachers.HaziraKhataByGk.StudentListShowActivity">
 
     <LinearLayout
         android:id="@+id/toDoEmptyView"

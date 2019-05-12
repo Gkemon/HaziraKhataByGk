@@ -56,29 +56,29 @@
             android:name=".MainActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".ActActivity"
+            android:name=".ClassAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".ClassRoom_activity"
+            android:name=".ClassRoomActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity android:name=".AttendanceActivity">
 
             <!-- android:theme="@style/AppThemeForNoActionBar"> -->
         </activity>
         <activity
-            android:name=".studentActivity"
+            android:name=".StudentListShowActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".printerActivity"
+            android:name=".PrinterActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".StudentActActivity"
+            android:name=".StudentAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
-        <activity android:name=".studentAllInfoShowActiviy" />
+        <activity android:name=".StudentAlIInfoShowActiviy" />
         <!-- android:theme="@style/AppThemeForNoActionBar" -->
 
         <activity
-            android:name=".noteAddActivity"
+            android:name=".NoteAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".Scheduler.scheduleActivity"
@@ -89,13 +89,12 @@
         <activity
             android:name=".Scheduler.ReminderActivity"
             android:theme="@style/AppThemeForNoActionBar" />
-        <activity android:name=".FirebaseWorks.FirebaseDataShowActivity" />
         <activity
-            android:name=".widget.text_show_activity"
+            android:name=".Widget.TextShowActivity"
             android:label=""
             android:theme="@style/style_for_text_content" />
         <activity
-            android:name=".previous_question_activity"
+            android:name=".PreviousQuestionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Browsing.BrowsingActivity"
@@ -109,29 +108,19 @@
             android:name=".BottomNavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- Firebase Notifications -->
-        <service android:name=".FirebaseWorks.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".FirebaseWorks.FirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
         <!-- ./Firebase Notifications -->
 
         <activity
-            android:name=".modelTestChoose"
+            android:name=".ModelTestChooseActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".model_test"
+            android:name=".ModelTestActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".result_activity"
+            android:name=".ModelTestResultShowActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".about_activity"
+            android:name=".AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignupActivity"

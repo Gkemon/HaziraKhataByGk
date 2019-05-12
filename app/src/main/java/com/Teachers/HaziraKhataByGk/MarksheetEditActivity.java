@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsForMarkSheetEditAcitvity;
-import com.Teachers.HaziraKhataByGk.constant.ContantsForGlobal;
-import com.Teachers.HaziraKhataByGk.model.SubjectMarkSheet;
+import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 
 public class MarksheetEditActivity extends AppCompatActivity {
 

@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.Teachers.HaziraKhataByGk.FirebaseWorks.FirebaseDataShowActivity">
+    tools:context="com.Teachers.HaziraKhataByGk.Firebase.FirebaseDataShowActivity">
 
     <TextView
         android:id="@+id/txt_push_message"

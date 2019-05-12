@@ -248,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                         auth.signOut();
                         email=null;
                         Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
-                        MainActivity.activity.finish();
+                        LoginActivity.this.finish();
                         intent.putExtra("FLAG", "OUTSIDE");
                         startActivity(intent);
                         finish();

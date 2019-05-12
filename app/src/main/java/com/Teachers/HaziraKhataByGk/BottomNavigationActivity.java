@@ -17,14 +17,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.Teachers.HaziraKhataByGk.model.JobItems;
-import com.Teachers.HaziraKhataByGk.model.blog_item;
-import com.Teachers.HaziraKhataByGk.model.news_item;
-import com.Teachers.HaziraKhataByGk.savedData.SavedNewsFragment;
-import com.Teachers.HaziraKhataByGk.savedData.SavedblogFragment;
-import com.Teachers.HaziraKhataByGk.savedData.SavedjobFragment;
-import com.Teachers.HaziraKhataByGk.widget.BottomNavigationViewHelper;
-import com.Teachers.HaziraKhataByGk.widget.MyPageTransformer;
+import com.Teachers.HaziraKhataByGk.Model.JobItems;
+import com.Teachers.HaziraKhataByGk.Model.NewsItem;
+import com.Teachers.HaziraKhataByGk.Model.BlogItem;
+import com.Teachers.HaziraKhataByGk.SavedData.SavedNewsFragment;
+import com.Teachers.HaziraKhataByGk.SavedData.SavedBlogFragment;
+import com.Teachers.HaziraKhataByGk.SavedData.SavedJobFragment;
+import com.Teachers.HaziraKhataByGk.Widget.BottomNavigationViewHelper;
+import com.Teachers.HaziraKhataByGk.Widget.MyPageTransformer;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -39,9 +39,9 @@ import java.util.List;
 import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 
 public class BottomNavigationActivity extends AppCompatActivity {
-    public static ArrayList<news_item> Saved_News_list;
+    public static ArrayList<NewsItem> Saved_News_list;
     public static ArrayList<JobItems> Saved_job_list;
-    public static ArrayList<blog_item> Saved_Blog_list;
+    public static ArrayList<BlogItem> Saved_Blog_list;
 
     public static boolean isSavedNewsListEmpty;
     public static boolean isSavedJoblistEmpty;
@@ -85,8 +85,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.view_pager_bottom_navigation);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new SavedNewsFragment());
-        adapter.addFrag(new SavedjobFragment());
-        adapter.addFrag(new SavedblogFragment());
+        adapter.addFrag(new SavedJobFragment());
+        adapter.addFrag(new SavedBlogFragment());
         //adapter.addFrag(new SavedOtherDataFragment());
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new MyPageTransformer());

@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,32 +23,27 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.Teachers.HaziraKhataByGk.FirebaseWorks.MyFirebaseMessagingService;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData;
 import com.Teachers.HaziraKhataByGk.Scheduler.ToDoItem;
 import com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity;
-import com.Teachers.HaziraKhataByGk.Tabs.Fragments.NewsFragment;
-import com.Teachers.HaziraKhataByGk.Tabs.Fragments.NibondhonFragment;
+
+import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
-import com.Teachers.HaziraKhataByGk.Tabs.Fragments.blogFragment;
-import com.Teachers.HaziraKhataByGk.Tabs.Fragments.classRoomFragments;
-import com.Teachers.HaziraKhataByGk.Tabs.Fragments.jobFragment;
-import com.Teachers.HaziraKhataByGk.Tabs.Fragments.totthojhuri;
-import com.Teachers.HaziraKhataByGk.model.JobItems;
-import com.Teachers.HaziraKhataByGk.model.blog_item;
-import com.Teachers.HaziraKhataByGk.model.class_item;
-import com.Teachers.HaziraKhataByGk.model.news_item;
-import com.Teachers.HaziraKhataByGk.widget.PrefManagerForMain;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+
+import com.Teachers.HaziraKhataByGk.Model.JobItems;
+import com.Teachers.HaziraKhataByGk.Model.BlogItem;
+import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
+import com.Teachers.HaziraKhataByGk.Tabs.NewsFragment;
+import com.Teachers.HaziraKhataByGk.Tabs.NibondhonFragment;
+import com.Teachers.HaziraKhataByGk.Tabs.TotthojhuriFragment;
+import com.Teachers.HaziraKhataByGk.Widget.PrefManagerForMain;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -74,17 +65,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static ArrayList<class_item> TotalClassItems;
-    public static ArrayList<news_item> News_list;
+    public static ArrayList<ClassIitem> TotalClassItems;
+    public static ArrayList<NewsItem> NewsList;
     public static ArrayList<JobItems> Job_list;
-    public static View view,view1;//for class_room empty view
-    public static Activity activity;
+    public  View view,view1;//for class_room empty view
+    public  Activity activity;
     public static boolean isClassListEmpty;
-    public static ArrayList<news_item> saved_news_item_for_main;
-    public static ArrayList<blog_item> saved_blog_item_for_main;
+    public static ArrayList<NewsItem> saved_newsItem_for_main;
+    public static ArrayList<BlogItem> saved_blogItem_for_main;
     public static ArrayList<ToDoItem> toDoItemsFromMainActivity;
-    public static StoreRetrieveData storeRetrieveData;
-    public static Context context;
+    public  StoreRetrieveData storeRetrieveData;
+    public  Context context;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DrawerLayout drawer;
@@ -111,10 +102,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Logger.addLogAdapter(new AndroidLogAdapter());
 
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         //VIEWS
@@ -260,10 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mEmail=mFirebaseUser.getEmail();
 
 
-//        //FOR ADS
-//        if (mAdView != null) {
-//            mAdView.resume();
-//        }
+
         context = this;
 
 //        IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
@@ -290,14 +274,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseReference.child("Users").child(mUserId).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<news_item> news_item=new ArrayList<news_item>();
+                ArrayList<NewsItem> NewsItem =new ArrayList<NewsItem>();
                 for(DataSnapshot classData:dataSnapshot.getChildren()){
-                    news_item news_item1;
-                    news_item1=classData.getValue(news_item.class);
-                    news_item.add(news_item1);
+                    NewsItem newsItem1;
+                    newsItem1 =classData.getValue(NewsItem.class);
+                    NewsItem.add(newsItem1);
                 }
-                MainActivity.saved_news_item_for_main=new ArrayList<news_item>();
-                MainActivity.saved_news_item_for_main=news_item;
+                MainActivity.saved_newsItem_for_main =new ArrayList<NewsItem>();
+                MainActivity.saved_newsItem_for_main = NewsItem;
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -311,14 +295,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseReference.child("Users").child(mUserId).child("Saved_blog").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<blog_item> blog_item_temp=new ArrayList<blog_item>();
+                ArrayList<BlogItem> blogItem_temp =new ArrayList<BlogItem>();
                 for(DataSnapshot blogData:dataSnapshot.getChildren()){
-                    blog_item blog;
-                    blog=blogData.getValue(blog_item.class);
-                    blog_item_temp.add(blog);
+                    BlogItem blog;
+                    blog=blogData.getValue(BlogItem.class);
+                    blogItem_temp.add(blog);
                 }
-                saved_blog_item_for_main =new ArrayList<blog_item>();
-                saved_blog_item_for_main =blog_item_temp;
+                saved_blogItem_for_main =new ArrayList<BlogItem>();
+                saved_blogItem_for_main = blogItem_temp;
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -328,16 +312,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        //FOR Nofitification to News Fragment
-        if(getIntent().getStringExtra("FLAG")!=null) {
-            if (getIntent().getStringExtra("FLAG").equals("TWO")) {
-                viewPager.setCurrentItem(2);
-                MyFirebaseMessagingService.FLAG=null;
-            } else if (getIntent().getStringExtra("FLAG").equals("FOUR")) {
-                viewPager.setCurrentItem(4);
-                MyFirebaseMessagingService.FLAG=null;
-            }
-        }
+
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -446,31 +421,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.instruction:
-                Intent intent4 =  getFacebookIntent("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/");
-
-                try {
-                    startActivity(intent4);
-                }
-                catch (Exception e){
-                    Toast.makeText(this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
-                }
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/",context);
 
                 break;
 
             case R.id.questuon_answer:
 
-                Intent intent3 =  getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/");
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/",context);
 
-                try {
-                    startActivity(intent3);
-                }
-                catch (Exception e){
-                    Toast.makeText(this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
-                }
-
-                //openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2039659689614745/");
-//                intent.setClass(this, FullscreenActivity.class_room);
-//                startActivity(intent);
                 break;
 
             case R.id.review:
@@ -480,15 +438,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,"মতামত দিন",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent5 =  getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/");
 
-                                try {
-                                    startActivity(intent5);
-                                }
-                                catch (Exception e){
-                                    Toast.makeText(MainActivity.this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
-                                }
-
+                                UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",context);
 
                             }
                         });
@@ -501,15 +452,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-//                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-//                try {
-//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-//                } catch (android.content.ActivityNotFoundException anfe) {
-//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-//                }
                 break;
             case R.id.FourG:
-// getPackageName() from Context or Activity object
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +"binarygeek.a4gbangladeshByGkEmon")));
                 } catch (android.content.ActivityNotFoundException anfe) {
@@ -532,8 +476,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 i.setType("text/plain");
                 startActivity(Intent.createChooser(i,"শেয়ার করুন।"));
 
-//                intent.setClass(this, SettingsActivity.class_room);
-//                startActivity(intent);
                 break;
 
             case R.id.rating:
@@ -545,23 +487,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                  catch (android.content.ActivityNotFoundException anfe) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageNameRating)));
                 }
-//                intent.setClass(this, AboutActivity.class_room);
-//                startActivity(intent);
                 break;
 
             case R.id.facebook_community_Title:
-                Intent intent2 =  getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2045342365713144/");
-                startActivity(intent2);
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045342365713144/",context);
 
-             //   openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2039656582948389/");
-
-
-//                intent.setClass(this, DonateActivity.class_room);
-//                startActivity(intent);
                 break;
 
             case R.id.about:
-                Intent intent1=new Intent(MainActivity.this,about_activity.class);
+                Intent intent1=new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent1);
                 break;
         }
@@ -572,12 +506,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new classRoomFragments(), "শ্রেণী কার্যক্রম");
+        adapter.addFrag(new com.Teachers.HaziraKhataByGk.Tabs.Fragments.ClassRoomFragments(), "শ্রেণী কার্যক্রম");
         adapter.addFrag(new NibondhonFragment(), "শিক্ষক নিবন্ধন কর্নার");
         adapter.addFrag(new NewsFragment(), "শিক্ষা খবর");
-        adapter.addFrag(new totthojhuri(), "তথ্য ঝুড়ি");
-        adapter.addFrag(new jobFragment(), "শিক্ষক নিয়োগ");
-        adapter.addFrag(new blogFragment(), "শিক্ষক কথন");
+        adapter.addFrag(new TotthojhuriFragment(), "তথ্য ঝুড়ি");
+        adapter.addFrag(new JobFragment(), "শিক্ষক নিয়োগ");
+        adapter.addFrag(new BlogFragment(), "শিক্ষক কথন");
         adapter.addFrag(new TextBookFragment(), "পাঠ্যবই");
         viewPager.setAdapter(adapter);
     }
@@ -650,284 +584,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        //TODO: save news
-    public static void saveNews(Context context,news_item news_item1) {
-                news_item news_item;
-                news_item=news_item1;
-                boolean exist=false;
-
-                //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
-                for(int i=0;i<saved_news_item_for_main.size();i++){
-                    if(news_item.getURL().equals(saved_news_item_for_main.get(i).getURL())&&news_item.getDate().equals(saved_news_item_for_main.get(i).getDate())&&news_item.getHeading().equals(saved_news_item_for_main.get(i).getHeading())){
-                       exist=true;
-                    }
-                }
 
 
 
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-
-        //TODO: for bookmark in browser activity
-//        SharedPreferences pref1 = context.getSharedPreferences("HaziraKhata_others", 0); // 0 - for private mode
-//        SharedPreferences.Editor editor1 = pref1.edit();
 
 
-        // if url is already bookmarked, unbookmark it
-        if ((pref.getBoolean(news_item1.getURL(), false) && pref.getBoolean(news_item1.getHeading(), false) && pref.getBoolean(news_item1.getDate(), false))||exist) {
-
-
-            editor.putBoolean(news_item1.getURL(), false);
-            editor.putBoolean(news_item1.getHeading(), false);
-            editor.putBoolean(news_item1.getDate(), false);
-           // editor1.putBoolean(news_item1.getURL(), false);
-
-
-            Query query =
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_news").orderByChild("url").equalTo(news_item1.getURL());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        snapshot.getRef().child("url").removeValue();
-                        snapshot.getRef().child("date").removeValue();
-                        snapshot.getRef().child("heading").removeValue();
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {}
-            });
-        } else {
-            editor.putBoolean(news_item1.getURL(), true);
-            editor.putBoolean(news_item1.getHeading(), true);
-            editor.putBoolean(news_item1.getDate(), true);
-            //editor1.putBoolean(news_item1.getURL(), true);
-            MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_news").push().setValue(news_item1);
-
-        }
-
-        //editor1.commit();
-        editor.commit();
-    }
-
-    //TODO: check news
-    public static boolean isNewsBookmarked(news_item news_item){
-//        for(int i=0;i<saved_news_item_for_main.size();i++){
-//            if(news_item.getURL().equals(saved_news_item_for_main.get(i).getURL())&&news_item.getDate().equals(saved_news_item_for_main.get(i).getDate())&&news_item.getHeading().equals(saved_news_item_for_main.get(i).getHeading())){
-//                return true;
-//            }
-//        }
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata", 0);
-
-        if(pref.getBoolean(news_item.getURL(), false) && pref.getBoolean(news_item.getHeading(), false) && pref.getBoolean(news_item.getDate(), false)){
-            return true;
-        }
-       return false;
-    }
-
-    //TODO: love news
-    public static void NewsLoved(Context context, String url,String heading,String Date) {
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata_loved_news", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-
-        // if url is already bookmarked, unbookmark it
-        if (pref.getBoolean(url, false) && pref.getBoolean(heading, false) && pref.getBoolean(Date, false)) {
-            editor.putBoolean(url, false);
-            editor.putBoolean(heading, false);
-            editor.putBoolean(Date, false);
-
-        } else {
-            editor.putBoolean(heading, true);
-            editor.putBoolean(Date, true);
-            editor.putBoolean(url, true);
-        }
-        editor.apply();
-        editor.commit();
-    }
-
-    //TODO: check love news
-    public static boolean isNewsLoved(Context context,String url,String heading,String Date) {
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata_loved_news", 0);
-        if(pref.getBoolean(url, false)&&pref.getBoolean(heading, false)&&pref.getBoolean(Date, false)){
-            return true;
-        }
-        return false;
-    }
-
-
-    //TODO: save job
-    public static void saveJob(Context context,String post, String institute , String place ,String URL) {
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata_save_job", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-
-        // if url is already bookmarked, unbookmark it
-        if (pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
-            editor.putBoolean(URL, false);
-            editor.putBoolean(post, false);
-            editor.putBoolean(institute, false);
-            editor.putBoolean(place, false);
-
-            Query query=MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_jobs").orderByChild("url").equalTo(URL);
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        snapshot.getRef().child("url").removeValue();
-                        snapshot.getRef().child("post").removeValue();
-                        snapshot.getRef().child("institute").removeValue();
-                        snapshot.getRef().child("place").removeValue();
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        } else {
-
-            editor.putBoolean(URL, true);
-            editor.putBoolean(post, true);
-            editor.putBoolean(institute, true);
-            editor.putBoolean(place, true);
-
-            Query query=MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_jobs").orderByChild("url").equalTo(URL);
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        snapshot.getRef().child("url").removeValue();
-                        snapshot.getRef().child("post").removeValue();
-                        snapshot.getRef().child("institute").removeValue();
-                        snapshot.getRef().child("place").removeValue();
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            JobItems JobItems=new JobItems();
-            JobItems.setInstitute(institute);
-            JobItems.setPlace(place);
-            JobItems.setURL(URL);
-            JobItems.setPost(post);
-            MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_jobs").push().setValue(JobItems);
-        }
-
-        editor.apply();
-        editor.commit();
-    }
-
-
-    //TODO: check jobs
-    public static boolean isJobSaved(Context context,String post, String institute , String place ,String URL) {
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata_save_job", 0);
-        if(pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
-            return true;
-        }
-        return false;
-    }
-
-
-
-    //TODO: love job
-    public static void LoveJob(Context context,String post, String institute , String place ,String URL) {
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata_love_job", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-
-        // if url is already bookmarked, unbookmark it
-        if (pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
-            editor.putBoolean(URL, false);
-            editor.putBoolean(post, false);
-            editor.putBoolean(institute, false);
-            editor.putBoolean(place, false);
-
-
-        } else {
-            editor.putBoolean(URL, true);
-            editor.putBoolean(post, true);
-            editor.putBoolean(institute, true);
-            editor.putBoolean(place, true);
-
-        }
-
-        editor.apply();
-        editor.commit();
-    }
-
-
-    //TODO: check love jobs
-    public static boolean isJobLoved(Context context,String post, String institute , String place ,String URL) {
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata_love_job", 0);
-        if(pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
-            return true;
-        }
-        return false;
-    }
-
-    private void openInAppBrowser(String url) {
-
-        //TODO: for opening webview
-//        Intent intent = new Intent(MainActivity.activity, BrowsingActivity.class_room);
-//        intent.putExtra("URL", url);
-//        startActivity(intent);
-        //TODO: for opening default browser
-        if (!url.startsWith("http://") && !url.startsWith("https://"))
-            url = "http://" + url;
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-
-    }
-    //TODO: for opeing in fb app if it is installed.
-    public static Intent getFacebookIntent(String url) {
-
-
-        PackageManager pm;
-
-            pm = MainActivity.context.getPackageManager();
-
-
-        Uri uri = Uri.parse(url);
-        try {
-            ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);
-            if (applicationInfo.enabled) {
-                uri = Uri.parse("fb://facewebmodal/f?href=" + url);
-            }
-        }
-        catch (PackageManager.NameNotFoundException ignored) {
-
-        }
-
-        return new Intent(Intent.ACTION_VIEW, uri);
-    }
-
-
-    @Override
-    public void onPause() {
-//        if (mAdView != null) {
-//            mAdView.pause();
-//        }
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
-        super.onDestroy();
-    }
-
-    //CHECK INTERNET CONNECTIVITY
-    public  boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm!=null&&cm.getActiveNetworkInfo() != null &&
-                cm.getActiveNetworkInfo().isConnected();
-    }
 
 
 

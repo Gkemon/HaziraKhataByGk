@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blueLight"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.Teachers.HaziraKhataByGk.Tabs.Fragments.classRoomFragments">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/toDoEmptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:gravity="center"
         android:orientation="vertical">
 
