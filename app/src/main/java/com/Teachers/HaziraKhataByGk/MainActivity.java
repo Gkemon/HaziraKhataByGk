@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static ArrayList<ClassIitem> TotalClassItems;
     public static ArrayList<NewsItem> NewsList;
     public static ArrayList<JobItems> Job_list;
-    public  View view,view1;//for class_room empty view
     public  Activity activity;
     public static boolean isClassListEmpty;
     public static ArrayList<NewsItem> saved_newsItem_for_main;
@@ -87,40 +87,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static boolean calledAlready = false;
     public static String mUserId,mEmail;
     public static FirebaseUser mFirebaseUser;
+    Toolbar toolbar;
+
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
 
     public PrefManagerForMain prefManagerForMain;
+    NavigationView navigationView;
 
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        activity=this;
-        context = this;
-
-        Logger.addLogAdapter(new AndroidLogAdapter());
-
-
-
-        //VIEWS
-        setContentView(R.layout.activity_main);
-
-        //Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        //ADMOB
-
-
-
-//        //TABTARGETVIEW
-//        TapTargetView.showFor(this,TapTarget.forView(findViewById(R.drawable.ic_schedule), "This is a target", "We have the best targets, believe me"));
-
-//NOTIFICATION
-        OneSignal.startInit(this) .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification) .unsubscribeWhenNotificationsAreDisabled(true) .init();
+    public void setUpDrawer(){
 
         //create default navigation drawer toggle
         drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -134,28 +110,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(null);
 
 
-
-//TODO: for schedule hints
-        // Checking for first time launch - before calling setContentView()
-        prefManagerForMain = new PrefManagerForMain(this);
-        if (prefManagerForMain.isFirstTimeLaunch()) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setMessage("আপনার সকল শিডিউল কাজগুলো মনে করিয়ে দিবে এই এপটি।শিডিউল রিমাইন্ডার পেতে হলে উপরের ঘড়ি চিহ্নটিতে ক্লিক করুন।");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
-            prefManagerForMain.setFirstTimeLaunch(false);
-
-        }
-
-
-
-        //TODO:DATABASE CONNECTION
-
         if(!calledAlready) {
             //avoid setPersistenceEnabled twich click
             try {
@@ -168,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
-            firebaseDatabase=FirebaseDatabase.getInstance();
-            databaseReference=firebaseDatabase.getReference();
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
 
 
         //TODO: USER (for FB logic auth throw null pointer exception)
@@ -183,8 +137,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerView = navigationView.getHeaderView(0);
         RelativeLayout nav_header = (RelativeLayout) headerView.findViewById(R.id.user_pro_pic);
-        ImageView profile = (ImageView)nav_header.findViewById(R.id.img_profile);
-        TextView userName=(TextView)nav_header.findViewById(R.id.name);
         TextView emailText=(TextView)nav_header.findViewById(R.id.website);
 
 
@@ -202,19 +154,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+    }
+    public void showHintDialogForFirstTime(){
+
+        prefManagerForMain = new PrefManagerForMain(this);
+        if (prefManagerForMain.isFirstTimeLaunch()) {
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setMessage("আপনার সকল শিডিউল কাজগুলো মনে করিয়ে দিবে এই এপটি।শিডিউল রিমাইন্ডার পেতে হলে উপরের ঘড়ি চিহ্নটিতে ক্লিক করুন।");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            prefManagerForMain.setFirstTimeLaunch(false);
+
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
 
-
-        //Tabs
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        setupViewPager(viewPager);
+        Logger.addLogAdapter(new AndroidLogAdapter());
 
 
+        setContentView(R.layout.activity_main);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        OneSignal.startInit(this) .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification) .unsubscribeWhenNotificationsAreDisabled(true) .init();
 
-
+        setUpDrawer();
+        showHintDialogForFirstTime();
+        setupViewPager();
         setupTabIcons();
     }
 
@@ -224,45 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
 
-        //TODO:DATABASE CONNECTION
-        if(!calledAlready) {
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            try {
-                firebaseDatabase.setPersistenceEnabled(true);
-            }catch (Exception e){
-                calledAlready=true;
-            }
 
-            databaseReference = firebaseDatabase.getReference();
-            calledAlready = true;
-        }
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-
-
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-        mEmail=mFirebaseUser.getEmail();
-
-
-
-        context = this;
-
-//        IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
-//        For loading class_room from Server
-        Query queryReforSeeTheDataIsEmptyOrNot = databaseReference.child("Users").child(mUserId).child("Class");
-        queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){MainActivity.isClassListEmpty=false;}
-                else
-                {MainActivity.isClassListEmpty=true;}
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}});
 
 
         //FOR SCHEDULES
@@ -302,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     blog=blogData.getValue(BlogItem.class);
                     blogItem_temp.add(blog);
                 }
-                saved_blogItem_for_main =new ArrayList<BlogItem>();
                 saved_blogItem_for_main = blogItem_temp;
             }
             @Override
@@ -310,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+
 
 
 
@@ -328,62 +265,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         };
+
+        auth.addAuthStateListener(authListener);
+
         super.onResume();
-    }
-   public void onStart(){
-       context = this;
-        //ADMOB
-//       AdRequest adRequest = new AdRequest.Builder()
-//               .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//               // Check the LogCat to get your test device ID
-//               .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//               .build();
-//       adlayout=findViewById(R.id.ads);
-//       mAdView = (AdView) findViewById(R.id.adViewInHome);
-//       mAdView.loadAd(adRequest);
-//       mAdView.setAdListener(new AdListener() {
-//           @Override
-//           public void onAdLoaded() {
-//           }
-//
-//           @Override
-//           public void onAdClosed() {
-//               // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-//           }
-//
-//           @Override
-//           public void onAdFailedToLoad(int errorCode) {
-//               adlayout.setVisibility(View.GONE);
-//               // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-//           }
-//           @Override
-//           public void onAdLeftApplication() {
-//               // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-//           }
-//
-//           @Override
-//           public void onAdOpened() {
-//               super.onAdOpened();
-//           }
-//       });
-
-
-
-
-       authListener = new FirebaseAuth.AuthStateListener() {
-           @Override
-           public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-               FirebaseUser user = firebaseAuth.getCurrentUser();
-               if (user == null) {
-                   // user auth state is changed - user is null
-                   // launch login activity
-                   startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                   finish();
-               }
-           }
-       };
-
-       super.onStart();
     }
 
 
@@ -505,9 +390,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void setupViewPager(ViewPager viewPager) {
+    public void setupViewPager() {
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new com.Teachers.HaziraKhataByGk.Tabs.Fragments.ClassRoomFragments(), "শ্রেণী কার্যক্রম");
+        adapter.addFrag(new com.Teachers.HaziraKhataByGk.Tabs.ClassRoomFragments(), "শ্রেণী কার্যক্রম");
         adapter.addFrag(new NibondhonFragment(), "শিক্ষক নিবন্ধন কর্নার");
         adapter.addFrag(new NewsFragment(), "শিক্ষা খবর");
         adapter.addFrag(new TotthojhuriFragment(), "তথ্য ঝুড়ি");
@@ -581,10 +470,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return mFragmentTitleList.get(position);
         }
     }
-
-
-
-
 
 
 

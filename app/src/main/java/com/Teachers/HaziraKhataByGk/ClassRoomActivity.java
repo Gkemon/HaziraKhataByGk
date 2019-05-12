@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.Adapter.NoteListAdapter;
 import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
@@ -73,7 +74,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     public static HashMap<String,ArrayList<AttendenceData>> perStudentTotalAttendenceData;//for creating month wise data sheet;
     public static ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
 
-    public AdView mAdView;
+
 
 
     public static FirebaseAuth auth;
@@ -173,11 +174,13 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         //TODO: USER (for FB logic auth throw null pointer exception)
         auth = FirebaseAuth.getInstance();
         mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
+
         mUserId=mFirebaseUser.getUid();
 
-        MainActivity.databaseReference=databaseReference;
-        MainActivity.mUserId=mUserId;
+        MainActivity.databaseReference=FirebaseCaller.getFirebaseDatabase();
+        MainActivity.databaseReference.keepSynced(true);
+
+        MainActivity.mUserId= FirebaseCaller.getUserID();
 
     }
 

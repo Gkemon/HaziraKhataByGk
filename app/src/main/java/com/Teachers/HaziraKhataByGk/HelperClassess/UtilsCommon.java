@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orhanobut.logger.Logger;
 
+import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blogItem_for_main;
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
 
 /**
@@ -37,6 +38,87 @@ public class UtilsCommon {
         activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+
+    //TODO: love BlogActivity
+    public  static void loveBlog (BlogItem BlogItem,Context context){
+
+
+        SharedPreferences pref = context.getSharedPreferences("teacher_blog_loved", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+
+        String URL,title,name,date;
+        URL= BlogItem.getURL();
+        title= BlogItem.getHeading();
+        name= BlogItem.getWriter();
+        date= BlogItem.getDate();
+        // if url is already bookmarked, unbookmark it
+        if (pref.getBoolean(URL, false)&&pref.getBoolean(title, false)&&pref.getBoolean(name, false)&&pref.getBoolean(date, false)){
+            editor.putBoolean(URL, false);
+            editor.putBoolean(title, false);
+            editor.putBoolean(name, false);
+            editor.putBoolean(date, false);
+        } else {
+            editor.putBoolean(URL, true);
+            editor.putBoolean(title, true);
+            editor.putBoolean(name, true);
+            editor.putBoolean(date, true);
+
+        }
+        editor.apply();
+        editor.commit();
+    }
+    //TODO: save news
+    public static void saveBlog(Context context, BlogItem blogItem) {
+        BlogItem blog;
+        blog=blogItem;
+        boolean exist=false;
+
+        //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
+        for(int i = 0; i< saved_blogItem_for_main.size(); i++){
+            if(blog.getURL().equals(saved_blogItem_for_main.get(i).getURL())&&blog.getDate().equals(saved_blogItem_for_main.get(i).getDate())&&blog.getHeading().equals(saved_blogItem_for_main.get(i).getHeading())&&blog.getWriter().equals(saved_blogItem_for_main.get(i).getWriter())){
+                exist=true;
+            }
+        }
+
+        SharedPreferences pref = context.getSharedPreferences("teacher_blog_saved", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+
+        //TODO: for bookmark in browser activity
+
+        if ((pref.getBoolean(blog.getURL(), false) && pref.getBoolean(blog.getHeading(), false) && pref.getBoolean(blog.getDate(), false)&&pref.getBoolean(blog.getWriter(), false))||exist) {
+
+            editor.putBoolean(blog.getURL(), false);
+            editor.putBoolean(blog.getHeading(), false);
+            editor.putBoolean(blog.getDate(), false);
+            editor.putBoolean(blog.getWriter(), false);
+
+            Query query =
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").orderByChild("url").equalTo(blog.getURL());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        snapshot.getRef().child("url").removeValue();
+                        snapshot.getRef().child("date").removeValue();
+                        snapshot.getRef().child("heading").removeValue();
+                        snapshot.getRef().child("writer").removeValue();
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            });
+        } else {
+            editor.putBoolean(blog.getURL(), true);
+            editor.putBoolean(blog.getHeading(), true);
+            editor.putBoolean(blog.getDate(), true);
+            editor.putBoolean(blog.getWriter(), true);
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").push().setValue(blog);
+
+        }
+
+        editor.apply();
     }
 
 
