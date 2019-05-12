@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk;
+package com.Teachers.HaziraKhataByGk.Login;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.MainActivity;
+import com.Teachers.HaziraKhataByGk.R;
+import com.Teachers.HaziraKhataByGk.ResetPasswordActivity;
+import com.Teachers.HaziraKhataByGk.SignupActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -31,6 +36,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -45,7 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 //TODO Tutorial for FB loging http://androidbash.com/firebase-facebook-login-tutorial-android/
 public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
-    public static FirebaseAuth auth;
+    public  FirebaseAuth auth;
     private ProgressBar progressBar;
     public Button btnSignup, btnLogin, btnReset,btnSignOut,btnChangeEmail,help;
     public TextInputLayout passLayout;
@@ -54,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     Activity activity;
     private CallbackManager callbackManager;
     public Context context;
-    LoginButton loginButton;
+
 
 
     @Override
@@ -82,12 +88,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        // set the view now
         setContentView(R.layout.activity_of_login);
 
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
 
         inputEmail = (EditText) findViewById(R.id.email);
@@ -101,14 +103,10 @@ public class LoginActivity extends AppCompatActivity {
         logo=(ImageView)findViewById(R.id.logo);
         help=(Button)findViewById(R.id.help);
         passLayout=(TextInputLayout)findViewById(R.id.pass_layout);
-        //TODO: login button for fb
-       // loginButton = (LoginButton) findViewById(R.id.login_button);
 
 
-        //FOR reset or change pass
 
-
-        final Intent resetIntent=new Intent(LoginActivity.this,ResetPasswordActivity.class);
+        final Intent resetIntent=new Intent(LoginActivity.this, ResetPasswordActivity.class);
             if(email!=null){
                 inputEmail.setText(email);
                 btnSignup.setVisibility(View.GONE);
@@ -342,7 +340,12 @@ public class LoginActivity extends AppCompatActivity {
                                                 finish();
                                             }
                                         }
-                                    });
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("GK","OnFailure "+e.getMessage());
+                                }
+                            });
                         }
                         catch (Exception e){
 

@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import static android.view.Gravity.CENTER;
-import static com.Teachers.HaziraKhataByGk.LoginActivity.email;
+import static com.Teachers.HaziraKhataByGk.Login.LoginActivity.email;
 
 /**
  * Created by uy on 12/2/2017.

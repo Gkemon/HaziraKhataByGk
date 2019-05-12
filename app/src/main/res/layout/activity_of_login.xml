@@ -7,7 +7,7 @@
     android:background="@color/blueLight"
     android:id="@+id/CoordinatorLayout"
     android:fitsSystemWindows="true"
-    tools:context="com.Teachers.HaziraKhataByGk.LoginActivity">
+    tools:context="com.Teachers.HaziraKhataByGk.Login.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"

@@ -41,7 +41,7 @@
         <!-- for FB LOGIN -->
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login.LoginActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".WelcomeActivity"

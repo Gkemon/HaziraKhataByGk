@@ -27,9 +27,6 @@ import com.Teachers.HaziraKhataByGk.R;
 
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -49,8 +46,8 @@ import static com.Teachers.HaziraKhataByGk.R.id.loveClicker;
 
 public class SavedBlogFragment extends Fragment implements RecyclerItemClickListener {
     View rootView;
-    InterstitialAd mInterstitialAd;
-    public static RecyclerView savedBlogRecycle;
+
+    public  RecyclerView savedBlogRecycle;
     public FloatingActionButton delete_all;
     public SavedBlogFragment() {
         // Required empty public constructor
@@ -59,10 +56,6 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        //TODO: FOR INTERSTIALAD
-        mInterstitialAd = new InterstitialAd(BottomNavigationActivity.context);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
         super.onCreate(savedInstanceState);
     }
 
@@ -197,7 +190,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
             case ClickerForBlog:
 
                 final   int pos=position;
-                
+
 
                 String url=Saved_Blog_list.get(pos).getURL();
                 //TODO: for opening default browser
@@ -281,9 +274,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
                     SharedPreferences pref = BottomNavigationActivity.context.getSharedPreferences("teacher_blog_saved", 0); // 0 - for private mode
                     SharedPreferences.Editor editor = pref.edit();
                     editor.clear();
-                    editor.commit();
-//                    Intent intent =new Intent(BottomNavigationActivity.context,BottomNavigationActivity.class_room);
-//                    startActivity(intent);
+                    editor.apply();
                 }
             }
         });
@@ -296,11 +287,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
     }
 
 
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-    }
+
 
 
 
