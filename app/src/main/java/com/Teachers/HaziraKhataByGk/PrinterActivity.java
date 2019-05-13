@@ -32,7 +32,7 @@ public class PrinterActivity extends AppCompatActivity {
 
     public static ClassIitem ClassIitem;
 
-    public LinearLayout adlayout,emptyView;
+    public LinearLayout emptyView;
 
     static student student;
 
@@ -111,12 +111,6 @@ public class PrinterActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        if (mAdView != null) {
-//            mAdView.resume();
-//        }
-
-
-       // ClassIitem = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
 
         SeparatingData();
 
@@ -175,13 +169,9 @@ public class PrinterActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-
-
                 Intent intent =new Intent(PrinterActivity.this,MonthWiseClassDataActivity.class);
                 intent.putExtra("month",jan);
                 startActivity(intent);
-
-
 
 
 

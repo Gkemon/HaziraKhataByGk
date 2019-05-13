@@ -17,17 +17,13 @@ import com.google.android.gms.ads.AdView;
 public class MonthWiseClassDataActivity extends AppCompatActivity {
 TextView textView;
 
-    public LinearLayout adlayout;
-    static String text;
+
+     String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_month_wise_class_data);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -50,16 +46,9 @@ TextView textView;
 
 
 
-
-
-
     }
-    @Override
-    public void onPause() {
-        textView.setText(text);
 
-        super.onPause();
-    }
+
 
     @Override
     public void onResume() {
@@ -68,16 +57,6 @@ TextView textView;
         super.onResume();
     }
 
-    @Override
-    public void onDestroy() {
-
-        super.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 
 
 }

@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -41,8 +42,8 @@ import java.util.List;
 public class NoteAddActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText title;
     private EditText content;
-    private Boolean isInterstitalAdEnable;
-    InterstitialAd mInterstitialAd;
+
+
     private com.Teachers.HaziraKhataByGk.Model.Notes Notes;
     private Button ADD,Save, btnDelete;
     public static String currentTitle,previousTitle,currentContent,previousContent;
@@ -70,21 +71,11 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.note_add_activity);
         activity = this;
         title = (EditText) findViewById(R.id.Title);
         content = (EditText) findViewById(R.id.content);
         isEdited=false;
-
-
-        mInterstitialAd = new InterstitialAd(this);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.Interstitial_info_activity));
 
         //ADD TEXT CHANGE LISTENER
         title.addTextChangedListener(new MyTextWatcher(title));
@@ -136,12 +127,10 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
             if (submitForm()) {
-                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
                 Toast.makeText(this, "নোটটি সার্ভারে যুক্ত হয়েছে,ধন্যবাদ ।", Toast.LENGTH_SHORT).show();
 
-
                 finish();
-
 
             }
         }
@@ -152,11 +141,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                Notes.setContent(content.getText().toString().trim());
 
 
-            //FIREBASE
-            MainActivity.databaseReference=databaseReference;
-            MainActivity.mUserId=mUserId;
-
-            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     List<Notes> NotesList=new ArrayList<Notes>();
@@ -194,43 +179,20 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
             if(submitForm()){
                 //Then remove the old student data
-                databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
                 //Then first reinstall previous student data;
-                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
 
             }
 
             Toast.makeText(this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();
             previousTitle=null;
 
-            //ADMOB
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                    // Check the LogCat to get your test device ID
-                    .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                    .build();
+
 
             finish();
 
-            // Load ads into Interstitial Ads
-            //mInterstitialAd.loadAd(adRequest);
-            mInterstitialAd.setAdListener(new AdListener() {
-                public void onAdLoaded() {
-                    showInterstitial();
-                }
 
-                @Override
-                public void onAdFailedToLoad(int i) {
-                    finish();
-                    super.onAdFailedToLoad(i);
-                }
-
-                @Override
-                public void onAdClosed() {
-                    finish();
-                    super.onAdClosed();
-                }
-            });
 
         }else if(v == btnDelete){
             Notes.setheading(title.getText().toString());
@@ -338,25 +300,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
                     finish();
 
-                    // Load ads into Interstitial Ads
-                   // mInterstitialAd.loadAd(adRequest);
-                    mInterstitialAd.setAdListener(new AdListener() {
-                        public void onAdLoaded() {
-                            showInterstitial();
-                        }
 
-                        @Override
-                        public void onAdFailedToLoad(int i) {
-                            finish();
-                            super.onAdFailedToLoad(i);
-                        }
-
-                        @Override
-                        public void onAdClosed() {
-                            finish();
-                            super.onAdClosed();
-                        }
-                    });
                 }
             }
         });
@@ -378,20 +322,6 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onResume() {
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-
-
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-
-        MainActivity.databaseReference=databaseReference;
-        MainActivity.mUserId=mUserId;
-
 
 
         super.onResume();
@@ -473,37 +403,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "বের হোন",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-
-
-                            //ADMOB
-                            AdRequest adRequest = new AdRequest.Builder()
-                                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                                    // Check the LogCat to get your test device ID
-                                    .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                                    .build();
-
                             finish();
-
-                            // Load ads into Interstitial Ads
-                           // mInterstitialAd.loadAd(adRequest);
-                            mInterstitialAd.setAdListener(new AdListener() {
-                                public void onAdLoaded() {
-                                    showInterstitial();
-                                }
-
-                                @Override
-                                public void onAdFailedToLoad(int i) {
-                                    finish();
-   super.onAdFailedToLoad(i);
-                                }
-
-                                @Override
-                                public void onAdClosed() {
-                                    finish();
-                                    super.onAdClosed();
-                                }
-                            });
-
                         }
                         });
             alertDialog.show();
@@ -516,9 +416,5 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
-    private void showInterstitial() {
-//        if (mInterstitialAd.isLoaded()) {
-//            mInterstitialAd.show();
-//        }
-    }
+
 }

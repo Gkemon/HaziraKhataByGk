@@ -6,7 +6,7 @@
     <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".GlobalContext"
+        android:name=".HelperClassess.GlobalContext"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/main_icon_hd_half"
