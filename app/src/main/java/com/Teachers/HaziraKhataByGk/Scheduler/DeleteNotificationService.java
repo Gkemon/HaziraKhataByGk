@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Scheduler;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 
@@ -15,8 +14,8 @@ public class DeleteNotificationService extends IntentService {
     }
     @Override
     protected void onHandleIntent(Intent intent) {
-        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        Integer position = (Integer) intent.getSerializableExtra(scheduleActivity.ITEM_POSITION);
+       // storeRetrieveData = new StoreRetrieveData(this, ScheduleActivity.FILENAME);
+        Integer position = (Integer) intent.getSerializableExtra(ScheduleActivity.ITEM_POSITION);
         mToDoItems = loadData();
         if(mToDoItems!=null){
 
@@ -37,10 +36,6 @@ public class DeleteNotificationService extends IntentService {
         }
     }     private void dataChanged(){
 
-        SharedPreferences sharedPreferences = getSharedPreferences(scheduleActivity.SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(scheduleActivity.CHANGE_OCCURED, true);
-        editor.apply();
 
     }
 
@@ -48,7 +43,7 @@ public class DeleteNotificationService extends IntentService {
     private void saveData(){
 
         try{
-            storeRetrieveData.saveToFile(mToDoItems);
+            storeRetrieveData.saveToServer(mToDoItems);
         }         catch (Exception e) {
             e.printStackTrace();
         }     }
@@ -59,7 +54,7 @@ public class DeleteNotificationService extends IntentService {
     }
             private ArrayList<ToDoItem> loadData(){
             try{
-                return storeRetrieveData.loadFromFile();
+               // return storeRetrieveData.loadToDoFromServer();
             }
             catch (Exception e){
                 e.printStackTrace();

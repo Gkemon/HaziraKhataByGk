@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,10 +28,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -41,11 +41,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.toDoItemsFromMainActivity;
-import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.EditedToDoPosition;
-import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.FILENAME;
-import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.PREVIOUS_ITEM;
-import static com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity.getLocallyStoredData;
+
+import static com.Teachers.HaziraKhataByGk.Scheduler.ScheduleActivity.EditedToDoPosition;
+import static com.Teachers.HaziraKhataByGk.Scheduler.ScheduleActivity.PREVIOUS_ITEM;
+
 
 public class AddToDoActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     private EditText mToDoTextBodyEditText;
@@ -71,87 +70,22 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     public ProgressBar progressBar;
     private StoreRetrieveData storeRetrieveData;
     private Boolean IsNewToDo;//For dialog showing because we don't need to show warning for a new to do item
-    public ArrayList<ToDoItem> mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
+    public ArrayList<ToDoItem> mToDoItemsArrayList;
     public Context context;
+    ImageButton reminderIconImageButton;
+    TextView reminderRemindMeTextView;
 
+    public void intView(){
 
-    @SuppressWarnings("deprecation")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        ImageButton reminderIconImageButton;
-        TextView reminderRemindMeTextView;
-        theme = getSharedPreferences(scheduleActivity.THEME_PREFERENCES, MODE_PRIVATE).getString(scheduleActivity.THEME_SAVED, scheduleActivity.LIGHTTHEME);
-        if(theme.equals(scheduleActivity.LIGHTTHEME)){
-            setTheme(R.style.CustomStyle_LightTheme);
-            Log.d("OskarSchindler", "Light Theme");
-        }
-        else{
-            setTheme(R.style.CustomStyle_DarkTheme);
-        }
-
-
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_todo_test);
         mDateEditText = (EditText)findViewById(R.id.newTodoDateEditText);
         mTimeEditText = (EditText)findViewById(R.id.newTodoTimeEditText);
         DailyRemainderLayout=(LinearLayout)findViewById(R.id.dailyReminder);
-
-
         progressBar=(ProgressBar)findViewById(R.id.progressBarInScheduleActivity);
         progressBar.setVisibility(View.GONE);
 
-
-        mUserToDoItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
-        mPreviousItem = (ToDoItem)getIntent().getSerializableExtra(scheduleActivity.TODOITEM);
-
-
-        //mToDoItemsArrayList = (ArrayList<ToDoItem>)getIntent().getSerializableExtra("TODOLIST");
-       // Log.d("GK","mToDoItemsArrayList "+mToDoItemsArrayList.size()+" in create");
-
-//        if(mToDoItemsArrayList==null||mToDoItemsArrayList.size()==0){
-//            mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
-//            Log.d("GK","mToDoItemsArrayList "+mToDoItemsArrayList.size()+" in create when it was zero sized");
-//        }
-
-        //To find that the to do item is newly created
-        if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
-            IsNewToDo=true;
-            mPreviousItem=mUserToDoItem;
-          //  Log.d("GK","true");
-        }
-        else
-        {
-          //  Log.d("GK","false");
-            IsNewToDo=false;
-        }
-
-
-        mUserEnteredText = mUserToDoItem.getToDoText().trim();
-        mUserHasReminder = mUserToDoItem.hasReminder();
-        mUserReminderDate = mUserToDoItem.getToDoDate();
-        mTodoContent=mUserToDoItem.getToDoContent();
-        Log.d("eee","This is content "+mTodoContent);
-        mUserColor = mUserToDoItem.getTodoColor();
-
-
-//TODO: for debug
-//        if(mUserReminderDate!=null)
-//        Toast.makeText(this,mUserReminderDate.toString(),Toast.LENGTH_LONG).show();
-//        else Toast.makeText(this,"DATE IS NULL",Toast.LENGTH_LONG).show();
-
         reminderIconImageButton = (ImageButton)findViewById(R.id.userToDoReminderIconImageButton);
         reminderRemindMeTextView = (TextView)findViewById(R.id.userToDoRemindMeTextView);
-        if(theme.equals(scheduleActivity.DARKTHEME)){
-            reminderIconImageButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_add_white_24dp));
-            reminderRemindMeTextView.setTextColor(Color.WHITE);
-        }
+
 
         mContainerLayout = (LinearLayout)findViewById(R.id.todoReminderAndDateContainerLayout);
         mUserDateSpinnerContainingLinearLayout = (LinearLayout)findViewById(R.id.toDoEnterDateLinearLayout);
@@ -162,37 +96,12 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mToDoSendFloatingActionButton = (FloatingActionButton)findViewById(R.id.makeToDoFloatingActionButton);
         mReminderTextView = (TextView)findViewById(R.id.newToDoDateTimeReminderTextView);
 
-
-
         mContainerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard(mToDoTextBodyEditText);
             }
         });
-
-
-        if(mUserHasReminder && (mUserReminderDate!=null)){
-            setReminderTextView();
-            setEnterDateLayoutVisibleWithAnimations(true);
-        }
-        //for daily button
-        if((mUserHasReminder && (mUserReminderDate!=null))&&(mUserToDoItem.isDaily()))
-            switchCompatForDailyRemind.setChecked(true);
-        else switchCompatForDailyRemind.setChecked(false);
-
-        if(mUserReminderDate==null){
-
-            mToDoDateSwitch.setChecked(false);
-            mReminderTextView.setVisibility(View.INVISIBLE);
-        }
-        mToDoTextBodyEditText.requestFocus();
-        mToDoTextBodyEditText.setText(mUserEnteredText.trim());
-        mToDoContentEditText.setText(mTodoContent.trim());
-
-        //TODO: KEYBOARD
-//        InputMethodManager imm = (InputMethodManager)this.getSystemService(INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         mToDoTextBodyEditText.setSelection(mToDoTextBodyEditText.length());
         mToDoTextBodyEditText.addTextChangedListener(new TextWatcher() {
@@ -220,10 +129,6 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             }
         });
 
-
-     setEnterDateLayoutVisible(mToDoDateSwitch.isChecked());
-
-        mToDoDateSwitch.setChecked(mUserHasReminder && (mUserReminderDate != null));
         mToDoDateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -246,7 +151,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             public void onClick(View v) {
 
                 //Get to do items
-                GetToDoItems();
+
 
                 //Check duplicate
 
@@ -254,46 +159,16 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                     return;
                 }
 
-               if (mToDoTextBodyEditText.length() <= 0){
+                if (mToDoTextBodyEditText.length() <= 0){
                     mToDoTextBodyEditText.setError(getString(R.string.todo_error));
                 }
                 else if(mUserReminderDate!=null && mUserReminderDate.before(new Date())||mToDoTextBodyEditText.getText().toString().equals("")){
                     makeResult(RESULT_CANCELED);
                 }
                 else{
-                   progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                     makeResult(RESULT_OK);
-                   finish();
-//                   mInterstitialAd = new InterstitialAd(AddToDoActivity.this);
-//                   // set the ad unit ID
-//                   mInterstitialAd.setAdUnitId("ca-app-pub-8499573931707406/1629454676");
-//
-//                   AdRequest adRequest = new AdRequest.Builder()
-//                           .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                           // Check the LogCat to get your test device ID
-//                           .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                           .build();
-
-                   // Load ads into Interstitial Ads
-//                   mInterstitialAd.loadAd(adRequest);
-//                   mInterstitialAd.setAdListener(new AdListener() {
-//                       public void onAdLoaded() {
-//                           showInterstitial();
-//                       }
-//
-//                       @Override
-//                       public void onAdFailedToLoad(int i) {
-//                           finish();
-//                           super.onAdFailedToLoad(i);
-//                       }
-//
-//                       @Override
-//                       public void onAdClosed() {
-//                           finish();
-//                           super.onAdClosed();
-//                       }
-//                   });
-//
+                    finish();
                 }
                 hideKeyboard(mToDoTextBodyEditText);
             }
@@ -318,7 +193,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(AddToDoActivity.this, year, month, day);
-                if(theme.equals(scheduleActivity.DARKTHEME)){
+                if(theme.equals(ScheduleActivity.DARKTHEME)){
                     datePickerDialog.setThemeDark(true);
                 }
                 datePickerDialog.show(getFragmentManager(), "DateFragment");
@@ -343,13 +218,71 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
                 int minute = calendar.get(Calendar.MINUTE);
 
                 TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(AddToDoActivity.this, hour, minute, DateFormat.is24HourFormat(AddToDoActivity.this));
-                if(theme.equals(scheduleActivity.DARKTHEME)){
+                if(theme.equals(ScheduleActivity.DARKTHEME)){
                     timePickerDialog.setThemeDark(true);
                 }
                 timePickerDialog.show(getFragmentManager(), "TimeFragment");
             }
         });
-       // setDateAndTimeEditText();
+
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_todo_test);
+        intView();
+        setUpUIwithModel();
+    }
+
+    public void setUpUIwithModel(){
+        mUserToDoItem = (ToDoItem)getIntent().getSerializableExtra(ScheduleActivity.TODOITEM);
+        mPreviousItem = (ToDoItem)getIntent().getSerializableExtra(ScheduleActivity.TODOITEM);
+
+        mToDoItemsArrayList = (ArrayList<ToDoItem>)getIntent().getSerializableExtra(ScheduleActivity.TODOLIST);
+
+
+        if(mUserToDoItem.getToDoText().equals("")&&mUserToDoItem.getToDoContent().equals("")){
+            IsNewToDo=true;
+            mPreviousItem=mUserToDoItem;
+        }
+        else
+        {
+            IsNewToDo=false;
+        }
+
+
+        mUserEnteredText = mUserToDoItem.getToDoText().trim();
+        mUserHasReminder = mUserToDoItem.hasReminder();
+        mUserReminderDate = mUserToDoItem.getToDoDate();
+        mTodoContent=mUserToDoItem.getToDoContent();
+        mUserColor = mUserToDoItem.getTodoColor();
+
+
+        if(mUserHasReminder && (mUserReminderDate!=null)){
+            setReminderTextView();
+            setEnterDateLayoutVisibleWithAnimations(true);
+        }
+        //for daily button
+        if((mUserHasReminder && (mUserReminderDate!=null))&&(mUserToDoItem.isDaily()))
+            switchCompatForDailyRemind.setChecked(true);
+        else switchCompatForDailyRemind.setChecked(false);
+
+        if(mUserReminderDate==null){
+
+            mToDoDateSwitch.setChecked(false);
+            mReminderTextView.setVisibility(View.INVISIBLE);
+        }
+        mToDoTextBodyEditText.requestFocus();
+        mToDoTextBodyEditText.setText(mUserEnteredText.trim());
+        mToDoContentEditText.setText(mTodoContent.trim());
+
+
+        setEnterDateLayoutVisible(mToDoDateSwitch.isChecked());
+        mToDoDateSwitch.setChecked(mUserHasReminder && (mUserReminderDate != null));
+
     }
 
     private void setDateAndTimeEditText(){
@@ -393,8 +326,11 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     }
 
     public void hideKeyboard(EditText et){
-//        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-//        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+
+
     }
 
     public void setDate(int year, int month, int day){
@@ -561,42 +497,41 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         //WE HAVE A BUG AT FIRST SO WE DO THAT
-        storeRetrieveData = new StoreRetrieveData(this, FILENAME);
+
 
         if(IsNewToDo){
             Log.d("GK","IsNewToDo YES");
 
-
-            storeRetrieveData.saveToFile(mUserToDoItem);
-            mToDoItemsArrayList.add(mUserToDoItem);
-            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-            storeRetrieveData.saveToFile(mToDoItemsArrayList);
-            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-            MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-
+            StoreRetrieveData.saveToServer(mUserToDoItem);
 
         }
         else {
             Log.d("GK","IsNewToDo NO");
 
             //Re collecting to avoid error
-            mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-            Log.e("GK","Array size :"+mToDoItemsArrayList.size());
 
-            //This is for save the to do items to the server
+
+
+
+            if(mToDoItemsArrayList!=null)
             for(int i = 0; i<mToDoItemsArrayList.size();i++){
                 ToDoItem item =mUserToDoItem;
                 if(EditedToDoPosition ==i){
                     mToDoItemsArrayList.set(i, item);
-                    MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-                    storeRetrieveData.saveToFile(mToDoItemsArrayList);
+                    StoreRetrieveData.saveToServer(mToDoItemsArrayList);
                     break;
                 }
             }
+            else {
+                UtilsCommon.debugLog("There is no Todo");
+                UtilsCommon.showToast("There is no Todo");
+            }
         }
-        Log.d("GK","List size is : "+ toDoItemsFromMainActivity.size()+" in makeresult");
 
-        intent.putExtra(scheduleActivity.TODOITEM, mUserToDoItem);
+        if(mToDoItemsArrayList!=null)
+        Log.d("GK","List size is : "+ mToDoItemsArrayList.size()+" in makeresult");
+
+        intent.putExtra(ScheduleActivity.TODOITEM, mUserToDoItem);
         intent.putExtra(PREVIOUS_ITEM,mPreviousItem);
         setResult(result, intent);
 
@@ -628,17 +563,15 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                if(NavUtils.getParentActivityName(this)!=null){
-                    makeResult(RESULT_CANCELED);
-                    NavUtils.navigateUpFromSameTask(this);
-                }
-                hideKeyboard(mToDoTextBodyEditText);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            if (NavUtils.getParentActivityName(this) != null) {
+                makeResult(RESULT_CANCELED);
+                NavUtils.navigateUpFromSameTask(this);
+            }
+            hideKeyboard(mToDoTextBodyEditText);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -754,19 +687,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         });
 
     }
-    public void GetToDoItems(){
 
-        mToDoItemsArrayList=scheduleActivity.mToDoItemsArrayList;
-        toDoItemsFromMainActivity=mToDoItemsArrayList;
-
-        if(mToDoItemsArrayList==null){
-            Log.d("GK","Total todo size : "+ toDoItemsFromMainActivity.size());
-        }
-        else Log.d("GK","mToDoItemsArrayList not null in click. size is : "+ toDoItemsFromMainActivity.size());
-
-
-
-    }
     public Boolean CheckDuplicateForOnBackPressed(Boolean isInBackPressed){
 
 
@@ -784,9 +705,12 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         //CHECK THAT THE ITEM IS UNIQUE
-        for (int i = 0; i < toDoItemsFromMainActivity.size(); i++) {
-            Log.d("GK","TODO NEXT"+ toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
-            if ((toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
+
+
+        if(mToDoItemsArrayList!=null)
+        for (int i = 0; i < mToDoItemsArrayList.size(); i++) {
+            Log.d("GK","TODO NEXT"+ mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()+" "+IsNewToDo);
+            if ((mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
 
                 //when it is called from onbackpressed then don't need to show alertdialog
                 if(isInBackPressed) return true;
@@ -831,9 +755,11 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
 
         //CHECK THAT THE ITEM IS UNIQUE
-        for (int i = 0; i < toDoItemsFromMainActivity.size(); i++) {
-            Log.d("GK","TODO NEXT "+ toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()+" "+IsNewToDo);
-            if ((toDoItemsFromMainActivity.get(i).getToDoText()+ toDoItemsFromMainActivity.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
+
+        if(mToDoItemsArrayList!=null)
+        for (int i = 0; i < mToDoItemsArrayList.size(); i++) {
+            Log.d("GK","TODO NEXT "+ mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()+" "+IsNewToDo);
+            if ((mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
 
                 //when it is called from onbackpressed then don't need to show alertdialog
 
@@ -855,6 +781,10 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
                 return true;
             }
+        }
+        else {
+            UtilsCommon.debugLog("There is no Todo");
+            UtilsCommon.showToast("There is no Todo");
         }
 return false;
     }

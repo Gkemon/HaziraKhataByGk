@@ -6,6 +6,7 @@
     <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".GlobalContext"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/main_icon_hd_half"
@@ -81,7 +82,7 @@
             android:name=".NoteAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".Scheduler.scheduleActivity"
+            android:name=".Scheduler.ScheduleActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".Scheduler.AddToDoActivity"

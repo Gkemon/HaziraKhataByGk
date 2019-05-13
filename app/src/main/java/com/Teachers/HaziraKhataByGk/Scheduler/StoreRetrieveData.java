@@ -3,6 +3,9 @@ package com.Teachers.HaziraKhataByGk.Scheduler;
 import android.content.Context;
 import android.util.Log;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Listener.TodoItemServerListenter;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StoreRetrieveData {
     private Context mContext;
@@ -25,141 +29,75 @@ public class StoreRetrieveData {
     public static FirebaseUser mFirebaseUser;
 
 
-    public StoreRetrieveData(Context context, String filename){
-        mContext = context;
-        mFileName = filename;
-    }
-
-//    public static JSONArray toJSONArray(ArrayList<ToDoItem> items) throws JSONException {
-//        JSONArray jsonArray = new JSONArray();
-//        for(ToDoItem item : items){
-//            JSONObject jsonObject = item.toJSON();
-//            jsonArray.put(jsonObject);
-//        }
-//        return  jsonArray;
-//    }
-
-    public void saveToFile(ArrayList<ToDoItem> items){
-
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
 
 
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
+    public static void saveToServer(List<ToDoItem> items){
+
+        DatabaseReference databaseReference=
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Schedule");
         databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
+        databaseReference.removeValue();
 
-
-        databaseReference.child("Users").child(mUserId).child("Schedule").removeValue();
-        Log.e("eee","from saveToFile");
 
         for(ToDoItem toDoItem:items) {
-            databaseReference.child("Users").child(mUserId).child("Schedule").push().setValue(toDoItem);
-            Log.d("eee",toDoItem.getToDoContent()+" from for loop");
+            databaseReference.push().setValue(toDoItem);
+            UtilsCommon.debugLog(toDoItem.getToDoContent()+" from for loop");
         }
 
+
     }
 
-    public void saveToFile(ToDoItem items){
+    public static void saveToServer(ToDoItem items){
 
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-
-
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
         databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
 
-        Log.d("GK","Single Todo Pushed");
-        databaseReference.child("Users").child(mUserId).child("Schedule").push().setValue(items);
+
+        databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Schedule").push().setValue(items);
 
     }
 
-    public static ArrayList<ToDoItem> loadFromFile(){
+    public static void loadToDoFromServer(final TodoItemServerListenter todoItemServerListenter){
        final ArrayList<ToDoItem> items = new ArrayList<>();
 
         //DATABASE CONNECTION
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference();
+        databaseReference.keepSynced(true);
 
-
-        // USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-
-        //todo dummy
-      databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-
-        MainActivity.databaseReference=databaseReference;
-        MainActivity.mUserId=mUserId;
 
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("GK","from loadFromFile "+dataSnapshot.getChildrenCount());
+                Log.d("GK","from loadToDoFromServer "+dataSnapshot.getChildrenCount());
                 for(DataSnapshot toDoitemData:dataSnapshot.getChildren()){
                     ToDoItem toDoItem=new ToDoItem();
                     toDoItem=toDoitemData.getValue(ToDoItem.class);
                     items.add(toDoItem);
                 }
-                if(items.isEmpty())Log.e("eee","Item is empty");
+
+
+
+                if(items.isEmpty()){
+                    todoItemServerListenter.onError("ToDo is empty");
+                }
+                else todoItemServerListenter.onGetToDoItem(items);
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
+                todoItemServerListenter.onError("Database error : "+databaseError.getMessage());
                 Log.d("GK","FIREBASE ERROR :"+databaseError.getMessage()+" Details :"+databaseError.getDetails());
             }
         };
 
-        //todo dummy
-        databaseReference.child("Users").child(mUserId).child("Schedule").removeEventListener(valueEventListener);
-        databaseReference.child("Users").child(mUserId).child("Schedule").addListenerForSingleValueEvent(valueEventListener);
+        databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Schedule").removeEventListener(valueEventListener);
+        databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Schedule").addListenerForSingleValueEvent(valueEventListener);
 
 
 
 
-
-//        ArrayList<ToDoItem> items = new ArrayList<>();
-//        BufferedReader bufferedReader = null;
-//        FileInputStream fileInputStream = null;
-//        try {
-//            fileInputStream =  mContext.openFileInput(mFileName);
-//            StringBuilder builder = new StringBuilder();
-//            String line;
-//            bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-//            while((line = bufferedReader.readLine())!=null){
-//                builder.append(line);
-//
-//            }
-//
-//            JSONArray jsonArray = (JSONArray)new JSONTokener(builder.toString()).nextValue();
-//            for(int i =0; i<jsonArray.length();i++){
-//                ToDoItem item = new ToDoItem(jsonArray.getJSONObject(i));
-//                items.add(item);
-//            }
-//
-//
-//        } catch (FileNotFoundException fnfe) {
-//            //do nothing about it
-//            //file won't exist first time app is run
-//        }
-//        finally {
-//            if(bufferedReader!=null){
-//                bufferedReader.close();
-//            }
-//            if(fileInputStream!=null){
-//                fileInputStream.close();
-//            }
-//
-//        }
-        return items;
     }
 
 

@@ -7,12 +7,14 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.BlogActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.GlobalContext;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
@@ -25,6 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orhanobut.logger.Logger;
 
+import static com.Teachers.HaziraKhataByGk.MainActivity.TotalClassItems;
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blogItem_for_main;
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
 
@@ -33,12 +36,7 @@ import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
  */
 
 public class UtilsCommon {
-    public static void HideNotifiationBar(Activity activity){
-        //HIDING NOTIFICATION BAR
-        activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
+
 
 
     //TODO: love BlogActivity
@@ -121,6 +119,30 @@ public class UtilsCommon {
         editor.apply();
     }
 
+
+    public static void hideNotificationStatus(Activity activity){
+        activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+
+    public static void showToast(String msg){
+        Toast.makeText(GlobalContext.getAppContext(),msg,Toast.LENGTH_LONG).show();
+    }
+
+    public static void debugLog(String msg){
+
+        final StackTraceElement stackTrace = new Exception().getStackTrace()[1];
+
+        String fileName = stackTrace.getFileName();
+        if (fileName == null) fileName="";  // It is necessary if you want to use proguard obfuscation.
+
+        final String info = stackTrace.getMethodName() + " (" + fileName + ":"
+                + stackTrace.getLineNumber() + ")";
+
+        Log.d("GK", info + ": " + msg);
+    }
 
     //TODO: save news
     public static void saveNews(Context context, NewsItem newsItem1) {

@@ -19,7 +19,7 @@ public class MarksheetEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UtilsCommon.HideNotifiationBar(this);
+        UtilsCommon.hideNotificationStatus(this);
 
         setContentView(R.layout.activity_marksheet_edit);
 

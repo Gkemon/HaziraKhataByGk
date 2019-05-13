@@ -1,7 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Scheduler;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.R;
-import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,9 +39,8 @@ public class ReminderActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        theme = getSharedPreferences(scheduleActivity.THEME_PREFERENCES, MODE_PRIVATE).getString(scheduleActivity.THEME_SAVED, scheduleActivity.LIGHTTHEME);
 
-        if(theme.equals(scheduleActivity.LIGHTTHEME)){
+        if(theme.equals(ScheduleActivity.LIGHTTHEME)){
             setTheme(R.style.CustomStyle_LightTheme);
         }
         else{
@@ -51,11 +48,11 @@ public class ReminderActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_layout);
-        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
+      //  storeRetrieveData = new StoreRetrieveData(this, ScheduleActivity.FILENAME);
 
-        mToDoItems = storeRetrieveData.loadFromFile();
+     //   mToDoItems = storeRetrieveData.loadToDoFromServer();
 
-        if(mToDoItems.size()==0) mToDoItems = scheduleActivity.getLocallyStoredData(storeRetrieveData);
+       // if(mToDoItems.size()==0) mToDoItems = ScheduleActivity.getLocallyStoredData(storeRetrieveData);
 
 
 
@@ -93,7 +90,7 @@ public class ReminderActivity extends AppCompatActivity {
         }
 
 
-        if(theme.equals(scheduleActivity.LIGHTTHEME)){
+        if(theme.equals(ScheduleActivity.LIGHTTHEME)){
             mSnoozeTextView.setTextColor(getResources().getColor(R.color.secondary_text));
         }
         else{
@@ -113,7 +110,7 @@ public class ReminderActivity extends AppCompatActivity {
                 mToDoItems.remove(mItem);
 
 
-                changeOccurred();
+
                 saveData();
                 closeApp();
                 finish();
@@ -130,13 +127,8 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
     private void closeApp(){
-        Intent i = new Intent(ReminderActivity.this, scheduleActivity.class);
+        Intent i = new Intent(ReminderActivity.this, ScheduleActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        i.putExtra(EXIT, true);
-        SharedPreferences sharedPreferences = getSharedPreferences(scheduleActivity.SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(EXIT, true);
-        editor.apply();
         startActivity(i);
 
     }
@@ -145,12 +137,6 @@ public class ReminderActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_reminder, menu);
         return true;
-    }
-    private void changeOccurred(){
-//        SharedPreferences sharedPreferences = getSharedPreferences(scheduleActivity.SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putBoolean(scheduleActivity.CHANGE_OCCURED, true);
-//        editor.apply();
     }
 
     private Date addTimeToDate(int mins){
@@ -194,7 +180,7 @@ public class ReminderActivity extends AppCompatActivity {
                 mItem.setToDoDate(date);
                 mItem.setHasReminder(true);
 
-                changeOccurred();
+
                 saveData();
                 closeApp();
 
@@ -205,36 +191,23 @@ public class ReminderActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        try{
-//            storeRetrieveData.saveToFile(mToDoItems);
-//        }
-//        catch (JSONException | IOException e){
-//            e.printStackTrace();
-//        }
-//    }
+
 
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Date date;
-//        if(mItem.isDaily()){
-//            date = addTimeToDate(50);
-//            Log.d("GK","HAS DAILY SCHEDULE ON BACKPRESSED");
-//        }
-//        else {
+
             date = addTimeToDate(valueFromSpinner());
-      //  }
+
 
 
 
         mItem.setToDoDate(date);
         mItem.setHasReminder(true);
 
-        changeOccurred();
+
         saveData();
         closeApp();
     }
@@ -243,7 +216,7 @@ public class ReminderActivity extends AppCompatActivity {
     private void saveData(){
        // try{
         if(mToDoItems!=null)
-            storeRetrieveData.saveToFile(mToDoItems);
+            storeRetrieveData.saveToServer(mToDoItems);
       //  }
        // catch (JSONException | IOException e){
        //     e.printStackTrace();
@@ -265,19 +238,15 @@ public class ReminderActivity extends AppCompatActivity {
 
 
         Date date;
-//        if(mItem.isDaily()){
-//            date = addTimeToDate(50);
-//            Log.d("GK","HAS DAILY SCHEDULE ON DESTROY");
-//        }
-//        else {
+
             date = addTimeToDate(valueFromSpinner());
-  //      }
+
 
 
         mItem.setToDoDate(date);
         mItem.setHasReminder(true);
 
-        changeOccurred();
+
         saveData();
         closeApp();
     }

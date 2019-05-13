@@ -23,19 +23,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
+import com.Teachers.HaziraKhataByGk.Scheduler.ScheduleActivity;
 import com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData;
 import com.Teachers.HaziraKhataByGk.Scheduler.ToDoItem;
-import com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity;
 
+import com.Teachers.HaziraKhataByGk.Scheduler.Utils;
 import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
 
@@ -52,7 +51,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OneSignal;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static boolean isClassListEmpty;
     public static ArrayList<NewsItem> saved_newsItem_for_main;
     public static ArrayList<BlogItem> saved_blogItem_for_main;
-    public static ArrayList<ToDoItem> toDoItemsFromMainActivity;
+    public  ArrayList<ToDoItem> toDoItemsFromMainActivity;
     public  StoreRetrieveData storeRetrieveData;
     public  Context context;
     private TabLayout tabLayout;
@@ -178,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
 
-        Logger.addLogAdapter(new AndroidLogAdapter());
+
 
 
         setContentView(R.layout.activity_main);
@@ -197,15 +195,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-
-
-
-
-
-        //FOR SCHEDULES
-        toDoItemsFromMainActivity =new ArrayList<>();
-        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
 
 
 
@@ -284,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
-                Intent intent = new Intent(this,scheduleActivity.class);
+                Intent intent = new Intent(this, ScheduleActivity.class);
                 this.startActivity(intent);
 
                 return true;

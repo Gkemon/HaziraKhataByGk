@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,57 +19,51 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Listener.TodoItemServerListenter;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by uy on 9/9/2017.
  */
 
-public class scheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends AppCompatActivity {
 
+    public static final String TODOLIST = "ToDo_list";
     private RecyclerViewEmptySupport mRecyclerView;
     private FloatingActionButton mAddToDoItemFAB;
     public static ArrayList<ToDoItem> mToDoItemsArrayList;
     private CoordinatorLayout mCoordLayout;
-    public static final String TODOITEM = "com.Teachers.HaziraKhataByGk.Scheduler.scheduleActivity";
+    public static final String TODOITEM = "com.Teachers.HaziraKhataByGk.Scheduler.ScheduleActivity";
     private BasicListAdapter adapter;
     private static final int REQUEST_ID_TODO_ITEM = 100;
     private ToDoItem mJustDeletedToDoItem,mResultTodo=new ToDoItem();;
     private int mIndexOfDeletedToDoItem;
     public static final String DATE_TIME_FORMAT_12_HOUR = "MMM d, yyyy  h:mm a";
     public static final String DATE_TIME_FORMAT_24_HOUR = "MMM d, yyyy  k:mm";
-    public static final String ITEMS_PREVIOUS_POS="pos";
     public static final String ITEM_POSITION="POSITION";
-    public static final String HAVE_ITEMS_DAILY_REMAINDER="daily_remainder";
-    public static final String HAVE_ITEMS_NORMAL_REMAINDER="normal_remainder";
     public static final String PREVIOUS_ITEM="PREVIOUS_ITEM";
     public static final String FILENAME = "todoitems.json";
-    private StoreRetrieveData storeRetrieveData;
+
     public ItemTouchHelper itemTouchHelper;
     private CustomRecyclerScrollViewListener customRecyclerScrollViewListener;
-    public static final String SHARED_PREF_DATA_SET_CHANGED = "com.Teachers.HaziraKhataByGk.Scheduler.datasetchanged";
-    public static final String CHANGE_OCCURED = "com.Teachers.HaziraKhataByGk.Scheduler.changeoccured";
-    private int mTheme = -1;
-    private String theme = "name_of_the_theme";
-    public static final String THEME_PREFERENCES = "com.Teachers.HaziraKhataByGk.Scheduler.themepref";
-    public static final String RECREATE_ACTIVITY = "com.Teachers.HaziraKhataByGk.Scheduler.recreateactivity";
-    public static final String THEME_SAVED = "com.Teachers.HaziraKhataByGk.Schedulerrktheme";
+
+    public  ArrayList<ToDoItem> toDoItems;
+
     public static final String LIGHTTHEME = "com.Teachers.HaziraKhataByGk.Scheduler.lighttheme";
     public static final String DARKTHEME = "com.Teachers.HaziraKhataByGk.Scheduler.darktheme";
 
@@ -82,7 +75,7 @@ public class scheduleActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Refreshing();
+        refreshing();
 
         //If it's subjectName and content are blank so we don't need to create the result
         if(mResultTodo!=null&&!mResultTodo.getToDoText().equals("")){
@@ -92,104 +85,35 @@ public class scheduleActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-
-        //ADMOB
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                .build();
-//        adlayout=findViewById(R.id.ads);
-//        mAdView = (AdView) findViewById(R.id.adViewInHome);
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                adlayout.setVisibility(View.GONE);
-//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//        mAdView.loadAd(adRequest);
-//
-//
-     //   Log.d("GK","onStart");
-        Refreshing();
-
-        super.onStart();
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(CHANGE_OCCURED, false);
-        editor.apply();
-    }
 
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
-        theme = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).getString(THEME_SAVED, LIGHTTHEME);
-        if(theme.equals(LIGHTTHEME)){
-            mTheme = R.style.CustomStyle_LightTheme;
-        }
-        else{
-            mTheme = R.style.CustomStyle_DarkTheme;
-        }
-        this.setTheme(mTheme);
-
-
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_activity);
 
 
+        initView();
+
+        StoreRetrieveData.loadToDoFromServer(new TodoItemServerListenter() {
+            @Override
+            public void onGetToDoItem(ArrayList<ToDoItem> toDoItems) {
+                generateToDoList(toDoItems);
+            }
+
+            @Override
+            public void onError(String msg) {
+                  UtilsCommon.debugLog(msg);
+                  UtilsCommon.showToast(msg);
+            }
+        });
 
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(CHANGE_OCCURED, false);
-        editor.apply();
+    }
 
-        storeRetrieveData = new StoreRetrieveData(this, FILENAME);
-        mToDoItemsArrayList= getLocallyStoredData(storeRetrieveData);
+   public void initView(){
 
-        mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity;
-
-        //Avoiding empty view from notification
-//        if(mToDoItemsArrayList.size()==0)
-//        {
-//                mToDoItemsArrayList=StoreRetrieveData.loadFromFile();
-//        }
-
-//        //FOR SCHEDULES
-//        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
-//        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-//        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
-
-        //todo dummy
-       // setAlarms();
         mCoordLayout = (CoordinatorLayout)findViewById(R.id.myCoordinatorLayout);
         mAddToDoItemFAB = (FloatingActionButton)findViewById(R.id.addToDoItemFAB);
 
@@ -199,63 +123,62 @@ public class scheduleActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // app.send(this, "Action", "FAB pressed");
-                    Intent newTodo = new Intent(scheduleActivity.this, AddToDoActivity.class);
+                    Intent newTodo = new Intent(ScheduleActivity.this, AddToDoActivity.class);
                     ToDoItem item = new ToDoItem("", false, null,"");
 
                     int color = ColorGenerator.MATERIAL.getRandomColor();
                     item.setTodoColor(color);
                     newTodo.putExtra(TODOITEM, item);
-                    newTodo.putExtra("TODOLIST",mToDoItemsArrayList);
+                    newTodo.putExtra(TODOLIST,toDoItems);
                     startActivityForResult(newTodo, REQUEST_ID_TODO_ITEM);
                 }
             });
+    }
 
-        mRecyclerView = (RecyclerViewEmptySupport)findViewById(R.id.toDoRecyclerView);
 
-        if (theme.equals(LIGHTTHEME)) {
-            mRecyclerView.setBackgroundColor(getResources().getColor(R.color.primary_lightest));
-        }
-        mRecyclerView.setEmptyView(findViewById(R.id.toDoEmptyView));
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    public void generateToDoList(ArrayList<ToDoItem> toDoItems){
 
+        this.toDoItems=toDoItems;
 
         customRecyclerScrollViewListener = new CustomRecyclerScrollViewListener() {
             @Override
             public void show() {
-
                 mAddToDoItemFAB.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-//                mAddToDoItemFAB.animate().translationY(0).setInterpolator(new AccelerateInterpolator(2.0f)).start();
             }
 
             @Override
             public void hide() {
-
                 CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)mAddToDoItemFAB.getLayoutParams();
                 int fabMargin = lp.bottomMargin;
                 mAddToDoItemFAB.animate().translationY(mAddToDoItemFAB.getHeight()+fabMargin).setInterpolator(new AccelerateInterpolator(2.0f)).start();
 
-
             }
         };
 
-
+        mRecyclerView = (RecyclerViewEmptySupport)findViewById(R.id.toDoRecyclerView);
 
         if(mRecyclerView!=null)
             mRecyclerView.addOnScrollListener(customRecyclerScrollViewListener);
 
-        if(mToDoItemsArrayList!=null)
-        adapter = new BasicListAdapter(mToDoItemsArrayList);
+        if(toDoItems!=null)
+            adapter = new BasicListAdapter(toDoItems,mRecyclerView,findViewById(R.id.toDoEmptyView));
         else {
+
             startActivity(new Intent(this,MainActivity.class));
+            UtilsCommon.showToast("Network problem");
+            return;
         }
+
+        mRecyclerView.setItemViewCacheSize(toDoItems.size());
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         ItemTouchHelper.Callback callback = new ItemTouchHelperClass(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        //  Log.d("GK","onCreate");
         mRecyclerView.setAdapter(adapter);
+
 
     }
 
@@ -269,42 +192,29 @@ public class scheduleActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        storeRetrieveData.saveToFile(mToDoItemsArrayList);
+
+        if(toDoItems!=null)
+        {
+            toDoItems.clear();
+            toDoItems.addAll(adapter.getItems());
+            StoreRetrieveData.saveToServer(toDoItems);
+        }
     }
 
     @Override
     protected void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
+
         super.onDestroy();
+
+        if(mRecyclerView!=null)
         mRecyclerView.removeOnScrollListener(customRecyclerScrollViewListener);
-    }
 
-
-
-    public static ArrayList<ToDoItem> getLocallyStoredData(StoreRetrieveData storeRetrieveData){
-
-
-        ArrayList<ToDoItem> items = MainActivity.toDoItemsFromMainActivity;
-
-        if(items == null) {
-            items = new ArrayList<>();
-            Log.d("eee","From arraylist item == null");
-        }
-        else Log.d("eee","From arraylist item is not null");
-        return items;
 
     }
 
+    private void setUpAllAlarms(List<ToDoItem> mToDoItemsArrayList) {
 
 
-    private void setAlarms() {
-
-        //First Load Data
-        mToDoItemsArrayList = getLocallyStoredData(storeRetrieveData);
-        //to do dummy
-       // mToDoItemsArrayList= StoreRetrieveData.loadFromFile();
         Log.d("GK", "TODO LIST SIZE IN SET ALARM IS " + mToDoItemsArrayList.size());
 
         if (mToDoItemsArrayList != null) {
@@ -317,10 +227,10 @@ public class scheduleActivity extends AppCompatActivity {
                         continue;
                     }
 
-                    Intent in = new Intent(scheduleActivity.this, TodoNotificationService.class);
+                    Intent in = new Intent(ScheduleActivity.this, TodoNotificationService.class);
                     in.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
                     in.putExtra(TodoNotificationService.TODOUUID,i);
-                    in.putExtra(scheduleActivity.ITEM_POSITION,i);
+                    in.putExtra(ScheduleActivity.ITEM_POSITION,i);
 
 
                     if (item.isDaily()) {
@@ -340,7 +250,7 @@ public class scheduleActivity extends AppCompatActivity {
 
                     //First delete all alarm
                     if (item.isDaily()) {
-                        deleteDaily(in, i);
+                        deleteDailyAlarm(in, i);
                     } else if(item.hasReminder()) {
                         deleteNormalAlarm(in, i);
                     }
@@ -377,8 +287,6 @@ public class scheduleActivity extends AppCompatActivity {
     public boolean doesDailyPendingIntentExist(Intent i, int requestCode){
 
         PendingIntent pi = PendingIntent.getService(this,requestCode, i, PendingIntent.FLAG_NO_CREATE);
-       // boolean b =pi!=null;
-       // Log.d("GK","A DAILY REMINDER EXIST "+b+" WHERE REQUEST CODE IS "+requestCode);
 
         return pi!=null;
     }
@@ -401,29 +309,14 @@ public class scheduleActivity extends AppCompatActivity {
             AlarmManager am1 = getAlarmManager();
             PendingIntent pi = PendingIntent.getService(context,requestCode, i,0);
 
-//
-//            prefForSchedule = context.getSharedPreferences("IsDaily", 0); // 0 - for private mode
-//            SharedPreferences.Editor editor = prefForSchedule.edit();
-//
-//
-//            if(prefForSchedule.getBoolean(""+requestCode,true)) {
 
                 Log.d("GK", "A DAILY IS ALARM CREATED");
                 am1.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 86400000, pi);
 
-                //deleteDaily( i, requestCode);
-
-//                editor.putBoolean(""+requestCode,false);
-//                editor.commit();
-//                editor.apply();
-//            }
-//            else Log.d("GK", "A DAILY IS NOT ALARM CREATED");
-//            Log.d("GK", "createAlarm "+requestCode+" time: "+timeInMillis+" PI "+pi.toString());
-//
         }
     }
 
-    public void  deleteDaily(Intent i, int requestCode){
+    public void deleteDailyAlarm(Intent i, int requestCode){
 
         if(doesDailyPendingIntentExist(i,requestCode)){
 
@@ -432,55 +325,6 @@ public class scheduleActivity extends AppCompatActivity {
             getAlarmManager().cancel(pi0);
 
             Log.d("GK", "DAILY ALARM PI Cancelled + request code "+requestCode +" Does Existed:  "+doesDailyPendingIntentExist(i, requestCode));
-
-//            prefForSchedule = context.getSharedPreferences("IsDaily", 0); // 0 - for private mode
-//            SharedPreferences.Editor editor = prefForSchedule.edit();
-//            editor.clear();
-//            editor.apply();
-//            PendingIntent pi = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
-//            pi.cancel();
-//            getAlarmManager().cancel(pi);
-//            Log.d("GK", "1DAILY ALARM PI Cancelled + request code "+requestCode +" Does Existed:  "+doesDailyPendingIntentExist(i, requestCode));
-//
-//            PendingIntent pi1 = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
-//            pi1.cancel();
-//            getAlarmManager().cancel(pi1);
-//            Log.d("GK", "2DAILY ALARM PI Cancelled + request code "+requestCode +" Does Existed:  "+doesDailyPendingIntentExist(i, requestCode));
-//
-//            PendingIntent pi2 = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
-//            pi2.cancel();
-//            getAlarmManager().cancel(pi2);
-//            Log.d("GK", "3DAILY ALARM PI Cancelled + request code "+requestCode +" Does Existed:  "+doesDailyPendingIntentExist(i, requestCode));
-
-
-
-//            PendingIntent pi1 = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_CANCEL_CURRENT);
-//            pi1.cancel();
-//            getAlarmManager().cancel(pi1);
-//            Log.d("GK", "DAILY ALARM PI Cancelled + request code "+requestCode +" Does Existed:  "+doesDailyPendingIntentExist(i, requestCode));
-//
-//
-//            PendingIntent pi2 = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_NO_CREATE);
-//            pi2.cancel();
-//            getAlarmManager().cancel(pi2);
-//            Log.d("GK", "DAILY ALARM PI Cancelled + request code "+requestCode +" Does Existed:  "+doesDailyPendingIntentExist(i, requestCode));
-//
-//
-//            PendingIntent pi3 = PendingIntent.getService(this, requestCode,i, PendingIntent.FLAG_UPDATE_CURRENT);
-//            getAlarmManager().cancel(pi3);
-//            Log.d("GK", "DAILY ALARM PI Cancelled + request code "+requestCode +" Does Existed:  "+doesDailyPendingIntentExist(i, requestCode));
-//
-
-
-
-//            Log.d("GK", "DAILY PI Cancelled + request code "+requestCode + doesDailyPendingIntentExist(i, requestCode)+" "+prefForSchedule.getBoolean(String.valueOf(requestCode),false));
-//
-//            prefForSchedule = context.getSharedPreferences("IsDaily", 0); // 0 - for private mode
-//            SharedPreferences.Editor editor = prefForSchedule.edit();
-//
-//            editor.remove(String.valueOf(requestCode));
-//            editor.commit();
-//            editor.apply();
         }
         else {
             Log.d("GK","CAN'T DELETE DAILY ALARM");
@@ -508,19 +352,19 @@ public class scheduleActivity extends AppCompatActivity {
 
     }
 
-    private void addToDataStore(ToDoItem item) {
-        mToDoItemsArrayList.add(item);
-        adapter.notifyItemInserted(mToDoItemsArrayList.size() - 1);
-        MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-        storeRetrieveData.saveToFile(mToDoItemsArrayList);
-    }
+
 
 
     public class BasicListAdapter extends RecyclerView.Adapter<BasicListAdapter.ViewHolder> implements ItemTouchHelperClass.ItemTouchHelperAdapter{
-        private ArrayList<ToDoItem> items;
+        private List<ToDoItem> items;
+
+        public List<ToDoItem> getItems() {
+            return items;
+        }
+
         @Override
         public void onItemMoved(int fromPosition, int toPosition) {
-            Log.d("eee","from BasicListAdapter onItemMoved");
+            UtilsCommon.debugLog("from BasicListAdapter onItemMoved");
             if(fromPosition<toPosition){
                 for(int i=fromPosition; i<toPosition; i++){
                     Collections.swap(items, i, i+1);
@@ -531,24 +375,23 @@ public class scheduleActivity extends AppCompatActivity {
                     Collections.swap(items, i, i-1);
                 }
             }
-            mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=items;
-            adapter = new BasicListAdapter(mToDoItemsArrayList);
-            mRecyclerView.setAdapter(adapter);
-            storeRetrieveData.saveToFile(mToDoItemsArrayList);
+            adapter.addItemsList(items);
+            adapter.notifyDataSetChanged();
+
+            StoreRetrieveData.saveToServer(items);
         }
 
         @Override
         public void onItemRemoved(final int position) {
             mJustDeletedToDoItem =  items.remove(position);
-            Log.d("eee","from BasicListAdapter onItem Reoved ,item is "+mJustDeletedToDoItem.getToDoText());
+
             mIndexOfDeletedToDoItem = position;
 
-            Intent i = new Intent(scheduleActivity.this,TodoNotificationService.class);
+            final Intent i = new Intent(ScheduleActivity.this,TodoNotificationService.class);
 
-//IF it is daily
 
             if(mJustDeletedToDoItem.isDaily()) {
-                    deleteDaily(i,position);
+                    deleteDailyAlarm(i,position);
             }
             else if(mJustDeletedToDoItem.hasReminder())
             {
@@ -556,10 +399,22 @@ public class scheduleActivity extends AppCompatActivity {
             }
 
 
-            mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=items;
-            adapter = new BasicListAdapter(mToDoItemsArrayList);
-            mRecyclerView.setAdapter(adapter);
-            storeRetrieveData.saveToFile(mToDoItemsArrayList);
+
+            adapter.addItemsList(items);
+            adapter.notifyDataSetChanged();
+            StoreRetrieveData.saveToServer(items);
+
+
+            //Visible Invisible empty view
+            if(items.size()==0){
+                recycler.setVisibility(View.GONE);
+                empty.setVisibility(View.VISIBLE);
+            }
+            else {
+                recycler.setVisibility(View.VISIBLE);
+                empty.setVisibility(View.GONE);
+            }
+
 
             Snackbar.make(mCoordLayout, "ডিলিট হয়েছে",Snackbar.LENGTH_LONG)
                     .setAction("আবার ফিরিয়ে আনুন", new View.OnClickListener() {
@@ -567,7 +422,7 @@ public class scheduleActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             items.add(mIndexOfDeletedToDoItem, mJustDeletedToDoItem);
                             if(mJustDeletedToDoItem.getToDoDate()!=null && mJustDeletedToDoItem.hasReminder()){
-                                Intent i = new Intent(scheduleActivity.this, TodoNotificationService.class);
+                                Intent i = new Intent(ScheduleActivity.this, TodoNotificationService.class);
                                 i.putExtra(TodoNotificationService.TODOTEXT, mJustDeletedToDoItem.getToDoText());
                                 i.putExtra(TodoNotificationService.TODOUUID,position);
 
@@ -596,10 +451,11 @@ public class scheduleActivity extends AppCompatActivity {
 
 
                             }
-                            mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=items;
-                            adapter = new BasicListAdapter(mToDoItemsArrayList);
-                            mRecyclerView.setAdapter(adapter);
-                            storeRetrieveData.saveToFile(mToDoItemsArrayList);
+
+                            adapter.addItemsList(items);
+                            adapter.notifyDataSetChanged();
+                            StoreRetrieveData.saveToServer(items);
+
                         }
                     }).show();
         }
@@ -621,19 +477,6 @@ public class scheduleActivity extends AppCompatActivity {
             }
 
 
-            SharedPreferences sharedPreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
-            //Background color for each to-do item. Necessary for night/day mode
-            int bgColor;
-            //color of subjectName text in our to-do item. White for night mode, dark gray for day mode
-            int todoTextColor;
-            if(sharedPreferences.getString(THEME_SAVED, LIGHTTHEME).equals(LIGHTTHEME)){
-                bgColor = Color.WHITE;
-                todoTextColor = getResources().getColor(R.color.secondary_text);
-            }
-            else{
-                bgColor = Color.DKGRAY;
-                todoTextColor = Color.WHITE;
-            }
 
             if(item.getToDoDate()!=null){
 
@@ -647,11 +490,11 @@ public class scheduleActivity extends AppCompatActivity {
                 }
                 else if(item.hasReminder()&&(!item.isDaily())){
                     String timeToShow;
-                    if(android.text.format.DateFormat.is24HourFormat(scheduleActivity.this)){
-                        timeToShow = AddToDoActivity.formatDate(scheduleActivity.DATE_TIME_FORMAT_24_HOUR, item.getToDoDate());
+                    if(android.text.format.DateFormat.is24HourFormat(ScheduleActivity.this)){
+                        timeToShow = AddToDoActivity.formatDate(ScheduleActivity.DATE_TIME_FORMAT_24_HOUR, item.getToDoDate());
                     }
                     else{
-                        timeToShow = AddToDoActivity.formatDate(scheduleActivity.DATE_TIME_FORMAT_12_HOUR, item.getToDoDate());
+                        timeToShow = AddToDoActivity.formatDate(ScheduleActivity.DATE_TIME_FORMAT_12_HOUR, item.getToDoDate());
                     }
 
                     holder.mTimeTextView.setText(timeToShow);
@@ -659,7 +502,8 @@ public class scheduleActivity extends AppCompatActivity {
 
             }
 
-            holder.linearLayout.setBackgroundColor(bgColor);
+
+
 
             if((item.hasReminder() && item.getToDoDate()!=null||item.isDaily())){
                 holder.mToDoTextview.setMaxLines(1);
@@ -673,7 +517,7 @@ public class scheduleActivity extends AppCompatActivity {
                 holder.mToDoTextview.setMaxLines(2);
             }
             holder.mToDoTextview.setText(item.getToDoText());
-            holder.mToDoTextview.setTextColor(todoTextColor);
+
 
             if(!item.getToDoText().equals("")){
                 TextDrawable myDrawable = TextDrawable.builder().beginConfig()
@@ -693,8 +537,25 @@ public class scheduleActivity extends AppCompatActivity {
             return items.size();
         }
 
-        BasicListAdapter(ArrayList<ToDoItem> items){
+        View recycler,empty;
+        BasicListAdapter(List<ToDoItem> items,View recycler,View empty){
             this.items = items;
+            this.recycler=recycler;
+            this.empty=empty;
+        }
+
+        public void addItemsList(List<ToDoItem> toDoItems){
+            this.items=toDoItems;
+
+            if(items.size()==0){
+                recycler.setVisibility(View.GONE);
+                empty.setVisibility(View.VISIBLE);
+            }
+            else {
+                recycler.setVisibility(View.VISIBLE);
+                empty.setVisibility(View.GONE);
+            }
+
         }
         @SuppressWarnings("deprecation")
         public class ViewHolder extends RecyclerView.ViewHolder{
@@ -704,7 +565,6 @@ public class scheduleActivity extends AppCompatActivity {
             TextView mToDoTextview;
             ImageView mColorImageView;
             TextView mTimeTextView;
-//            int color = -1;
 
             public ViewHolder(View v){
                 super(v);
@@ -714,10 +574,10 @@ public class scheduleActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         ToDoItem item = items.get(ViewHolder.this.getAdapterPosition());
 
-                        Intent i = new Intent(scheduleActivity.this, AddToDoActivity.class);
+                        Intent i = new Intent(ScheduleActivity.this, AddToDoActivity.class);
                         i.putExtra(TODOITEM, item);
                         EditedToDoPosition =ViewHolder.this.getAdapterPosition();
-                        i.putExtra(scheduleActivity.ITEM_POSITION,EditedToDoPosition);
+                        i.putExtra(ScheduleActivity.ITEM_POSITION,EditedToDoPosition);
                         startActivityForResult(i, REQUEST_ID_TODO_ITEM);
                     }
                 });
@@ -732,60 +592,43 @@ public class scheduleActivity extends AppCompatActivity {
 
 
 
-    public void Refreshing(){
+    public void refreshing(){
         context=this;
 
-        Log.d("GK","Refreshing");
-
-        //Empty View and set alarms
-        mToDoItemsArrayList=getLocallyStoredData(storeRetrieveData);
-
-        //FOR SAFETY AGAINST NULL POINTER EXCEPTION
-        if(mToDoItemsArrayList.size()==0||mToDoItemsArrayList==null){
-            mToDoItemsArrayList=MainActivity.toDoItemsFromMainActivity=StoreRetrieveData.loadFromFile();
-        }
-
-        if(mToDoItemsArrayList.isEmpty())
-            Log.d("GK","LIST IS EMPTY IN RESUME");
+        StoreRetrieveData.loadToDoFromServer(new TodoItemServerListenter() {
+            @Override
+            public void onGetToDoItem(ArrayList<ToDoItem> toDoItems) {
 
 
-        adapter = new BasicListAdapter(mToDoItemsArrayList);
-        mRecyclerView.setAdapter(adapter);
-        setAlarms();
+                adapter.addItemsList(toDoItems);
+                adapter.notifyDataSetChanged();
+                setUpAllAlarms(toDoItems);
+            }
 
+            @Override
+            public void onError(String msg) {
+                UtilsCommon.showToast(msg);
+            }
+        });
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA_SET_CHANGED, MODE_PRIVATE);
-        if(sharedPreferences.getBoolean(ReminderActivity.EXIT, false)){
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(ReminderActivity.EXIT,false);
-            editor.apply();
-            finish();
-        }
-
-        if(getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).getBoolean(RECREATE_ACTIVITY, false)){
-            SharedPreferences.Editor editor = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE).edit();
-            editor.putBoolean(RECREATE_ACTIVITY, false);
-            editor.apply();
-            recreate();
-        }
     }
 
 
     //Create The To do from add activity
     public void ResultCreate(ToDoItem item){
-//
-//        Log.d("GK","item return from add activity,so subjectName is "+item.getToDoText()+" and content "+item.getToDoContent()+" Has remainder "+item.hasReminder()+" Is daily "+item.isDaily());
+
+     Log.d("GK","item return from add activity,so subjectName is "+item.getToDoText()+" and content "+item.getToDoContent()+" Has remainder "+item.hasReminder()+" Is daily "+item.isDaily());
         if(item.getToDoText().length()<=0){
             return;
         }
-        boolean existed = false;
+
         if(item.hasReminder() && item.getToDoDate()!=null){
             Intent in = new Intent(this, TodoNotificationService.class);
             in.putExtra(TodoNotificationService.TODOTEXT, item.getToDoText());
-            in.putExtra(scheduleActivity.ITEM_POSITION, EditedToDoPosition);
+            in.putExtra(ScheduleActivity.ITEM_POSITION, EditedToDoPosition);
 
 
-            //TODO dummy
+
             if (item.isDaily()) {
                 in.putExtra(TodoNotificationService.IsDailyOrNot,"true");
                 Log.d("GK", "DAILY ALARM IN SET ALARM");
@@ -800,7 +643,7 @@ public class scheduleActivity extends AppCompatActivity {
 
             //First delete all alarm
             if (item.isDaily()) {
-                deleteDaily(in, EditedToDoPosition);
+                deleteDailyAlarm(in, EditedToDoPosition);
             } else {
                 deleteNormalAlarm(in, EditedToDoPosition);
             }
@@ -811,52 +654,17 @@ public class scheduleActivity extends AppCompatActivity {
                     //Check first that actually we have the element
                     in.putExtra(TodoNotificationService.TODOUUID, EditedToDoPosition);
                     createAlarm(in, EditedToDoPosition, item.getToDoDate().getTime(),true);
-
             }
             else{
-
                     in.putExtra(TodoNotificationService.TODOUUID, EditedToDoPosition);
                     createAlarm(in, EditedToDoPosition, item.getToDoDate().getTime(),false);
-
             }
-
 
         }
 
         Log.d("GK","EditedToDoPosition : "+ EditedToDoPosition);
 
-        //This is for save the to do items to the server
-//        for(int i = 0; i<mToDoItemsArrayList.size();i++){
-//            if(EditedToDoPosition==i){
-//
-//                mToDoItemsArrayList.set(i, item);
-//                existed = true;
-//                adapter.notifyDataSetChanged();
-//                MainActivity.toDoItemsFromMainActivity=mToDoItemsArrayList;
-//               // Log.d("GK","CHANGED and existed:"+existed);
-//                storeRetrieveData.saveToFile(mToDoItemsArrayList);
-//                break;
-//            }
-//        }
-//        if(!existed){
-//            addToDataStore(item);
-//        }
 
-
-        //FOR SCHEDULES
-
-
-        MainActivity.toDoItemsFromMainActivity =new ArrayList<>();
-        storeRetrieveData = new StoreRetrieveData(this, scheduleActivity.FILENAME);
-        MainActivity.toDoItemsFromMainActivity= StoreRetrieveData.loadFromFile();
-
-        Log.d("GK","List size is : "+mToDoItemsArrayList.size()+" in Result create");
-       // Log.d("eee","Result");
-
-        adapter = new BasicListAdapter(mToDoItemsArrayList);
-      //  if(adapter.getItemCount()!=0)Log.d("eee","adapers item from result which is not zero");
-        mRecyclerView.setAdapter(adapter);
-        setAlarms();
     }
 
 

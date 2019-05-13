@@ -22,8 +22,6 @@ import static com.Teachers.HaziraKhataByGk.AttendanceActivity.year;
 
 public class PrinterActivity extends AppCompatActivity {
 
-    //AD
-
 
 
 

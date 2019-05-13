@@ -32,7 +32,7 @@ public class TodoNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         mTodoText = intent.getStringExtra(TODOTEXT);
-        mTodoUUID = (Integer)intent.getSerializableExtra(scheduleActivity.ITEM_POSITION);
+        mTodoUUID = (Integer)intent.getSerializableExtra(ScheduleActivity.ITEM_POSITION);
 
 
 
@@ -61,7 +61,7 @@ long [] vibration ={1000,2000,3000};
 
         if(isDaily.equals("true")){
 
-            Intent intentForGOToSchedule = new Intent(this, scheduleActivity.class);
+            Intent intentForGOToSchedule = new Intent(this, ScheduleActivity.class);
 
           //  This is actually stop the ringtone because i cannot do this anymore
           // PendingIntent pendingIntent = PendingIntent.getService(this, -11, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
