@@ -1,9 +1,10 @@
-package com.Teachers.HaziraKhataByGk;
+package com.Teachers.HaziraKhataByGk.AddEditClass;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,29 +12,41 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
+import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.R;
+import com.Teachers.HaziraKhataByGk.Scheduler.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class ClassAddActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    private EditText personName;
-    private EditText phone;
+    private EditText classNameEditText;
+    private EditText sectionEditText;
     private Button btnAdd, btnEdit, btnDelete;
     private ClassIitem classitem = null;
+
+
+    //This is for avoiding Delete SQL injection
     public static String previousClassName;
-    public static String prviousSectionName;
+    public static String previousSectionName;
 
 
 
@@ -59,10 +72,6 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         setContentView(R.layout.activity_act);
@@ -70,30 +79,31 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-        personName = (EditText) findViewById(R.id.classText);
-        phone = (EditText) findViewById(R.id.sectionText);
+        classNameEditText = (EditText) findViewById(R.id.classText);
+        sectionEditText = (EditText) findViewById(R.id.sectionText);
 
-        personName.addTextChangedListener(new MyTextWatcher(personName));
-        phone.addTextChangedListener(new MyTextWatcher(phone));
+        classNameEditText.addTextChangedListener(new MyTextWatcher(classNameEditText));
+        sectionEditText.addTextChangedListener(new MyTextWatcher(sectionEditText));
 
         btnAdd = (Button) findViewById(R.id.btnAdd);
-       // btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnEdit = (Button) findViewById(R.id.btnEdit);
         btnDelete = (Button) findViewById(R.id.btnDelete);
 
         btnAdd.setOnClickListener(this);
-        //btnEdit.setOnClickListener(this);
+        btnEdit.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
 
         classitem = getIntent().getParcelableExtra(ClassAddActivity.class.getSimpleName());
 
         if (classitem != null) {
             btnAdd.setVisibility(View.GONE);
-            personName.setText(classitem.getName());
-            phone.setText(classitem.getSection());
+            classNameEditText.setText(classitem.getName());
+            sectionEditText.setText(classitem.getSection());
             previousClassName=classitem.getName();
-            prviousSectionName=classitem.getSection();
+            previousSectionName =classitem.getSection();
         }else {
             btnDelete.setVisibility(View.GONE);
+            btnEdit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -101,8 +111,8 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         if (v == btnAdd) {
             classitem = new ClassIitem();
-            classitem.setName(personName.getText().toString().trim());
-            classitem.setSection(phone.getText().toString().trim());
+            classitem.setName(classNameEditText.getText().toString().trim());
+            classitem.setSection(sectionEditText.getText().toString().trim());
 
 
             //CHECK THAT THE ITEM IS UNIQUE
@@ -139,16 +149,14 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
         else if (v == btnDelete) {
             classitem = new ClassIitem();
 
-            classitem.setName(personName.getText().toString());
-            classitem.setSection(phone.getText().toString());
+            classitem.setName(classNameEditText.getText().toString());
+            classitem.setSection(sectionEditText.getText().toString());
 
             //FOR AVOID SQL INJECTION
             for(int i=0;i<MainActivity.TotalClassItems.size();i++){
 
-                //TODO: have to fix
-                if(MainActivity.TotalClassItems==null)startActivity(new Intent(ClassAddActivity.this,MainActivity.class));
 
-                if(MainActivity.TotalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.TotalClassItems.get(i).getSection().equals(classitem.getSection())&&!(previousClassName.equals(personName.getText().toString())&&prviousSectionName.equals(phone.getText().toString()))){
+                if(MainActivity.TotalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.TotalClassItems.get(i).getSection().equals(classitem.getSection())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -156,20 +164,109 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
                                     dialog.dismiss();
                                 }
                             });
                     alertDialog.show();
                     return;
                 }
+
             }
 
             DeleteDialog();
         }
+        else {
+editClass();
 
 
         }
+
+
+        }
+
+       public void editClass(){
+
+
+        //For Random click check
+        btnEdit.setOnClickListener(null);
+
+           //FOR AVOID SQL INJECTION
+           for(int i=0;i<MainActivity.TotalClassItems.size();i++){
+
+
+               if(MainActivity.TotalClassItems.get(i).getName().equals(classNameEditText.getText().toString().trim())&&MainActivity.TotalClassItems.get(i).getSection().equals(sectionEditText.getText().toString().trim())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
+                   AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                   alertDialog.setTitle("সতর্কীকরণ");
+                   alertDialog.setIcon(R.drawable.warnig_for_delete);
+                   alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
+                   alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                           new DialogInterface.OnClickListener() {
+                               public void onClick(DialogInterface dialog, int which) {
+                                   dialog.dismiss();
+                               }
+                           });
+                   alertDialog.show();
+                   return;
+               }
+
+           }
+
+           DatabaseReference fromDBRef=FirebaseCaller.getFirebaseDatabase().child("Users")
+                   .child(FirebaseCaller.getUserID())
+                   .child("Class")
+                   .child(previousClassName + previousSectionName);
+
+           DatabaseReference toDBRef=FirebaseCaller.getFirebaseDatabase().child("Users")
+                   .child(FirebaseCaller.getUserID())
+                   .child("Class")
+                   .child(classNameEditText.getText().toString().trim() + sectionEditText.getText().toString().trim());
+
+
+           DatabaseReference dbRefRemove=fromDBRef;
+           //Rename the class name and section
+           dbRefRemove.child("name").setValue(classNameEditText.getText().toString().trim());
+           dbRefRemove.child("section").setValue(sectionEditText.getText().toString().trim());
+
+
+           copyRecord(fromDBRef,toDBRef);
+
+        }
+
+    private void copyRecord(final DatabaseReference fromPath, final DatabaseReference toPath) {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                toPath.setValue(dataSnapshot.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isComplete()) {
+                            UtilsCommon.debugLog("Copy Class Complete");
+                            fromPath.removeValue().addOnSuccessListener(ClassAddActivity.this, new
+                                    OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            ClassAddActivity.this.finish();
+                                            UtilsCommon.showToast("Class Edited");
+
+                                        }
+                                    });
+
+                        } else {
+                            UtilsCommon.debugLog("Copy Class Not Complete");
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                UtilsCommon.debugLog("Error ");
+            }
+        };
+
+        fromPath.addListenerForSingleValueEvent(valueEventListener);
+    }
+
 
 
 //EDIT TEXT MATERIAL STYLE
@@ -211,9 +308,9 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private boolean validateClassName() {
-        if (personName.getText().toString().trim().isEmpty()) {
-            personName.setError(getString(R.string.error_massege_for_input));
-            requestFocus(personName);
+        if (classNameEditText.getText().toString().trim().isEmpty()) {
+            classNameEditText.setError(getString(R.string.error_massege_for_input));
+            requestFocus(classNameEditText);
             return false;
         }
         return true;
@@ -223,7 +320,10 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
     private void requestFocus(View view) {
       view.requestFocus();
     }
+
+
     public void DeleteDialog() {
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
@@ -236,20 +336,9 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(DialogInterface dialog, int whichButton) {
                 if(edt.getText().toString().trim().equals("DELETE")){
 
-                    //TODO:DATABASE CONNECTION
-                    firebaseDatabase= FirebaseDatabase.getInstance();
-                    databaseReference=firebaseDatabase.getReference();
 
-                    //TODO: USER (for FB logic auth throw null pointer exception)
-                    auth = FirebaseAuth.getInstance();
-                    mFirebaseUser = auth.getCurrentUser();
-                    databaseReference.keepSynced(true);
-                    mUserId=mFirebaseUser.getUid();
-
-                    MainActivity.databaseReference=databaseReference;
-                    MainActivity.mUserId=mUserId;
                         //FOR DELETE
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName()+classitem.getSection()).removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(classitem.getName()+classitem.getSection()).removeValue();
 
 
                         Toast.makeText(ClassAddActivity.this,"ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
@@ -268,6 +357,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
         b.show();
     }
 
+
     public void ConfirmDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -276,38 +366,22 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
         final EditText edt = (EditText) dialogView.findViewById(R.id.custom_class_add_edit_text);
 
         dialogBuilder.setIcon(R.drawable.warning_for_add);
-        dialogBuilder.setTitle("সতর্কীকরণ");
-        dialogBuilder.setMessage("ক্লাসের নাম অংশটি সংবেদনশীল,তাই ক্লাসের নাম পরবর্তী পরিবর্তন করা যাবে না।নিশ্চিত হতে ইংরেজীতে \"C\" শব্দটি লিখুন করন।");
-        dialogBuilder.setPositiveButton("ইনপুট করুন", new DialogInterface.OnClickListener() {
+        dialogBuilder.setTitle("Warning");
+        dialogBuilder.setMessage("Are you sure?");
+        dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(edt.getText().toString().trim().equals("C")){
-                    //Adding new class_room
-
-                    //TODO:DATABASE CONNECTION
-                    firebaseDatabase= FirebaseDatabase.getInstance();
-                    databaseReference=firebaseDatabase.getReference();
-
-                    //TODO: USER (for FB logic auth throw null pointer exception)
-                    auth = FirebaseAuth.getInstance();
-                    mFirebaseUser = auth.getCurrentUser();
-                    databaseReference.keepSynced(true);
-                    mUserId=mFirebaseUser.getUid();
-
-                    MainActivity.databaseReference=databaseReference;
-                    MainActivity.mUserId=mUserId;
-
                     try {
 
                         //FOR DELETE
-                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(classitem.getName() + classitem.getSection()).setValue(classitem);
+                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(classitem.getName() + classitem.getSection()).setValue(classitem);
 
                     }
                      catch (Exception e){
 
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
-                        alertDialog.setMessage(" আপনার ডিভাইসের সমস্যার কারনে লগিন হচ্ছেনা । দয়া করে আবার চেষ্টা করুন অথবা ডেভেলপারকে জানান ফেসবুক গ্রুপে পোস্ট করে,ধন্যবাদ । সমস্যাটি হল : "+e.getMessage());
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"পোস্ট দিন",
+                        AlertDialog alertDialogError = new AlertDialog.Builder(ClassAddActivity.this).create();
+                         alertDialogError.setMessage(" আপনার ডিভাইসের সমস্যার কারনে Delete হচ্ছেনা । দয়া করে আবার চেষ্টা করুন অথবা ডেভেলপারকে জানান ফেসবুক গ্রুপে পোস্ট করে,ধন্যবাদ । সমস্যাটি হল : "+e.getMessage());
+                         alertDialogError.setButton(AlertDialog.BUTTON_NEUTRAL,"পোস্ট দিন",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 
@@ -323,9 +397,9 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
                                         dialog.dismiss();
                                     }
                                 });
-                        alertDialog.show();
+                         alertDialogError.show();
 
-                    }
+
 
 
                     Toast.makeText(ClassAddActivity.this, "নতুন ক্লাসটির জন্য সার্ভারে ডাটাবেজ তৈরি হয়েছে,ধন্যবাদ",                       Toast.LENGTH_SHORT).show();
@@ -346,25 +420,9 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
                             });
                     alertDialog.show();
                 }
-                else
-                {
-                    //IF USER INPUT WRONG CLASS IN CONFIRMATION
-                    AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
-                    alertDialog.setTitle("ভুল সংশোধণ করুন");
-                    alertDialog.setIcon(R.drawable.warnig_for_delete);
-                    alertDialog.setMessage("আপনার দেয়া ইনপুটটি \"C\" শব্দের সাথে মিলেনি । পুনরায় সঠিকভাবে \"C\" শব্দটি ইনপুট করুন।ধন্যবাদ");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-
-                }
             }
         });
-        dialogBuilder.setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });

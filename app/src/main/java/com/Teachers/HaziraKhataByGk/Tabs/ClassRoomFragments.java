@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.Teachers.HaziraKhataByGk.AddEditClass.ClassAddActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
-import com.Teachers.HaziraKhataByGk.ClassAddActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
 import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 
 

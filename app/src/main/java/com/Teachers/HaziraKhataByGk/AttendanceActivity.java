@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.Teachers.HaziraKhataByGk.Adapter.AttendenceListAdapter;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.student;
@@ -44,18 +45,17 @@ public class AttendanceActivity extends AppCompatActivity {
     private static final String Tag = AttendanceActivity.class.getName();
     public static ClassIitem classitemAttendence;
     public ListView listView;
-    private Boolean isInterstitalAdEnable;
-    public static Context context;
-    public static ArrayList<String> names;
-    public static ArrayList<String> rolls;
-    public static ArrayList<Integer> attendencePercentage;
+
+    public  ArrayList<String> names;
+    public  static ArrayList<String> rolls;
+    public  ArrayList<Integer> attendencePercentage;
     public static List<student> studentListFromAttendenceActivity;
     public static List<student> studentListForPrintActiviyFromAttendenceActivity;
     public static List<student> studentListForDeleteFromAttendenceActivity;
     public AttendenceListAdapter AttendenceListAdapter;
-    public static long totalClassFromServer;
+
     public static boolean previousClassAttendenceStatus;
-    public static Activity activity;
+
     public static String time, subject,yearWithDate,year,month;
     private LinearLayout linearLayoutForEmptyView;
     public RelativeLayout mainlayout;
@@ -63,26 +63,20 @@ public class AttendanceActivity extends AppCompatActivity {
    // public static ArrayList<Integer> checklist ;
     public static HashMap<Integer, Boolean> checkHash ;//For avoiding auto checking
     public static HashMap<String,ArrayList<AttendenceData>> perStudentTotalAttendenceData;//for creating month wise data sheet;
-    public static ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
+    public ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
 
-    public static FirebaseAuth auth;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
-    public static String mUserId;
-    public static FirebaseUser mFirebaseUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // checklist = new ArrayList<Integer>();
 
-        HideNotifiationBar();
+
 
         setContentView(R.layout.activity_attendance);
 
         Initialization();
-
-        ConnectWithServer();
 
         LoadData();
 
@@ -95,7 +89,6 @@ public class AttendanceActivity extends AppCompatActivity {
     }
         @Override
         protected void onResume () {
-            classitemAttendence = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
             super.onResume();
         }
 
@@ -115,7 +108,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if(edt.getText().toString().trim().equals("DELETE")){
 
-                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+                            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,7 +123,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                     student student;
                                     for (int i = 0; i < studentListForDeleteFromAttendenceActivity.size(); i++) {
                                         student = studentListForDeleteFromAttendenceActivity.get(i);
-                                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
+                                        MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
                                         Log.d("GK","REMOVE");
 
                                     }
@@ -175,7 +168,7 @@ public class AttendanceActivity extends AppCompatActivity {
     void ShowIntroDialoage(){
         //TODO: For verifying this activity is newly opened or not and showing the instruction dialog
 
-        SharedPreferences pref = context.getSharedPreferences("IsFirst", 0); // 0 - for private mode
+        SharedPreferences pref = AttendanceActivity.this.getSharedPreferences("IsFirst", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         if(pref.getBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),true)){
             AlertDialog alertDialog = new AlertDialog.Builder(AttendanceActivity.this).create();
@@ -188,7 +181,6 @@ public class AttendanceActivity extends AppCompatActivity {
                     });
             alertDialog.show();
             editor.putBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),false);
-            editor.commit();
             editor.apply();
             Log.d("GK", " if");
         }
@@ -206,8 +198,7 @@ public class AttendanceActivity extends AppCompatActivity {
         linearLayoutForEmptyView=(LinearLayout)findViewById(R.id.toDoEmptyView);
         Button saveAttendenceButton = (Button) findViewById(R.id.buttonSaveAttendance);
         mainlayout=findViewById(R.id.mainLayout);
-        context = this;
-        activity = this;
+
 
         classitemAttendence = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
 
@@ -247,24 +238,10 @@ public class AttendanceActivity extends AppCompatActivity {
 
     }
 
-    void ConnectWithServer(){
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
 
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-
-        MainActivity.databaseReference=databaseReference;
-        MainActivity.mUserId=mUserId;
-
-    }
 
     void LoadData(){
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -341,7 +318,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     attendClass = 0;
                     rolls.add(student.getId());
                 }
-                AttendenceListAdapter = new AttendenceListAdapter(activity, names,classitemAttendence);
+                AttendenceListAdapter = new AttendenceListAdapter(AttendanceActivity.this, names,classitemAttendence);
                 listView.setAdapter(AttendenceListAdapter);
             }
 
@@ -351,11 +328,6 @@ public class AttendanceActivity extends AppCompatActivity {
         });
     }
 
-    void HideNotifiationBar(){
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
+
 
     }

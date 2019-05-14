@@ -29,7 +29,7 @@ import static com.Teachers.HaziraKhataByGk.AttendanceActivity.checkHash;
 
 public class AttendenceListAdapter extends BaseAdapter {
 
-    public InterstitialAd mInterstitialAd;
+
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
@@ -83,25 +83,6 @@ public class AttendenceListAdapter extends BaseAdapter {
       if(isAbsentPreviousClass){
           v.setBackgroundColor(Color.RED);
       }
-            //TRYING TO SET THE TEXT COLOR BUT DOES NOT WORK
-//        LinearLayout viewForBackgroudColor=(LinearLayout) v.findViewById(R.id.attendanceLayout);
-//        int percentage=AttendanceActivity.attendencePercentage.get(position);
-//        if(percentage>=80){
-//            viewForBackgroudColor.setBackgroundColor(0x81c784);
-//        }
-//        else if(percentage>=70&&percentage<80){
-//            viewForBackgroudColor.setBackgroundColor(0xa5d6a7);
-//        }
-//        else if(percentage>=60&&percentage<70) {
-//            viewForBackgroudColor.setBackgroundColor(0xef6c00);
-//        }
-//        else if(percentage>=50&&percentage>70){
-//            viewForBackgroudColor.setBackgroundColor(0xff8a65);
-//        }
-//        else if(percentage<50){
-//            viewForBackgroudColor.setBackgroundColor(0xf44336);
-//        }
-
 
             final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance
             final CheckBox checkBox1 =(CheckBox) v.findViewById(R.id.absentMarker);//For absent
@@ -130,16 +111,15 @@ public class AttendenceListAdapter extends BaseAdapter {
 
             //How to add set onlickListern in Growable listView adapter
 
-            v.setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.attendanceText).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchinIntent = new Intent(AttendanceActivity.activity, StudentAlIInfoShowActiviy.class);
+                    Intent launchinIntent = new Intent(activity, StudentAlIInfoShowActiviy.class);
                     String roll = AttendanceActivity.rolls.get(pos);
                     Log.d("GK",pos + " pos in click listener of list view");
                     launchinIntent.putExtra("Roll", roll);
                     launchinIntent.putExtra("classItem", ClassIitem);
-                    AttendanceActivity.activity=activity;
-                    AttendanceActivity.activity.startActivity(launchinIntent);
+                    activity.startActivity(launchinIntent);
                 }
             });
 
@@ -189,9 +169,6 @@ public class AttendenceListAdapter extends BaseAdapter {
         return nameList.size();
     }
     public void saveAll() {
-        mInterstitialAd = new InterstitialAd(activity);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(activity.getString(R.string.Interstitial_info_activity));
 
         //TODO:DATABASE CONNECTION
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -232,7 +209,6 @@ public class AttendenceListAdapter extends BaseAdapter {
 
         activity.finish();
 
-        // Load ads into Interstitial Ads
 
 
 
