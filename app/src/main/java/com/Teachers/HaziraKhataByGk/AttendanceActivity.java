@@ -123,7 +123,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                     student student;
                                     for (int i = 0; i < studentListForDeleteFromAttendenceActivity.size(); i++) {
                                         student = studentListForDeleteFromAttendenceActivity.get(i);
-                                        MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
+                                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
                                         Log.d("GK","REMOVE");
 
                                     }

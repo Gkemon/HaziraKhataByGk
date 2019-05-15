@@ -31,7 +31,7 @@
             android:src="@drawable/ic_person" />
 
         <TextView
-            android:id="@+id/website"
+            android:id="@+id/user_email"
             android:text="web"
             android:textColor="@color/white"
             android:layout_width="match_parent"

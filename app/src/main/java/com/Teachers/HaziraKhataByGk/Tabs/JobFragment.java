@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static com.Teachers.HaziraKhataByGk.MainActivity.Job_list;
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
+
 import static com.Teachers.HaziraKhataByGk.R.id.clickerForJob;
 import static com.Teachers.HaziraKhataByGk.R.id.loveClickerForjob;
 import static com.Teachers.HaziraKhataByGk.R.id.saveClickerForjob;

@@ -34,7 +34,7 @@ import java.util.Collections;
 
 import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.openInAppBrowser;
 import static com.Teachers.HaziraKhataByGk.MainActivity.NewsList;
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
+
 import static com.Teachers.HaziraKhataByGk.R.id.ClickerForNews;
 import static com.Teachers.HaziraKhataByGk.R.id.SaveClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.ShareClicker;
@@ -144,17 +144,21 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
 
 
             case SaveClicker:
-                UtilsCommon.saveNews(getContext(), NewsList.get(position));
-                ImageView savedIcon=(ImageView)view.findViewById(R.id.SaveClickerIcon);
 
-                if(UtilsCommon.isNewsBookmarked(NewsList.get(position),context)){
-                    savedIcon.setImageResource(R.drawable.ic_saved_icon);
-                    Toast.makeText(getContext(), "সেভ হয়েছে", Toast.LENGTH_SHORT).show();
+
+                if(UtilsCommon.saveNews(getContext(), NewsList.get(position))){
+                    ImageView savedIcon=(ImageView)view.findViewById(R.id.SaveClickerIcon);
+
+                    if(UtilsCommon.isNewsBookmarked(NewsList.get(position),context)){
+                        savedIcon.setImageResource(R.drawable.ic_saved_icon);
+                        Toast.makeText(getContext(), "সেভ হয়েছে", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        savedIcon.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+                        Toast.makeText(context, "সেভ রিমুভ হয়েছে", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else{
-                    savedIcon.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
-                    Toast.makeText(context, "সেভ রিমুভ হয়েছে", Toast.LENGTH_SHORT).show();
-                }
+
                break;
 
 

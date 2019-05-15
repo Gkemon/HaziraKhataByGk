@@ -123,16 +123,25 @@
             android:textColor="@color/white"
             android:textSize="15dp" />
         <Button
+            android:id="@+id/btn_guest"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            app:backgroundTint="@color/red_secondary"
+            android:text="একাউন্ট না খুলে বা লগিন না করে আপাতত এপটি ঘুরে আসতে চাইলে এখানে ক্লিক করুন।"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+        <Button
             android:id="@+id/help"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:backgroundTint="#f44336"
+            app:backgroundTint="@color/blueMiddle"
             android:text="সাহায্য দরকার আপনার?"
             android:textAllCaps="false"
             android:textColor="@color/white" />
     </LinearLayout>
-    </ScrollView>
+    </ScrollView>tt
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="30dp"

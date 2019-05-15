@@ -2,21 +2,27 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
+import com.Teachers.HaziraKhataByGk.R;
+import com.Teachers.HaziraKhataByGk.Scheduler.Utils;
+import com.Teachers.HaziraKhataByGk.SignupActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -65,10 +71,16 @@ public class UtilsCommon {
         editor.commit();
     }
     //TODO: save news
-    public static void saveBlog(Context context, BlogItem blogItem) {
+    public static boolean saveBlog(Context context, BlogItem blogItem) {
         BlogItem blog;
         blog=blogItem;
         boolean exist=false;
+
+        if(saved_blogItem_for_main==null)
+        {
+            showDialogForSignUp(context);
+            return false;
+        }
 
         //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
         for(int i = 0; i< saved_blogItem_for_main.size(); i++){
@@ -114,6 +126,8 @@ public class UtilsCommon {
         }
 
         editor.apply();
+
+        return true;
     }
 
 
@@ -126,6 +140,37 @@ public class UtilsCommon {
 
     public static void showToast(String msg){
         Toast.makeText(GlobalContext.getAppContext(),msg,Toast.LENGTH_LONG).show();
+    }
+
+
+    public static void showDialogForSignUp(final Context activity){
+
+        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(activity).create();
+        alertDialog.setTitle("আপনি এখনো লগিন করেননি বা একাউন্ট খুলেননি");
+        alertDialog.setIcon(R.drawable.warnig_for_delete);
+        alertDialog.setMessage("আপনি একাউন্ট না খুলে থাকলে সাইন আপ করুন।আর যদি আপনার আগেই একাউন্ট থেকে থাকে তাহলে লগিন করুন।");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"সাইন আপ",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.startActivity(new Intent(activity, SignupActivity.class));
+                    }
+                });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "লগিন", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                    activity.startActivity(new Intent(activity, LoginActivity.class));
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "বাদ দিন", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     public static void debugLog(String msg){
@@ -142,12 +187,20 @@ public class UtilsCommon {
     }
 
     //TODO: save news
-    public static void saveNews(Context context, NewsItem newsItem1) {
+    public static boolean saveNews(Context context, NewsItem newsItem1) {
         NewsItem NewsItem;
         NewsItem = newsItem1;
         boolean exist=false;
 
+
+
         //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
+
+        if(saved_newsItem_for_main==null)
+        {
+            showDialogForSignUp(context);
+            return false;
+        }
         for(int i = 0; i< saved_newsItem_for_main.size(); i++){
             if(NewsItem.getURL().equals(saved_newsItem_for_main.get(i).getURL())&& NewsItem.getDate().equals(saved_newsItem_for_main.get(i).getDate())&& NewsItem.getHeading().equals(saved_newsItem_for_main.get(i).getHeading())){
                 exist=true;
@@ -171,7 +224,7 @@ public class UtilsCommon {
 
 
             Query query =
-                    MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").orderByChild("url").equalTo(newsItem1.getURL());
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").orderByChild("url").equalTo(newsItem1.getURL());
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -188,13 +241,13 @@ public class UtilsCommon {
             editor.putBoolean(newsItem1.getURL(), true);
             editor.putBoolean(newsItem1.getHeading(), true);
             editor.putBoolean(newsItem1.getDate(), true);
-            //editor1.putBoolean(newsItem1.getURL(), true);
-            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").push().setValue(newsItem1);
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").push().setValue(newsItem1);
 
         }
 
-        //editor1.commit();
         editor.apply();
+
+        return true;
     }
 
     //TODO: check news
@@ -202,10 +255,7 @@ public class UtilsCommon {
 
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata", 0);
 
-        if(pref.getBoolean(NewsItem.getURL(), false) && pref.getBoolean(NewsItem.getHeading(), false) && pref.getBoolean(NewsItem.getDate(), false)){
-            return true;
-        }
-        return false;
+        return pref.getBoolean(NewsItem.getURL(), false) && pref.getBoolean(NewsItem.getHeading(), false) && pref.getBoolean(NewsItem.getDate(), false);
     }
 
     //TODO: love news
@@ -250,7 +300,7 @@ public class UtilsCommon {
             editor.putBoolean(institute, false);
             editor.putBoolean(place, false);
 
-            Query query=MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
+            Query query=FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -274,7 +324,7 @@ public class UtilsCommon {
             editor.putBoolean(institute, true);
             editor.putBoolean(place, true);
 
-            Query query=MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
+            Query query=FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -296,7 +346,7 @@ public class UtilsCommon {
             JobItems.setPlace(place);
             JobItems.setURL(URL);
             JobItems.setPost(post);
-            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").push().setValue(JobItems);
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").push().setValue(JobItems);
         }
 
         editor.apply();

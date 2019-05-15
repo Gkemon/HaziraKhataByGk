@@ -64,6 +64,11 @@ public class FirebaseCaller {
     }
 
     public static String getUserID(){
+
+        if(getCurrentUser()==null){
+            return "-11";
+        }
+        else
         return getCurrentUser().getUid();
     }
     public static FirebaseUser getCurrentUser(){

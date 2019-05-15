@@ -40,8 +40,7 @@ import java.util.ArrayList;
 import static android.view.View.GONE;
 import static com.Teachers.HaziraKhataByGk.BottomNavigationActivity.Saved_News_list;
 import static com.Teachers.HaziraKhataByGk.BottomNavigationActivity.context;
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
+
 import static com.Teachers.HaziraKhataByGk.R.id.ClickerForNews;
 import static com.Teachers.HaziraKhataByGk.R.id.SaveClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.ShareClicker;
@@ -141,7 +140,7 @@ public class SavedNewsFragment extends Fragment implements RecyclerItemClickList
 
         //VIEWS
 
-        databaseReference.child("Users").child(mUserId).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public  void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("GK","NewsLoadingFromServer is called NewsLoadingFromServer");
@@ -156,7 +155,7 @@ public class SavedNewsFragment extends Fragment implements RecyclerItemClickList
 
                 //        IT MAKES THE INSTRUCTION ON saved news FRAGMENT WHEN THERE IS NO news
 //        For loading saved news from Server
-                Query queryReforSeeTheDataIsEmptyOrNot = MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_news");
+                Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news");
                 queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -289,7 +288,7 @@ public class SavedNewsFragment extends Fragment implements RecyclerItemClickList
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 if(edt.getText().toString().equals("DELETE")){
-                FirebaseCaller.databaseReference.child("Users").child(mUserId).child("Saved_news").removeValue();
+                FirebaseCaller.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").removeValue();
                 SharedPreferences pref = BottomNavigationActivity.context.getSharedPreferences("HaziraKhata", 0); // 0 - for private mode
                 SharedPreferences.Editor editor = pref.edit();
                 editor.clear();

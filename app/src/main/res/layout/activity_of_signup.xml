@@ -67,16 +67,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
             android:backgroundTint="@color/parrot"
-            android:text="সাইন-আপ করুন"
+            android:text="নতুন একাউন্ট খুলুন"
             android:textColor="@android:color/white" />
 
         <Button
-            android:id="@+id/btn_reset_password"
+            android:id="@+id/btn_guest"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:backgroundTint="@color/blueMiddle"
-            android:text="পাসওয়ার্ড ভুলে গিয়েছেন?"
+            app:backgroundTint="@color/red_secondary"
+            android:text="একাউন্ট না খুলে বা লগিন না করে আপাতত এপটি ঘুরে আসতে চাইলে এখানে ক্লিক করুন।"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 

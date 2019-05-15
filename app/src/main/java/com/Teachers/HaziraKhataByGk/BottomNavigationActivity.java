@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
@@ -36,7 +37,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 
 public class BottomNavigationActivity extends AppCompatActivity {
     public static ArrayList<NewsItem> Saved_News_list;
@@ -166,7 +166,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         }
 
         //TODO: IT MAKES THE INSTRUCTION ON saved news FRAGMENT WHEN THERE IS NO news For loading saved news from Server
-        Query queryReforSeeTheDataIsEmptyOrNot = MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_news");
+        Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news");
         queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -179,7 +179,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
 
         //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job from Server
-        Query queryReforSeeTheDataIsEmptyOrNotForsavedJob = MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_jobs");
+        Query queryReforSeeTheDataIsEmptyOrNotForsavedJob = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs");
         queryReforSeeTheDataIsEmptyOrNotForsavedJob.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -195,7 +195,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
 
         //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job from Server
-        Query queryReforSeeTheDataIsEmptyOrNotForsavedBlog = MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_blog");
+        Query queryReforSeeTheDataIsEmptyOrNotForsavedBlog = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog");
         queryReforSeeTheDataIsEmptyOrNotForsavedBlog.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

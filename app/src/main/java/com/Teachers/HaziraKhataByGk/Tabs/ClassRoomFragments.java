@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import com.Teachers.HaziraKhataByGk.AddEditClass.ClassAddActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.MyArrayList;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Adapter.ClassListAdapter;
@@ -26,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
 
 
 public class ClassRoomFragments extends Fragment implements RecyclerItemClickListener{
@@ -49,13 +50,19 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
 
         emptyView=rootView.findViewById(R.id.toDoEmptyView);
         //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
-        if(MainActivity.isClassListEmpty){
+        if(MainActivity.isClassListEmpty||FirebaseCaller.getCurrentUser()==null){
             emptyView.setVisibility(View.VISIBLE);
         }
         else {
             emptyView.setVisibility(View.GONE);
         }
 
+        rootView.findViewById(R.id.help).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UtilsCommon.openWithFaceBook(getString(R.string.help_fb_url),context);
+            }
+        });
 
         //VIEWS
         recyclerViewForClass = (RecyclerView) rootView.findViewById(R.id.recycleViewFromFragmentOne);
@@ -80,7 +87,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        rootView =inflater.inflate(R.layout.fragment_one, container, false);
+        rootView =inflater.inflate(R.layout.fragment_class_room, container, false);
         initiView();
         return rootView;
     }
@@ -105,26 +112,26 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
 
      public  void LoadDataFromServer(){
         //For loading class_room from Server
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(mUserId).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<ClassIitem> ClassIitems =new ArrayList<ClassIitem>();
+                MyArrayList<ClassIitem> ClassIitems =new MyArrayList<ClassIitem>();
                 for(DataSnapshot classData:dataSnapshot.getChildren()){
                     ClassIitem ClassIitem =new ClassIitem();
                     ClassIitem =classData.getValue(ClassIitem.class);
                     ClassIitems.add(ClassIitem);
                 }
-                MainActivity.TotalClassItems=new ArrayList<ClassIitem>();
+                MainActivity.TotalClassItems=new MyArrayList<ClassIitem>();
                 MainActivity.TotalClassItems= ClassIitems;
                 //IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
-                Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(mUserId).child("Class");
+                Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class");
                 queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         MainActivity.isClassListEmpty = !dataSnapshot.exists();
 
                         //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
-                        if(MainActivity.isClassListEmpty){
+                        if(MainActivity.isClassListEmpty||FirebaseCaller.getCurrentUser()==null){
                           emptyView.setVisibility(View.VISIBLE);
                         }
                         else {

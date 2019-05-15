@@ -25,8 +25,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.SingleStudentPresentDateListAdaper;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.student;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -62,7 +64,6 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
-    public static String mUserId;
     public static FirebaseUser mFirebaseUser;
 
     String roll;
@@ -155,7 +156,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (edt.getText().toString().trim().equals("DELETE")) {
 
-                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue();
+                            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue();
 
                             singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
@@ -185,20 +186,10 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
     public void GetAttendenceListData(){
 
 
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId = mFirebaseUser.getUid();
-        MainActivity.databaseReference = databaseReference;
-        MainActivity.mUserId = mUserId;
 
         ClassRoomActivity.classitem=getIntent().getParcelableExtra("classItem");
 
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -250,19 +241,10 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
         });
     }
     public  void GetHeadingData(){
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId = mFirebaseUser.getUid();
-        MainActivity.databaseReference = databaseReference;
-        MainActivity.mUserId = mUserId;
 
 
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -350,8 +332,8 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                     attendenceData.setDate(formatedDate);
 
                     //Add to database
-                    MainActivity.databaseReference.child("Users").
-                            child(mUserId).child("Class").
+                    FirebaseCaller.getFirebaseDatabase().child("Users").
+                            child(FirebaseCaller.getUserID()).child("Class").
                             child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection())
                             .child("Student").child(student.getId()).child("Attendance").push()
                             .setValue(attendenceData);
@@ -385,8 +367,8 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
 
                 //  Add to database
-                MainActivity.databaseReference.child("Users").
-                        child(mUserId).child("Class").
+                FirebaseCaller.getFirebaseDatabase().child("Users").
+                        child(FirebaseCaller.getUserID()).child("Class").
                         child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection())
                         .child("Student").child(student.getId()).child("Attendance").push()
                         .setValue(attendenceData);
@@ -400,162 +382,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
             }
         }).create().show();
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //ADMOB AD
-       // AdmobAd();
-    }
 
-
-    @Override
-    public void onDestroy() {
-//        if (mAdView != null) {
-//            mAdView.destroy();
-//        }
-        super.onDestroy();
-    }
-
-
-//    public static class createRequest extends DialogFragment {
-//        student student;
-//        ClassIitem ClassIitem;
-//        Activity activity;
-//
-//        public void addData(student student,ClassIitem ClassIitem,Activity activity){
-//            this.ClassIitem=ClassIitem;
-//            this.student=student;
-//            this.activity=activity;
-//        }
-//
-//
-//        @Override
-//        public void onCreate(Bundle savedInstanceState) {
-//            //TODO:DATABASE CONNECTION
-//            firebaseDatabase = FirebaseDatabase.getInstance();
-//            databaseReference = firebaseDatabase.getReference();
-//            //TODO: USER (for FB logic auth throw null pointer exception)
-//            auth = FirebaseAuth.getInstance();
-//            mFirebaseUser = auth.getCurrentUser();
-//            databaseReference.keepSynced(true);
-//            mUserId = mFirebaseUser.getUid();
-//            MainActivity.databaseReference = databaseReference;
-//            MainActivity.mUserId = mUserId;
-//
-//            super.onCreate(savedInstanceState);
-//        }
-//
-//
-//        @Override
-//        public Dialog onCreateDialog(Bundle savedInstanceState) {
-//            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
-//            LayoutInflater inflater = getActivity().getLayoutInflater();
-//            final View v = inflater.inflate(R.layout.dialoage_for_single_attendence_items, null);
-//            final EditText Subject = (EditText) v.findViewById(R.id.periodID);
-//            builder.setView(v).setPositiveButton("উপস্থিত", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int id) {
-//                    {
-//                        final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
-//                        int day = datePicker.getDayOfMonth();
-//                        int month = datePicker.getMonth();
-//                        int year = datePicker.getYear()-1900 ;
-//
-//                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-//                        String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-//                        String date = year + "-" + month + "-" + day;
-//                        String subject = Subject.getText().toString();
-//                       // if (subject.equals("")) subject = "অনির্ধারিত";
-//
-//                        //ADD ATTENDANCE
-//                        AttendenceData attendenceData = new AttendenceData();
-//                        attendenceData.setStatus(true);
-//                        attendenceData.setSubject(subject);
-//                        attendenceData.setDate(formatedDate);
-//
-//                        //Add to database
-//                        MainActivity.databaseReference.child("Users").
-//                                child(mUserId).child("Class").
-//                                child(ClassIitem.getName()+ClassIitem.getSection())
-//                                .child("Student").child(student.getId()).child("Attendance").push()
-//                                .setValue(attendenceData);
-//
-//                        if(singleStudentPresentDateListAdaper!=null)
-//                        singleStudentPresentDateListAdaper.notifyDataSetChanged();
-//                        dialog.dismiss();
-//                    }
-//                }
-//            }).setNegativeButton("অনুপস্থিত", new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dialog, int id) {
-//                    final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
-//                    int day = datePicker.getDayOfMonth();
-//                    int month = datePicker.getMonth();
-//                    int year = datePicker.getYear()-1900 ;
-//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-//                    String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-//                    String date = year + "-" + month + "-" + day;
-//                    String subject = Subject.getText().toString();
-//                   // if (subject.equals("")) subject = "অনির্ধারিত";
-//
-//
-//                    //ADD ATTENDANCE
-//                    AttendenceData attendenceData = new AttendenceData();
-//                    attendenceData.setStatus(false);
-//                    attendenceData.setSubject(subject);
-//                    attendenceData.setDate(formatedDate);
-//
-//
-//                    //Add to database
-//                    MainActivity.databaseReference.child("Users").
-//                            child(mUserId).child("Class").
-//                            child(ClassIitem.getName()+ClassIitem.getSection())
-//                            .child("Student").child(student.getId()).child("Attendance").push()
-//                            .setValue(attendenceData);
-//                    if(singleStudentPresentDateListAdaper!=null)
-//                    singleStudentPresentDateListAdaper.notifyDataSetChanged();
-//                    dialog.dismiss();
-//                }
-//            });
-//            return builder.create();
-//        }
-//    }
-//    public void AdmobAd(){
-//        //ADMOB
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                .build();
-//        adlayout = findViewById(R.id.ads);
-//        mAdView = (AdView) findViewById(R.id.adViewInHome);
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                adlayout.setVisibility(View.GONE);
-//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//        mAdView.loadAd(adRequest);
-//    }
 
 
     public void InitializePhoneNumbers(){
@@ -602,9 +429,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
         TempKEYlist=attendenceListKEYForSingleStudent;
         TempDatalist=attendenceDataArrayList;
 
-       // TO reverse arraylist
-//        Collections.reverse(TempKEYlist);
-//        Collections.reverse(TempDatalist);
+
 
         Log.d("GK",String.valueOf(TempKEYlist.size())+" SIZE KEY");
         Log.d("GK",String.valueOf(TempDatalist.size())+" SIZE DATA");
@@ -709,31 +534,31 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                             attendenceData.setStatus(checkBox.isChecked());
                             attendenceData.setSubject(subject);
                             attendenceData.setDate(formatedDate);
-                            ConnectWithServer();
+
 
                             //set date
                             if(student!=null){
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
 //
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).setValue(attendenceData);
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).setValue(attendenceData);
 //
 
                                 //REMOVE FIRST
                                 Log.d("GK","if "+roll+" "+student.getId());
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
                                 //set True or False
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").removeValue();
                                 //set subject
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").removeValue();
 
                                 //THEN ADD DATA
                                 Log.d("GK","if "+roll+" "+student.getId());
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").setValue(formatedDate);
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").setValue(formatedDate);
                                 //set True or False
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").setValue(checkBox.isChecked());
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").setValue(checkBox.isChecked());
 
                                 //set subject
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").setValue(subject);
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").setValue(subject);
 
 
                             }
@@ -744,17 +569,17 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
                                 //REMOVE FIRST
 
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("status").removeValue();
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("status").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").removeValue();
 
 
                                 //THEN ADD DATA
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("date").setValue(formatedDate);
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("date").setValue(formatedDate);
                                 //set True or False
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("status").setValue(checkBox.isChecked());
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("status").setValue(checkBox.isChecked());
                                 //set subject
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").setValue(subject);
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").setValue(subject);
 
                             }
 
@@ -771,40 +596,34 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                 dialog.dismiss();
             }
         }).setNeutralButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                ConnectWithServer();
+            public void onClick(final DialogInterface dialog, int id) {
+
 
                 if(student!=null){
 
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).removeValue().addOnSuccessListener(StudentAlIInfoShowActiviy.this, new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            GetHeadingData();
+                            GetAttendenceListData();
+                            dialog.dismiss();
+
+                        }
+                    });
 
                 }
                 else {
                     Log.d("GK","Else "+roll);
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( TempKEYlist.get(pos2)).removeValue();
                 }
 
-                GetHeadingData();
-                GetAttendenceListData();
-                dialog.dismiss();
 
             }
         }).create().show();
 
 
     }
-    public void ConnectWithServer(){
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId = mFirebaseUser.getUid();
-        MainActivity.databaseReference = databaseReference;
-        MainActivity.mUserId = mUserId;
-    }
+
 
     public static int StringMonthToIntMonthConvertor(String month){
 

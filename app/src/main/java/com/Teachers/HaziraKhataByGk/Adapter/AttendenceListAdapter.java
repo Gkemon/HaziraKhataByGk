@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.AttendanceActivity;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -33,7 +34,6 @@ public class AttendenceListAdapter extends BaseAdapter {
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
-    public static String mUserId;
     public static FirebaseUser mFirebaseUser;
     public ClassIitem ClassIitem;
 
@@ -170,18 +170,6 @@ public class AttendenceListAdapter extends BaseAdapter {
     }
     public void saveAll() {
 
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId = mFirebaseUser.getUid();
-
-        MainActivity.databaseReference = databaseReference;
-        MainActivity.mUserId = mUserId;
 
 
         double totalAttendendStudentNumber = 0;
@@ -198,7 +186,7 @@ public class AttendenceListAdapter extends BaseAdapter {
             attendenceData.setSubject(AttendanceActivity.subject);
             attendenceData.setDate(AttendanceActivity.time);
 
-            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(AttendanceActivity.classitemAttendence.getName() + AttendanceActivity.classitemAttendence.getSection()).child("Student").child(AttendanceActivity.rolls.get(i)).child("Attendance").push().setValue(attendenceData);
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(AttendanceActivity.classitemAttendence.getName() + AttendanceActivity.classitemAttendence.getSection()).child("Student").child(AttendanceActivity.rolls.get(i)).child("Attendance").push().setValue(attendenceData);
 
             //activity.finish();
         }

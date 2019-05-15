@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.student;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,12 +49,6 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
 
 
-
-    public static FirebaseAuth auth;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
-    public static String mUserId;
-    public static FirebaseUser mFirebaseUser;
 
 
 
@@ -195,7 +190,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
             if (student.getId() != null) {
                 if(submitForm()){
-                databaseReference.child("Users").child(mUserId).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
                 Toast.makeText(this, "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -230,7 +225,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             //FOR VALIDATION
             if(submitForm()){
                 //First GETTING ITS ATTENDANCE DATA
-                databaseReference.child("Users").child(mUserId).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(previousId).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(previousId).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                       final  ArrayList<AttendenceData> attendenceDatalistInFB=new ArrayList<AttendenceData>();
@@ -245,13 +240,13 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
                         attendenceDataListBeforeEdit=attendenceDatalistInFB;
 
                         //Then first reinstall previous student data;
-                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
+                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
 
 
                         //Then add attendance list of the specific student before edit.This is an operation from student act activity;
                         if (StudentAddActivity.attendenceDataListBeforeEdit != null) {
                             for (int i = 0; i < StudentAddActivity.attendenceDataListBeforeEdit.size(); i++) {
-                                MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(StudentListShowActivity.contactofSA.getName() + StudentListShowActivity.contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentAddActivity.attendenceDataListBeforeEdit.get(i));
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName() + StudentListShowActivity.contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentAddActivity.attendenceDataListBeforeEdit.get(i));
                             }
                             currentId=null;
                             Log.d("GK","IF in SA");
@@ -270,7 +265,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
 
                 //Then remove the old student data
-                databaseReference.child("Users").child(mUserId).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(previousId).removeValue();
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(previousId).removeValue();
 
                 Toast.makeText(this,"শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
                     previousId=null;
@@ -418,7 +413,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 //                        public void onCancelled(DatabaseError databaseError) {}});
 
                     //FOR DELETE
-                    databaseReference.child("Users").child(mUserId).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).removeValue();
 
                     Toast.makeText(StudentAddActivity.this,"এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
                     previousId=null;
@@ -438,25 +433,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         super.onPause();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
 
-
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-
-        MainActivity.databaseReference=databaseReference;
-        MainActivity.mUserId=mUserId;
-
-
-    }
 
     @Override
     public void onDestroy() {

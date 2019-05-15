@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     public  FirebaseAuth auth;
     private ProgressBar progressBar;
-    public Button btnSignup, btnLogin, btnReset,btnSignOut,btnChangeEmail,help;
+    public Button btnSignup, btnLogin, btnReset,btnSignOut,btnChangeEmail,help,btnGuest;
     public TextInputLayout passLayout;
     private ImageView logo;
     public  static String email;
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         activity=this;
         context=this;
 
-        if(getIntent()!=null) {
+        if(getIntent()!=null&&getIntent().getStringExtra("FLAG")!=null) {
             if (!getIntent().getStringExtra("FLAG").equals("INSIDE")) {
                 if (auth.getCurrentUser() != null) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -103,7 +103,15 @@ public class LoginActivity extends AppCompatActivity {
         logo=(ImageView)findViewById(R.id.logo);
         help=(Button)findViewById(R.id.help);
         passLayout=(TextInputLayout)findViewById(R.id.pass_layout);
+        btnGuest=findViewById(R.id.btn_guest);
 
+        
+        btnGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            }
+        });
 
 
         final Intent resetIntent=new Intent(LoginActivity.this, ResetPasswordActivity.class);
@@ -270,7 +278,7 @@ public class LoginActivity extends AppCompatActivity {
                 help.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent4 =  getFacebookIntent("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/",context);
+                        Intent intent4 =  getFacebookIntent(context.getString(R.string.help_fb_url),context);
 
                         startActivity(intent4);
 

@@ -80,7 +80,6 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
-    public static String mUserId;
     public static FirebaseUser mFirebaseUser;
 
     @Override
@@ -99,7 +98,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     protected void onResume() {
         super.onResume();
 
-        ConnectWithServer();
+
         LoadNotes();
         LoadData();
         ClickListenerForDailyAndMonthlyRecord();
@@ -166,26 +165,10 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
     }
 
-    void ConnectWithServer(){
-        //TODO:DATABASE CONNECTION
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
 
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-
-        mUserId=mFirebaseUser.getUid();
-
-        MainActivity.databaseReference=FirebaseCaller.getFirebaseDatabase();
-        MainActivity.databaseReference.keepSynced(true);
-
-        MainActivity.mUserId= FirebaseCaller.getUserID();
-
-    }
 
     void LoadNotes(){
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Notes> NotesList=new ArrayList<Notes>();
@@ -372,7 +355,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
     void LoadData(){
 
-        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

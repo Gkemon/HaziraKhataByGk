@@ -1,6 +1,5 @@
 package com.Teachers.HaziraKhataByGk.AddEditClass;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,20 +18,15 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.Scheduler.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -109,11 +103,20 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
             classitem.setSection(sectionEditText.getText().toString().trim());
 
 
+
+            if(FirebaseCaller.getCurrentUser()==null){
+                UtilsCommon.showDialogForSignUp(this);
+                return;
+            }
             //CHECK THAT THE ITEM IS UNIQUE
 
             //for avoiding null pointer exeption
             if(MainActivity.TotalClassItems==null)
+            {
                 startActivity(new Intent(this,MainActivity.class));
+                return;
+            }
+
 
 
             for(int i=0;i<MainActivity.TotalClassItems.size();i++){

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.Teachers.HaziraKhataByGk.Adapter.StudentListAdapter;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.student;
@@ -24,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
+
 
 public class StudentListShowActivity extends AppCompatActivity implements RecyclerItemClickListener {
 
@@ -93,7 +94,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
         if(contactofSA.getName()!=null&&contactofSA.getSection()!=null)
         {
-            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 

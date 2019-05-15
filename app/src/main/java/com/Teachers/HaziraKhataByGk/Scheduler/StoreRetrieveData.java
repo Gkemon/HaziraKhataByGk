@@ -25,7 +25,6 @@ public class StoreRetrieveData {
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
-    public static String mUserId;
     public static FirebaseUser mFirebaseUser;
 
 

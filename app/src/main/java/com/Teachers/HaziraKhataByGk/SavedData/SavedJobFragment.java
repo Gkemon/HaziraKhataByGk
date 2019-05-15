@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.BottomNavigationActivity;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -38,8 +39,7 @@ import java.util.ArrayList;
 
 import static android.view.View.GONE;
 import static com.Teachers.HaziraKhataByGk.BottomNavigationActivity.Saved_job_list;
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
+
 import static com.Teachers.HaziraKhataByGk.R.id.clickerForJob;
 import static com.Teachers.HaziraKhataByGk.R.id.loveClickerForjob;
 import static com.Teachers.HaziraKhataByGk.R.id.saveClickerForjob;
@@ -117,7 +117,7 @@ public class SavedJobFragment extends Fragment implements RecyclerItemClickListe
 
 
 
-        databaseReference.child("Users").child(mUserId).child("Saved_jobs").addValueEventListener(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").addValueEventListener(new ValueEventListener() {
             @Override
             public  void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("GK","Jobfragment retriving data from server");
@@ -133,7 +133,7 @@ public class SavedJobFragment extends Fragment implements RecyclerItemClickListe
 
                 //        IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job
 //        For loading saved job from Server
-                Query queryReforSeeTheDataIsEmptyOrNot = MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_jobs");
+                Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs");
                 queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -252,7 +252,7 @@ public class SavedJobFragment extends Fragment implements RecyclerItemClickListe
                 if(edt.getText().toString().equals("DELETE")){
 
 
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_jobs").removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").removeValue();
                     SharedPreferences pref = BottomNavigationActivity.context.getSharedPreferences("HaziraKhata_save_job", 0); // 0 - for private mode
                     SharedPreferences.Editor editor = pref.edit();
                     editor.clear();

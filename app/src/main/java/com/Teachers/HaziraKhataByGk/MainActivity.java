@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
@@ -34,7 +35,6 @@ import com.Teachers.HaziraKhataByGk.Scheduler.ScheduleActivity;
 import com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData;
 import com.Teachers.HaziraKhataByGk.Scheduler.ToDoItem;
 
-import com.Teachers.HaziraKhataByGk.Scheduler.Utils;
 import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
 
@@ -53,8 +53,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OneSignal;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,12 +77,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager viewPager;
     private DrawerLayout drawer;
 
-    public static FirebaseAuth auth;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
+
+
     public static boolean calledAlready = false;
-    public static String mUserId,mEmail;
-    public static FirebaseUser mFirebaseUser;
+    public static String mEmail;
+   // public static FirebaseUser mFirebaseUser;
     Toolbar toolbar;
 
 
@@ -108,34 +105,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(null);
 
 
-        if(!calledAlready) {
-            //avoid setPersistenceEnabled twich click
-            try {
-                firebaseDatabase = FirebaseDatabase.getInstance();
-                firebaseDatabase.setPersistenceEnabled(true);
-                databaseReference = firebaseDatabase.getReference();
-                calledAlready = true;
-            }catch (Exception e){
-                recreate();
-            }
+
+
+
+
+        FirebaseCaller.getFirebaseDatabase().keepSynced(true);
+
+
+        if(FirebaseCaller.getCurrentUser()!=null)
+        {
+            mEmail=FirebaseCaller.getCurrentUser().getEmail();
 
         }
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-
-
-        //TODO: USER (for FB logic auth throw null pointer exception)
-        auth = FirebaseAuth.getInstance();
-        mFirebaseUser = auth.getCurrentUser();
-        databaseReference.keepSynced(true);
-        mUserId=mFirebaseUser.getUid();
-        mEmail=mFirebaseUser.getEmail();
+        else {
+            mEmail="এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন";
+        }
 
 
 
         View headerView = navigationView.getHeaderView(0);
         RelativeLayout nav_header = (RelativeLayout) headerView.findViewById(R.id.user_pro_pic);
-        TextView emailText=(TextView)nav_header.findViewById(R.id.website);
+        TextView emailText=(TextView)nav_header.findViewById(R.id.user_email);
 
 
         emailText.setText(mEmail);
@@ -198,7 +188,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        databaseReference.child("Users").child(mUserId).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
+        if(FirebaseCaller.getCurrentUser()!=null)
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<NewsItem> NewsItem =new ArrayList<NewsItem>();
@@ -219,7 +210,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //TODO: To saved load teachers post
-        databaseReference.child("Users").child(mUserId).child("Saved_blog").addListenerForSingleValueEvent(new ValueEventListener() {
+        if(FirebaseCaller.getCurrentUser()!=null)
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<BlogItem> blogItem_temp =new ArrayList<BlogItem>();
@@ -247,15 +239,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
+
                 }
             }
         };
 
-        auth.addAuthStateListener(authListener);
+
+        if(FirebaseAuth.getInstance()!=null)
+        FirebaseCaller.getAuth().addAuthStateListener(authListener);
 
         super.onResume();
     }

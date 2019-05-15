@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.Teachers.HaziraKhataByGk.Adapter.BlogAdapter;
 import com.Teachers.HaziraKhataByGk.BlogActivity;
 import com.Teachers.HaziraKhataByGk.BottomNavigationActivity;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -38,8 +39,7 @@ import java.util.ArrayList;
 
 import static android.view.View.GONE;
 import static com.Teachers.HaziraKhataByGk.BottomNavigationActivity.Saved_Blog_list;
-import static com.Teachers.HaziraKhataByGk.MainActivity.databaseReference;
-import static com.Teachers.HaziraKhataByGk.MainActivity.mUserId;
+
 import static com.Teachers.HaziraKhataByGk.R.id.ClickerForBlog;
 import static com.Teachers.HaziraKhataByGk.R.id.SaveClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.ShareClicker;
@@ -122,7 +122,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
 
 
 
-        databaseReference.child("Users").child(mUserId).child("Saved_blog").addValueEventListener(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").addValueEventListener(new ValueEventListener() {
             @Override
             public  void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<BlogItem> blogItemlist=new ArrayList<BlogItem>();
@@ -137,7 +137,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
 
 
         //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job from Server
-                Query queryReforSeeTheDataIsEmptyOrNotForsavedBlog = MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_blog");
+                Query queryReforSeeTheDataIsEmptyOrNotForsavedBlog = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog");
                 queryReforSeeTheDataIsEmptyOrNotForsavedBlog.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -224,18 +224,21 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
 
             case SaveClicker:
 
-                UtilsCommon.saveBlog(context, BlogItem);
-                ImageView savedIcon=(ImageView)view.findViewById(R.id.SaveClickerIcon);
+                if(UtilsCommon.saveBlog(context, BlogItem))
+                {
+                    ImageView savedIcon=(ImageView)view.findViewById(R.id.SaveClickerIcon);
+                    if(UtilsCommon.isBlogBookmarked(BlogItem,context)){
+                        savedIcon.setImageResource(R.drawable.ic_saved_icon);
+                        Toast.makeText(BottomNavigationActivity.activity, "সেভ হয়েছে", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        savedIcon.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+                        Toast.makeText(BottomNavigationActivity.activity, "সেভ রিমুভ হয়েছে", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
 
-                if(UtilsCommon.isBlogBookmarked(BlogItem,context)){
-                    savedIcon.setImageResource(R.drawable.ic_saved_icon);
-                    Toast.makeText(BottomNavigationActivity.activity, "সেভ হয়েছে", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    savedIcon.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
-                    Toast.makeText(BottomNavigationActivity.activity, "সেভ রিমুভ হয়েছে", Toast.LENGTH_SHORT).show();
-                }
-                break;
+
 
 
             case loveClicker:
@@ -275,7 +278,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
                 if(edt.getText().toString().equals("DELETE")){
 
 
-                    MainActivity.databaseReference.child("Users").child(mUserId).child("Saved_blog").removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").removeValue();
                     SharedPreferences pref = BottomNavigationActivity.context.getSharedPreferences("teacher_blog_saved", 0); // 0 - for private mode
                     SharedPreferences.Editor editor = pref.edit();
                     editor.clear();

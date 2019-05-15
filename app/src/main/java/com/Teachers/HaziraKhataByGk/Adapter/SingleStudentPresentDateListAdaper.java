@@ -46,7 +46,6 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
     public static  boolean isDialoagDismissed=false;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
-    public static String mUserId;
     public static FirebaseUser mFirebaseUser;
 
 
@@ -171,7 +170,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
 //        public static FirebaseAuth auth;
 //        public static FirebaseDatabase firebaseDatabase;
 //        public static DatabaseReference databaseReference;
-//        public static String mUserId;
+//        public static String FirebaseCaller.getUserID();
 //        public static FirebaseUser mFirebaseUser;
 //        public String roll;
 //
@@ -194,9 +193,9 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
 //            auth = FirebaseAuth.getInstance();
 //            mFirebaseUser = auth.getCurrentUser();
 //            databaseReference.keepSynced(true);
-//            mUserId = mFirebaseUser.getUid();
+//            FirebaseCaller.getUserID() = mFirebaseUser.getUid();
 //            MainActivity.databaseReference = databaseReference;
-//            MainActivity.mUserId = mUserId;
+//            MainActivity.FirebaseCaller.getUserID() = FirebaseCaller.getUserID();
 //        }
 //
 //        public static int StringMonthToIntMonthConvertor(String month){
@@ -351,32 +350,32 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
 //                        //set date
 //                        if(student!=null){
 //
-////                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
+////                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
 ////
-////                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).setValue(attendenceData);
+////                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).setValue(attendenceData);
 ////
 //
 //                            Log.d("GK","if "+roll+" "+student.getId());
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("date").setValue(formatedDate);
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("date").setValue(formatedDate);
 //                            //set True or False
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("status").setValue(checkBox.isChecked());
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("status").setValue(checkBox.isChecked());
 //                            //set subject
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("subject").setValue(subject);
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("subject").setValue(subject);
 //                        }
 //                        else {
 //                            Log.d("GK","Else "+roll);
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("date").setValue(formatedDate);
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("date").setValue(formatedDate);
 //                            //set True or False
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("status").setValue(checkBox.isChecked());
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("status").setValue(checkBox.isChecked());
 //                            //set subject
-//                            MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("subject").setValue(subject);
+//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).child("subject").setValue(subject);
 //
 //                        }
 //
 //
 //                        //Add to database
 ////                        MainActivity.databaseReference.child("Users").
-////                                child(mUserId).child("Class").
+////                                child(FirebaseCaller.getUserID()).child("Class").
 ////                                child(ClassIitem.getName()+ClassIitem.getSection())
 ////                                .child("Student").child(student.getId()).child("Attendance").push()
 ////                                .setValue(attendenceData);
@@ -397,12 +396,12 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
 //                    ConnectWithServer();
 //                    if(student!=null){
 //
-//                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
+//                        MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
 //
 //                    }
 //                    else {
 //                        Log.d("GK","Else "+roll);
-//                        MainActivity.databaseReference.child("Users").child(mUserId).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
+//                        MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
 //                    }
 //
 //                    dialog.dismiss();

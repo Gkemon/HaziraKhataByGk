@@ -29,6 +29,15 @@
             android:text="@string/no_to_dos_in_class_fragment"
             android:textColor="@color/secondary_text"
             android:textSize="13sp" />
+        <Button
+            android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            app:backgroundTint="@color/red_secondary"
+            android:text="সাহায্য দরকার আপনার?"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
