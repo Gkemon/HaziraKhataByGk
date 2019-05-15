@@ -108,7 +108,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
         else {
             final ClassIitem classitem = classitemList.get(position);
 
-            if (classitem != null) {
+            if (classitem != null&&classitem.getName()!=null) {
                 final Resources res = context.getResources();
                 final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
 
@@ -137,9 +137,12 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                     }
 
 
-                    holder.name.setText(className);
-                    //holder.name.setTextColor(color);
-                    holder.phone.setText(sectionName);
+
+                    if(classitem.getName()!=null&&!classitem.getName().isEmpty())
+                       holder.name.setText(className);
+
+                    if(classitem.getSection()!=null&&!classitem.getSection().isEmpty())
+                        holder.phone.setText(sectionName);
 
                 }catch (Exception e){
                     Toast.makeText(context,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();

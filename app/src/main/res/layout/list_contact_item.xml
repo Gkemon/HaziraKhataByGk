@@ -6,15 +6,16 @@
     android:layout_margin="@dimen/margin_10">
 
     <LinearLayout
+        android:padding="10dp"
+        android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_width="110dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/thumb"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_height="100dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,16 +27,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray_deep"
-                android:textSize="14sp"
-                android:text="Small Text"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray_deep"
-                android:textSize="12sp"
-                android:text="Small Text" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 

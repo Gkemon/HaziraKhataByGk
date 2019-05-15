@@ -282,6 +282,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         Intent intent = new Intent();

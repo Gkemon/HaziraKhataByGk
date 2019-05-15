@@ -1,5 +1,6 @@
 package com.Teachers.HaziraKhataByGk.AddEditClass;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,13 +51,6 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-
-    public static FirebaseAuth auth;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
-    public static String mUserId;
-    public static FirebaseUser mFirebaseUser;
-
     public static void start(Context context) {
         Intent intent = new Intent(context, ClassAddActivity.class);
         context.startActivity(intent);
@@ -103,7 +97,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
             previousSectionName =classitem.getSection();
         }else {
             btnDelete.setVisibility(View.GONE);
-            btnEdit.setVisibility(View.VISIBLE);
+            btnEdit.setVisibility(View.GONE);
         }
     }
 
@@ -246,7 +240,7 @@ editClass();
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             ClassAddActivity.this.finish();
-                                            UtilsCommon.showToast("Class Edited");
+
 
                                         }
                                     });
@@ -265,6 +259,7 @@ editClass();
         };
 
         fromPath.addListenerForSingleValueEvent(valueEventListener);
+
     }
 
 
@@ -359,75 +354,36 @@ editClass();
 
 
     public void ConfirmDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.custom_class_add_dialauge, null);
-        dialogBuilder.setView(dialogView);
-        final EditText edt = (EditText) dialogView.findViewById(R.id.custom_class_add_edit_text);
-
-        dialogBuilder.setIcon(R.drawable.warning_for_add);
-        dialogBuilder.setTitle("Warning");
-        dialogBuilder.setMessage("Are you sure?");
-        dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                    try {
-
-                        //FOR DELETE
-                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(classitem.getName() + classitem.getSection()).setValue(classitem);
-
-                    }
-                     catch (Exception e){
 
 
-                        AlertDialog alertDialogError = new AlertDialog.Builder(ClassAddActivity.this).create();
-                         alertDialogError.setMessage(" আপনার ডিভাইসের সমস্যার কারনে Delete হচ্ছেনা । দয়া করে আবার চেষ্টা করুন অথবা ডেভেলপারকে জানান ফেসবুক গ্রুপে পোস্ট করে,ধন্যবাদ । সমস্যাটি হল : "+e.getMessage());
-                         alertDialogError.setButton(AlertDialog.BUTTON_NEUTRAL,"পোস্ট দিন",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseCaller.getFirebaseDatabase()
+                                .child("Users")
+                                .child(FirebaseCaller
+                                .getUserID())
+                                .child("Class")
+                                .child(classitem.getName() + classitem.getSection())
+                                .setValue(classitem).addOnSuccessListener(ClassAddActivity.this, new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
 
-                                        Intent intent5 =  LoginActivity.getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",getBaseContext());
+                                AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
+                                alertDialog.setMessage("আপনি যদি শ্রেণীর সকল ডাটা ডিলিট করতে চান তাহলে পরবর্তীতে শ্রেণীর নামের উপর লং প্রেস করুন।");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
 
-                                        try {
-                                            startActivity(intent5);
-                                        }
-                                        catch (Exception e){
-                                            Toast.makeText(ClassAddActivity.this,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
-                                        }
+                                                finish();
 
-                                        dialog.dismiss();
-                                    }
-                                });
-                         alertDialogError.show();
+                                            }
+                                        });
+                                alertDialog.show();
+
+                            }
+                        });
 
 
 
-
-                    Toast.makeText(ClassAddActivity.this, "নতুন ক্লাসটির জন্য সার্ভারে ডাটাবেজ তৈরি হয়েছে,ধন্যবাদ",                       Toast.LENGTH_SHORT).show();
-                    previousClassName=null;
-
-
-
-                    AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
-                    alertDialog.setMessage("আপনি যদি শ্রেণীর সকল ডাটা ডিলিট করতে চান তাহলে পরবর্তীতে শ্রেণীর নামের উপর লং প্রেস করুন।");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-
-                                    finish();
-
-                                }
-                            });
-                    alertDialog.show();
-                }
-            }
-        });
-        dialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
-        });
-        AlertDialog b = dialogBuilder.create();
-        b.show();
     }
 
 
