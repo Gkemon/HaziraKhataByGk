@@ -228,7 +228,6 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                         comparableDate1 = new ComparableDate();
                         comparableDate2 = new ComparableDate();
 
-                        UtilsCommon.debugLog("Compare");
                         try {
                             comparableDate1.setDateTime(o1.getDate());
                             comparableDate2.setDateTime(o2.getDate());
@@ -582,11 +581,6 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
                             //set date
                             if(student!=null){
-//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).removeValue();
-//
-//                            MainActivity.databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( attendenceListKEYForSingleStudent.get(pos)).setValue(attendenceData);
-//
-
                                 //REMOVE FIRST
                                 Log.d("GK","if "+roll+" "+student.getId());
                                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child(TempKEYlist.get(pos)).child("date").removeValue();
