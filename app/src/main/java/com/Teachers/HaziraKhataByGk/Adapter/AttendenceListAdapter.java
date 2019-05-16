@@ -13,12 +13,10 @@ import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
-import com.Teachers.HaziraKhataByGk.StudentAlIInfoShowActiviy;
-import com.google.android.gms.ads.InterstitialAd;
+import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActiviy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

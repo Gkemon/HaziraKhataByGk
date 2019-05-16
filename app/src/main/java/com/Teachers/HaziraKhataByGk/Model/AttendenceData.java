@@ -1,17 +1,31 @@
 package com.Teachers.HaziraKhataByGk.Model;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
+
+import java.text.ParseException;
+
 /**
  * Created by uy on 10/7/2017.
  */
 
 
-public class AttendenceData {
+public class AttendenceData implements Comparable<AttendenceData>  {
     private boolean status;
     private String subject;
     private String date;
     private String attendenceClass;
     private String attendenceSection;
     private String studentRollForAttendence;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public  String key;
     public AttendenceData(){
     }
     public void setStatus(boolean status){
@@ -48,5 +62,23 @@ public class AttendenceData {
     }
     public String getStudentRollForAttendence(){
         return  studentRollForAttendence;
+    }
+
+    @Override
+    public int compareTo(AttendenceData o) {
+
+        ComparableDate comparableDate1 = new ComparableDate();
+        ComparableDate comparableDate2 = new ComparableDate();
+
+        try {
+            comparableDate1.setDateTime(this.getDate());
+            comparableDate2.setDateTime(o.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return comparableDate1.compareTo(comparableDate2);
+
     }
 }

@@ -94,6 +94,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
         if(contactofSA.getName()!=null&&contactofSA.getSection()!=null)
         {
+
             FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

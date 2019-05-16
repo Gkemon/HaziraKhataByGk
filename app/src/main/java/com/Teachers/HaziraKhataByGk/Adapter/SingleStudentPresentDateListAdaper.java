@@ -34,30 +34,17 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
    public Context context;
    public ClassIitem ClassIitem;
    public static student student;
-   public static String time, subject,yearWithDate,year,month,day;
    public ArrayList<AttendenceData> attendenceDataArrayList;
    public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
     public String roll;
-    private RecyclerItemClickListener recyclerItemClickListener;
-    public static HashMap<Integer, Boolean> checkHash ;//For avoiding auto checking
 
-
-    public static FirebaseAuth auth;
-    public static  boolean isDialoagDismissed=false;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
-    public static FirebaseUser mFirebaseUser;
-
-
-    public SingleStudentPresentDateListAdaper(Context context, Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent, ClassIitem ClassIitem, student student, ArrayList<AttendenceData> attendenceDataArrayList, ArrayList<String> attendenceListKEYForSingleStudent, String roll) {
+    public SingleStudentPresentDateListAdaper(Context context, Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent, ClassIitem ClassIitem, student student, ArrayList<AttendenceData> attendenceDataArrayList, String roll) {
         this.attendenceListForSingleStudent = attendenceListForSingleStudent;
         this.activity = activity;
         this.context=context;
         this.absentPresent=absentPresent;
         this.ClassIitem = ClassIitem;
-        this.student=student;
         this.attendenceDataArrayList=attendenceDataArrayList;
-       // this.attendenceListKEYForSingleStudent=attendenceListKEYForSingleStudent;
         this.roll=roll;
 
       //  Collections.reverse(this.attendenceListKEYForSingleStudent);//TO REVERSE THE ATTENDANCE LIST KEY;
@@ -91,37 +78,6 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
         final int pos = position;
         TextView textView = (TextView) v.findViewById(R.id.SingleStudentAttendeceDateList);
         ImageView imageView=(ImageView) v.findViewById(R.id.PresentOrAbsent);
-       // checkHash = new HashMap<Integer, Boolean>();
-
-//
-//            if (recyclerItemClickListener != null) {
-//                recyclerItemClickListener.onItemClick(pos,v);
-//
-//        }
-
-//        v.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FragmentManager fm = activity.getFragmentManager();
-//                createRequest request = new createRequest();
-//                request.addData(student, ClassIitem,attendenceDataArrayList.get(pos),position,attendenceListKEYForSingleStudent,roll);
-//                request.show(fm, "Select");
-//                Log.d("GK","Selected");
-//                if(isDialoagDismissed){
-//                    Log.d("GK","notifyDataSetChanged");
-//                    notifyDataSetChanged();
-//                    isDialoagDismissed=false;
-//                }
-
-
-//                if(!request.isVisible())
-//                {
-//                    Log.d("GK","is hidden");
-//                    notifyDataSetChanged();
-//                }
-//
-//            }
-//        });
 
         textView.setText((attendenceListForSingleStudent.get(position)));
 
@@ -143,18 +99,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
         }
 
 
-        //How to add set onlickListern in Growable listView adapter
 
-//        v.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent launchinIntent = new Intent(AttendanceActivity.activity, StudentAlIInfoShowActiviy.class_room);
-//                String roll = AttendanceActivity.rolls.get(pos);
-//                launchinIntent.putExtra("Roll", roll);
-//                AttendanceActivity.activity.startActivity(launchinIntent);
-//
-//            }
-//        });
 
         return v;
     }

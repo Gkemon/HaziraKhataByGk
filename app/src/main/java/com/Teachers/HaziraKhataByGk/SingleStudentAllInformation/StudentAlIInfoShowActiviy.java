@@ -1,10 +1,11 @@
-package com.Teachers.HaziraKhataByGk;
+package com.Teachers.HaziraKhataByGk.SingleStudentAllInformation;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.util.TimeUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,9 +26,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.SingleStudentPresentDateListAdaper;
+import com.Teachers.HaziraKhataByGk.AttendanceActivity;
+import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,7 +45,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 public class StudentAlIInfoShowActiviy extends AppCompatActivity {
     private TextView studentName;
@@ -48,9 +60,9 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
     public Button parentPhoneNumber;
     private ListView DatewiseAttendence;
     private ArrayList<String> attendenceListForSingleStudent;
-    private ArrayList<String> attendenceListKEYForSingleStudent;
+   // private ArrayList<String> attendenceListKEYForSingleStudent;
     private ArrayList<Boolean> PresentAbsent;
-    public static SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
+    public  SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
     public static student student;
 
     public static String time, subject,yearWithDate,year,month,day;
@@ -98,7 +110,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
         roll = getIntent().getStringExtra("Roll");
         activity = this;
         attendenceListForSingleStudent = new ArrayList<>();
-        attendenceListKEYForSingleStudent = new ArrayList<>();
+        //attendenceListKEYForSingleStudent = new ArrayList<>();
         PresentAbsent = new ArrayList<>();
 
         attendenceListForSingleStudent=new ArrayList<>();
@@ -199,17 +211,49 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                 attendenceDataArrayList.clear();
                 PresentAbsent.clear();
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    AttendenceData attendenceData;
 
-                    attendenceData = dataSnapshot1.getValue(AttendenceData.class);
+
+
+                ArrayList<AttendenceData> attendenceDataArrayList = new ArrayList<>();
+
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    attendenceDataArrayList.add(dataSnapshot1.getValue(AttendenceData.class));
+                }
+
+
+                Collections.sort(attendenceDataArrayList, new Comparator<AttendenceData>() {
+                    @Override
+                    public int compare(AttendenceData o1, AttendenceData o2) {
+                        ComparableDate comparableDate1,comparableDate2;
+                        comparableDate1 = new ComparableDate();
+                        comparableDate2 = new ComparableDate();
+
+                        UtilsCommon.debugLog("Compare");
+                        try {
+                            comparableDate1.setDateTime(o1.getDate());
+                            comparableDate2.setDateTime(o2.getDate());
+                        }catch (Exception c){
+                        }
+
+                        return comparableDate1.compareTo(comparableDate2);
+                    }
+                });
+
+
+
+
+                for (AttendenceData att : attendenceDataArrayList) {
+
+
+                    AttendenceData attendenceData=att;
+
+
                     //check if subject is black or exist
 
                     String subject;
 
                     if (attendenceData != null) {
 
-                        attendenceDataArrayList.add(attendenceData);
                         if (attendenceData.getSubject().equals("")) {
                             subject = "";
                         } else
@@ -226,9 +270,8 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                 }
                 singleStudentPresentDateListAdaper = new SingleStudentPresentDateListAdaper
                         (StudentAlIInfoShowActiviy.this, activity, attendenceListForSingleStudent,
-                                PresentAbsent, ClassRoomActivity.classitem,student,attendenceDataArrayList,
-                                attendenceListKEYForSingleStudent,roll);
-                if(attendenceListKEYForSingleStudent.size()==0)
+                                PresentAbsent, ClassRoomActivity.classitem,student,attendenceDataArrayList,roll);
+                if(attendenceListForSingleStudent.size()==0)
                     linearLayoutForEmptyView.setVisibility(View.VISIBLE);
                 DatewiseAttendence.setAdapter(singleStudentPresentDateListAdaper);
             }
@@ -269,19 +312,43 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                 AttendenceData attendenceData;
 
                 attendenceDataArrayList.clear();
-                attendenceListKEYForSingleStudent.clear();
+
+
 
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Attendance").getChildren()) {
                     attendenceData = dataSnapshot1.getValue(AttendenceData.class);
 
                     if (attendenceData != null) {
+
+                        attendenceData.setKey(dataSnapshot1.getKey());
+
                         attendenceDataArrayList.add(attendenceData);
                         if (attendenceData.getStatus()) attendClass++;
-                        attendenceListKEYForSingleStudent.add(dataSnapshot1.getKey());
+
                         Log.d("GK",dataSnapshot1.getKey()+" KEY "+attendenceData.getStatus());
                     }
 
                 }
+
+                Collections.sort(attendenceDataArrayList, new Comparator<AttendenceData>() {
+                    @Override
+                    public int compare(AttendenceData o1, AttendenceData o2) {
+                        ComparableDate comparableDate1,comparableDate2;
+                        comparableDate1 = new ComparableDate();
+                        comparableDate2 = new ComparableDate();
+
+                        UtilsCommon.debugLog("Compare");
+                        try {
+                            comparableDate1.setDateTime(o1.getDate());
+                            comparableDate2.setDateTime(o2.getDate());
+                        }catch (Exception c){
+                        }
+
+                        return comparableDate1.compareTo(comparableDate2);
+                    }
+                });
+
+
 
                 if (totalClass != 0)   //THIS IS FOR AVOID ARITHMETIC EXCEPTION
                     totalAttendPersenten = (attendClass * 100) / totalClass;
@@ -412,7 +479,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
     public void CreateDialogForEdit( int pos1){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        final int pos2=attendenceListKEYForSingleStudent.size()-1-pos1;
+        final int pos2=attendenceDataArrayList.size()-1-pos1;
         final int pos=pos1;
         final View v = inflater.inflate(R.layout.dialoage_for_edit_single_attendence_items, null);
         final EditText Subject = (EditText) v.findViewById(R.id.periodID);
@@ -426,21 +493,16 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
         TempKEYlist=new ArrayList<>();
         TempDatalist=new ArrayList<>();
 
-        TempKEYlist=attendenceListKEYForSingleStudent;
-        TempDatalist=attendenceDataArrayList;
-
-
-
-        Log.d("GK",String.valueOf(TempKEYlist.size())+" SIZE KEY");
-        Log.d("GK",String.valueOf(TempDatalist.size())+" SIZE DATA");
-
-        for(int i=0;i<TempKEYlist.size();i++){
-            Log.d("GK",String.valueOf(TempDatalist.get(i).getStatus())+" LIST");
+        Collections.reverse(attendenceDataArrayList);
+        for(AttendenceData data:attendenceDataArrayList)
+        {
+            TempKEYlist.add(data.getKey());
         }
+
+        TempDatalist.addAll(attendenceDataArrayList);
 
         attendenceData=TempDatalist.get(pos);
 
-            Log.d("GK",String.valueOf(TempDatalist.get(pos).getStatus()+ " "+attendenceData.getDate()+" "+ attendenceData.getSubject() ));
 
 
 
@@ -460,25 +522,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
         int Month=StringMonthToIntMonthConvertor(month);
 
-        //TODO:LOGCAT
-//            Log.d("GK", year + " year");
-//            Log.d("GK", month + " month");
-//            Log.d("GK", yearWithDate + " year With Date");
-//            Log.d("GK", day + "Day");
 
-        //TODO: GENERATE DATE FROM EEE,d MMM yyy pattern
-//            try {
-//
-//                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy");
-//                sdf.setLenient(false);
-//                date=sdf.parse(attendenceData.getDate());
-//                Log.d("GK","Main Date"+attendenceData.getDate()+" "+String.valueOf(date.getYear()+1900)+ " - "+String.valueOf(date.getMonth())+ " - "+String.valueOf(date.getDay())+ " ");
-//
-//            }
-//            catch (java.text.ParseException e){
-//                e.printStackTrace();
-//                Log.d("GK","Catch"+attendenceData.getDate());
-//            }
 
         datePicker.updateDate(Integer.valueOf(year.trim()),Month,Integer.valueOf(day.trim()));
 
@@ -545,20 +589,20 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
                                 //REMOVE FIRST
                                 Log.d("GK","if "+roll+" "+student.getId());
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child(TempKEYlist.get(pos)).child("date").removeValue();
                                 //set True or False
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("status").removeValue();
                                 //set subject
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("subject").removeValue();
 
                                 //THEN ADD DATA
                                 Log.d("GK","if "+roll+" "+student.getId());
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("date").setValue(formatedDate);
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("date").setValue(formatedDate);
                                 //set True or False
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("status").setValue(checkBox.isChecked());
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("status").setValue(checkBox.isChecked());
 
                                 //set subject
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos2)).child("subject").setValue(subject);
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").child( TempKEYlist.get(pos)).child("subject").setValue(subject);
 
 
                             }

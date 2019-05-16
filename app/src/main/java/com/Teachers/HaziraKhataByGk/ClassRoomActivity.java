@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import com.Teachers.HaziraKhataByGk.Adapter.NoteListAdapter;
 import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
@@ -134,7 +135,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
                         int day = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
                         int year = datePicker.getYear() - 1900;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(UtilsCommon.DateFormate);
                         String formatedDate = simpleDateFormat.format(new Date(year, month, day));
                         String date = year + "-" + month + "-" + day;
                         String subject = Subject.getText().toString();
@@ -278,42 +279,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
             }
         });
 
-//        //ADMOB
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                .build();
-//        adlayout=findViewById(R.id.ads);
-//        mAdView = (AdView) findViewById(R.id.adViewInHome);
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                adlayout.setVisibility(View.GONE);
-//
-//            }
-//            @Override
-//            public void onAdLeftApplication() {
-//
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//        mAdView.loadAd(adRequest);
 
-        //FOR ATTENDENCE
         if (linearLayoutForPresent != null) {
             linearLayoutForPresent.setOnClickListener(new View.OnClickListener() {
                 @Override

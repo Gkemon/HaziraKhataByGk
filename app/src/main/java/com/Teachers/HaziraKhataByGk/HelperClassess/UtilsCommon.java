@@ -41,6 +41,8 @@ import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
 public class UtilsCommon {
 
 
+    public static final String DateFormate="EEE, d MMM yyyy";
+
 
     //TODO: love BlogActivity
     public  static void loveBlog (BlogItem BlogItem,Context context){
