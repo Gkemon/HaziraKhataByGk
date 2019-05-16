@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.Adapter.NoteListAdapter;
+import com.Teachers.HaziraKhataByGk.AddEditClass.ClassAddActivity;
 import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
@@ -57,7 +58,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
     private RecyclerView NOTES;
     private FloatingActionButton btnAdd;
-    public static Activity activity;
+    public  Activity activity;
     private LinearLayoutManager linearLayoutManager;
     private NoteListAdapter noteListAdapter;
     private Context context;
@@ -66,7 +67,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     public static List<Notes> notesList;
     public Button feesButton,DailyAndMontlyRecord,marksheetButton;
     View EmptyView;
-    public LinearLayout adlayout;
+
     public static String FLAG_OF_CLASSROOM_ACTIVITY="class_room";
 
     //for class activity to class record
@@ -77,11 +78,6 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
 
 
-
-    public static FirebaseAuth auth;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
-    public static FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,10 +112,13 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     }
 
     public static class createRequest extends DialogFragment {
+
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
         }
+
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -139,11 +138,11 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
                         String formatedDate = simpleDateFormat.format(new Date(year, month, day));
                         String date = year + "-" + month + "-" + day;
                         String subject = Subject.getText().toString();
-                        Intent launchinIntent = new Intent(ClassRoomActivity.activity, AttendanceActivity.class);
+                        Intent launchinIntent = new Intent( v.getContext(), AttendanceActivity.class);
                         launchinIntent.putExtra("DATE", formatedDate);
                         launchinIntent.putExtra("SUBJECT", subject);
                         launchinIntent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY, ClassRoomActivity.classitem);
-                        ClassRoomActivity.activity.startActivity(launchinIntent);
+                        v.getContext().startActivity(launchinIntent);
                     }
                 }
             }).setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
@@ -157,7 +156,6 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
 
 
-
     @Override
     protected void onStart() {
 
@@ -165,8 +163,6 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         super.onStart();
 
     }
-
-
 
     void LoadNotes(){
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -264,7 +260,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         feesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(ClassRoomActivity.activity,FeesAcitvity.class);
+                Intent intent=new Intent(ClassRoomActivity.this,FeesAcitvity.class);
                 activity.startActivity(intent);
             }
         });
@@ -272,7 +268,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         marksheetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(ClassRoomActivity.activity,MarkSheetHomeActivity.class);
+                Intent intent=new Intent(ClassRoomActivity.this,MarkSheetHomeActivity.class);
                 intent.putExtra(ContantsForGlobal.CLASS_NAME,classitem.getName());
                 intent.putExtra(ContantsForGlobal.CLASS_SECTION,classitem.getSection());
                 activity.startActivity(intent);
