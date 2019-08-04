@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="বিষয় :"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <EditText
+            android:id="@+id/et_subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="রুম নং"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <EditText
+            android:id="@+id/et_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="শুরুর সময়"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/from_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="ক্লিক করুন"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="শেষ সময়"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/to_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="ক্লিক করুন"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.gk.emon.android.BanglaDaysPicker
+        android:id="@+id/weekdays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:sunday_first_day="false"
+        app:full_size="true"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:text="চাইলে রং সিলেক্ট করতে পারেন"
+            android:id="@+id/select_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:backgroundTint="@color/white"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="start"
+        android:hint="চাইলে কোন বিবরণও লিখতে পারেন।"
+        android:inputType="textMultiLine"
+        android:maxLength="1000"
+        android:maxLines="5"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:text="বাদ"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+
+        <Button
+            android:text="সেভ করুন"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/save"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+
+    </LinearLayout>
+
+</LinearLayout>

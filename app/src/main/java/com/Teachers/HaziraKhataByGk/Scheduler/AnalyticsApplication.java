@@ -25,7 +25,7 @@ public class AnalyticsApplication extends Application {
             */
 
             //mTracker = analytics.newTracker(R.xml.app_tracker);
-            mTracker = analytics.newTracker(R.xml.global_tracker);
+          //  mTracker = analytics.newTracker(R.xml.global_tracker);
 //
             mTracker.setAppName("Minimal");
             mTracker.enableExceptionReporting(true);

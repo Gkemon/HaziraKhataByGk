@@ -52,10 +52,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
     public LinearLayout ButtonLayout;
 
 
-    public static FirebaseAuth auth;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
-    public static FirebaseUser mFirebaseUser;
+
 
     public static void start(Context context){
         Intent intent = new Intent(context, NoteAddActivity.class);
@@ -389,7 +386,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
                             if (submitForm()) {
                                 //Then remove the old student data
-                                databaseReference.child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
                                 //Then first reinstall previous student data;
                                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
                             }

@@ -65,7 +65,6 @@
         android:ellipsize="middle"
         android:gravity="center|start"
         android:paddingLeft="16dp"
-        android:text="@string/example"
         android:textColor="@color/icons"
         android:textSize="20sp" />
 

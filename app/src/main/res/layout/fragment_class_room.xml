@@ -5,6 +5,41 @@
     android:background="@color/blueLight"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <RelativeLayout
+        android:id="@+id/schedule_card"
+        android:layout_margin="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_make_schedule"
+            android:layout_width="wrap_content"
+            android:backgroundTint="@color/red_primary"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="রুটিন করতে চাইলে এখানে ক্লিক করুন"/>
+        <android.support.v7.widget.CardView
+            android:backgroundTint="@color/red_primary"
+            android:id="@+id/card_current_schedule_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="এখন চলছে"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/toDoEmptyView"
         android:layout_width="match_parent"
@@ -41,6 +76,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/schedule_card"
         android:id="@+id/recycleViewFromFragmentOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
