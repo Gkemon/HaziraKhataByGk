@@ -84,6 +84,7 @@
         android:backgroundTint="#F44336"
         android:elevation="20sp"
         android:padding="15sp"
+        android:visibility="gone"
         android:layout_margin="10sp"
         android:text="পরিক্ষার ফি/বেতন"
         android:textColor="@color/white"
@@ -94,13 +95,8 @@
         android:id="@+id/marksheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F44336"
-        android:elevation="20sp"
-        android:padding="15sp"
-        android:layout_margin="10sp"
         android:text="পরিক্ষার মার্কশীট তৈরী"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
+        style="@style/ButtonOrangeStyle" />
 
     <Button
         android:id="@+id/AttendenceRecordButtom"
