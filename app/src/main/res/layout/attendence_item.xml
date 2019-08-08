@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/relativeLayout"
+<LinearLayout
+    android:layout_margin="10dp"
+    android:id="@+id/attendanceLayout"
     android:layout_width="match_parent"
-    android:layout_margin="@dimen/margin_10"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:weightSum="10"
-        android:id="@+id/attendanceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_rectange_border"
-        android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_rectange_border"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <TextView
             android:id="@+id/attendanceText"
@@ -77,4 +72,4 @@
                 android:buttonTint="#E91E63" />
         </LinearLayout>
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+

@@ -38,6 +38,11 @@
         android:id="@+id/attendanceListViwe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        tools:listitem="@layout/attendence_item"
         android:layout_above="@+id/saveButtonLayout"
         android:layout_centerHorizontal="true">
     </ListView>

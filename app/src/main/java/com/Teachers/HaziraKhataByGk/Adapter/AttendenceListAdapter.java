@@ -78,9 +78,6 @@ public class AttendenceListAdapter extends BaseAdapter {
 
       boolean isAbsentPreviousClass=text.contains("(গতক্লাসে অনুপস্থিত)");
 
-      if(isAbsentPreviousClass){
-          v.setBackgroundColor(Color.RED);
-      }
 
             final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance
             final CheckBox checkBox1 =(CheckBox) v.findViewById(R.id.absentMarker);//For absent
