@@ -53,6 +53,7 @@ public class GlobalContext extends MultiDexApplication {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
+                if(mActivity!=null)
                 mActivity.clear();
             }
         });

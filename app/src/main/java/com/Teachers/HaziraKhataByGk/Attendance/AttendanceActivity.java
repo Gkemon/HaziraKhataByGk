@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk;
+package com.Teachers.HaziraKhataByGk.Attendance;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,10 +18,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.Teachers.HaziraKhataByGk.Adapter.AttendenceListAdapter;
+import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
+import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.PrinterActivity;
+import com.Teachers.HaziraKhataByGk.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -30,20 +36,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.OnClick;
+
 import static com.Teachers.HaziraKhataByGk.ClassRoomActivity.FLAG_OF_CLASSROOM_ACTIVITY;
 
 public class AttendanceActivity extends AppCompatActivity {
-    private static final String Tag = AttendanceActivity.class.getName();
+
     public static ClassIitem classitemAttendence;
     public ListView listView;
 
     public  ArrayList<String> names;
     public  static ArrayList<String> rolls;
     public  ArrayList<Integer> attendencePercentage;
-    public static List<student> studentListFromAttendenceActivity;
+    public  List<student> studentListFromAttendenceActivity;
     public static List<student> studentListForPrintActiviyFromAttendenceActivity;
     public static List<student> studentListForDeleteFromAttendenceActivity;
-    public AttendenceListAdapter AttendenceListAdapter;
+    public AttendenceListAdapter attendenceListAdapter;
 
     public static boolean previousClassAttendenceStatus;
 
@@ -56,11 +64,36 @@ public class AttendanceActivity extends AppCompatActivity {
     public ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
 
 
+    @OnClick(R.id.rb_absent_all)
+    public void absentAll(){
+
+        checkHash.clear();
+        for(int i=0;i<studentListFromAttendenceActivity.size();i++){
+            checkHash.put(i,false);
+        }
+        attendenceListAdapter.setCheckHash(checkHash);
+        listView.invalidateViews();
+        attendenceListAdapter.notifyDataSetChanged();
+        listView.setAdapter(attendenceListAdapter);
+
+
+    }
+
+    @OnClick(R.id.rb_present_all)
+    public void presentAll(){
+        checkHash.clear();
+        for(int i=0;i<studentListFromAttendenceActivity.size();i++){
+            checkHash.put(i,true);
+        }
+        attendenceListAdapter.setCheckHash(checkHash);
+        listView.invalidateViews();
+        attendenceListAdapter.notifyDataSetChanged();
+        listView.setAdapter(attendenceListAdapter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // checklist = new ArrayList<Integer>();
 
 
 
@@ -68,7 +101,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
         setUpUI();
 
-        LoadData();
+        loadDataFromServer();
 
 
     }
@@ -161,7 +194,7 @@ public class AttendanceActivity extends AppCompatActivity {
         SharedPreferences pref = AttendanceActivity.this.getSharedPreferences("IsFirst", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         if(pref.getBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),true)){
-            AlertDialog alertDialog = new AlertDialog.Builder(AttendanceActivity.this).create();
+            final AlertDialog alertDialog = new AlertDialog.Builder(AttendanceActivity.this).create();
             alertDialog.setMessage("আপনি যদি কোন শিক্ষার্থীর সম্পূর্ণ ডাটা দেখতে চান তাহলে এখানে উপস্থাপিত লিস্ট থেকে তার নামের উপর ক্লিক করুন , আপনি যদি ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলিট করতে চান তাহলে উপরের ডানপাশের ডিলিট চিহ্ন ক্লিক করুন আর যদি মাসিক উপস্থিতির রেকর্ড দেখতে অথবা প্রিন্ট করতে চান তাহলে উপরের প্রিন্ট চিহ্ন ক্লিক করুন ");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                     new DialogInterface.OnClickListener() {
@@ -170,6 +203,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         }
                     });
             alertDialog.show();
+            DialogUtils.showInfoAlertDialog("", this.getString(R.string.info_attandance_activity_first_time),null);
             editor.putBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),false);
             editor.apply();
 
@@ -179,8 +213,8 @@ public class AttendanceActivity extends AppCompatActivity {
 
     void setUpUI(){
 
-        checkHash = new HashMap<Integer, Boolean>();
-        perStudentTotalAttendenceData=new HashMap<String, ArrayList<AttendenceData>>();
+        checkHash = new HashMap<>();
+        perStudentTotalAttendenceData= new HashMap<>();
 
         listView = (ListView) findViewById(R.id.attendanceListViwe);
         linearLayoutForEmptyView=(LinearLayout)findViewById(R.id.toDoEmptyView);
@@ -219,7 +253,7 @@ public class AttendanceActivity extends AppCompatActivity {
         saveAttendenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AttendenceListAdapter.saveAll();
+                attendenceListAdapter.saveAll();
             }
         });
 
@@ -228,7 +262,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
 
 
-    void LoadData(){
+    void loadDataFromServer(){
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -239,9 +273,11 @@ public class AttendanceActivity extends AppCompatActivity {
                 studentListFromAttendenceActivity.clear();
                 if(dataSnapshot.getChildrenCount()==0){
                     listView.setVisibility(View.GONE);
+                    findViewById(R.id.rg_present_absent_all).setVisibility(View.GONE);
                     linearLayoutForEmptyView.setVisibility(View.VISIBLE);
                 }else {
                     listView.setVisibility(View.VISIBLE);
+                    findViewById(R.id.rg_present_absent_all).setVisibility(View.VISIBLE);
                     linearLayoutForEmptyView.setVisibility(View.GONE);
                 }
 
@@ -260,7 +296,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     totalAttendPersenten = 0;
                     totalClass = dataSnapshot.child(student.getId()).child("Attendance").getChildrenCount();
                     AttendenceData attendenceData = null;
-                    attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
+                    attendenceDataArrayListForPerStudent =new ArrayList<>();
                     long temp1=0;
 
 
@@ -277,7 +313,6 @@ public class AttendanceActivity extends AppCompatActivity {
                         }
                     }
 
-                    Log.d("GK",attendenceDataArrayListForPerStudent.size()+ " attendenceDataArrayListForPerStudent.size for roll "+student.getId());
 
 
                     perStudentTotalAttendenceData.put(student.getId(),attendenceDataArrayListForPerStudent);
@@ -306,8 +341,8 @@ public class AttendanceActivity extends AppCompatActivity {
                     attendClass = 0;
                     rolls.add(student.getId());
                 }
-                AttendenceListAdapter = new AttendenceListAdapter(AttendanceActivity.this, names,classitemAttendence);
-                listView.setAdapter(AttendenceListAdapter);
+                attendenceListAdapter = new AttendenceListAdapter(AttendanceActivity.this, names,classitemAttendence);
+                listView.setAdapter(attendenceListAdapter);
             }
 
             @Override

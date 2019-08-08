@@ -24,7 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.Adapter.NoteListAdapter;
-import com.Teachers.HaziraKhataByGk.AddEditClass.ClassAddActivity;
+import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
@@ -33,14 +33,8 @@ import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.Teachers.HaziraKhataByGk.Model.student;
-import com.Teachers.HaziraKhataByGk.Routine.RoutineShowingFullScreenDialog;
-import com.google.android.gms.ads.AdView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;

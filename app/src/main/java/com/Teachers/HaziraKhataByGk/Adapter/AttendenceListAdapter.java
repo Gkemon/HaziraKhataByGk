@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.AttendanceActivity;
+import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
@@ -25,21 +25,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import static com.Teachers.HaziraKhataByGk.AttendanceActivity.checkHash;
+import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.checkHash;
 
 public class AttendenceListAdapter extends BaseAdapter {
 
 
     public static FirebaseAuth auth;
-    public static FirebaseDatabase firebaseDatabase;
-    public static DatabaseReference databaseReference;
-    public static FirebaseUser mFirebaseUser;
     public ClassIitem ClassIitem;
 
     private   ArrayList<String> nameList;
     public Activity activity;
-   // private static HashMap<Integer, Boolean> checkHashForPreviousClassAttend;
     private ArrayList<Boolean> attendanceList;
     public AttendenceListAdapter(Activity activity, ArrayList<String> nameList, ClassIitem ClassIitem) {
         this.nameList = nameList;
@@ -51,6 +48,7 @@ public class AttendenceListAdapter extends BaseAdapter {
             attendanceList.add(new Boolean(true));
         }
     }
+
 
     @Override
     public int getCount() {
@@ -78,7 +76,7 @@ public class AttendenceListAdapter extends BaseAdapter {
             textView.setText(text);
 
 
-      Boolean isAbsentPreviousClass=text.contains("(গতক্লাসে অনুপস্থিত)");
+      boolean isAbsentPreviousClass=text.contains("(গতক্লাসে অনুপস্থিত)");
 
       if(isAbsentPreviousClass){
           v.setBackgroundColor(Color.RED);
@@ -94,10 +92,9 @@ public class AttendenceListAdapter extends BaseAdapter {
                 checkBox.setChecked(true);
                 checkBox1.setChecked(false);
                 attendanceList.set(pos,checkBox.isChecked());
-                Log.d("GK",pos + " position true");
             }
             else {
-                Log.d("GK",pos + " position false");
+
                 attendanceList.set(pos,false);
                 checkBox.setChecked(false);
                 checkBox1.setChecked(true);
@@ -147,7 +144,9 @@ public class AttendenceListAdapter extends BaseAdapter {
         return v;
     }
 
-
+public void setCheckHash(HashMap<Integer,Boolean> hash){
+        checkHash=hash;
+}
 
     public void clear() {
         while (getItemCount() > 0) {

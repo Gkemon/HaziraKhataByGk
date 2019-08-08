@@ -16,9 +16,9 @@ import com.Teachers.HaziraKhataByGk.Model.student;
 
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.AttendanceActivity.perStudentTotalAttendenceData;
-import static com.Teachers.HaziraKhataByGk.AttendanceActivity.studentListForPrintActiviyFromAttendenceActivity;
-import static com.Teachers.HaziraKhataByGk.AttendanceActivity.year;
+import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.perStudentTotalAttendenceData;
+import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.studentListForPrintActiviyFromAttendenceActivity;
+import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.year;
 
 public class PrinterActivity extends AppCompatActivity {
 

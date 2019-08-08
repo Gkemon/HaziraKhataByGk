@@ -12,18 +12,26 @@ public class DialogUtils {
 
     public static void showInfoAlertDialog(String title, String message, final CommonCallback commonCallback){
 
-       AlertDialog alertDialog = new AlertDialog.Builder(GlobalContext.getWeakActivity())
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        commonCallback.onSuccess();
-                        dialog.dismiss();
-                    }
-                }).create();
+        try {
+            AlertDialog alertDialog = new AlertDialog.Builder(GlobalContext.getWeakActivity())
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if(commonCallback!=null)
+                            commonCallback.onSuccess();
+
+                            dialog.dismiss();
+                        }
+                    }).create();
 
 
-       alertDialog.show();
+            alertDialog.show();
+        }catch (Exception e){
+
+        }
+
 
     }
 

@@ -63,7 +63,7 @@
     android:orientation="vertical"
     android:background="#e3f2fd"
     android:layout_height="match_parent"
-    tools:context="com.Teachers.HaziraKhataByGk.AttendanceActivity">
+    tools:context="com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity">
     <!--<ListView-->
         <!--android:id="@+id/attendanceListViwe"-->
         <!--android:elevation="15sp"-->
