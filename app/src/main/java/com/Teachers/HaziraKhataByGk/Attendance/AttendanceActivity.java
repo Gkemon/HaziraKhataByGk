@@ -21,6 +21,7 @@ import com.Teachers.HaziraKhataByGk.Adapter.AttendenceListAdapter;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.Teachers.HaziraKhataByGk.ClassRoomActivity.FLAG_OF_CLASSROOM_ACTIVITY;
@@ -72,9 +74,8 @@ public class AttendanceActivity extends AppCompatActivity {
             checkHash.put(i,false);
         }
         attendenceListAdapter.setCheckHash(checkHash);
-        listView.invalidateViews();
         attendenceListAdapter.notifyDataSetChanged();
-        listView.setAdapter(attendenceListAdapter);
+
 
 
     }
@@ -82,13 +83,13 @@ public class AttendanceActivity extends AppCompatActivity {
     @OnClick(R.id.rb_present_all)
     public void presentAll(){
         checkHash.clear();
+
         for(int i=0;i<studentListFromAttendenceActivity.size();i++){
             checkHash.put(i,true);
         }
         attendenceListAdapter.setCheckHash(checkHash);
-        listView.invalidateViews();
         attendenceListAdapter.notifyDataSetChanged();
-        listView.setAdapter(attendenceListAdapter);
+
     }
 
     @Override
@@ -96,8 +97,6 @@ public class AttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
-        setContentView(R.layout.activity_attendance);
 
         setUpUI();
 
@@ -212,6 +211,9 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     void setUpUI(){
+
+        setContentView(R.layout.activity_attendance);
+        ButterKnife.bind(this);
 
         checkHash = new HashMap<>();
         perStudentTotalAttendenceData= new HashMap<>();
