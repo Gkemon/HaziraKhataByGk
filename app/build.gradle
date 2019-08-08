@@ -16,7 +16,7 @@ android {
         targetSdkVersion 28
         versionCode 18
         versionName "1.18"
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [onesignal_app_id: "611c83ef-2af7-48c6-921c-f22f31e7ccd9", onesignal_google_project_number: "REMOTE"]
 
@@ -63,6 +63,7 @@ dependencies {
     implementation 'com.github.Gkemon:Android-Bangla-Day-Picker:1.0.0'
     implementation 'com.orhanobut:logger:2.2.0'
     implementation 'com.google.code.gson:gson:2.6.2'
+    implementation 'com.android.support:multidex:1.0.3'
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -1,7 +1,5 @@
 package com.Teachers.HaziraKhataByGk;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,13 +22,8 @@ import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.student;
-import com.Teachers.HaziraKhataByGk.Widget.PrefManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -59,7 +50,6 @@ public class AttendanceActivity extends AppCompatActivity {
     public static String time, subject,yearWithDate,year,month;
     private LinearLayout linearLayoutForEmptyView;
     public RelativeLayout mainlayout;
-    public PrefManager prefManager;
    // public static ArrayList<Integer> checklist ;
     public static HashMap<Integer, Boolean> checkHash ;//For avoiding auto checking
     public static HashMap<String,ArrayList<AttendenceData>> perStudentTotalAttendenceData;//for creating month wise data sheet;
@@ -76,7 +66,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_attendance);
 
-        Initialization();
+        setUpUI();
 
         LoadData();
 
@@ -182,14 +172,12 @@ public class AttendanceActivity extends AppCompatActivity {
             alertDialog.show();
             editor.putBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),false);
             editor.apply();
-            Log.d("GK", " if");
+
         }
-        else {
-            Log.d("GK", " else");
-        }
+
     }
 
-    void Initialization(){
+    void setUpUI(){
 
         checkHash = new HashMap<Integer, Boolean>();
         perStudentTotalAttendenceData=new HashMap<String, ArrayList<AttendenceData>>();

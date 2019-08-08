@@ -18,13 +18,14 @@
             android:backgroundTint="@color/red_primary"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="রুটিন করতে চাইলে এখানে ক্লিক করুন"/>
+            android:text="রুটিন t চাইলে এখানে ক্লিক করুন"/>
         <android.support.v7.widget.CardView
             android:backgroundTint="@color/red_primary"
             android:id="@+id/card_current_schedule_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

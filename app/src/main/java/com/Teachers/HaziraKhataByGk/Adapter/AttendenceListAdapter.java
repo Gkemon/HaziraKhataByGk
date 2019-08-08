@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
@@ -184,16 +186,28 @@ public class AttendenceListAdapter extends BaseAdapter {
             attendenceData.setSubject(AttendanceActivity.subject);
             attendenceData.setDate(AttendanceActivity.time);
 
-            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(AttendanceActivity.classitemAttendence.getName() + AttendanceActivity.classitemAttendence.getSection()).child("Student").child(AttendanceActivity.rolls.get(i)).child("Attendance").push().setValue(attendenceData);
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                    child("Class").
+                    child(AttendanceActivity.classitemAttendence.getName() + AttendanceActivity.classitemAttendence.getSection()).
+                    child("Student").child(AttendanceActivity.rolls.get(i)).
+                    child("Attendance").push().setValue(attendenceData);
 
-            //activity.finish();
+
         }
         totalAbsentStudentNumberPersentage = (totalAttendendStudentNumber / nameList.size()) * 100.00;
         totalAbsentStudentNumber = nameList.size() - totalAttendendStudentNumber;
         String massegeOfDailyPersentage = "আজকের মোট উপস্থিত শিক্ষার্থীর সংখ্যা " + (int) totalAttendendStudentNumber + ",মোট অনুপস্থিত শিক্ষার্থীর সংখ্যা " + (int) totalAbsentStudentNumber + ", এবং শতকরা উপস্থিতির হার " + (int) totalAbsentStudentNumberPersentage + "%";
 
 
-        activity.finish();
+        DialogUtils.showInfoAlertDialog("", massegeOfDailyPersentage, new CommonCallback(){
+            @Override
+            public void onSuccess() {
+                activity.finish();
+            }
+
+        });
+
+
 
 
 

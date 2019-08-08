@@ -10,6 +10,8 @@
         <item name="colorButtonNormal">@color/blueForAll</item>
     </style>
 
+
+
     <style name="ButtonOrangeStyle" >
         <item name="backgroundTint">#F44336</item>
         <item name="elevation">20sp</item>
@@ -17,7 +19,12 @@
         <item name="android:textColor">@color/white</item>/>
     </style>
 
-    TODO: App themএ for Navigation drawer
+    <style name="ButtonPrimaryColorStyle" >
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="elevation">20sp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>/>
+    </style>
 
     <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
