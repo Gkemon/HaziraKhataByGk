@@ -23,7 +23,7 @@ import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
-import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.PrinterActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.firebase.database.DataSnapshot;
@@ -47,9 +47,9 @@ public class AttendanceActivity extends AppCompatActivity {
     public  ArrayList<String> names;
     public  static ArrayList<String> rolls;
     public  ArrayList<Integer> attendencePercentage;
-    public  List<student> studentListFromAttendenceActivity;
-    public static List<student> studentListForPrintActiviyFromAttendenceActivity;
-    public static List<student> studentListForDeleteFromAttendenceActivity;
+    public  List<Student> studentListFromAttendenceActivity;
+    public static List<Student> studentListForPrintActiviyFromAttendenceActivity;
+    public static List<Student> studentListForDeleteFromAttendenceActivity;
     public AttendenceListAdapter attendenceListAdapter;
 
     public static boolean previousClassAttendenceStatus;
@@ -134,12 +134,12 @@ public class AttendanceActivity extends AppCompatActivity {
 
                                     studentListForDeleteFromAttendenceActivity=new ArrayList<>();
                                     for (DataSnapshot StudentData : dataSnapshot.getChildren()){
-                                        student student;
-                                        student = StudentData.getValue(student.class);
+                                        Student student;
+                                        student = StudentData.getValue(Student.class);
                                         studentListForDeleteFromAttendenceActivity.add(student);
                                     }
 
-                                    student student;
+                                    Student student;
                                     for (int i = 0; i < studentListForDeleteFromAttendenceActivity.size(); i++) {
                                         student = studentListForDeleteFromAttendenceActivity.get(i);
                                         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
@@ -281,15 +281,15 @@ public class AttendanceActivity extends AppCompatActivity {
                 }
 
                 for (DataSnapshot StudentData : dataSnapshot.getChildren()){
-                    student student;
-                    student = StudentData.getValue(student.class);
+                    Student student;
+                    student = StudentData.getValue(Student.class);
                     studentListFromAttendenceActivity.add(student);
                 }
 
                 studentListForPrintActiviyFromAttendenceActivity=studentListFromAttendenceActivity;
 
                 long totalClass, attendClass = 0, totalAttendPersenten;
-                student student;
+                Student student;
                 for (int i = 0; i < studentListFromAttendenceActivity.size(); i++) {
                     student = studentListFromAttendenceActivity.get(i);
                     totalAttendPersenten = 0;
@@ -340,7 +340,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     attendClass = 0;
                     rolls.add(student.getId());
                 }
-                attendenceListAdapter = new AttendenceListAdapter(AttendanceActivity.this, names,classitemAttendence);
+                attendenceListAdapter = new AttendenceListAdapter(AttendanceActivity.this, names,classitemAttendence,studentListFromAttendenceActivity);
                 listView.setAdapter(attendenceListAdapter);
             }
 

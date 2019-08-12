@@ -17,7 +17,7 @@ import com.Teachers.HaziraKhataByGk.Adapter.StudentListAdapter;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
-import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -36,7 +36,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
     private StudentListAdapter studentListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout linearLayoutForEmptyView;
-    public static List<student> studentList;
+    public static List<Student> studentList;
     public static Activity Activity;
 
 
@@ -104,10 +104,10 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
                     spinner.setVisibility(View.GONE);
 
 
-                    final ArrayList<student> studentListFromServer = new ArrayList<student>();
+                    final ArrayList<Student> studentListFromServer = new ArrayList<Student>();
                     for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
-                        student student;
-                        student = StudentData.getValue(student.class);
+                        Student student;
+                        student = StudentData.getValue(Student.class);
                         studentListFromServer.add(student);
                     }
                     StudentListShowActivity.studentList = new ArrayList<>();

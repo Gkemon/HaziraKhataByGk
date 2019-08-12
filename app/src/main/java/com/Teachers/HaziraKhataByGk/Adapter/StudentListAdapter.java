@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
-import com.Teachers.HaziraKhataByGk.Model.student;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.StudentHolder>{
 
-    public static List<student> studentList;
+    public static List<Student> studentList;
     private Context context;
 
     private RecyclerItemClickListener recyclerItemClickListener;
@@ -32,18 +32,18 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         this.studentList = new ArrayList<>();
     }
 
-    private void add(student item) {
+    private void add(Student item) {
         studentList.add(item);
         notifyItemInserted(studentList.size() - 1);
     }
 
-    public void addAll(List<student> studentList) {
-        for (student student : studentList) {
+    public void addAll(List<Student> studentList) {
+        for (Student student : studentList) {
             add(student);
         }
     }
 
-    public void remove(student item) {
+    public void remove(Student item) {
         int position = studentList.indexOf(item);
         if (position > -1) {
             studentList.remove(position);
@@ -57,7 +57,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         }
     }
 
-    public student getItem(int position) {
+    public Student getItem(int position) {
         return studentList.get(position);
     }
 
@@ -84,15 +84,15 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 
     @Override
     public void onBindViewHolder(StudentHolder holder, int position) {
-        final student student = studentList.get(position);
+        final Student student = studentList.get(position);
 
         final Resources res = context.getResources();
         final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
 
 
         //FOR BITMAP GENERATE
-//        Bitmap letterBitmap = letterTile.getLetterTile(student.getStudentName(),
-//                String.valueOf(student.getId()), tileSize, tileSize);
+//        Bitmap letterBitmap = letterTile.getLetterTile(Student.getStudentName(),
+//                String.valueOf(Student.getId()), tileSize, tileSize);
 
         //FOR TEXTDRAWABLE IMAGE CREATING
         ColorGenerator generator = ColorGenerator.MATERIAL;

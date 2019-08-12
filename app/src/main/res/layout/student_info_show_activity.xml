@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="#e3f2fd"
+    android:background="#e3f2fd">
 <LinearLayout
     android:id="@+id/main"
     android:layout_above="@+id/ads"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
-    android:backgroundTint="#e3f2fd "
-    android:background="#e3f2fd">
+    android:padding="@dimen/activity_horizontal_margin">
 
     <View
         android:layout_width="match_parent"
@@ -153,42 +153,18 @@
     </LinearLayout>
 
     <ListView
+        android:visibility="gone"
         android:id="@+id/DatewiseAttendence"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true">
     </ListView>
-</LinearLayout>
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/ads"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:orientation="vertical">-->
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark"-->
-            <!--android:layout_height="6sp">-->
-        <!--</View>-->
-        <!--<com.google.android.gms.ads.AdView-->
-            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/adViewInHome"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--ads:adSize="SMART_BANNER"-->
-            <!--ads:adUnitId="@string/Banner_ad_id">-->
-        <!--</com.google.android.gms.ads.AdView>-->
 
-        <!--&lt;!&ndash;<View&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="@color/colorPrimaryDark"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="6sp">&ndash;&gt;-->
-        <!--&lt;!&ndash;</View>&ndash;&gt;-->
-    <!--</LinearLayout>-->
-</RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_dateWishAttendance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

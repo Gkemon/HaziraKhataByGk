@@ -2,7 +2,7 @@ package com.Teachers.HaziraKhataByGk.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class student implements Parcelable {
+public class Student implements Parcelable {
     private String roll;
     private String Name;
     private String ParentContact;
@@ -10,24 +10,24 @@ public class student implements Parcelable {
     private String ParentName;
     private String StudentClass;
     private String StudentSection;
-    public student() {
+    public Student() {
     }
-    protected student(Parcel in) {
+    protected Student(Parcel in) {
         this.roll = in.readString();
         this.Name = in.readString();
         this.ParentContact = in.readString();
         this.StudentsContactNumber =in.readString();
         this.ParentName=in.readString();
     }
-    public static final Parcelable.Creator<student> CREATOR = new Parcelable.Creator<student>() {
+    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
         @Override
-        public student createFromParcel(Parcel source) {
-            return new student(source);
+        public Student createFromParcel(Parcel source) {
+            return new Student(source);
         }
 
         @Override
-        public student[] newArray(int size) {
-            return new student[size];
+        public Student[] newArray(int size) {
+            return new Student[size];
         }
     };
     public String getId() {

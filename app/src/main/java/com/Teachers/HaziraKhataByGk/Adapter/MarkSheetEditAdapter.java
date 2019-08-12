@@ -19,12 +19,12 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout;
 import com.Teachers.HaziraKhataByGk.Model.DistributionVSnumberTable;
 import com.Teachers.HaziraKhataByGk.Model.StudentVsDistributionTable;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
-import com.Teachers.HaziraKhataByGk.Model.student;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.logObject;
 
 public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdapter.markEditHolder> {
 
-    public ArrayList<student> students;
+    public ArrayList<Student> Students;
     public SubjectMarkSheet subjectMarkSheet;
     public ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList;
     private Activity activity;
@@ -47,18 +47,18 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
     public static HashMap<Integer, ArrayList<EditText>> editTextHashMap;//For avoiding auto checking
 
 
-    public MarkSheetEditAdapter(Activity activity, ArrayList<student> students, SubjectMarkSheet subjectMarkSheet, String className, String sectionName, String key) {
+    public MarkSheetEditAdapter(Activity activity, ArrayList<Student> Students, SubjectMarkSheet subjectMarkSheet, String className, String sectionName, String key) {
         this.activity = activity;
-        this.students = students;
+        this.Students = Students;
         this.subjectMarkSheet = subjectMarkSheet;
         this.studentVsDistributionTableArrayList = new ArrayList<>();
         this.className = className;
         this.key = key;
         this.sectionName = sectionName;
 
-        for (int i = 0; i < students.size(); i++) {
+        for (int i = 0; i < Students.size(); i++) {
             StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
-            studentVsDistributionTable.setStudentID(students.get(i).getId());
+            studentVsDistributionTable.setStudentID(Students.get(i).getId());
             studentVsDistributionTableArrayList.add(studentVsDistributionTable);
         }
 
@@ -68,21 +68,21 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
         // checkHash = new HashMap<Integer, Boolean>();
     }
 
-    private void add(student item) {
-        students.add(item);
-        notifyItemInserted(students.size() - 1);
+    private void add(Student item) {
+        Students.add(item);
+        notifyItemInserted(Students.size() - 1);
     }
 
-    public void addAll(List<student> studentList) {
-        for (student student : studentList) {
+    public void addAll(List<Student> studentList) {
+        for (Student student : studentList) {
             add(student);
         }
     }
 
-    public void remove(student item) {
-        int position = students.indexOf(item);
+    public void remove(Student item) {
+        int position = Students.indexOf(item);
         if (position > -1) {
-            students.remove(position);
+            Students.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -93,8 +93,8 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
         }
     }
 
-    public student getItem(int position) {
-        return students.get(position);
+    public Student getItem(int position) {
+        return Students.get(position);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
     @Override
     public void onBindViewHolder(markEditHolder holder, int position) {
-        final student student = students.get(position);
+        final Student student = Students.get(position);
         String name = "নাম: " + student.getStudentName() + " ( রোল: " + student.getId() + " )";
         holder.name.setText(name);
 
@@ -191,7 +191,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
     @Override
     public int getItemCount() {
-        return students.size();
+        return Students.size();
     }
 
 
@@ -247,7 +247,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 //
 //
 //                    StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
-//                    studentVsDistributionTable.setStudentID(students.get(position).getId());
+//                    studentVsDistributionTable.setStudentID(Students.get(position).getId());
 //                    studentVsDistributionTable.setDistributionVSnumberTableArrayList(distributionVSnumberTableArrayList);
 //
 //
@@ -313,11 +313,11 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
             }
 
-            String temp1 ="\n নাম : "+students.get(i).getStudentName()+ " ( রোল :"+students.get(i).getId()+" )\n";
+            String temp1 ="\n নাম : "+ Students.get(i).getStudentName()+ " ( রোল :"+ Students.get(i).getId()+" )\n";
              mainNumberSheetText +=(temp1+temp2)+"\n";
 
             StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
-            studentVsDistributionTable.setStudentID(students.get(i).getId());
+            studentVsDistributionTable.setStudentID(Students.get(i).getId());
             studentVsDistributionTable.setDistributionVSnumberTableArrayList(distributionVSnumberTableArrayList);
 
 

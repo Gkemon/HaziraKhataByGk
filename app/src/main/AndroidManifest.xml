@@ -76,7 +76,7 @@
         <activity
             android:name=".StudentAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
-        <activity android:name=".SingleStudentAllInformation.StudentAlIInfoShowActiviy" />
+        <activity android:name=".SingleStudentAllInformation.StudentAlIInfoShowActivity" />
         <!-- android:theme="@style/AppThemeForNoActionBar" -->
 
         <activity

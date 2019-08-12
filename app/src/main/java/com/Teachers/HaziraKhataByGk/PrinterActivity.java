@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
-import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class PrinterActivity extends AppCompatActivity {
 
     public LinearLayout emptyView;
 
-    static student student;
+    static Student student;
 
     int janTotal=0,febTotal=0,marTotal=0,aprTotal=0,mayTotal=0,juneTotal=0,julyTotal=0,augTotal=0,sepTotal=0,octTotal=0,novTotal=0,decTotal=0;
 
@@ -92,11 +92,11 @@ public class PrinterActivity extends AppCompatActivity {
 
 
 
-//        Log.d("GK",studentListForPrintActiviyFromAttendenceActivity.size()+ " student list name size" );
+//        Log.d("GK",studentListForPrintActiviyFromAttendenceActivity.size()+ " Student list name size" );
 //        for(int i=0;i<studentListForPrintActiviyFromAttendenceActivity.size();i++){
-//            Log.d("GK", " student list name "+studentListForPrintActiviyFromAttendenceActivity.get(i).getId()+ " \n Id:"+studentListForPrintActiviyFromAttendenceActivity.get(i).getId() );
+//            Log.d("GK", " Student list name "+studentListForPrintActiviyFromAttendenceActivity.get(i).getId()+ " \n Id:"+studentListForPrintActiviyFromAttendenceActivity.get(i).getId() );
 //
-//student student1=studentListForPrintActiviyFromAttendenceActivity.get(i);
+//Student student1=studentListForPrintActiviyFromAttendenceActivity.get(i);
 //            Log.d("GK", "perStudentTotalAttendenceData size  "+perStudentTotalAttendenceData.get(student1.getId()).size());
 //
 //        }
@@ -314,7 +314,7 @@ public class PrinterActivity extends AppCompatActivity {
 
             student = studentListForPrintActiviyFromAttendenceActivity.get(i);
 
-            // Log.d("GK",student.getStudentName()+ " student name");
+            // Log.d("GK",Student.getStudentName()+ " Student name");
             ArrayList<AttendenceData> attendenceDatalist=new ArrayList<>();
 
             //if we come from class room activity to print activity directly

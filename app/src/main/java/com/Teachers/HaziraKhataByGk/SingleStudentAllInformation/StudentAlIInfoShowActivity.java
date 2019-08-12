@@ -7,13 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -30,15 +31,16 @@ import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
+import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -47,21 +49,24 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-public class StudentAlIInfoShowActiviy extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class StudentAlIInfoShowActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, RecyclerItemClickListener {
     private TextView studentName;
     public Button studentPhoneNumber;
     public Button parentPhoneNumber;
+    public ClassIitem classItem;
     private ListView datewiseAttendenceListView;
+    public RecyclerView rvDataWiseAttendence;
     private ArrayList<String> attendenceTextListForSingleStudent;
     private ArrayList<Boolean> isPresentAbsentList;
     public  SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
-    public static student student;
+    public  Student student;
     public static String time,yearWithDate,year,month,day;
     public Spinner spinnerMonth;
     public DatabaseReference dbRefSingleStudent;
     public ArrayList<AttendenceData> totalAttendenceDataArrayList;
     ProgressBar progressBar;
     String roll;
+
     LinearLayout emptyView;
     Activity activity;
 
@@ -71,14 +76,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
         init();
     }
 
-    void setUpMonthSpinner(){
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.month_bd));
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // attaching data adapter to progressBar
-        spinnerMonth.setAdapter(dataAdapter);
-    }
 
     void init(){
 
@@ -100,6 +98,12 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
         roll = getIntent().getStringExtra("Roll");
         activity = this;
 
+        rvDataWiseAttendence=findViewById(R.id.rv_dateWishAttendance);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        rvDataWiseAttendence.setLayoutManager(layoutManager);
+        SingleStudentAttendanceAdapter  mAdapter = new SingleStudentAttendanceAdapter(this,this);
+        rvDataWiseAttendence.setAdapter(mAdapter);
+
         dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(ClassRoomActivity.classitem.getName(),ClassRoomActivity.classitem.getSection(),roll);
         attendenceTextListForSingleStudent = new ArrayList<>();
         isPresentAbsentList = new ArrayList<>();
@@ -107,8 +111,10 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
         attendenceTextListForSingleStudent =new ArrayList<>();
         totalAttendenceDataArrayList =new ArrayList<>();
 
-        ClassRoomActivity.classitem=getIntent().getParcelableExtra("classItem");
 
+        classItem =getIntent().getParcelableExtra("classItem");
+        student = getIntent().getParcelableExtra("Student");
+        loadDataFromServer();
 
         datewiseAttendenceListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -116,13 +122,13 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
                                     long id) {
 
                 Log.d("GK",String.valueOf(position)+" POSITION");
-                CreateDialogForEdit(position);
+                createDialogForEdit(position);
 
 
             }
         });
 
-        InitializePhoneNumbers();
+        initializePhoneNumbers();
     }
 
     @Override
@@ -133,6 +139,24 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
 
 
     }
+
+    public void loadDataFromServer(){
+        getHeadingData();
+        FirebaseCaller.getAttendanceDataForSingleStudent(classItem.getName(), classItem.getSection(), roll, new CommonCallback<ArrayList<AttendenceData>>() {
+            @Override
+            public void onFailure(String r) {
+                super.onFailure(r);
+            }
+
+            @Override
+            public void onSuccess(ArrayList<AttendenceData> response) {
+                super.onSuccess(response);
+                totalAttendenceDataArrayList=response;
+            }
+        });
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -213,7 +237,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
 
 
                 singleStudentPresentDateListAdaper = new SingleStudentPresentDateListAdaper
-                        (StudentAlIInfoShowActiviy.this, attendenceTextListForSingleStudent,
+                        (StudentAlIInfoShowActivity.this, attendenceTextListForSingleStudent,
                                 isPresentAbsentList, ClassRoomActivity.classitem,attandanceList,roll);
 
 
@@ -281,7 +305,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
         dbRefSingleStudent.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                student = dataSnapshot.getValue(student.class);
+                student = dataSnapshot.getValue(Student.class);
 
 
                 totalAttendenceDataArrayList.clear();
@@ -384,7 +408,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
                             child(FirebaseCaller.getUserID()).child("Class").
                             child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection())
                             .child("Student").child(student.getId()).child("Attendance").push()
-                            .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActiviy.this, new OnSuccessListener<Void>() {
+                            .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             if(singleStudentPresentDateListAdaper!=null)
@@ -423,7 +447,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
                         child(FirebaseCaller.getUserID()).child("Class").
                         child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection())
                         .child("Student").child(student.getId()).child("Attendance").push()
-                        .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActiviy.this, new OnSuccessListener<Void>() {
+                        .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         if(singleStudentPresentDateListAdaper!=null)
@@ -442,7 +466,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
 
 
 
-    public void InitializePhoneNumbers(){
+    public void initializePhoneNumbers(){
         studentPhoneNumber.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -466,7 +490,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
             }
         });
     }
-    public void CreateDialogForEdit( int pos1){
+    public void createDialogForEdit(int pos1){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final int pos2= totalAttendenceDataArrayList.size()-1-pos1;
@@ -571,7 +595,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
                                         child("Student").child(student.getId()).
                                         child("Attendance").
                                         child( attendenceData.getKey()).
-                                        removeValue().addOnSuccessListener(StudentAlIInfoShowActiviy.this, new OnSuccessListener<Void>() {
+                                        removeValue().addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 
@@ -584,7 +608,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
                                                 .child("Student")
                                                 .child(student.getId())
                                                 .child("Attendance")
-                                                .child( attendenceData.getKey()).setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActiviy.this, new OnSuccessListener<Void>() {
+                                                .child( attendenceData.getKey()).setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 getHeadingData();
@@ -624,7 +648,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
                             .child("Student")
                             .child(student.getId())
                             .child("Attendance")
-                            .child(attendenceData.getKey()).removeValue().addOnSuccessListener(StudentAlIInfoShowActiviy.this, new OnSuccessListener<Void>() {
+                            .child(attendenceData.getKey()).removeValue().addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             getHeadingData();
@@ -745,6 +769,16 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity implements Adap
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     spinnerMonth.setSelection(0);
+    }
+
+    @Override
+    public void onItemClick(int position, View view) {
+        createDialogForEdit(position);
+    }
+
+    @Override
+    public void onItemLongPressed(int position, View view) {
+
     }
 }
 

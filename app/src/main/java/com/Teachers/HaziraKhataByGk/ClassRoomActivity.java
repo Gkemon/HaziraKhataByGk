@@ -33,7 +33,7 @@ import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
-import com.Teachers.HaziraKhataByGk.Model.student;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -67,8 +67,8 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     public static String FLAG_OF_CLASSROOM_ACTIVITY="class_room";
 
     //for class activity to class record
-    public static List<student> studentListFromAttendenceActivity;
-    public static List<student> studentListForPrintActiviyFromAttendenceActivity;
+    public static List<Student> studentListFromAttendenceActivity;
+    public static List<Student> studentListForPrintActiviyFromAttendenceActivity;
     public static HashMap<String,ArrayList<AttendenceData>> perStudentTotalAttendenceData;//for creating month wise data sheet;
     public static ArrayList<AttendenceData> attendenceDataArrayListForPerStudent;
 
@@ -326,14 +326,14 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
                 studentListFromAttendenceActivity.clear();
 
                 for (DataSnapshot StudentData : dataSnapshot.getChildren()){
-                    student student;
-                    student = StudentData.getValue(student.class);
+                    Student student;
+                    student = StudentData.getValue(Student.class);
                     studentListFromAttendenceActivity.add(student);
                 }
 
                 studentListForPrintActiviyFromAttendenceActivity=studentListFromAttendenceActivity;
 
-                student student;
+                Student student;
                 for (int i = 0; i < studentListFromAttendenceActivity.size(); i++) {
                     student = studentListFromAttendenceActivity.get(i);
 

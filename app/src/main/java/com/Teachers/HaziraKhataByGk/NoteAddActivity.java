@@ -174,9 +174,9 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
 
             if(submitForm()){
-                //Then remove the old student data
+                //Then remove the old Student data
                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
-                //Then first reinstall previous student data;
+                //Then first reinstall previous Student data;
                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
 
             }
@@ -385,9 +385,9 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                             }
 
                             if (submitForm()) {
-                                //Then remove the old student data
+                                //Then remove the old Student data
                                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
-                                //Then first reinstall previous student data;
+                                //Then first reinstall previous Student data;
                                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
                             }
                             Toast.makeText(NoteAddActivity.this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();

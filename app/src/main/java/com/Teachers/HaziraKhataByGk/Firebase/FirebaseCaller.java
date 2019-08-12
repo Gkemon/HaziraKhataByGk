@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.SubjectMarkSheetAdaper;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
+import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,7 +38,34 @@ public class FirebaseCaller {
         initializationFirebase();
     }
 
+    public static void getStudent(){
 
+    }
+
+
+    public static void getAttendanceDataForSingleStudent(String className, String sectionName, String roll, final CommonCallback<ArrayList<AttendenceData>> commonCallback){
+
+
+        getSingleStudentDbRef(className,sectionName,roll).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<AttendenceData> attendenceDataList=new ArrayList<>();
+
+                for(DataSnapshot singleDataSnapshot:dataSnapshot.getChildren()){
+                    attendenceDataList.add(singleDataSnapshot.getValue(AttendenceData.class));
+                }
+
+                commonCallback.onSuccess(attendenceDataList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+               commonCallback.onFailure(databaseError.getMessage());
+            }
+        });
+
+    }
     public static DatabaseReference getSingleStudentDbRef(String className,String sectionName,String roll){
        return FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
                 child("Class").

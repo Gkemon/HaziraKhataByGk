@@ -10,13 +10,13 @@ import android.widget.Button;
 import com.Teachers.HaziraKhataByGk.Adapter.MarkSheetEditAdapter;
 import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
-import com.Teachers.HaziraKhataByGk.Model.student;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal.GLOBAL_STUDENT_LIST;
+import static com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal.globalStudentList;
 
 /**
  * Created by uy on 6/18/2018.
@@ -34,21 +34,21 @@ firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                GLOBAL_STUDENT_LIST.clear();
+                globalStudentList.clear();
                 for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
-                    student student;
-                    student = StudentData.getValue(student.class);
-                    GLOBAL_STUDENT_LIST.add(student);
+                    Student student;
+                    student = StudentData.getValue(Student.class);
+                    globalStudentList.add(student);
                 }
-                Log.d("GK","student list size :"+GLOBAL_STUDENT_LIST.size());
+                Log.d("GK","Student list size :"+ globalStudentList.size());
 
 
-                if(ContantsForGlobal.GLOBAL_STUDENT_LIST!=null){
-                    Log.d("GK","student list size in oncreate :"+GLOBAL_STUDENT_LIST.size());
+                if(ContantsForGlobal.globalStudentList !=null){
+                    Log.d("GK","Student list size in oncreate :"+ globalStudentList.size());
 
                     UtilsCommon.logString(key);
 
-                  final MarkSheetEditAdapter markSheetEditAdapter = new MarkSheetEditAdapter(activity,GLOBAL_STUDENT_LIST,subjectMarkSheet,className,sectionName,key);
+                  final MarkSheetEditAdapter markSheetEditAdapter = new MarkSheetEditAdapter(activity, globalStudentList,subjectMarkSheet,className,sectionName,key);
                     LinearLayoutManager MyLayoutManager = new LinearLayoutManager(activity);
                     MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setAdapter(markSheetEditAdapter);

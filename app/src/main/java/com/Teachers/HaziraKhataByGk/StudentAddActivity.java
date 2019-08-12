@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.Model.student;
-import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActiviy;
+import com.Teachers.HaziraKhataByGk.Model.Student;
+import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -39,7 +39,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     private EditText parentName;
     private EditText parentPhoneNumber;
     private Button btnAdd, btnEdit, btnDelete,btnClassRecord;
-    private student student;
+    private Student student;
     public   String previousId,currentId;
     public  static Activity activity;
 
@@ -55,7 +55,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         context.startActivity(intent);
     }
 
-    public static void start(Context context, student student){
+    public static void start(Context context, Student student){
         Intent intent = new Intent(context, StudentAddActivity.class);
         intent.putExtra(StudentAddActivity.class.getSimpleName(), student);
         context.startActivity(intent);
@@ -156,13 +156,13 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if(v == btnAdd) {
-            student = new student();
+            student = new Student();
             student.setStudentName(personName.getText().toString().trim());
             student.setId(rollNumber.getText().toString().trim());
             student.setPhone(phone.getText().toString().trim());
             student.setParentName(parentName.getText().toString().trim());
-//            student.setStudentClass(StudentListShowActivity.contactofSA.getName());
-//            student.setStudentSection(StudentListShowActivity.contactofSA.getSection());
+//            Student.setStudentClass(StudentListShowActivity.contactofSA.getName());
+//            Student.setStudentSection(StudentListShowActivity.contactofSA.getSection());
             student.setParentContact(parentPhoneNumber.getText().toString().trim());
 
 
@@ -236,11 +236,11 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
                         attendenceDataListBeforeEdit=attendenceDatalistInFB;
 
-                        //Then first reinstall previous student data;
+                        //Then first reinstall previous Student data;
                         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
 
 
-                        //Then add attendance list of the specific student before edit.This is an operation from student act activity;
+                        //Then add attendance list of the specific Student before edit.This is an operation from Student act activity;
                         if (StudentAddActivity.attendenceDataListBeforeEdit != null) {
                             for (int i = 0; i < StudentAddActivity.attendenceDataListBeforeEdit.size(); i++) {
                                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName() + StudentListShowActivity.contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentAddActivity.attendenceDataListBeforeEdit.get(i));
@@ -261,7 +261,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
 
 
-                //Then remove the old student data
+                //Then remove the old Student data
                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(previousId).removeValue();
 
                 Toast.makeText(this,"শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
@@ -273,11 +273,11 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 //                    public void onDataChange(DataSnapshot dataSnapshot) {
 //
 //                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                            snapshot.getRef().child("id").setValue(student.getId());
-//                            snapshot.getRef().child("studentName").setValue(student.getStudentName());
-//                            snapshot.getRef().child("phone").setValue(student.getPhone());
-//                            snapshot.getRef().child("parentName").setValue(student.getParentName());
-//                            snapshot.getRef().child("parentContact").setValue(student.getParentContact());
+//                            snapshot.getRef().child("id").setValue(Student.getId());
+//                            snapshot.getRef().child("studentName").setValue(Student.getStudentName());
+//                            snapshot.getRef().child("phone").setValue(Student.getPhone());
+//                            snapshot.getRef().child("parentName").setValue(Student.getParentName());
+//                            snapshot.getRef().child("parentContact").setValue(Student.getParentContact());
 //                        }
 //                    }
 //                    @Override
@@ -316,7 +316,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             DeleteDialogForStudent();
         }
         else if(v==btnClassRecord){
-                    Intent launchinIntent = new Intent(this, StudentAlIInfoShowActiviy.class);
+                    Intent launchinIntent = new Intent(this, StudentAlIInfoShowActivity.class);
                     String roll = previousId;
                     launchinIntent.putExtra("Roll", roll);
                     launchinIntent.putExtra("classItem", StudentListShowActivity.contactofSA);

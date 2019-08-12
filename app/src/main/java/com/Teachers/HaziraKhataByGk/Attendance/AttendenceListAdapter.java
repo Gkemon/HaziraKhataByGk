@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Attendance;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,21 +10,19 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
-import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActiviy;
+import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.checkHash;
 
@@ -33,20 +30,22 @@ public class AttendenceListAdapter extends BaseAdapter {
 
 
     public static FirebaseAuth auth;
-    public ClassIitem ClassIitem;
+    public ClassIitem classItem;
 
     private   ArrayList<String> nameList;
     public Activity activity;
     private ArrayList<Boolean> attendanceList;
-    public AttendenceListAdapter(Activity activity, ArrayList<String> nameList, ClassIitem ClassIitem) {
+    public List<Student> studentArrayList;
+    public AttendenceListAdapter(Activity activity, ArrayList<String> nameList, ClassIitem classItem, List<Student> studentArrayList) {
         this.nameList = nameList;
         this.activity = activity;
-        this.ClassIitem = ClassIitem;
+        this.classItem = classItem;
         attendanceList = new ArrayList<>();
         for(int i=0; i<nameList.size(); i++)
         {
             attendanceList.add(new Boolean(true));
         }
+        this.studentArrayList=studentArrayList;
     }
 
 
@@ -107,11 +106,11 @@ public class AttendenceListAdapter extends BaseAdapter {
         v.findViewById(R.id.attendanceText).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchinIntent = new Intent(activity, StudentAlIInfoShowActiviy.class);
+                    Intent launchinIntent = new Intent(activity, StudentAlIInfoShowActivity.class);
                     String roll = AttendanceActivity.rolls.get(pos);
-                    Log.d("GK",pos + " pos in click listener of list view");
-                    launchinIntent.putExtra("Roll", roll);
-                    launchinIntent.putExtra("classItem", ClassIitem);
+
+                    launchinIntent.putExtra("Student", studentArrayList.get(position));
+                    launchinIntent.putExtra("classItem", classItem);
                     activity.startActivity(launchinIntent);
                 }
             });
