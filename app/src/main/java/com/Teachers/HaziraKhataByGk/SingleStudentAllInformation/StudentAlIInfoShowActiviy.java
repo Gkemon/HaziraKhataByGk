@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.SingleStudentPresentDateListAdaper;
@@ -27,12 +29,16 @@ import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -41,7 +47,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-public class StudentAlIInfoShowActiviy extends AppCompatActivity {
+public class StudentAlIInfoShowActiviy extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private TextView studentName;
     public Button studentPhoneNumber;
     public Button parentPhoneNumber;
@@ -51,8 +57,10 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
     public  SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
     public static student student;
     public static String time,yearWithDate,year,month,day;
+    public Spinner spinnerMonth;
+    public DatabaseReference dbRefSingleStudent;
     public ArrayList<AttendenceData> totalAttendenceDataArrayList;
-    ProgressBar spinner;
+    ProgressBar progressBar;
     String roll;
     LinearLayout emptyView;
     Activity activity;
@@ -63,6 +71,15 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
         init();
     }
 
+    void setUpMonthSpinner(){
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.month_bd));
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to progressBar
+        spinnerMonth.setAdapter(dataAdapter);
+    }
+
     void init(){
 
 
@@ -70,16 +87,20 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
         studentName =  findViewById(R.id.studentName);
         studentPhoneNumber =findViewById(R.id.studentPhoneNumber);
         parentPhoneNumber = findViewById(R.id.parentPhoneNumber);
+        spinnerMonth = findViewById(R.id.spinner_month);
+        spinnerMonth.setOnItemSelectedListener(this);
 
-        spinner =findViewById(R.id.progressBarInSingleStudentActivity);
+        progressBar =findViewById(R.id.progressBarInSingleStudentActivity);
 
         //EMPTY VIEW
         emptyView =findViewById(R.id.toDoEmptyView);
 
         //INITIALIZE THE BUTTON
-        datewiseAttendenceListView = (ListView) findViewById(R.id.DatewiseAttendence);
+        datewiseAttendenceListView = findViewById(R.id.DatewiseAttendence);
         roll = getIntent().getStringExtra("Roll");
         activity = this;
+
+        dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(ClassRoomActivity.classitem.getName(),ClassRoomActivity.classitem.getSection(),roll);
         attendenceTextListForSingleStudent = new ArrayList<>();
         isPresentAbsentList = new ArrayList<>();
 
@@ -198,7 +219,14 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
                 if(attendenceTextListForSingleStudent.size()==0)
                     emptyView.setVisibility(View.VISIBLE);
-                datewiseAttendenceListView.setAdapter(singleStudentPresentDateListAdaper);
+
+        UtilsCommon.debugLog("attendenceDataArrayList: "+attendenceTextListForSingleStudent.size());
+
+
+
+        singleStudentPresentDateListAdaper.setAttendenceListForSingleStudent(attendenceTextListForSingleStudent);
+        datewiseAttendenceListView.setAdapter(singleStudentPresentDateListAdaper);
+
 
 
             }
@@ -250,7 +278,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
 
     public  void getHeadingData(){
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRefSingleStudent.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 student = dataSnapshot.getValue(student.class);
@@ -297,7 +325,7 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
                 setUpAttandanceList(totalAttendenceDataArrayList);
 
 
-                spinner.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
 
 
 
@@ -305,10 +333,26 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                spinner.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
+
+    public void getDatewiseAttendenceList(final String date) {
+
+        ArrayList<AttendenceData> attendenceDataArrayList = new ArrayList<>();
+        UtilsCommon.debugLog("SIZE: "+totalAttendenceDataArrayList.size()+" "+date);
+        for(int i= 0;i<totalAttendenceDataArrayList.size();i++){
+
+            UtilsCommon.debugLog(totalAttendenceDataArrayList.get(i).getDate());
+            if(totalAttendenceDataArrayList.get(i).getDate().contains(date))
+                attendenceDataArrayList.add(totalAttendenceDataArrayList.get(i));
+        }
+
+        setUpAttandanceList(attendenceDataArrayList);
+
+    }
+
     public void CreateDialogForAddAttendence(){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater1 = this.getLayoutInflater();
@@ -599,6 +643,59 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
     }
 
 
+    public static String intMonthToStringMonthConvertor(int position){
+        if(position==0){
+            return "";
+        }else if(position==1)
+        {
+            return "Jan";
+        }
+        else if(position==2)
+        {
+            return "Feb";
+        }
+        else if(position==3)
+        {
+            return "Mar";
+        }
+        else if(position==4)
+        {
+            return "Apr";
+        }
+        else if(position==5)
+        {
+            return "May";
+        }
+        else if(position==6)
+        {
+            return "Jun";
+        }
+        else if(position==7)
+        {
+            return "Jul";
+        }
+        else if(position==8)
+        {
+            return "Aug";
+        }
+        else if(position==9)
+        {
+            return "Sep";
+        }
+        else if(position==10)
+        {
+            return "Oct";
+        }
+        else if(position==11)
+        {
+            return "Nov";
+        }
+        else
+        {
+            return "Dec";
+        }
+    }
+
     public static int StringMonthToIntMonthConvertor(String month){
 
         if(month.equals("Jan")){
@@ -638,6 +735,16 @@ public class StudentAlIInfoShowActiviy extends AppCompatActivity {
         else return 11;
 
 
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        getDatewiseAttendenceList(intMonthToStringMonthConvertor(position));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    spinnerMonth.setSelection(0);
     }
 }
 

@@ -38,6 +38,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
    public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
     public String roll;
 
+
     public SingleStudentPresentDateListAdaper( Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent, ClassIitem ClassIitem, ArrayList<AttendenceData> attendenceDataArrayList, String roll) {
         this.attendenceListForSingleStudent = attendenceListForSingleStudent;
         this.activity = activity;
@@ -50,6 +51,7 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
         Collections.reverse(this.attendenceDataArrayList);//TO REVERSE THE ATTENDANCE LIST;
         Collections.reverse(this.absentPresent);//TO REVERSE THE BOOLEAN LIST;
         Collections.reverse(this.attendenceListForSingleStudent);//TO REVERSE THE ARRAY LIST;
+        notifyDataSetChanged();
 
     }
 
@@ -103,12 +105,10 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
         return v;
     }
 
-
-
-
-
-
-
+    public void setAttendenceListForSingleStudent(ArrayList<String> attendenceListForSingleStudent) {
+        this.attendenceListForSingleStudent = attendenceListForSingleStudent;
+        notifyDataSetChanged();
+    }
 }
 
 

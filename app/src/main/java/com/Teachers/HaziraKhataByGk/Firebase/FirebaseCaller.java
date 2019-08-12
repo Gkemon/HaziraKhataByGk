@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.SubjectMarkSheetAdaper;
+import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +37,11 @@ public class FirebaseCaller {
     }
 
 
+    public static DatabaseReference getSingleStudentDbRef(String className,String sectionName,String roll){
+       return FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                child("Class").
+                child(className + sectionName).child("Student").child(roll);
+    }
 
     public static DatabaseReference getFirebaseDatabase(){
         return FirebaseDatabase.getInstance().getReference();

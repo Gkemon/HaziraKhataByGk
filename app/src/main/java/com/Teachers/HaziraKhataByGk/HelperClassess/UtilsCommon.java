@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.MainActivity;
+import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
@@ -31,6 +32,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
+
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blogItem_for_main;
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
 
@@ -43,6 +46,15 @@ public class UtilsCommon {
 
     public static final String DateFormate="EEE, d MMM yyyy";
 
+    public static ArrayList<AttendenceData> getAttendanceListFromSnapshot(DataSnapshot snapshot){
+
+        ArrayList<AttendenceData> attendenceData= new ArrayList<>();
+
+        for(long i=0;i<snapshot.getChildrenCount();i++){
+            attendenceData.add(snapshot.getValue(AttendenceData.class));
+        }
+        return attendenceData;
+    }
 
     //TODO: love BlogActivity
     public  static void loveBlog (BlogItem BlogItem,Context context){

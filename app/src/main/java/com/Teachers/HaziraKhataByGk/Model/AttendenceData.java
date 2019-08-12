@@ -11,11 +11,11 @@ import java.text.ParseException;
 
 public class AttendenceData implements Comparable<AttendenceData>  {
     private boolean status;
-    private String subject;
-    private String date;
-    private String attendenceClass;
-    private String attendenceSection;
-    private String studentRollForAttendence;
+    private String subject="";
+    private String date="";
+    private String attendenceClass="";
+    private String attendenceSection="";
+    private String studentRollForAttendence="";
 
     public String getKey() {
         return key;

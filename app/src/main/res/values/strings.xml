@@ -8,6 +8,7 @@
     <string name="SAVE">সেভ করুন</string>
     <string name="action_settings">Settings</string>
 
+    <string name="month_spinner_bangla">নিচ থেকে যেকোন একটি মাসের মোট উপস্থিতির দেখতে চাইলে ক্লিক করুন।</string>
 
 
     <string name="hint_for_distribution_entry"><font size="12"> নং বন্টনের নাম দিন (যেমন : ক্লাস টেস্ট)</font></string>

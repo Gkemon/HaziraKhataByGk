@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Adapter;
+package com.Teachers.HaziraKhataByGk.Attendance;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -76,7 +76,6 @@ public class AttendenceListAdapter extends BaseAdapter {
             textView.setText(text);
 
 
-      boolean isAbsentPreviousClass=text.contains("(গতক্লাসে অনুপস্থিত)");
 
 
             final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance

@@ -17,13 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.Teachers.HaziraKhataByGk.Adapter.AttendenceListAdapter;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
-import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
 import com.Teachers.HaziraKhataByGk.Model.student;
@@ -265,7 +262,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
 
     void loadDataFromServer(){
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StaticData.currentClassName+StaticData.currentSection).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

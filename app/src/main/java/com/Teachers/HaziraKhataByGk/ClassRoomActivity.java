@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import com.Teachers.HaziraKhataByGk.Adapter.NoteListAdapter;
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
@@ -251,6 +252,10 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
         //FOR GETTING THE CURRENT CLASS
         classitem = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
+        StaticData.currentClassName=classitem.getName();
+        StaticData.currentSection=classitem.getSection();
+
+
 
         feesButton.setOnClickListener(new View.OnClickListener() {
             @Override

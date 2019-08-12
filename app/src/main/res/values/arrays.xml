@@ -12,4 +12,20 @@
         <item>#ad62a7</item>
     </array>
 
+    <string-array name="month_bd">
+        <item>সকল মাস</item>
+        <item>জানুয়ারী</item>
+        <item>ফেব্রুয়ারী</item>
+        <item>মার্চ</item>
+        <item>এপ্রিল</item>
+        <item>মে</item>
+        <item>জুন</item>
+        <item>জুলাই</item>
+        <item>আগস্ট</item>
+        <item>সেপ্টেম্বর</item>
+        <item>অক্টোবর</item>
+        <item>নভেম্বর</item>
+        <item>ডিসেম্বর</item>
+    </string-array>
+
 </resources>
