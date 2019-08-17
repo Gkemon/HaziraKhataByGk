@@ -111,6 +111,7 @@ public class AttendenceListAdapter extends BaseAdapter {
 
                     launchinIntent.putExtra("Student", studentArrayList.get(position));
                     launchinIntent.putExtra("classItem", classItem);
+                    launchinIntent.putExtra("Roll", roll);
                     activity.startActivity(launchinIntent);
                 }
             });

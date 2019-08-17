@@ -38,9 +38,7 @@ public class FirebaseCaller {
         initializationFirebase();
     }
 
-    public static void getStudent(){
 
-    }
 
 
     public static void getAttendanceDataForSingleStudent(String className, String sectionName, String roll, final CommonCallback<ArrayList<AttendenceData>> commonCallback){
@@ -71,6 +69,13 @@ public class FirebaseCaller {
                 child("Class").
                 child(className + sectionName).child("Student").child(roll);
     }
+
+    public static DatabaseReference getSingleStudentAttendanceDbRef(String className,String sectionName,String roll){
+        return FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                child("Class").
+                child(className + sectionName).child("Student").child(roll).child("Attendance");
+    }
+
 
     public static DatabaseReference getFirebaseDatabase(){
         return FirebaseDatabase.getInstance().getReference();

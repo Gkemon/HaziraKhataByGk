@@ -105,7 +105,7 @@ public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleS
     }
     @Override
     public int getItemCount() {
-        return attendenceDataArrayList.size();
+        return attendenceDataArrayList == null ? 0 : attendenceDataArrayList.size();
     }
 }
 

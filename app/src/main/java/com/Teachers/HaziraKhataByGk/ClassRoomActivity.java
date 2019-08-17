@@ -79,7 +79,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        HideNotifiationBar();
+
 
         setContentView(R.layout.activity_class_room);
 

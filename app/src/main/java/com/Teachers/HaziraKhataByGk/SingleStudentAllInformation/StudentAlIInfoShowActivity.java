@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.Teachers.HaziraKhataByGk.Adapter.SingleStudentPresentDateListAdaper;
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
@@ -62,6 +63,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
     public  Student student;
     public static String time,yearWithDate,year,month,day;
     public Spinner spinnerMonth;
+    public SingleStudentAttendanceAdapter  mAdapter;
     public DatabaseReference dbRefSingleStudent;
     public ArrayList<AttendenceData> totalAttendenceDataArrayList;
     ProgressBar progressBar;
@@ -101,10 +103,10 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         rvDataWiseAttendence=findViewById(R.id.rv_dateWishAttendance);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvDataWiseAttendence.setLayoutManager(layoutManager);
-        SingleStudentAttendanceAdapter  mAdapter = new SingleStudentAttendanceAdapter(this,this);
+        mAdapter = new SingleStudentAttendanceAdapter(this,this);
         rvDataWiseAttendence.setAdapter(mAdapter);
 
-        dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(ClassRoomActivity.classitem.getName(),ClassRoomActivity.classitem.getSection(),roll);
+        dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(StaticData.currentClassName,StaticData.currentSection,roll);
         attendenceTextListForSingleStudent = new ArrayList<>();
         isPresentAbsentList = new ArrayList<>();
 
@@ -146,12 +148,42 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             @Override
             public void onFailure(String r) {
                 super.onFailure(r);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onSuccess(ArrayList<AttendenceData> response) {
                 super.onSuccess(response);
                 totalAttendenceDataArrayList=response;
+
+                //TODO: Sorting by date
+                Collections.sort(totalAttendenceDataArrayList, new Comparator<AttendenceData>() {
+                    @Override
+                    public int compare(AttendenceData o1, AttendenceData o2) {
+                        ComparableDate comparableDate1,comparableDate2;
+                        comparableDate1 = new ComparableDate();
+                        comparableDate2 = new ComparableDate();
+
+
+                        try {
+                            comparableDate1.setDateTime(o1.getDate());
+                            comparableDate2.setDateTime(o2.getDate());
+                        }catch (Exception c){
+                        }
+
+                        return comparableDate1.compareTo(comparableDate2);
+                    }
+                });
+
+                //TODO: Sorting by date
+
+
+
+                setUpHeader(totalAttendenceDataArrayList);
+                setUpAttandanceList(totalAttendenceDataArrayList);
+
+
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -251,6 +283,8 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         singleStudentPresentDateListAdaper.setAttendenceListForSingleStudent(attendenceTextListForSingleStudent);
         datewiseAttendenceListView.setAdapter(singleStudentPresentDateListAdaper);
 
+
+        mAdapter.setAttendenceDataArrayList(attandanceList);
 
 
             }
@@ -366,6 +400,10 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
         ArrayList<AttendenceData> attendenceDataArrayList = new ArrayList<>();
         UtilsCommon.debugLog("SIZE: "+totalAttendenceDataArrayList.size()+" "+date);
+
+        if(date.isEmpty())
+            attendenceDataArrayList=totalAttendenceDataArrayList;
+        else
         for(int i= 0;i<totalAttendenceDataArrayList.size();i++){
 
             UtilsCommon.debugLog(totalAttendenceDataArrayList.get(i).getDate());
@@ -374,6 +412,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         }
 
         setUpAttandanceList(attendenceDataArrayList);
+        setUpHeader(attendenceDataArrayList);
 
     }
 
