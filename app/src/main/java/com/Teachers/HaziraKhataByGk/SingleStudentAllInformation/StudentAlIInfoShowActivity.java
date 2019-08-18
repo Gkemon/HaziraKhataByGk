@@ -135,6 +135,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             @Override
             public void onSuccess(ArrayList<AttendenceData> response) {
                 super.onSuccess(response);
+
                 totalAttendenceDataArrayList=response;
 
                 //TODO: Sorting by date
@@ -163,7 +164,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 setUpHeader(totalAttendenceDataArrayList);
                 setUpAttandanceList(totalAttendenceDataArrayList);
 
-
+                spinnerMonth.setSelection(0);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -193,11 +194,17 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (edt.getText().toString().trim().equals("DELETE")) {
 
-                            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue().;
+                            FirebaseCaller.getSingleStudentAttendanceDbRef(StaticData.currentClassName,StaticData.currentSection,roll).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    loadDataFromServer();
+                                    emptyView.setVisibility(View.VISIBLE);
+                                }
+                            });
 
 
 
-                            emptyView.setVisibility(View.VISIBLE);
+
 
                         }
                     }
@@ -249,9 +256,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 }
 
 
-                singleStudentPresentDateListAdaper = new SingleStudentPresentDateListAdaper
-                        (StudentAlIInfoShowActivity.this, attendenceTextListForSingleStudent,
-                                isPresentAbsentList, ClassRoomActivity.classitem,attandanceList,roll);
+
 
 
                 if(attendenceTextListForSingleStudent.size()==0)
@@ -261,8 +266,6 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
 
 
-        singleStudentPresentDateListAdaper.setAttendenceListForSingleStudent(attendenceTextListForSingleStudent);
-        datewiseAttendenceListView.setAdapter(singleStudentPresentDateListAdaper);
 
 
         rvDataWiseAttendence.setItemViewCacheSize(attandanceList.size());
@@ -284,10 +287,10 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
         //For Empty view
         if (totalClass == 0) {
-            datewiseAttendenceListView.setVisibility(View.GONE);
+            rvDataWiseAttendence.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         } else {
-            datewiseAttendenceListView.setVisibility(View.VISIBLE);
+            rvDataWiseAttendence.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
         long attendClass = 0;
@@ -372,11 +375,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                             .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            if(singleStudentPresentDateListAdaper!=null)
-                                singleStudentPresentDateListAdaper.notifyDataSetChanged();
-
                             loadDataFromServer();
-
                             dialog.dismiss();
                         }
                     });
@@ -411,9 +410,6 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                         .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        if(singleStudentPresentDateListAdaper!=null)
-                            singleStudentPresentDateListAdaper.notifyDataSetChanged();
-
                         loadDataFromServer();
 
                         dialog.dismiss();
