@@ -33,7 +33,7 @@ public class FirebaseCaller {
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
     public static FirebaseAuth auth;
-    public static FirebaseUser mFirebaseUser;
+
     public FirebaseCaller(){
         initializationFirebase();
     }
@@ -44,14 +44,23 @@ public class FirebaseCaller {
     public static void getAttendanceDataForSingleStudent(String className, String sectionName, String roll, final CommonCallback<ArrayList<AttendenceData>> commonCallback){
 
 
-        getSingleStudentDbRef(className,sectionName,roll).addListenerForSingleValueEvent(new ValueEventListener() {
+        getSingleStudentAttendanceDbRef(className,sectionName,roll).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 ArrayList<AttendenceData> attendenceDataList=new ArrayList<>();
 
                 for(DataSnapshot singleDataSnapshot:dataSnapshot.getChildren()){
-                    attendenceDataList.add(singleDataSnapshot.getValue(AttendenceData.class));
+
+                    AttendenceData attendenceData = singleDataSnapshot.getValue(AttendenceData.class);
+
+                    if(attendenceData!=null)
+                    {
+                        //TODO: Here we set key because we need it for edit any attendance data.
+                        attendenceData.setKey(singleDataSnapshot.getKey());
+                        attendenceDataList.add(attendenceData);
+                    }
+
                 }
 
                 commonCallback.onSuccess(attendenceDataList);

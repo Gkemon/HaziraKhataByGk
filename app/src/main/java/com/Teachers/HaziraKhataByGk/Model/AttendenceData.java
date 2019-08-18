@@ -25,6 +25,19 @@ public class AttendenceData implements Comparable<AttendenceData>  {
         this.key = key;
     }
 
+    @Override
+    public String toString() {
+        return "AttendenceData{" +
+                "status=" + status +
+                ", subject='" + subject + '\'' +
+                ", date='" + date + '\'' +
+                ", attendenceClass='" + attendenceClass + '\'' +
+                ", attendenceSection='" + attendenceSection + '\'' +
+                ", studentRollForAttendence='" + studentRollForAttendence + '\'' +
+                ", key='" + key + '\'' +
+                '}';
+    }
+
     public  String key;
     public AttendenceData(){
     }

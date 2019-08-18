@@ -55,11 +55,11 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
     public Button studentPhoneNumber;
     public Button parentPhoneNumber;
     public ClassIitem classItem;
-    private ListView datewiseAttendenceListView;
+
     public RecyclerView rvDataWiseAttendence;
     private ArrayList<String> attendenceTextListForSingleStudent;
     private ArrayList<Boolean> isPresentAbsentList;
-    public  SingleStudentPresentDateListAdaper singleStudentPresentDateListAdaper;
+
     public  Student student;
     public static String time,yearWithDate,year,month,day;
     public Spinner spinnerMonth;
@@ -95,8 +95,8 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         //EMPTY VIEW
         emptyView =findViewById(R.id.toDoEmptyView);
 
-        //INITIALIZE THE BUTTON
-        datewiseAttendenceListView = findViewById(R.id.DatewiseAttendence);
+
+
         roll = getIntent().getStringExtra("Roll");
         activity = this;
 
@@ -118,32 +118,13 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         student = getIntent().getParcelableExtra("Student");
         loadDataFromServer();
 
-        datewiseAttendenceListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-
-                Log.d("GK",String.valueOf(position)+" POSITION");
-                createDialogForEdit(position);
-
-
-            }
-        });
 
         initializePhoneNumbers();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        getHeadingData();
-
-
-    }
 
     public void loadDataFromServer(){
-        getHeadingData();
+
         FirebaseCaller.getAttendanceDataForSingleStudent(classItem.getName(), classItem.getSection(), roll, new CommonCallback<ArrayList<AttendenceData>>() {
             @Override
             public void onFailure(String r) {
@@ -212,9 +193,9 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (edt.getText().toString().trim().equals("DELETE")) {
 
-                            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue();
+                            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").child(roll).child("Attendance").removeValue().;
 
-                            singleStudentPresentDateListAdaper.notifyDataSetChanged();
+
 
                             emptyView.setVisibility(View.VISIBLE);
 
@@ -284,6 +265,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         datewiseAttendenceListView.setAdapter(singleStudentPresentDateListAdaper);
 
 
+        rvDataWiseAttendence.setItemViewCacheSize(attandanceList.size());
         mAdapter.setAttendenceDataArrayList(attandanceList);
 
 
@@ -335,66 +317,6 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
     }
 
 
-    public  void getHeadingData(){
-        dbRefSingleStudent.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                student = dataSnapshot.getValue(Student.class);
-
-
-                totalAttendenceDataArrayList.clear();
-
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.child("Attendance").getChildren()) {
-                   AttendenceData attendenceData = dataSnapshot1.getValue(AttendenceData.class);
-
-                    if (attendenceData != null) {
-                        attendenceData.setKey(dataSnapshot1.getKey());
-                        totalAttendenceDataArrayList.add(attendenceData);
-                    }
-
-                }
-
-
-
-                //TODO: Sorting by date
-                Collections.sort(totalAttendenceDataArrayList, new Comparator<AttendenceData>() {
-                    @Override
-                    public int compare(AttendenceData o1, AttendenceData o2) {
-                        ComparableDate comparableDate1,comparableDate2;
-                        comparableDate1 = new ComparableDate();
-                        comparableDate2 = new ComparableDate();
-
-
-                        try {
-                            comparableDate1.setDateTime(o1.getDate());
-                            comparableDate2.setDateTime(o2.getDate());
-                        }catch (Exception c){
-                        }
-
-                        return comparableDate1.compareTo(comparableDate2);
-                    }
-                });
-
-                //TODO: Sorting by date
-
-
-
-                setUpHeader(totalAttendenceDataArrayList);
-                setUpAttandanceList(totalAttendenceDataArrayList);
-
-
-                progressBar.setVisibility(View.GONE);
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-    }
 
     public void getDatewiseAttendenceList(final String date) {
 
@@ -453,7 +375,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                             if(singleStudentPresentDateListAdaper!=null)
                                 singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
-                            getHeadingData();
+                            loadDataFromServer();
 
                             dialog.dismiss();
                         }
@@ -492,7 +414,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                         if(singleStudentPresentDateListAdaper!=null)
                             singleStudentPresentDateListAdaper.notifyDataSetChanged();
 
-                        getHeadingData();
+                        loadDataFromServer();
 
                         dialog.dismiss();
                     }
@@ -545,9 +467,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
         attendenceData=totalAttendenceDataArrayList.get(pos);
 
-
-
-
+        UtilsCommon.debugLog(attendenceData.toString());
 
         time=attendenceData.getDate();
         yearWithDate = time.substring(Math.max(time.length() - 8, 0));
@@ -650,7 +570,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                                                 .child( attendenceData.getKey()).setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                getHeadingData();
+                                                loadDataFromServer();
                                                 dialog.dismiss();
                                             }
                                         });
@@ -669,7 +589,6 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     }
                 }).setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                getHeadingData();
 
                 dialog.dismiss();
             }
@@ -690,7 +609,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                             .child(attendenceData.getKey()).removeValue().addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            getHeadingData();
+                            loadDataFromServer();
 
                             dialog.dismiss();
 
