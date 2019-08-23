@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsForMarkSheetEditAcitvity;
-import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 
 public class MarksheetEditActivity extends AppCompatActivity {
@@ -32,7 +32,7 @@ public class MarksheetEditActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_subject);
 
 
-        subjectMarkSheet=(SubjectMarkSheet)getIntent().getSerializableExtra(ContantsForGlobal.MARK_SHEET_OBJECT_FOR_EDIT);
+        subjectMarkSheet=(SubjectMarkSheet)getIntent().getSerializableExtra(Constant.MARK_SHEET_OBJECT_FOR_EDIT);
 
         String temp="বিষয় :"+subjectMarkSheet.getSubjectName()+"\n"+"মোট নাম্বার :"+subjectMarkSheet.getTotalNumber()+"\n"+"মোট বন্টন সংখ্যা : "+subjectMarkSheet.getDistributionVSnumberTable().size()+" টি "+"\n"+"বন্টনের নামগুলো এবং প্রতিটি বন্টনের মোট নাম্বারগুলো নিচে দেয়া হল \n";
         topText.setText(temp);
@@ -42,7 +42,7 @@ public class MarksheetEditActivity extends AppCompatActivity {
 
 
 
-        UtilsForMarkSheetEditAcitvity.getStudentList(getIntent().getStringExtra(ContantsForGlobal.CLASS_NAME),getIntent().getStringExtra(ContantsForGlobal.CLASS_SECTION),recyclerView,this,subjectMarkSheet,getIntent().getStringExtra(ContantsForGlobal.HASH_KEY_FOR_RESULT_EDIT_ACTIVITY),saveButton,printButton);
+        UtilsForMarkSheetEditAcitvity.getStudentList(getIntent().getStringExtra(Constant.CLASS_NAME),getIntent().getStringExtra(Constant.CLASS_SECTION),recyclerView,this,subjectMarkSheet,getIntent().getStringExtra(Constant.HASH_KEY_FOR_RESULT_EDIT_ACTIVITY),saveButton,printButton);
 
 
 

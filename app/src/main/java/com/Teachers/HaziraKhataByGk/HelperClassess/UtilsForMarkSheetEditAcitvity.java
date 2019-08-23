@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.Teachers.HaziraKhataByGk.Adapter.MarkSheetEditAdapter;
-import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
@@ -16,7 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal.globalStudentList;
+import static com.Teachers.HaziraKhataByGk.Constant.Constant.globalStudentList;
 
 /**
  * Created by uy on 6/18/2018.
@@ -43,7 +43,7 @@ firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addL
                 Log.d("GK","Student list size :"+ globalStudentList.size());
 
 
-                if(ContantsForGlobal.globalStudentList !=null){
+                if(Constant.globalStudentList !=null){
                     Log.d("GK","Student list size in oncreate :"+ globalStudentList.size());
 
                     UtilsCommon.logString(key);

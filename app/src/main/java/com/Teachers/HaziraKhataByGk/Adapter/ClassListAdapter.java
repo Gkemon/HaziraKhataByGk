@@ -114,9 +114,14 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
 
                 try {
+
                     //FOR TEXTDRAWABLE IMAGE CREATING
                     ColorGenerator generator = ColorGenerator.MATERIAL;
                     int color = generator.getRandomColor();
+
+                    if(classitem.getName()==null){
+                        classitem.setName("");
+                    }
 
                     TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
                             .textColor(Color.WHITE)

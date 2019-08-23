@@ -138,7 +138,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
 
             if(submitForm()){
 
-            ConfirmDialog();
+            confirmDialog();
 
             }
 
@@ -219,10 +219,9 @@ editClass();
                    .child(classNameEditText.getText().toString().trim() + sectionEditText.getText().toString().trim());
 
 
-           DatabaseReference dbRefRemove=fromDBRef;
            //Rename the class name and section
-           dbRefRemove.child("name").setValue(classNameEditText.getText().toString().trim());
-           dbRefRemove.child("section").setValue(sectionEditText.getText().toString().trim());
+           fromDBRef.child("name").setValue(classNameEditText.getText().toString().trim());
+           fromDBRef.child("section").setValue(sectionEditText.getText().toString().trim());
 
 
            copyRecord(fromDBRef,toDBRef);
@@ -243,8 +242,6 @@ editClass();
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             ClassAddActivity.this.finish();
-
-
                                         }
                                     });
 
@@ -356,7 +353,7 @@ editClass();
     }
 
 
-    public void ConfirmDialog() {
+    public void confirmDialog() {
 
 
                         FirebaseCaller.getFirebaseDatabase()

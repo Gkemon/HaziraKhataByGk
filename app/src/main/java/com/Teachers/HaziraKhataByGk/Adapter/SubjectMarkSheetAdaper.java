@@ -13,13 +13,13 @@ import android.widget.TextView;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.MarksheetEditActivity;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 
 import java.util.List;
 
-import static com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal.HASH_KEY_FOR_RESULT_EDIT_ACTIVITY;
-import static com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal.MARK_SHEET_OBJECT_FOR_EDIT;
+import static com.Teachers.HaziraKhataByGk.Constant.Constant.HASH_KEY_FOR_RESULT_EDIT_ACTIVITY;
+import static com.Teachers.HaziraKhataByGk.Constant.Constant.MARK_SHEET_OBJECT_FOR_EDIT;
 
 /**
  * Created by uy on 6/14/2018.
@@ -75,8 +75,8 @@ public class SubjectMarkSheetAdaper extends RecyclerView.Adapter<SubjectMarkShee
                 Intent intent = new Intent(activity, MarksheetEditActivity.class);
                 intent.putExtra(MARK_SHEET_OBJECT_FOR_EDIT,subjectList.get(position));
                 intent.putExtra(HASH_KEY_FOR_RESULT_EDIT_ACTIVITY,keys.get(position));
-                intent.putExtra(ContantsForGlobal.CLASS_NAME,className);
-                intent.putExtra(ContantsForGlobal.CLASS_SECTION,sectionName);
+                intent.putExtra(Constant.CLASS_NAME,className);
+                intent.putExtra(Constant.CLASS_SECTION,sectionName);
 
                 activity.startActivity(intent);
             }

@@ -46,11 +46,6 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
         setContentView(R.layout.student_activity);
         context = getApplicationContext();
@@ -68,16 +63,13 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
         contactofSA = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
 
         //For empty view
-        linearLayoutForEmptyView = (LinearLayout) findViewById(R.id.toDoEmptyView);
+        linearLayoutForEmptyView =findViewById(R.id.toDoEmptyView);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StudentAddActivity.start(context);
             }
         });
-
-
-
 
 
     }

@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
+import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.Student;
@@ -29,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.Teachers.HaziraKhataByGk.StudentListShowActivity.contactofSA;
 
 
 public class StudentAddActivity extends AppCompatActivity implements View.OnClickListener{
@@ -42,10 +46,6 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     private Student student;
     public   String previousId,currentId;
     public  static Activity activity;
-
-
-
-
 
 
 
@@ -65,30 +65,26 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_student_act);
         activity=this;
 
 
-        personName = (EditText) findViewById(R.id.personTextFromStudentAct);
-        rollNumber=(EditText) findViewById(R.id.RollNumberFromStudentAct);
+        personName = findViewById(R.id.personTextFromStudentAct);
+        rollNumber= findViewById(R.id.RollNumberFromStudentAct);
         //ADD TEXT CHANGE LISTENER
         personName.addTextChangedListener(new MyTextWatcher(personName));
         rollNumber.addTextChangedListener(new MyTextWatcher(rollNumber));
 
-        phone = (EditText) findViewById(R.id.phoneNumbersFromStudentAct);
-        parentName=(EditText) findViewById(R.id.personParentTextFromStudentAct);
-        parentPhoneNumber=(EditText) findViewById(R.id.ParentsphoneNumbersFromStudentAct);
+        phone = findViewById(R.id.phoneNumbersFromStudentAct);
+        parentName=findViewById(R.id.personParentTextFromStudentAct);
+        parentPhoneNumber=findViewById(R.id.ParentsphoneNumbersFromStudentAct);
 
 
-        btnAdd = (Button) findViewById(R.id.btnAddFromStudentAct);
-        btnEdit = (Button) findViewById(R.id.btnEditFromStudentAct);
-        btnDelete = (Button) findViewById(R.id.btnDeleteFromStudentAct);
-        btnClassRecord=(Button)findViewById(R.id.classRecord);
+        btnAdd = findViewById(R.id.btnAddFromStudentAct);
+        btnEdit =findViewById(R.id.btnEditFromStudentAct);
+        btnDelete =findViewById(R.id.btnDeleteFromStudentAct);
+        btnClassRecord=findViewById(R.id.classRecord);
 
 
         btnAdd.setOnClickListener(this);
@@ -96,43 +92,6 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         btnDelete.setOnClickListener(this);
         btnClassRecord.setOnClickListener(this);
         student=getIntent().getParcelableExtra(StudentAddActivity.class.getSimpleName());
-
-
-        //ADMOB
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-//                .build();
-//        adlayout=findViewById(R.id.ads);
-//        mAdView = (AdView) findViewById(R.id.adViewInHome);
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//                adlayout.setVisibility(View.GONE);
-//                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onAdLeftApplication() {
-//                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//        mAdView.loadAd(adRequest);
-
 
 
         attendenceDataListBeforeEdit=new ArrayList<>();
@@ -156,15 +115,13 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if(v == btnAdd) {
+
             student = new Student();
             student.setStudentName(personName.getText().toString().trim());
             student.setId(rollNumber.getText().toString().trim());
             student.setPhone(phone.getText().toString().trim());
             student.setParentName(parentName.getText().toString().trim());
-//            Student.setStudentClass(StudentListShowActivity.contactofSA.getName());
-//            Student.setStudentSection(StudentListShowActivity.contactofSA.getSection());
             student.setParentContact(parentPhoneNumber.getText().toString().trim());
-
 
 
             //CHECK THAT THE ITEM IS UNIQUE
@@ -187,7 +144,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
             if (student.getId() != null) {
                 if(submitForm()){
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
                 Toast.makeText(this, "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -222,7 +179,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             //FOR VALIDATION
             if(submitForm()){
                 //First GETTING ITS ATTENDANCE DATA
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(previousId).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(previousId).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                       final  ArrayList<AttendenceData> attendenceDatalistInFB=new ArrayList<AttendenceData>();
@@ -237,19 +194,19 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
                         attendenceDataListBeforeEdit=attendenceDatalistInFB;
 
                         //Then first reinstall previous Student data;
-                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
+                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
 
 
                         //Then add attendance list of the specific Student before edit.This is an operation from Student act activity;
                         if (StudentAddActivity.attendenceDataListBeforeEdit != null) {
                             for (int i = 0; i < StudentAddActivity.attendenceDataListBeforeEdit.size(); i++) {
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName() + StudentListShowActivity.contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentAddActivity.attendenceDataListBeforeEdit.get(i));
+                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentAddActivity.attendenceDataListBeforeEdit.get(i));
                             }
                             currentId=null;
-                            Log.d("GK","IF in SA");
+
                         }
                         else {
-                            Log.d("GK","ELSE in SA");
+
                         }
 
 
@@ -262,28 +219,11 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
 
                 //Then remove the old Student data
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(previousId).removeValue();
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(previousId).removeValue();
 
                 Toast.makeText(this,"শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
                     previousId=null;
-                //FOR MODIFICATION
-//                Query queryRef = databaseReference.child("Class").child(StudentListShowActivity.contactofSA.getName()+StudentListShowActivity.contactofSA.getSection()).child("Student").orderByChild("id").equalTo(previousId);
-//                queryRef.addListenerForSingleValueEvent( new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                            snapshot.getRef().child("id").setValue(Student.getId());
-//                            snapshot.getRef().child("studentName").setValue(Student.getStudentName());
-//                            snapshot.getRef().child("phone").setValue(Student.getPhone());
-//                            snapshot.getRef().child("parentName").setValue(Student.getParentName());
-//                            snapshot.getRef().child("parentContact").setValue(Student.getParentContact());
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {}});
-//                Toast.makeText(this,"শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
-//                previousId=null;
+
                 finish();
             }
 
@@ -313,13 +253,17 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             }
 
 
-            DeleteDialogForStudent();
+            deleteDialogForStudent();
         }
         else if(v==btnClassRecord){
                     Intent launchinIntent = new Intent(this, StudentAlIInfoShowActivity.class);
                     String roll = previousId;
+                    StaticData.currentClassName=contactofSA.getName();
+                    StaticData.currentSection=contactofSA.getSection();
+                    StaticData.currentRoll=roll;
+                    launchinIntent.putExtra("Student",student);
                     launchinIntent.putExtra("Roll", roll);
-                    launchinIntent.putExtra("classItem", StudentListShowActivity.contactofSA);
+                    launchinIntent.putExtra("classItem", contactofSA);
                     StudentAddActivity.activity.startActivity(launchinIntent);
         }
     }
@@ -339,6 +283,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     }
     private boolean validateStudentName() {
         if (personName.getText().toString().trim().isEmpty()) {
+
             personName.setError(getString(R.string.error_massege_for_input));
             requestFocus(personName);
             return false;
@@ -386,7 +331,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    public void DeleteDialogForStudent() {
+    public void deleteDialogForStudent() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
@@ -397,20 +342,8 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         dialogBuilder.setPositiveButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if(edt.getText().toString().trim().equals("DELETE")){
-                    //FOR DELETE
-//                    Query queryRef = databaseReference.child("Student").orderByChild("id").equalTo(previousId);
-//                    queryRef.addListenerForSingleValueEvent( new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-//                                snapshot.getRef().removeValue();
-//                            }
-//                        }
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {}});
 
-                    //FOR DELETE
-                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StudentListShowActivity.contactofSA.getName()+ StudentListShowActivity.contactofSA.getSection()).child("Student").child(student.getId()).removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(student.getId()).removeValue();
 
                     Toast.makeText(StudentAddActivity.this,"এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
                     previousId=null;
@@ -425,15 +358,5 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }

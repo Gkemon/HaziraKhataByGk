@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by uy on 6/14/2018.
  */
 
-public class ContantsForGlobal {
+public class Constant {
 
     public static final String CLASS_NAME="class name";
     public static final String CLASS_SECTION="class section";

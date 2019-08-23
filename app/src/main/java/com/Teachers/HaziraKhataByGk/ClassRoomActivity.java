@@ -25,7 +25,7 @@ import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.Adapter.NoteListAdapter;
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
-import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
@@ -269,8 +269,8 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(ClassRoomActivity.this,MarkSheetHomeActivity.class);
-                intent.putExtra(ContantsForGlobal.CLASS_NAME,classitem.getName());
-                intent.putExtra(ContantsForGlobal.CLASS_SECTION,classitem.getSection());
+                intent.putExtra(Constant.CLASS_NAME,classitem.getName());
+                intent.putExtra(Constant.CLASS_SECTION,classitem.getSection());
                 activity.startActivity(intent);
             }
         });

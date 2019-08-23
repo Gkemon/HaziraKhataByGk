@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsForMarkSheetActivity;
-import com.Teachers.HaziraKhataByGk.Constant.ContantsForGlobal;
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 
 import java.util.ArrayList;
@@ -65,8 +65,8 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
         recyclerViewOfSubject=findViewById(R.id.recycler_view_subject);
 
         try {
-            className=getIntent().getExtras().getString(ContantsForGlobal.CLASS_NAME);
-            sectionName=getIntent().getExtras().getString(ContantsForGlobal.CLASS_SECTION);
+            className=getIntent().getExtras().getString(Constant.CLASS_NAME);
+            sectionName=getIntent().getExtras().getString(Constant.CLASS_SECTION);
 
         }catch (Exception c){
             className= ClassRoomActivity.classitem.getName();
