@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                 btnSignOut.setVisibility(View.GONE);
 
 
-                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
                 alertDialog.setMessage("আপনার তথ্যের সুরক্ষার জন্য আপনাকে অবশ্যই সাইন-ইন অথবা সাইন-আপ করতে হবে ।আগে একাউন্ট না খুলে থাকলে \"একাউন্ট খুলুন \" বাটনে ক্লিক করুন আর একাউন্ট করা থাকলে ইমেইল এবং পাসওয়ার্ড ব্যবহার করে \"লগিন করুন\" বাটন ক্লিক করুন");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                         new DialogInterface.OnClickListener() {
@@ -205,11 +205,11 @@ public class LoginActivity extends AppCompatActivity {
                                               @Override
                                               public void onClick(View v) {
 
-                                                  AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                                                  AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
                                                   LayoutInflater inflater = activity.getLayoutInflater();
                                                   final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
                                                   dialogBuilder.setView(dialogView);
-                                                  final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
+                                                  final EditText edt =  dialogView.findViewById(R.id.custom_delete_dialauge_text);
                                                   dialogBuilder.setIcon(R.drawable.warnig_for_delete);
                                                   dialogBuilder.setTitle("ইমেইল পরিবর্তন");
                                                   dialogBuilder.setMessage("আপনি যদি ইমেইল এড্রেস পরিবর্তন করতে চান তাহলে নিচে নতুন ইমেইলটি ইনপুট দিন");

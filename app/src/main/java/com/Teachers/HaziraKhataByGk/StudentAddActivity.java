@@ -91,6 +91,8 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         btnEdit.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         btnClassRecord.setOnClickListener(this);
+
+
         student=getIntent().getParcelableExtra(StudentAddActivity.class.getSimpleName());
 
 
@@ -122,6 +124,8 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             student.setPhone(phone.getText().toString().trim());
             student.setParentName(parentName.getText().toString().trim());
             student.setParentContact(parentPhoneNumber.getText().toString().trim());
+            student.setStudentClass(StaticData.currentClass.getName());
+            student.setStudentSection(StaticData.currentClass.getSection());
 
 
             //CHECK THAT THE ITEM IS UNIQUE

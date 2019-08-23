@@ -22,7 +22,7 @@ import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.PrinterActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -41,7 +41,7 @@ import static com.Teachers.HaziraKhataByGk.ClassRoomActivity.FLAG_OF_CLASSROOM_A
 
 public class AttendanceActivity extends AppCompatActivity {
 
-    public static ClassIitem classitemAttendence;
+    public static ClassItem classitemAttendence;
     public ListView listView;
 
     public  ArrayList<String> names;

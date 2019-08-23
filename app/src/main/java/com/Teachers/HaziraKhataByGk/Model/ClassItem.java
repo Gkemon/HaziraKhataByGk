@@ -6,32 +6,32 @@ import android.os.Parcelable;
 /**
  * Created by wim on 4/26/16.
  */
-public class ClassIitem implements Parcelable {
+public class ClassItem implements Parcelable {
 
     private String name;
     private String section;
 
-    public ClassIitem() {
+    public ClassItem() {
     }
-    public ClassIitem(String name, String section) {
+    public ClassItem(String name, String section) {
         this.name=name;
         this.section=section;
     }
-    protected ClassIitem(Parcel in) {
+    protected ClassItem(Parcel in) {
         this.name = in.readString();
         this.section = in.readString();
     }
 
 
-    public static final Parcelable.Creator<ClassIitem> CREATOR = new Parcelable.Creator<ClassIitem>() {
+    public static final Parcelable.Creator<ClassItem> CREATOR = new Parcelable.Creator<ClassItem>() {
         @Override
-        public ClassIitem createFromParcel(Parcel source) {
-            return new ClassIitem(source);
+        public ClassItem createFromParcel(Parcel source) {
+            return new ClassItem(source);
         }
 
         @Override
-        public ClassIitem[] newArray(int size) {
-            return new ClassIitem[size];
+        public ClassItem[] newArray(int size) {
+            return new ClassItem[size];
         }
     };
 

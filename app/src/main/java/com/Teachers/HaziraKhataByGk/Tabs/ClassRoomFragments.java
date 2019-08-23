@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.Teachers.HaziraKhataByGk.AddEditClass.ClassAddActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.MyArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
@@ -20,14 +21,11 @@ import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Adapter.ClassListAdapter;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-
 
 
 public class ClassRoomFragments extends Fragment implements RecyclerItemClickListener{
@@ -40,6 +38,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     public GridLayoutManager gridLayoutManager;
 
     public View emptyView;
+    private boolean isClassListEmpty=true;
 
     public ClassRoomFragments() {
         // Required empty public constructor
@@ -49,8 +48,9 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     void initiView(){
 
         emptyView=rootView.findViewById(R.id.toDoEmptyView);
+
         //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
-        if(MainActivity.isClassListEmpty||FirebaseCaller.getCurrentUser()==null){
+        if(isClassListEmpty||FirebaseCaller.getCurrentUser()==null){
             emptyView.setVisibility(View.VISIBLE);
         }
         else {
@@ -65,8 +65,8 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
         });
 
         //VIEWS
-        recyclerViewForClass = (RecyclerView) rootView.findViewById(R.id.recycleViewFromFragmentOne);
-        btnAdd = (FloatingActionButton) rootView.findViewById(R.id.add);
+        recyclerViewForClass = rootView.findViewById(R.id.recycleViewFromFragmentOne);
+        btnAdd = rootView.findViewById(R.id.add);
         context = getContext();
         gridLayoutManager = new GridLayoutManager(context,2);
         recyclerViewForClass.setLayoutManager(gridLayoutManager);
@@ -96,62 +96,48 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     public void onResume() {
 
         //For loading class_room from Server
-        LoadDataFromServer();
+        loadDataFromServer();
         super.onResume();
     }
 
     @Override
     public void onItemClick(int position, View view) {
+        StaticData.currentClass = classListAdapter.getItem(position);
         ClassRoomActivity.start(getContext(), classListAdapter.getItem(position));
     }
 
     @Override
     public void onItemLongPressed(int position, View view) {
+        StaticData.currentClass = classListAdapter.getItem(position);
         ClassAddActivity.start(getContext(), classListAdapter.getItem(position));
     }
 
-     public  void LoadDataFromServer(){
+     public  void loadDataFromServer(){
         //For loading class_room from Server
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                MyArrayList<ClassIitem> ClassIitems =new MyArrayList<ClassIitem>();
+                MyArrayList<ClassItem> ClassIitems = new MyArrayList<>();
+
                 for(DataSnapshot classData:dataSnapshot.getChildren()){
-                    ClassIitem ClassIitem =new ClassIitem();
-                    ClassIitem =classData.getValue(ClassIitem.class);
-                    ClassIitems.add(ClassIitem);
+                    ClassIitems.add(classData.getValue(ClassItem.class));
                 }
-                MainActivity.TotalClassItems=new MyArrayList<ClassIitem>();
-                MainActivity.TotalClassItems= ClassIitems;
-                //IT MAKES THE INSTRUCTION ON CLASS FRAGMENT WHEN THERE IS NO CLASS
-                Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class");
-                queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        MainActivity.isClassListEmpty = !dataSnapshot.exists();
 
-                        //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
-                        if(MainActivity.isClassListEmpty||FirebaseCaller.getCurrentUser()==null){
-                          emptyView.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            emptyView.setVisibility(View.GONE);
-                        }
-                    }
+                MainActivity.totalClassItems=ClassIitems;
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}});
+                if(ClassIitems.size()==0)emptyView.setVisibility(View.VISIBLE);
+                else emptyView.setVisibility(View.GONE);
 
 
                 //SET ADAPTER
                 classListAdapter.clear();
-                classListAdapter.addAll(MainActivity.TotalClassItems);
+                classListAdapter.addAll(ClassIitems);
                 classListAdapter.notifyDataSetChanged();
 
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                emptyView.setVisibility(View.VISIBLE);
             }
         });
     }

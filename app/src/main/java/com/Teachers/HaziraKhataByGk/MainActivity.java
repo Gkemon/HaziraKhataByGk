@@ -29,17 +29,15 @@ import android.widget.TextView;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.BlogItem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
+import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Scheduler.ScheduleActivity;
 import com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData;
 import com.Teachers.HaziraKhataByGk.Scheduler.ToDoItem;
-
 import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
-
-import com.Teachers.HaziraKhataByGk.Model.JobItems;
-import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NewsFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NibondhonFragment;
@@ -49,8 +47,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OneSignal;
 
@@ -63,25 +59,22 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static ArrayList<ClassIitem> TotalClassItems;
+    public static ArrayList<ClassItem> totalClassItems;
     public static ArrayList<NewsItem> NewsList;
     public static ArrayList<JobItems> Job_list;
-    public  Activity activity;
-    public static boolean isClassListEmpty;
     public static ArrayList<NewsItem> saved_newsItem_for_main;
     public static ArrayList<BlogItem> saved_blogItem_for_main;
-    public  ArrayList<ToDoItem> toDoItemsFromMainActivity;
-    public  StoreRetrieveData storeRetrieveData;
-    public  Context context;
+
+    public Context context;
+    public Activity activity;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DrawerLayout drawer;
 
 
-
     public static boolean calledAlready = false;
     public static String mEmail;
-   // public static FirebaseUser mFirebaseUser;
+    // public static FirebaseUser mFirebaseUser;
     Toolbar toolbar;
 
 
@@ -91,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public PrefManagerForMain prefManagerForMain;
     NavigationView navigationView;
 
-    public void setUpDrawer(){
+    public void setUpDrawer() {
 
         //create default navigation drawer toggle
         drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -105,27 +98,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(null);
 
 
-
-
-
-
         FirebaseCaller.getFirebaseDatabase().keepSynced(true);
 
 
-        if(FirebaseCaller.getCurrentUser()!=null)
-        {
-            mEmail=FirebaseCaller.getCurrentUser().getEmail();
+        if (FirebaseCaller.getCurrentUser() != null) {
+            mEmail = FirebaseCaller.getCurrentUser().getEmail();
 
+        } else {
+            mEmail = "এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন";
         }
-        else {
-            mEmail="এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন";
-        }
-
 
 
         View headerView = navigationView.getHeaderView(0);
         RelativeLayout nav_header = (RelativeLayout) headerView.findViewById(R.id.user_pro_pic);
-        TextView emailText=(TextView)nav_header.findViewById(R.id.user_email);
+        TextView emailText = (TextView) nav_header.findViewById(R.id.user_email);
 
 
         emailText.setText(mEmail);
@@ -135,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.putExtra("FLAG","INSIDE");
+                intent.putExtra("FLAG", "INSIDE");
                 startActivity(intent);
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
                 drawer.closeDrawer(GravityCompat.START);
@@ -143,13 +129,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
     }
-    public void showHintDialogForFirstTime(){
+
+    public void showHintDialogForFirstTime() {
 
         prefManagerForMain = new PrefManagerForMain(this);
         if (prefManagerForMain.isFirstTimeLaunch()) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setMessage("আপনার সকল শিডিউল কাজগুলো মনে করিয়ে দিবে এই এপটি।শিডিউল রিমাইন্ডার পেতে হলে উপরের ঘড়ি চিহ্নটিতে ক্লিক করুন।");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -166,14 +153,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
 
-
-
-
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        OneSignal.startInit(this) .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification) .unsubscribeWhenNotificationsAreDisabled(true) .init();
+        OneSignal.startInit(this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification).unsubscribeWhenNotificationsAreDisabled(true).init();
 
         setUpDrawer();
         showHintDialogForFirstTime();
@@ -187,50 +171,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
 
-
-        if(FirebaseCaller.getCurrentUser()!=null)
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<NewsItem> NewsItem =new ArrayList<NewsItem>();
-                for(DataSnapshot classData:dataSnapshot.getChildren()){
-                    NewsItem newsItem1;
-                    newsItem1 =classData.getValue(NewsItem.class);
-                    NewsItem.add(newsItem1);
+        if (FirebaseCaller.getCurrentUser() != null)
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ArrayList<NewsItem> NewsItem = new ArrayList<NewsItem>();
+                    for (DataSnapshot classData : dataSnapshot.getChildren()) {
+                        NewsItem newsItem1;
+                        newsItem1 = classData.getValue(NewsItem.class);
+                        NewsItem.add(newsItem1);
+                    }
+                    MainActivity.saved_newsItem_for_main = new ArrayList<NewsItem>();
+                    MainActivity.saved_newsItem_for_main = NewsItem;
                 }
-                MainActivity.saved_newsItem_for_main =new ArrayList<NewsItem>();
-                MainActivity.saved_newsItem_for_main = NewsItem;
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
+                }
+            });
 
 
         //TODO: To saved load teachers post
-        if(FirebaseCaller.getCurrentUser()!=null)
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<BlogItem> blogItem_temp =new ArrayList<BlogItem>();
-                for(DataSnapshot blogData:dataSnapshot.getChildren()){
-                    BlogItem blog;
-                    blog=blogData.getValue(BlogItem.class);
-                    blogItem_temp.add(blog);
+        if (FirebaseCaller.getCurrentUser() != null)
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ArrayList<BlogItem> blogItem_temp = new ArrayList<BlogItem>();
+                    for (DataSnapshot blogData : dataSnapshot.getChildren()) {
+                        BlogItem blog;
+                        blog = blogData.getValue(BlogItem.class);
+                        blogItem_temp.add(blog);
+                    }
+                    saved_blogItem_for_main = blogItem_temp;
                 }
-                saved_blogItem_for_main = blogItem_temp;
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-
-
-
+                }
+            });
 
 
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -245,8 +225,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
 
 
-        if(FirebaseAuth.getInstance()!=null)
-        FirebaseCaller.getAuth().addAuthStateListener(authListener);
+        if (FirebaseAuth.getInstance() != null)
+            FirebaseCaller.getAuth().addAuthStateListener(authListener);
 
         super.onResume();
     }
@@ -289,13 +269,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.instruction:
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/",context);
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/", context);
 
                 break;
 
             case R.id.questuon_answer:
 
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/",context);
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/", context);
 
                 break;
 
@@ -303,15 +283,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setMessage("এপটি এখনো ডেভেলপিং দশায় রয়েছে । সুতরাং শিক্ষক হিসাবে আপনার মূল্যবান মতামত প্রদান করে ডেভেলপারকে সাহায্য করুন।");
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,"মতামত দিন",
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "মতামত দিন",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",context);
+                                UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/", context);
 
                             }
                         });
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,"বাদ দিন",new DialogInterface.OnClickListener() {
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "বাদ দিন", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
@@ -319,30 +299,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 alertDialog.show();
 
 
-
                 break;
             case R.id.FourG:
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +"binarygeek.a4gbangladeshByGkEmon")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "binarygeek.a4gbangladeshByGkEmon")));
                 } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" +"cbinarygeek.a4gbangladeshByGkEmon")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "cbinarygeek.a4gbangladeshByGkEmon")));
                 }
                 break;
             case R.id.nav_tutor_finder:
                 // getPackageName() from Context or Activity object
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +"com.tariqulislam.tutorfinder")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.tariqulislam.tutorfinder")));
                 } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" +"com.tariqulislam.tutorfinder")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.tariqulislam.tutorfinder")));
                 }
                 break;
             case R.id.share_the_app:
 
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_SEND);
-                i.putExtra(Intent.EXTRA_TEXT,"#হাজিরা_খাতা \n ( বাংলাভাষায় প্রথম ক্লাস ম্যানেজমেন্ট মোবাইল এপ )\n ডাউনলোড লিংক : https://play.google.com/store/apps/details?id=com.Teachers.HaziraKhataByGk");
+                i.putExtra(Intent.EXTRA_TEXT, "#হাজিরা_খাতা \n ( বাংলাভাষায় প্রথম ক্লাস ম্যানেজমেন্ট মোবাইল এপ )\n ডাউনলোড লিংক : https://play.google.com/store/apps/details?id=com.Teachers.HaziraKhataByGk");
                 i.setType("text/plain");
-                startActivity(Intent.createChooser(i,"শেয়ার করুন।"));
+                startActivity(Intent.createChooser(i, "শেয়ার করুন।"));
 
                 break;
 
@@ -351,19 +330,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final String appPackageNameRating = getPackageName(); // getPackageName() from Context or Activity object
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageNameRating)));
-                }
-                 catch (android.content.ActivityNotFoundException anfe) {
+                } catch (android.content.ActivityNotFoundException anfe) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageNameRating)));
                 }
                 break;
 
             case R.id.facebook_community_Title:
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045342365713144/",context);
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045342365713144/", context);
 
                 break;
 
             case R.id.about:
-                Intent intent1=new Intent(MainActivity.this, AboutActivity.class);
+                Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent1);
                 break;
         }
@@ -387,41 +365,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addFrag(new TextBookFragment(), "পাঠ্যবই");
         viewPager.setAdapter(adapter);
     }
+
     private void setupTabIcons() {
 
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText(" শ্রেণী কার্যক্রম");
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_class_fragment,0, 0, 0);
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_class_fragment, 0, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabTwo.setText(" শিক্ষক নিবন্ধন কর্নার");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_nibondhon,0, 0, 0);
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_nibondhon, 0, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabThree.setText(" শিক্ষা খবর");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_news,0, 0, 0);
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_news, 0, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabThree);
 
         TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabFour.setText(" তথ্য ঝুড়ি");
-        tabFour.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_tottho,0, 0, 0);
+        tabFour.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_tottho, 0, 0, 0);
         tabLayout.getTabAt(3).setCustomView(tabFour);
 
         TextView tabFive = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabFive.setText(" শিক্ষক নিয়োগ");
-        tabFive.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_job,0, 0, 0);
+        tabFive.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_job, 0, 0, 0);
         tabLayout.getTabAt(4).setCustomView(tabFive);
 
         TextView tabSix = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabSix.setText(" শিক্ষক কথন");
-        tabSix.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_shikkhok_kothon,0, 0, 0);
+        tabSix.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_shikkhok_kothon, 0, 0, 0);
         tabLayout.getTabAt(5).setCustomView(tabSix);
 
         TextView tabSeven = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabSeven.setText(" পাঠ্যবই");
-        tabSeven.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_text_book,0, 0, 0);
+        tabSeven.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_text_book, 0, 0, 0);
         tabLayout.getTabAt(6).setCustomView(tabSeven);
 
     }
@@ -433,6 +412,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
+
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
@@ -447,17 +427,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
+
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
     }
-
-
-
-
-
-
 
 
 }

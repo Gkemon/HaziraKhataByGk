@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class PrinterActivity extends AppCompatActivity {
    public static String  jan,fab,mar,apr,may,june,july,aug,sep,oct,nov,dec;
    public Button janButton,febButton,marButton,aprButton,mayButton,juneButton,julyButton,augButton,sepButton,octButton,novButton,decButton;
 
-    public static ClassIitem ClassIitem;
+    public static ClassItem ClassIitem;
 
     public LinearLayout emptyView;
 

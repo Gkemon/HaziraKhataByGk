@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,7 +36,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
     private EditText classNameEditText;
     private EditText sectionEditText;
     private Button btnAdd, btnEdit, btnDelete;
-    private ClassIitem classitem = null;
+    private ClassItem classitem = null;
 
 
     //This is for avoiding Delete SQL injection
@@ -50,7 +50,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
         context.startActivity(intent);
     }
 
-    public static void start(Context context, ClassIitem classitem) {
+    public static void start(Context context, ClassItem classitem) {
         Intent intent = new Intent(context, ClassAddActivity.class);
         intent.putExtra(ClassAddActivity.class.getSimpleName(), classitem);
         context.startActivity(intent);
@@ -98,7 +98,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == btnAdd) {
-            classitem = new ClassIitem();
+            classitem = new ClassItem();
             classitem.setName(classNameEditText.getText().toString().trim());
             classitem.setSection(sectionEditText.getText().toString().trim());
 
@@ -111,7 +111,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
             //CHECK THAT THE ITEM IS UNIQUE
 
             //for avoiding null pointer exeption
-            if(MainActivity.TotalClassItems==null)
+            if(MainActivity.totalClassItems == null)
             {
                 startActivity(new Intent(this,MainActivity.class));
                 return;
@@ -119,8 +119,8 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-            for(int i=0;i<MainActivity.TotalClassItems.size();i++){
-                if(MainActivity.TotalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.TotalClassItems.get(i).getSection().equals(classitem.getSection())){
+            for(int i = 0; i<MainActivity.totalClassItems.size(); i++){
+                if(MainActivity.totalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.totalClassItems.get(i).getSection().equals(classitem.getSection())){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warning_for_add);
@@ -144,16 +144,16 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
 
         }
         else if (v == btnDelete) {
-            classitem = new ClassIitem();
+            classitem = new ClassItem();
 
             classitem.setName(classNameEditText.getText().toString());
             classitem.setSection(sectionEditText.getText().toString());
 
             //FOR AVOID SQL INJECTION
-            for(int i=0;i<MainActivity.TotalClassItems.size();i++){
+            for(int i = 0; i<MainActivity.totalClassItems.size(); i++){
 
 
-                if(MainActivity.TotalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.TotalClassItems.get(i).getSection().equals(classitem.getSection())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
+                if(MainActivity.totalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.totalClassItems.get(i).getSection().equals(classitem.getSection())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -188,10 +188,10 @@ editClass();
         btnEdit.setOnClickListener(null);
 
            //FOR AVOID SQL INJECTION
-           for(int i=0;i<MainActivity.TotalClassItems.size();i++){
+           for(int i = 0; i<MainActivity.totalClassItems.size(); i++){
 
 
-               if(MainActivity.TotalClassItems.get(i).getName().equals(classNameEditText.getText().toString().trim())&&MainActivity.TotalClassItems.get(i).getSection().equals(sectionEditText.getText().toString().trim())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
+               if(MainActivity.totalClassItems.get(i).getName().equals(classNameEditText.getText().toString().trim())&&MainActivity.totalClassItems.get(i).getSection().equals(sectionEditText.getText().toString().trim())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                    alertDialog.setTitle("সতর্কীকরণ");
                    alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -361,8 +361,10 @@ editClass();
                                 .child(FirebaseCaller
                                 .getUserID())
                                 .child("Class")
-                                .child(classitem.getName() + classitem.getSection())
-                                .setValue(classitem).addOnSuccessListener(ClassAddActivity.this, new OnSuccessListener<Void>() {
+                                .child(classitem.getName()+classitem.getSection())
+                                .setValue(classitem)
+                                .addOnSuccessListener(ClassAddActivity.this, new OnSuccessListener<Void>() {
+
                             @Override
                             public void onSuccess(Void aVoid) {
 

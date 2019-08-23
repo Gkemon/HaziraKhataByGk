@@ -11,6 +11,7 @@ import com.Teachers.HaziraKhataByGk.Adapter.SubjectMarkSheetAdaper;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,10 +74,10 @@ public class FirebaseCaller {
         });
 
     }
-    public static DatabaseReference getSingleStudentDbRef(String className,String sectionName,String roll){
+    public static DatabaseReference getSingleStudentDbRef(Student student){
        return FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
                 child("Class").
-                child(className + sectionName).child("Student").child(roll);
+                child(student.getStudentClass() + student.getStudentSection()).child("Student").child(student.getId());
     }
 
     public static DatabaseReference getSingleStudentAttendanceDbRef(String className,String sectionName,String roll){

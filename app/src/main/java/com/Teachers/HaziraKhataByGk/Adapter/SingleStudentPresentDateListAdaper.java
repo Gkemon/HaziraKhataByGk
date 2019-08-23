@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.bumptech.glide.Glide;
@@ -24,14 +24,14 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
    public ArrayList<String> attendenceListForSingleStudent;
    public Activity activity;
 
-   public ClassIitem ClassIitem;
+   public ClassItem ClassIitem;
 
    public ArrayList<AttendenceData> attendenceDataArrayList;
    public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
     public String roll;
 
 
-    public SingleStudentPresentDateListAdaper( Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent, ClassIitem ClassIitem, ArrayList<AttendenceData> attendenceDataArrayList, String roll) {
+    public SingleStudentPresentDateListAdaper(Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent, ClassItem ClassIitem, ArrayList<AttendenceData> attendenceDataArrayList, String roll) {
         this.attendenceListForSingleStudent = attendenceListForSingleStudent;
         this.activity = activity;
         this.absentPresent=absentPresent;

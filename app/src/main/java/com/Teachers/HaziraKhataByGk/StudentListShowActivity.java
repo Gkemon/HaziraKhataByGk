@@ -8,15 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.Teachers.HaziraKhataByGk.Adapter.StudentListAdapter;
+import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +31,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
     private RecyclerView studentItems;
     private FloatingActionButton btnAdd;
     private Context context;
-    public static ClassIitem contactofSA;
+    public static ClassItem contactofSA;
     private StudentListAdapter studentListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout linearLayoutForEmptyView;
@@ -129,7 +128,10 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
     }
         @Override
         public void onItemClick ( int position, View view){
+
+            StaticData.currentStudent=studentListAdapter.getItem(position);
             StudentAddActivity.start(this, studentListAdapter.getItem(position));
+
         }
         @Override
         public void onItemLongPressed ( int position, View view){

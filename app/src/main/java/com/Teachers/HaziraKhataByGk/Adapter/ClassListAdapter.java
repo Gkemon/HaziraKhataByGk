@@ -12,7 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.ContactHolder>{
 
-    private ArrayList<ClassIitem> classitemList;
+    private ArrayList<ClassItem> classitemList;
     private Context context;
 
     private RecyclerItemClickListener recyclerItemClickListener;
@@ -35,20 +36,20 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
         this.classitemList = new ArrayList<>();
     }
 
-    private void add(ClassIitem item) {
+    private void add(ClassItem item) {
         classitemList.add(item);
         notifyItemInserted(classitemList.size() - 1);
     }
 
-    public void addAll(ArrayList<ClassIitem> classitemList) {
+    public void addAll(ArrayList<ClassItem> classitemList) {
         if(classitemList!=null) {
-            for (ClassIitem classitem : classitemList) {
+            for (ClassItem classitem : classitemList) {
                 add(classitem);
             }
         }
     }
 
-    public void remove(ClassIitem item) {
+    public void remove(ClassItem item) {
         int position = classitemList.indexOf(item);
         if (position > -1) {
             classitemList.remove(position);
@@ -62,7 +63,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
         }
     }
 
-    public ClassIitem getItem(int position) {
+    public ClassItem getItem(int position) {
         return classitemList.get(position);
     }
 
@@ -106,7 +107,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
         }
         else {
-            final ClassIitem classitem = classitemList.get(position);
+            final ClassItem classitem = classitemList.get(position);
 
             if (classitem != null&&classitem.getName()!=null) {
                 final Resources res = context.getResources();
@@ -119,8 +120,16 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                     ColorGenerator generator = ColorGenerator.MATERIAL;
                     int color = generator.getRandomColor();
 
-                    if(classitem.getName()==null){
-                        classitem.setName("");
+                    if(classitem.getName().isEmpty()){
+
+                        FirebaseCaller.getFirebaseDatabase()
+                                .child("Users")
+                                .child(FirebaseCaller
+                                        .getUserID())
+                                .child("Class")
+                                .child(classitem.getName() + classitem.getSection())
+                                .removeValue();
+                        classitem.setName("No class name");
                     }
 
                     TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
@@ -151,7 +160,6 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
                 }catch (Exception e){
                     Toast.makeText(context,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
-
                 }
 
 

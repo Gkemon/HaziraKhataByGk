@@ -16,7 +16,7 @@ import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -30,13 +30,13 @@ public class AttendenceListAdapter extends BaseAdapter {
 
 
     public static FirebaseAuth auth;
-    public ClassIitem classItem;
+    public ClassItem classItem;
 
     private   ArrayList<String> nameList;
     public Activity activity;
     private ArrayList<Boolean> attendanceList;
     public List<Student> studentArrayList;
-    public AttendenceListAdapter(Activity activity, ArrayList<String> nameList, ClassIitem classItem, List<Student> studentArrayList) {
+    public AttendenceListAdapter(Activity activity, ArrayList<String> nameList, ClassItem classItem, List<Student> studentArrayList) {
         this.nameList = nameList;
         this.activity = activity;
         this.classItem = classItem;

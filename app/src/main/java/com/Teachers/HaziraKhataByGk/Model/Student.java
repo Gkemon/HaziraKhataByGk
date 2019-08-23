@@ -18,6 +18,8 @@ public class Student implements Parcelable {
         this.ParentContact = in.readString();
         this.StudentsContactNumber =in.readString();
         this.ParentName=in.readString();
+        this.StudentClass=in.readString();
+        this.StudentSection=in.readString();
     }
     public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
         @Override
@@ -92,6 +94,8 @@ public class Student implements Parcelable {
         dest.writeString(this.ParentContact);
         dest.writeString(this.StudentsContactNumber);
         dest.writeString(this.ParentName);
+        dest.writeString(this.StudentClass);
+        dest.writeString(this.StudentSection);
     }
 
 

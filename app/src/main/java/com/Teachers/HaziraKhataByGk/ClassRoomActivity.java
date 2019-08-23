@@ -16,8 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -31,7 +29,7 @@ import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +44,7 @@ import java.util.List;
 
 public class ClassRoomActivity extends AppCompatActivity  implements RecyclerItemClickListener {
 
-    public static void start(Context context, ClassIitem classitem) {
+    public static void start(Context context, ClassItem classitem) {
         Intent intent = new Intent(context, ClassRoomActivity.class);
         intent.putExtra(ClassRoomActivity.class.getSimpleName(), classitem);
         context.startActivity(intent);
@@ -59,7 +57,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     private NoteListAdapter noteListAdapter;
     private Context context;
     private LinearLayout linearLayoutForPresent, linearLayoutForStudentProfile;
-    public static ClassIitem classitem;
+    public static ClassItem classitem;
     public static List<Notes> notesList;
     public Button feesButton,DailyAndMontlyRecord,marksheetButton;
     View EmptyView;
@@ -93,7 +91,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
 
         LoadNotes();
-        LoadData();
+        loadData();
         ClickListenerForDailyAndMonthlyRecord();
 
     }
@@ -308,14 +306,9 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         });
 
     }
-    void  HideNotifiationBar(){
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
 
-    void LoadData(){
+
+    void loadData(){
 
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 

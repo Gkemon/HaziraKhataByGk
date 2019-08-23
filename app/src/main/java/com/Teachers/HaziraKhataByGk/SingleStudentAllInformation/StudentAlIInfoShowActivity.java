@@ -20,12 +20,10 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.Adapter.SingleStudentPresentDateListAdaper;
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
@@ -35,14 +33,11 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
-import com.Teachers.HaziraKhataByGk.Model.ClassIitem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,12 +49,8 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
     private TextView studentName;
     public Button studentPhoneNumber;
     public Button parentPhoneNumber;
-    public ClassIitem classItem;
-
+    public ClassItem classItem;
     public RecyclerView rvDataWiseAttendence;
-    private ArrayList<String> attendenceTextListForSingleStudent;
-    private ArrayList<Boolean> isPresentAbsentList;
-
     public  Student student;
     public static String time,yearWithDate,year,month,day;
     public Spinner spinnerMonth;
@@ -88,37 +79,29 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         studentPhoneNumber =findViewById(R.id.studentPhoneNumber);
         parentPhoneNumber = findViewById(R.id.parentPhoneNumber);
         spinnerMonth = findViewById(R.id.spinner_month);
-        spinnerMonth.setOnItemSelectedListener(this);
-
         progressBar =findViewById(R.id.progressBarInSingleStudentActivity);
-
-        //EMPTY VIEW
+        spinnerMonth.setOnItemSelectedListener(this);
         emptyView =findViewById(R.id.toDoEmptyView);
-
-
-
-        roll = getIntent().getStringExtra("Roll");
-        activity = this;
-
         rvDataWiseAttendence=findViewById(R.id.rv_dateWishAttendance);
+
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvDataWiseAttendence.setLayoutManager(layoutManager);
         mAdapter = new SingleStudentAttendanceAdapter(this,this);
         rvDataWiseAttendence.setAdapter(mAdapter);
 
-        dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(StaticData.currentClassName,StaticData.currentSection,roll);
-        attendenceTextListForSingleStudent = new ArrayList<>();
-        isPresentAbsentList = new ArrayList<>();
 
-        attendenceTextListForSingleStudent =new ArrayList<>();
         totalAttendenceDataArrayList =new ArrayList<>();
-
+        roll = getIntent().getStringExtra("Roll");
+        activity = this;
 
         classItem =getIntent().getParcelableExtra("classItem");
         student = getIntent().getParcelableExtra("Student");
+
+        dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(student);
+
+
         loadDataFromServer();
-
-
         initializePhoneNumbers();
     }
 
@@ -130,6 +113,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             public void onFailure(String r) {
                 super.onFailure(r);
                 progressBar.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -159,6 +143,9 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
                 //TODO: Sorting by date
 
+
+                if(totalAttendenceDataArrayList.size()==0)
+                    emptyView.setVisibility(View.VISIBLE);
 
 
                 setUpHeader(totalAttendenceDataArrayList);
@@ -204,8 +191,6 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
 
 
-
-
                         }
                     }
                 });
@@ -218,7 +203,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 return true;
             case R.id.action_add_single_attendence:
 
-                CreateDialogForAddAttendence();
+                createDialogForAddAttendence();
                 return true;
 
             default:
@@ -229,48 +214,8 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
     public void setUpAttandanceList(ArrayList<AttendenceData> attandanceList){
 
-
-                attendenceTextListForSingleStudent.clear();
-                isPresentAbsentList.clear();
-
-
-
-                for (AttendenceData att : attandanceList) {
-
-                    String subject="";
-
-                    if (att != null) {
-
-                        if (!att.getSubject().equals("")) {
-                            subject = "(" + att.getSubject() + ")";
-                        }
-
-
-                        if (att.getStatus())
-                            attendenceTextListForSingleStudent.add(att.getDate() + subject + "  উপস্থিত");
-                        else {
-                            attendenceTextListForSingleStudent.add(att.getDate() + subject + "  অনুপস্থিত");
-                        }
-                        isPresentAbsentList.add(att.getStatus());
-                    }
-                }
-
-
-
-
-
-                if(attendenceTextListForSingleStudent.size()==0)
-                    emptyView.setVisibility(View.VISIBLE);
-
-        UtilsCommon.debugLog("attendenceDataArrayList: "+attendenceTextListForSingleStudent.size());
-
-
-
-
-
         rvDataWiseAttendence.setItemViewCacheSize(attandanceList.size());
         mAdapter.setAttendenceDataArrayList(attandanceList);
-
 
             }
 
@@ -341,11 +286,11 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
     }
 
-    public void CreateDialogForAddAttendence(){
+    public void createDialogForAddAttendence(){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater1 = this.getLayoutInflater();
         final View v = inflater1.inflate(R.layout.dialoage_for_single_attendence_items, null);
-        final EditText Subject = (EditText) v.findViewById(R.id.periodID);
+        final EditText Subject = v.findViewById(R.id.periodID);
         builder.setView(v).setPositiveButton("উপস্থিত", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int id) {
@@ -370,7 +315,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     //Add to database
                     FirebaseCaller.getFirebaseDatabase().child("Users").
                             child(FirebaseCaller.getUserID()).child("Class").
-                            child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection())
+                            child(student.getStudentClass()+student.getStudentSection())
                             .child("Student").child(student.getId()).child("Attendance").push()
                             .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                         @Override
@@ -405,7 +350,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 //  Add to database
                 FirebaseCaller.getFirebaseDatabase().child("Users").
                         child(FirebaseCaller.getUserID()).child("Class").
-                        child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection())
+                        child(student.getStudentClass()+student.getStudentSection())
                         .child("Student").child(student.getId()).child("Attendance").push()
                         .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                     @Override
@@ -453,9 +398,9 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         final int pos2= totalAttendenceDataArrayList.size()-1-pos1;
         final int pos=pos1;
         final View v = inflater.inflate(R.layout.dialoage_for_edit_single_attendence_items, null);
-        final EditText Subject = (EditText) v.findViewById(R.id.periodID);
-        final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance
-        final CheckBox checkBox1 =(CheckBox) v.findViewById(R.id.absentMarker);//For absent
+        final EditText Subject = v.findViewById(R.id.periodID);
+        final CheckBox checkBox =v.findViewById(R.id.attMarker);//For attendance
+        final CheckBox checkBox1 =v.findViewById(R.id.absentMarker);//For absent
         final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
 
 
@@ -546,7 +491,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                                         child("Users").
                                         child(FirebaseCaller.getUserID()).
                                         child("Class").
-                                        child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).
+                                        child(student.getStudentClass()+student.getStudentSection()).
                                         child("Student").child(student.getId()).
                                         child("Attendance").
                                         child( attendenceData.getKey()).
