@@ -162,6 +162,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
                         className=contactofSA.getName();
                     }
 
+
                     FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(className+section).child("Student").child(student.getId()).setValue(student);
                 Toast.makeText(this, "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
                 finish();
