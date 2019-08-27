@@ -148,7 +148,21 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
 
             if (student.getId() != null) {
                 if(submitForm()){
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
+
+
+                    String section="";
+                    String className="";
+
+                    if(StaticData.currentClass!=null) {
+                        section =StaticData.currentClass.getSection();
+                        className = StaticData.currentClass.getName();
+                    }
+                    else if(contactofSA!=null){
+                        section=contactofSA.getSection();
+                        className=contactofSA.getName();
+                    }
+
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(className+section).child("Student").child(student.getId()).setValue(student);
                 Toast.makeText(this, "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -183,7 +197,20 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             //FOR VALIDATION
             if(submitForm()){
                 //First GETTING ITS ATTENDANCE DATA
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(previousId).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                String section="";
+                String className="";
+
+                if(StaticData.currentClass!=null) {
+                    section =StaticData.currentClass.getSection();
+                    className = StaticData.currentClass.getName();
+                }
+                else if(contactofSA!=null){
+                    section=contactofSA.getSection();
+                    className=contactofSA.getName();
+                }
+
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(className+section).child("Student").child(previousId).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                       final  ArrayList<AttendenceData> attendenceDatalistInFB=new ArrayList<AttendenceData>();
