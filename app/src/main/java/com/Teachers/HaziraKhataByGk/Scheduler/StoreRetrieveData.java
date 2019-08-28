@@ -40,7 +40,7 @@ public class StoreRetrieveData {
 
         for(ToDoItem toDoItem:items) {
             databaseReference.push().setValue(toDoItem);
-            UtilsCommon.debugLog(toDoItem.getToDoContent()+" from for loop");
+            UtilsCommon.debugLog(toDoItem.getToDoContent()+" fromTime for loop");
         }
 
 
@@ -68,7 +68,7 @@ public class StoreRetrieveData {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("GK","from loadToDoFromServer "+dataSnapshot.getChildrenCount());
+                Log.d("GK","fromTime loadToDoFromServer "+dataSnapshot.getChildrenCount());
                 for(DataSnapshot toDoitemData:dataSnapshot.getChildren()){
                     ToDoItem toDoItem=new ToDoItem();
                     toDoItem=toDoitemData.getValue(ToDoItem.class);

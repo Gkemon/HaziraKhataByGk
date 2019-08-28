@@ -303,7 +303,7 @@ public class PrinterActivity extends AppCompatActivity {
     public void SeparatingData(){
 
 
-        //if we come from class room activity to print activity directly
+        //if we come fromTime class room activity toTime print activity directly
         if(studentListForPrintActiviyFromAttendenceActivity==null){
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
@@ -317,7 +317,7 @@ public class PrinterActivity extends AppCompatActivity {
             // Log.d("GK",Student.getStudentName()+ " Student name");
             ArrayList<AttendenceData> attendenceDatalist=new ArrayList<>();
 
-            //if we come from class room activity to print activity directly
+            //if we come fromTime class room activity toTime print activity directly
             if(perStudentTotalAttendenceData==null){
                 perStudentTotalAttendenceData= ClassRoomActivity.perStudentTotalAttendenceData;
             }

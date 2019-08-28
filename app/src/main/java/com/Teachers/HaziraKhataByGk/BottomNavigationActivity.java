@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
@@ -65,10 +66,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //HIDING NOTIFICATION BAR
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_bottom_navigation);
         context=this;
@@ -94,7 +91,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        // If BottomNavigationView has more than 3 items, using reflection to disable shift mode
+        // If BottomNavigationView has more than 3 items, using reflection toTime disable shift mode
         BottomNavigationViewHelper.disableShiftMode(navigation);
     }
 
@@ -116,9 +113,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 case 2:
                     navigation.setSelectedItemId(R.id.savedBlogs);
                     break;
-//                case 3:
-//                    navigation.setSelectedItemId(R.id.other_links);
-//                    break;
             }
         }
 
@@ -142,9 +136,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 case R.id.savedBlogs:
                     viewPager.setCurrentItem(2);
                     return true;
-//                case R.id.other_links:
-//                    viewPager.setCurrentItem(3);
-//                    return true;
             }
             return false;
         }
@@ -165,7 +156,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
             mAdView.resume();
         }
 
-        //TODO: IT MAKES THE INSTRUCTION ON saved news FRAGMENT WHEN THERE IS NO news For loading saved news from Server
+        //TODO: IT MAKES THE INSTRUCTION ON saved news FRAGMENT WHEN THERE IS NO news For loading saved news fromTime Server
         Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news");
         queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
@@ -178,7 +169,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
 
 
-        //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job from Server
+        //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job fromTime Server
         Query queryReforSeeTheDataIsEmptyOrNotForsavedJob = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs");
         queryReforSeeTheDataIsEmptyOrNotForsavedJob.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
@@ -194,7 +185,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
 
 
-        //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job from Server
+        //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job fromTime Server
         Query queryReforSeeTheDataIsEmptyOrNotForsavedBlog = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog");
         queryReforSeeTheDataIsEmptyOrNotForsavedBlog.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
@@ -211,77 +202,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFrag(Fragment fragment) {
-            mFragmentList.add(fragment);
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        //ADMOB
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                .build();
-        adlayout=findViewById(R.id.ads);
-        mAdView = (AdView) findViewById(R.id.adViewInHome);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adlayout.setVisibility(View.GONE);
-                // Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onAdLeftApplication() {
-                // Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
-
-
-        super.onStart();
-    }
 
 
 
-    @Override
-    public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-        super.onDestroy();
-    }
 
 }
 

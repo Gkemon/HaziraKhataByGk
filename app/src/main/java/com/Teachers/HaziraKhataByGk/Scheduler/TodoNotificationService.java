@@ -56,7 +56,7 @@ long [] vibration ={1000,2000,3000};
         deleteIntent.putExtra(TODOUUID, mTodoUUID);
 
 
-        //if it is on daily so then no need to set delete intert
+        //if it is on daily so then no need toTime set delete intert
 
 
         if(isDaily.equals("true")){
@@ -74,7 +74,7 @@ long [] vibration ={1000,2000,3000};
                     .setSmallIcon(R.drawable.ic_schedule_new)
                     .setAutoCancel(true)
                     .setVibrate(vibration)
-                    .setDeleteIntent(PendingIntent.getService(this, -11, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT))//-11 because there is no possibility to exit and -11 intexed items.we don't want to remove the item because this is daily
+                    .setDeleteIntent(PendingIntent.getService(this, -11, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT))//-11 because there is no possibility toTime exit and -11 intexed items.we don't want toTime remove the item because this is daily
                     .setContentIntent(PendingIntent.getActivity(this, mTodoUUID, intentForGOToSchedule, PendingIntent.FLAG_UPDATE_CURRENT))
                    .build();
             manager.notify(100, notification);

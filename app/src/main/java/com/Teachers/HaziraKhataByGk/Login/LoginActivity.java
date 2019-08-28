@@ -331,8 +331,8 @@ public class LoginActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                            // If sign in fails, display a message to the user. If sign in succeeds
-                                            // the auth state listener will be notified and logic to handle the
+                                            // If sign in fails, display a message toTime the user. If sign in succeeds
+                                            // the auth state listener will be notified and logic toTime handle the
                                             // signed in user can be handled in the listener.
                                             progressBar.setVisibility(View.GONE);
                                             if (!task.isSuccessful()) {

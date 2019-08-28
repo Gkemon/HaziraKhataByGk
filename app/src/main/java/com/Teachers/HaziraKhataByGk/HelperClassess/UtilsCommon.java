@@ -192,7 +192,7 @@ public class UtilsCommon {
         final StackTraceElement stackTrace = new Exception().getStackTrace()[1];
 
         String fileName = stackTrace.getFileName();
-        if (fileName == null) fileName="";  // It is necessary if you want to use proguard obfuscation.
+        if (fileName == null) fileName="";  // It is necessary if you want toTime use proguard obfuscation.
 
         final String info = stackTrace.getMethodName() + " (" + fileName + ":"
                 + stackTrace.getLineNumber() + ")";

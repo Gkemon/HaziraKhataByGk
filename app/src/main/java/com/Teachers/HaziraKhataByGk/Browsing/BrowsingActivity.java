@@ -170,7 +170,7 @@ public class BrowsingActivity extends AppCompatActivity{
 //    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
+//        // Inflate the menu; this adds items toTime the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.browser, menu);
 //
 //        tintMenuIcon(getApplicationContext(), menu.getItem(0), android.R.color.white);
@@ -314,7 +314,7 @@ public class BrowsingActivity extends AppCompatActivity{
 //        Drawable drawable = item.getIcon();
 //        if (drawable != null) {
 //            // If we don't mutate the drawable, then all drawable's with this id will have a color
-//            // filter applied to it.
+//            // filter applied toTime it.
 //            drawable.mutate();
 //            drawable.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
 //        }

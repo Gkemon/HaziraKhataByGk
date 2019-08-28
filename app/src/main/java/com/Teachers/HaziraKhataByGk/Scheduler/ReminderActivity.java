@@ -103,7 +103,7 @@ public class ReminderActivity extends AppCompatActivity {
         mRemoveToDoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   app.send(this, "Action", "Todo Removed from Reminder Activity");
+             //   app.send(this, "Action", "Todo Removed fromTime Reminder Activity");
 
 
                 if(!mItem.isDaily())

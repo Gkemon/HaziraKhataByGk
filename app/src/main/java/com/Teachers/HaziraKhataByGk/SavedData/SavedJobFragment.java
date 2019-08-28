@@ -120,7 +120,7 @@ public class SavedJobFragment extends Fragment implements RecyclerItemClickListe
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").addValueEventListener(new ValueEventListener() {
             @Override
             public  void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("GK","Jobfragment retriving data from server");
+                Log.d("GK","Jobfragment retriving data fromTime server");
                 ArrayList<JobItems> JobItemlist=new ArrayList<JobItems>();
                 for(DataSnapshot JobItemsData:dataSnapshot.getChildren()){
                     JobItems Single_JobItems;
@@ -132,7 +132,7 @@ public class SavedJobFragment extends Fragment implements RecyclerItemClickListe
 
 
                 //        IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job
-//        For loading saved job from Server
+//        For loading saved job fromTime Server
                 Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs");
                 queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override

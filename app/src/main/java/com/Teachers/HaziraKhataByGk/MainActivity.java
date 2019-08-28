@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_tutor_finder:
-                // getPackageName() from Context or Activity object
+                // getPackageName() fromTime Context or Activity object
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.tariqulislam.tutorfinder")));
                 } catch (android.content.ActivityNotFoundException anfe) {
@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.rating:
 
-                final String appPackageNameRating = getPackageName(); // getPackageName() from Context or Activity object
+                final String appPackageNameRating = getPackageName(); // getPackageName() fromTime Context or Activity object
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageNameRating)));
                 } catch (android.content.ActivityNotFoundException anfe) {

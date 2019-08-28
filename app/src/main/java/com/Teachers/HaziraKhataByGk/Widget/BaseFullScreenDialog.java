@@ -4,25 +4,19 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.Routine.RoutineShowingFullScreenDialog;
+import com.Teachers.HaziraKhataByGk.Routine.AllRoutineShowingDialog;
 
 
 public class BaseFullScreenDialog extends DialogFragment {
 
     public static void showDialog(android.support.v4.app.FragmentManager manager){
 
-        RoutineShowingFullScreenDialog dialog = new RoutineShowingFullScreenDialog();
+        AllRoutineShowingDialog dialog = new AllRoutineShowingDialog();
         FragmentTransaction ft = manager.beginTransaction();
-        dialog.show(ft, "RoutineShowingFullScreenDialog");
+        dialog.show(ft, "AllRoutineShowingDialog");
 
     }
 

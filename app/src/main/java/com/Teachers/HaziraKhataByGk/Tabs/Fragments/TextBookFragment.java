@@ -81,7 +81,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -117,7 +117,7 @@ public class TextBookFragment extends Fragment {
             public void onClick(View v) {
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
                 openInAppBrowser("http://digitalcontent.ictd.gov.bd/index.php/tutorial/digitalcontent");
@@ -151,7 +151,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -186,7 +186,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
                 openInAppBrowser("http://www.nctb.gov.bd/site/page/31b9c154-efe6-4bec-8272-f954678dbf32/%E0%A6%A6%E0%A7%8D%E0%A6%AC%E0%A6%BF%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%B6%E0%A7%8D%E0%A6%B0%E0%A7%87%E0%A6%A3%E0%A6%BF-");
@@ -219,7 +219,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -253,7 +253,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -288,7 +288,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -323,7 +323,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -357,7 +357,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -392,7 +392,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -427,7 +427,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -462,7 +462,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -498,7 +498,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -533,7 +533,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -568,7 +568,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -604,7 +604,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -638,7 +638,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -673,7 +673,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -709,7 +709,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -743,7 +743,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -778,7 +778,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -811,7 +811,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -845,7 +845,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -880,7 +880,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -914,7 +914,7 @@ public class TextBookFragment extends Fragment {
             public void onClick(View v) {
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 
@@ -948,7 +948,7 @@ public class TextBookFragment extends Fragment {
 
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 

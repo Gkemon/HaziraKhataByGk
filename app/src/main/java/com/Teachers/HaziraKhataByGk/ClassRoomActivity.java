@@ -64,7 +64,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
     public static String FLAG_OF_CLASSROOM_ACTIVITY="class_room";
 
-    //for class activity to class record
+    //for class activity toTime class record
     public static List<Student> studentListFromAttendenceActivity;
     public static List<Student> studentListForPrintActiviyFromAttendenceActivity;
     public static HashMap<String,ArrayList<AttendenceData>> perStudentTotalAttendenceData;//for creating month wise data sheet;

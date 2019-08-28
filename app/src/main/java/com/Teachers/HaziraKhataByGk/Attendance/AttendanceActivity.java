@@ -248,7 +248,7 @@ public class AttendanceActivity extends AppCompatActivity {
         attendenceDataArrayListForPerStudent =new ArrayList<AttendenceData>();
 
 
-        //Log.d("GK", classitemAttendence.getName() + " Class from attendence");
+        //Log.d("GK", classitemAttendence.getName() + " Class fromTime attendence");
         saveAttendenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

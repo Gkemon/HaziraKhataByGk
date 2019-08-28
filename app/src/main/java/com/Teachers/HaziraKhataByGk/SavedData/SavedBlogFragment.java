@@ -136,7 +136,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
 
 
 
-        //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job from Server
+        //TODO: IT MAKES THE INSTRUCTION ON saved job FRAGMENT WHEN THERE IS NO saved job For loading saved job fromTime Server
                 Query queryReforSeeTheDataIsEmptyOrNotForsavedBlog = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog");
                 queryReforSeeTheDataIsEmptyOrNotForsavedBlog.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override

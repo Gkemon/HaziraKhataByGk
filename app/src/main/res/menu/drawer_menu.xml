@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--TODO: Must use id in group to create a line between two group-->
+    <!--TODO: Must use id in group toTime create a line between two group-->
 
     <group android:checkableBehavior="none"
         android:id="@+id/group1">

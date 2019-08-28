@@ -37,7 +37,7 @@ public class CustomTextInputLayout extends TextInputLayout {
         super.onDraw(canvas);
 
         if (!mIsHintSet && ViewCompat.isLaidOut(this)) {
-            // We have to reset the previous hint so that equals check pass
+            // We have toTime reset the previous hint so that equals check pass
             setHint(null);
 
             // In case that hint is changed programatically

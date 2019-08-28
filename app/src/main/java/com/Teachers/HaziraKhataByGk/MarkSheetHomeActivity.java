@@ -195,7 +195,7 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
 
             final EditText entityNameEditText = (EditText) dialogView.findViewById(R.id.subject_sub_division_number);
 
-            //Todo Have to fixed that bug , i want to small the hint size but cannot
+            //Todo Have toTime fixed that bug , i want toTime small the hint size but cannot
             entityNameEditText.setHint(numberOfDistribution+1-i+ Html.fromHtml("<small><small>" +
                     getString(R.string.hint_for_distribution_entry)+ "</small></small>").toString()+"");
             entityNameEditText.setInputType(InputType.TYPE_CLASS_TEXT);

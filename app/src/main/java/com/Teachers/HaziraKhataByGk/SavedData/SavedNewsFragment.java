@@ -154,7 +154,7 @@ public class SavedNewsFragment extends Fragment implements RecyclerItemClickList
                 Saved_News_list= NewsItems;
 
                 //        IT MAKES THE INSTRUCTION ON saved news FRAGMENT WHEN THERE IS NO news
-//        For loading saved news from Server
+//        For loading saved news fromTime Server
                 Query queryReforSeeTheDataIsEmptyOrNot = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news");
                 queryReforSeeTheDataIsEmptyOrNot.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override

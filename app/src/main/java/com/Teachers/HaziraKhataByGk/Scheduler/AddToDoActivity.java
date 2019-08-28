@@ -69,7 +69,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
     public ProgressBar progressBar;
     private StoreRetrieveData storeRetrieveData;
-    private Boolean IsNewToDo;//For dialog showing because we don't need to show warning for a new to do item
+    private Boolean IsNewToDo;//For dialog showing because we don't need toTime show warning for a new toTime do item
     public ArrayList<ToDoItem> mToDoItemsArrayList;
     public Context context;
     ImageButton reminderIconImageButton;
@@ -150,7 +150,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             @Override
             public void onClick(View v) {
 
-                //Get to do items
+                //Get toTime do items
 
 
                 //Check duplicate
@@ -473,7 +473,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         mUserToDoItem.setDaily(switchCompatForDailyRemind.isChecked());
 
 
-        //If remainder is not check then there is no scope to do it as an daily remainder
+        //If remainder is not check then there is no scope toTime do it as an daily remainder
         if(!mToDoDateSwitch.isChecked())mUserToDoItem.setDaily(false);
         mUserToDoItem.setHasReminder(mToDoDateSwitch.isChecked());
 
@@ -508,7 +508,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
         else {
             Log.d("GK","IsNewToDo NO");
 
-            //Re collecting to avoid error
+            //Re collecting toTime avoid error
 
 
 
@@ -545,7 +545,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             }
         }
 
-//When there is no to do text is setted
+//When there is no toTime do text is setted
         if(mUserToDoItem.getToDoText().equals("")){
             super.onBackPressed();
             finish();
@@ -712,7 +712,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             Log.d("GK","TODO NEXT"+ mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()+" "+IsNewToDo);
             if ((mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
 
-                //when it is called from onbackpressed then don't need to show alertdialog
+                //when it is called fromTime onbackpressed then don't need toTime show alertdialog
                 if(isInBackPressed) return true;
                 
                 Log.d("GK","GET MILL");
@@ -737,7 +737,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
 
     }
 
-    //This is for fab button to check duplicate elements
+    //This is for fab button toTime check duplicate elements
     public Boolean CheckDuplicateForFAB(){
 
 
@@ -761,7 +761,7 @@ public class AddToDoActivity extends AppCompatActivity implements  DatePickerDia
             Log.d("GK","TODO NEXT "+ mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()+" "+IsNewToDo);
             if ((mToDoItemsArrayList.get(i).getToDoText()+ mToDoItemsArrayList.get(i).getToDoContent()).equals(tempForTitle+tempForContent)&&IsNewToDo) {
 
-                //when it is called from onbackpressed then don't need to show alertdialog
+                //when it is called fromTime onbackpressed then don't need toTime show alertdialog
 
                 Log.d("GK","GET MILL");
                 AlertDialog alertDialog = new AlertDialog.Builder(context).create();

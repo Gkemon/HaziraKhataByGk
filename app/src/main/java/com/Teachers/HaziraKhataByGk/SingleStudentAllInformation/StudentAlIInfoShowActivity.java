@@ -312,7 +312,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     attendenceData.setSubject(subject);
                     attendenceData.setDate(formatedDate);
 
-                    //Add to database
+                    //Add toTime database
                     FirebaseCaller.getFirebaseDatabase().child("Users").
                             child(FirebaseCaller.getUserID()).child("Class").
                             child(student.getStudentClass()+student.getStudentSection())
@@ -347,7 +347,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 attendenceData.setDate(formatedDate);
 
 
-                //  Add to database
+                //  Add toTime database
                 FirebaseCaller.getFirebaseDatabase().child("Users").
                         child(FirebaseCaller.getUserID()).child("Class").
                         child(student.getStudentClass()+student.getStudentSection())

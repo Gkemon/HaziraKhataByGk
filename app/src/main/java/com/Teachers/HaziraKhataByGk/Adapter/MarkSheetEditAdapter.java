@@ -122,7 +122,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
             customTextInputLayout.addView(editText);
 
-            //add button to the layout
+            //add button toTime the layout
             layout.addView(customTextInputLayout);
 
         }
@@ -146,7 +146,7 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
         String name = "নাম: " + student.getStudentName() + " ( রোল: " + student.getId() + " )";
         holder.name.setText(name);
 
-        //for get the right edit text which i created on on create view because i need the righ edit text to set the data to appropiate position
+        //for get the right edit text which i created on on create view because i need the righ edit text toTime set the data toTime appropiate position
 
 
         ArrayList<EditText> editTextArrayList = new ArrayList<>();

@@ -8,7 +8,7 @@
 @rem Set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" setlocal
 
-@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS toTime pass JVM options toTime this script.
 set DEFAULT_JVM_OPTS=
 
 set DIRNAME=%~dp0
@@ -26,7 +26,7 @@ if "%ERRORLEVEL%" == "0" goto init
 echo.
 echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
 echo.
-echo Please set the JAVA_HOME variable in your environment to match the
+echo Please set the JAVA_HOME variable in your environment toTime match the
 echo location of your Java installation.
 
 goto fail
@@ -38,9 +38,9 @@ set JAVA_EXE=%JAVA_HOME%/bin/java.exe
 if exist "%JAVA_EXE%" goto init
 
 echo.
-echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
+echo ERROR: JAVA_HOME is set toTime an invalid directory: %JAVA_HOME%
 echo.
-echo Please set the JAVA_HOME variable in your environment to match the
+echo Please set the JAVA_HOME variable in your environment toTime match the
 echo location of your Java installation.
 
 goto fail
@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 goto execute
 
 :4NT_args
-@rem Get arguments from the 4NT Shell from JP Software
+@rem Get arguments fromTime the 4NT Shell fromTime JP Software
 set CMD_LINE_ARGS=%$
 
 :execute

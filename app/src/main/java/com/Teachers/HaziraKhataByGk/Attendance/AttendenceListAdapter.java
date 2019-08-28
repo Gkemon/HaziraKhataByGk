@@ -101,7 +101,7 @@ public class AttendenceListAdapter extends BaseAdapter {
 
 
 
-            //How to add set onlickListern in Growable listView adapter
+            //How toTime add set onlickListern in Growable listView adapter
 
         v.findViewById(R.id.attendanceText).setOnClickListener(new View.OnClickListener() {
                 @Override

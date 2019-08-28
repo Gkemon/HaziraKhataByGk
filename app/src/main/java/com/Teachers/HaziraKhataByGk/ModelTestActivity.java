@@ -380,7 +380,7 @@ public class ModelTestActivity extends AppCompatActivity  implements RecyclerIte
                         ++minutes;
                         count=0;
                     }
-                    //TODO: FOR converting second english to bangla
+                    //TODO: FOR converting second english toTime bangla
 //                    if(second==1){
 //                        secondBangla="১";
 //                    }
@@ -412,7 +412,7 @@ public class ModelTestActivity extends AppCompatActivity  implements RecyclerIte
 //                        secondBangla="০";
 //                    }
 
-                    //TODO: FOR converting minutes english to bangla
+                    //TODO: FOR converting minutes english toTime bangla
 
 
 //                    if(minutes==1){
@@ -492,7 +492,7 @@ public class ModelTestActivity extends AppCompatActivity  implements RecyclerIte
                         ++minutes;
                         count=0;
                     }
-                    //TODO: FOR converting second english to bangla
+                    //TODO: FOR converting second english toTime bangla
 //                    if(second==1){
 //                        secondBangla="১";
 //                    }
@@ -524,7 +524,7 @@ public class ModelTestActivity extends AppCompatActivity  implements RecyclerIte
 //                        secondBangla="০";
 //                    }
 
-                    //TODO: FOR converting minutes english to bangla
+                    //TODO: FOR converting minutes english toTime bangla
 
 
 //                    if(minutes==1){
@@ -604,7 +604,7 @@ public class ModelTestActivity extends AppCompatActivity  implements RecyclerIte
                         count=0;
                     }
 
-                    //TODO: FOR converting second english to bangla
+                    //TODO: FOR converting second english toTime bangla
 //                    if(second==1){
 //                        secondBangla="১";
 //                    }
@@ -636,7 +636,7 @@ public class ModelTestActivity extends AppCompatActivity  implements RecyclerIte
 //                        secondBangla="০";
 //                    }
 
-                    //TODO: FOR converting minutes english to bangla
+                    //TODO: FOR converting minutes english toTime bangla
 
 
 //                    if(minutes==1){
@@ -783,7 +783,7 @@ public class ModelTestActivity extends AppCompatActivity  implements RecyclerIte
 //        com.Teachers.HaziraKhataByGk.adapter.ModelTestAdapter.questionHolder questionHolder=new ModelTestAdapter.questionHolder(view);
 //
 //
-//        // Save the selected positions to the SparseBooleanArray
+//        // Save the selected positions toTime the SparseBooleanArray
 //        if (selectedItems.get(position, false)) {
 //            selectedItems.delete(position);
 //            view.getRootView().setSelected(false);

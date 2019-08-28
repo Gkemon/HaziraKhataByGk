@@ -61,7 +61,7 @@ Context context;
         FirebaseCaller.getFirebaseDatabase().child("Jobs").addValueEventListener(new ValueEventListener() {
             @Override
             public  void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("GK","Jobfragment retriving data from server");
+                Log.d("GK","Jobfragment retriving data fromTime server");
                 ArrayList<JobItems> JobItemlist=new ArrayList<JobItems>();
                 for(DataSnapshot JobItemsData:dataSnapshot.getChildren()){
                     JobItems Single_JobItems;
@@ -154,7 +154,7 @@ Context context;
                 final   int pos=position;
                 AdRequest adRequest = new AdRequest.Builder()
                         .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        // Check the LogCat to get your test device ID
+                        // Check the LogCat toTime get your test device ID
                         .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                         .build();
 

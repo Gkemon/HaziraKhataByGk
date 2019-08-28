@@ -7,7 +7,7 @@
     android:orientation="vertical">
     <!--<include layout="@layout/base_toolbar"/>-->
 
-    <!--Put all strings to string.xml-->
+    <!--Put all strings toTime string.xml-->
     <LinearLayout
         android:visibility="gone"
         android:layout_width="match_parent"

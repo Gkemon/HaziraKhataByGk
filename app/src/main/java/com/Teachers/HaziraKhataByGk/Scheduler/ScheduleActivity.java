@@ -77,7 +77,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         refreshing();
 
-        //If it's subjectName and content are blank so we don't need to create the result
+        //If it's subjectName and content are blank so we don't need toTime create the result
         if(mResultTodo!=null&&!mResultTodo.getToDoText().equals("")){
             ResultCreate(mResultTodo);
             mResultTodo=null;
@@ -364,7 +364,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         @Override
         public void onItemMoved(int fromPosition, int toPosition) {
-            UtilsCommon.debugLog("from BasicListAdapter onItemMoved");
+            UtilsCommon.debugLog("fromTime BasicListAdapter onItemMoved");
             if(fromPosition<toPosition){
                 for(int i=fromPosition; i<toPosition; i++){
                     Collections.swap(items, i, i+1);
@@ -614,10 +614,10 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
 
-    //Create The To do from add activity
+    //Create The To do fromTime add activity
     public void ResultCreate(ToDoItem item){
 
-     Log.d("GK","item return from add activity,so subjectName is "+item.getToDoText()+" and content "+item.getToDoContent()+" Has remainder "+item.hasReminder()+" Is daily "+item.isDaily());
+     Log.d("GK","item return fromTime add activity,so subjectName is "+item.getToDoText()+" and content "+item.getToDoContent()+" Has remainder "+item.hasReminder()+" Is daily "+item.isDaily());
         if(item.getToDoText().length()<=0){
             return;
         }

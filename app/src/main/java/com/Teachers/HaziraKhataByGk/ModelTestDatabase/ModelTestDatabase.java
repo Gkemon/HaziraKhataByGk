@@ -225,9 +225,9 @@ public class ModelTestDatabase {
      English.add(new String[]{
              "Man has no escape ___ death.\n" +
                      "1)for\n" +
-                     "2)from\n" +
+                     "2)fromTime\n" +
                      "3)at\n" +
-                     "4)to","Ans: from ","2"
+                     "4)toTime","Ans: fromTime ","2"
      });
 
      English.add(new String[]{
@@ -283,8 +283,8 @@ public class ModelTestDatabase {
      English.add(new String[]{
              "ট্রেনটি ঢাকা যাবে।\n" +
                      "1)The train is bound for Dhaka.\n" +
-                     "2)The train is bound to Dhaka.\n" +
-                     "3)The train is bound from Dhaka.\n" +
+                     "2)The train is bound toTime Dhaka.\n" +
+                     "3)The train is bound fromTime Dhaka.\n" +
                      "4)The train is bound at Dhaka.","Ans: The train is bound for Dhaka.","1"
      });
 
@@ -297,8 +297,8 @@ public class ModelTestDatabase {
      });
 
      English.add(new String[]{
-             "What is the meaning of 'prior to' ___?\n" +
-                     "1)to\n" +
+             "What is the meaning of 'prior toTime' ___?\n" +
+                     "1)toTime\n" +
                      "2)at\n" +
                      "3)before\n" +
                      "4)for","Ans: before","3"
@@ -329,10 +329,10 @@ public class ModelTestDatabase {
      });
      English.add(new String[]{
              "People (talk) his courage even after his death.\n" +
-                     "1.to\n" +
+                     "1.toTime\n" +
                      "2.of\n" +
                      "3.for\n" +
-                     "4.from","Ans: talk of","2"
+                     "4.fromTime","Ans: talk of","2"
      });
 
      English.add(new String[]{

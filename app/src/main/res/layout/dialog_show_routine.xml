@@ -20,14 +20,14 @@
             app:tabMode="scrollable" />
     </android.support.design.widget.AppBarLayout>
 
-    <androidx.core.view.ViewPager
+    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager
         android:id="@+id/viewpager"
         android:layout_above="@+id/btn_add_exam_routine"
         android:layout_below="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </androidx.core.view.ViewPager>
+    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_add_exam_routine"
@@ -36,13 +36,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:text="Ad" />
+        android:text="Add routine" />
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_add_class_routine"
         android:layout_alignParentBottom="true"
-        style="@style/ButtonPrimaryColorStyle"
+        style="@style/ButtonOrangeStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ad" />
+        android:textAllCaps="false"
+        android:text="If you didnot get it please click here." />
 
 </RelativeLayout>

@@ -19,7 +19,7 @@ public class AnalyticsApplication extends Application {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
 
             /*R.xml.app_tracker contains my Analytics code
-            To use this, go to Google Analytics, and get
+            To use this, go toTime Google Analytics, and get
             your code, create a file under res/xml , and save
             your code as <string name="ga_trackingId">UX-XXXXXXXX-Y</string>
             */

@@ -22,26 +22,26 @@ public class LetterTile {
     /** The number of available tile colors (see R.array.letter_tile_colors) */
     private static final int NUM_OF_TILE_COLORS = 8;
 
-    /** The {@link TextPaint} used to draw the letter onto the tile */
+    /** The {@link TextPaint} used toTime draw the letter onto the tile */
     private final TextPaint mPaint = new TextPaint();
     /** The bounds that enclose the letter */
     private final Rect mBounds = new Rect();
-    /** The {@link Canvas} to draw on */
+    /** The {@link Canvas} toTime draw on */
     private final Canvas mCanvas = new Canvas();
     /** The first char of the name being displayed */
     private final char[] mFirstChar = new char[1];
 
     /** The background colors of the tile */
     private final TypedArray mColors;
-    /** The font size used to display the letter */
+    /** The font size used toTime display the letter */
     private final int mTileLetterFontSize;
-    /** The default image to display */
+    /** The default image toTime display */
     private final Bitmap mDefaultBitmap;
 
     /**
      * Constructor for <code>LetterTileProvider</code>
      *
-     * @param context The {@link Context} to use
+     * @param context The {@link Context} toTime use
      */
     public LetterTile(Context context) {
         final Resources res = context.getResources();
@@ -58,8 +58,8 @@ public class LetterTile {
     }
 
     /**
-     * @param displayName The name used to create the letter for the tile
-     * @param key The key used to generate the background color for the tile
+     * @param displayName The name used toTime create the letter for the tile
+     * @param key The key used toTime generate the background color for the tile
      * @param width The desired width of the tile
      * @param height The desired height of the tile
      * @return A {@link Bitmap} that contains a letter used in the English
@@ -87,7 +87,7 @@ public class LetterTile {
     }
 
     /**
-     * @param c The char to check
+     * @param c The char toTime check
      * @return True if <code>c</code> is in the English alphabet or is a digit,
      *         false otherwise
      */
@@ -96,13 +96,13 @@ public class LetterTile {
     }
 
     /**
-     * @param key The key used to generate the tile color
+     * @param key The key used toTime generate the tile color
      * @return A new or previously chosen color for <code>key</code> used as the
      *         tile background color
      */
     private int pickColor(String key) {
-        // String.hashCode() is not supposed to change across java versions, so
-        // this should guarantee the same key always maps to the same color
+        // String.hashCode() is not supposed toTime change across java versions, so
+        // this should guarantee the same key always maps toTime the same color
         final int color = Math.abs(key.hashCode()) % NUM_OF_TILE_COLORS;
         try {
             return mColors.getColor(color, Color.BLACK);

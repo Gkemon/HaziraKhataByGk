@@ -290,7 +290,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                     //ADMOB
                     AdRequest adRequest = new AdRequest.Builder()
                             .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                            // Check the LogCat to get your test device ID
+                            // Check the LogCat toTime get your test device ID
                             .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
                             .build();
 

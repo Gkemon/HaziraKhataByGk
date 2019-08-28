@@ -22,10 +22,15 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Adapter.ClassListAdapter;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
+import com.Teachers.HaziraKhataByGk.Routine.AllRoutineShowingDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class ClassRoomFragments extends Fragment implements RecyclerItemClickListener{
@@ -40,6 +45,10 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     public View emptyView;
     private boolean isClassListEmpty=true;
 
+    @OnClick(R.id.btn_make_schedule)
+    public void showRoutine(){
+        AllRoutineShowingDialog.showDialog(getFragmentManager());
+    }
     public ClassRoomFragments() {
         // Required empty public constructor
     }
@@ -47,6 +56,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
 
     void initiView(){
 
+        ButterKnife.bind(this,rootView);
         emptyView=rootView.findViewById(R.id.toDoEmptyView);
 
         //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
@@ -95,7 +105,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     @Override
     public void onResume() {
 
-        //For loading class_room from Server
+        //For loading class_room fromTime Server
         loadDataFromServer();
         super.onResume();
     }
@@ -113,7 +123,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     }
 
      public  void loadDataFromServer(){
-        //For loading class_room from Server
+        //For loading class_room fromTime Server
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

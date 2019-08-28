@@ -102,7 +102,7 @@ public class NewsFragment extends Fragment implements RecyclerItemClickListener 
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        Log.d("GK","from onActivity of news fragment");
+        Log.d("GK","fromTime onActivity of news fragment");
         return view;
     }
 

@@ -119,7 +119,7 @@ public class WelcomeActivity  extends AppCompatActivity {
                 // if last page home screen will be launched
                 int current = getItem(+1);
                 if (current < layouts.length) {
-                    // move to next screen
+                    // move toTime next screen
                     viewPager.setCurrentItem(current);
                 } else {
                     launchHomeScreen();
@@ -168,7 +168,7 @@ public class WelcomeActivity  extends AppCompatActivity {
 
             // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
+                // last page. make button text toTime GOT IT
                 btnNext.setText(getString(R.string.start));
                 btnSkip.setVisibility(View.GONE);
             } else {

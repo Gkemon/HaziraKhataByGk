@@ -229,7 +229,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
                         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
 
 
-                        //Then add attendance list of the specific Student before edit.This is an operation from Student act activity;
+                        //Then add attendance list of the specific Student before edit.This is an operation fromTime Student act activity;
                         if (StudentAddActivity.attendenceDataListBeforeEdit != null) {
                             for (int i = 0; i < StudentAddActivity.attendenceDataListBeforeEdit.size(); i++) {
                                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentAddActivity.attendenceDataListBeforeEdit.get(i));
