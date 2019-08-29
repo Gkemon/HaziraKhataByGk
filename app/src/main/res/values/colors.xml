@@ -5,6 +5,7 @@
     <color name="colorLightPrimary">#e3f2fd</color>#e3f2fd
     <color name="colorBackGround">@color/colorLightPrimary</color>
     <color name="colorDeepRedOrange">#F44336</color>
+    <color name="colorGreen">#4caf50</color>
 
     <color name="colorAccent">#FF4081</color>
     <color name="amber">#FFC107</color>
@@ -57,6 +58,7 @@
     <color name="dot_light_screen6">#ffffff</color>
     <color name="dot_light_screen7">#ffffff</color>
     <color name="dot_light_screen8">#ffffff</color>
+
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>
