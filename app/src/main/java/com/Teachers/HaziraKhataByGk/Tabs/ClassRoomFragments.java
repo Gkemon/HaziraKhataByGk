@@ -15,6 +15,7 @@ import com.Teachers.HaziraKhataByGk.AddEditClass.ClassAddActivity;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
 import com.Teachers.HaziraKhataByGk.HelperClassess.MyArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
@@ -23,6 +24,7 @@ import com.Teachers.HaziraKhataByGk.Adapter.ClassListAdapter;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Routine.AllRoutineShowingDialog;
+import com.Teachers.HaziraKhataByGk.Scheduler.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -43,7 +45,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     public GridLayoutManager gridLayoutManager;
 
     public View emptyView;
-    private boolean isClassListEmpty=true;
+
 
     @OnClick(R.id.btn_make_schedule)
     public void showRoutine(){
@@ -59,20 +61,10 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
         ButterKnife.bind(this,rootView);
         emptyView=rootView.findViewById(R.id.toDoEmptyView);
 
-        //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
-        if(isClassListEmpty||FirebaseCaller.getCurrentUser()==null){
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else {
-            emptyView.setVisibility(View.GONE);
-        }
+        LoadingPopup.showLoadingPopUp(getActivity());
 
-        rootView.findViewById(R.id.help).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UtilsCommon.openWithFaceBook(getString(R.string.help_fb_url),context);
-            }
-        });
+
+        rootView.findViewById(R.id.help).setOnClickListener(v -> UtilsCommon.openWithFaceBook(getString(R.string.help_fb_url),context));
 
         //VIEWS
         recyclerViewForClass = rootView.findViewById(R.id.recycleViewFromFragmentOne);
@@ -86,12 +78,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
 
 
         //Class click listener
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClassAddActivity.start(getActivity());
-            }
-        });
+        btnAdd.setOnClickListener(v -> ClassAddActivity.start(getActivity()));
 
     }
 
@@ -105,8 +92,17 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     @Override
     public void onResume() {
 
-        //For loading class_room fromTime Server
-        loadDataFromServer();
+
+        //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
+        if(FirebaseCaller.getCurrentUser()==null){
+            LoadingPopup.hideLoadingPopUp();
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyView.setVisibility(View.GONE);
+            loadDataFromServer();
+        }
+
         super.onResume();
     }
 
@@ -143,11 +139,14 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
                 classListAdapter.clear();
                 classListAdapter.addAll(ClassIitems);
                 classListAdapter.notifyDataSetChanged();
+                LoadingPopup.hideLoadingPopUp();
 
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                UtilsCommon.debugLog("Error: "+databaseError.getMessage());
                 emptyView.setVisibility(View.VISIBLE);
+                LoadingPopup.hideLoadingPopUp();
             }
         });
     }

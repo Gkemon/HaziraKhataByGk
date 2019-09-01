@@ -82,11 +82,8 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     @OnClick(R.id.bt_from_time)
     public void showFromTimeDialog(){
-        DialogUtils.showDateDialog(null, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        DialogUtils.showDateDialog(null, (view, year, month, dayOfMonth) -> {
 
-            }
         });
     }
 
@@ -113,7 +110,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
         routineItem.setName(etSubject.getText().toString());
         routineItem.setLocation((etRoom.getText().toString()));
-        routineItem.setStartTime();
+        ///routineItem.setStartTime();
 
 
 
@@ -141,10 +138,6 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         ButterKnife.bind(this,view);
 
         initData();
-
-
-
-
 
         return view;
     }

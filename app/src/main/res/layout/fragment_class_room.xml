@@ -1,8 +1,8 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/blueLight">
 
     <RelativeLayout
@@ -46,12 +46,15 @@
         </android.support.v7.widget.CardView>
     </RelativeLayout>
 
+
     <LinearLayout
         android:layout_below="@+id/schedule_card"
         android:id="@+id/toDoEmptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:orientation="vertical">
 
         <ImageView

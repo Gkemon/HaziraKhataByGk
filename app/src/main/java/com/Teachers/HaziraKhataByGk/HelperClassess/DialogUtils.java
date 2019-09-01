@@ -2,6 +2,7 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -15,7 +16,11 @@ import java.util.Calendar;
 public class DialogUtils {
 
 
-    public static void showDateDialog(Calendar calendar,CommonCallback<String> commonCallback){
+    public static void showTimeDialog(String time, TimePickerDialog.OnTimeSetListener onTimeSetListener){
+
+    }
+
+    public static void showDateDialog(Calendar calendar, DatePickerDialog.OnDateSetListener commonCallback){
 
         if(calendar==null)
             calendar=Calendar.getInstance();

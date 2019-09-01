@@ -364,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addFrag(new BlogFragment(), "শিক্ষক কথন");
         adapter.addFrag(new TextBookFragment(), "পাঠ্যবই");
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(adapter.getCount());
     }
 
     private void setupTabIcons() {

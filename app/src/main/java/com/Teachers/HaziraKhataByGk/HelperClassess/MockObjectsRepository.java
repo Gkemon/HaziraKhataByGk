@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
@@ -13,7 +14,7 @@ public class MockObjectsRepository {
 
     public static RoutineItem getDummyRoutine(int newYear,int newMonth){
 
-
+        
 
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 3);
