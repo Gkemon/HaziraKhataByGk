@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static com.Teachers.HaziraKhataByGk.Constant.Constant.DateFormate;
+
 public class UtilsForDateCompare {
 
 
@@ -25,7 +27,7 @@ public class UtilsForDateCompare {
         Collections.sort(comparableDates);
 
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(UtilsCommon.DateFormate);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateFormate);
 
 List<String> sortedDateList =new ArrayList<>();
         for (ComparableDate s:comparableDates)

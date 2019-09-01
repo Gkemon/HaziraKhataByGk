@@ -92,13 +92,11 @@ public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleS
             Glide.with(context)
                     .load((Integer) R.drawable.present)
                     .into(holder.imageView);
-
         }
         else {
             Glide.with(context)
                     .load((Integer) R.drawable.absent)
                     .into(holder.imageView);
-
         }
 
 

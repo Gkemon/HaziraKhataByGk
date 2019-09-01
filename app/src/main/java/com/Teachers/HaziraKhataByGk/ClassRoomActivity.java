@@ -42,6 +42,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.DateFormate;
+
 public class ClassRoomActivity extends AppCompatActivity  implements RecyclerItemClickListener {
 
     public static void start(Context context, ClassItem classitem) {
@@ -128,7 +130,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
                         int day = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
                         int year = datePicker.getYear() - 1900;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(UtilsCommon.DateFormate);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateFormate);
                         String formatedDate = simpleDateFormat.format(new Date(year, month, day));
                         String date = year + "-" + month + "-" + day;
                         String subject = Subject.getText().toString();

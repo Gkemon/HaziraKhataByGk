@@ -39,21 +39,24 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:text="Class routine"></RadioButton>
+            android:text="Class routine">
+        </RadioButton>
 
         <RadioButton
             android:id="@+id/rb_exam_routine"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Exam routine"></RadioButton>
+            android:text="Exam routine">
+        </RadioButton>
 
         <RadioButton
             android:id="@+id/rb_admin_routine"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Admin routine"></RadioButton>
+            android:text="Admin routine">
+        </RadioButton>
     </RadioGroup>
 
     <LinearLayout
@@ -171,7 +174,7 @@
         android:id="@+id/weekdays"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:sunday_first_day="false"
+        app:sunday_first_day="true"
         app:full_size="true"/>
 
         <TextView
@@ -210,12 +213,12 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/bt_date_select"
+            style="@style/ButtonPrimaryColorStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select date"
             android:layout_gravity="center"
-            style="@style/ButtonPrimaryColorStyle"
-             />
+            android:text="Select date"
+            android:visibility="gone" />
     <LinearLayout
         android:visibility="visible"
         android:layout_width="match_parent"
@@ -223,7 +226,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:text="চাইলে রং সিলেক্ট করতে পারেন"
             android:textColor="@color/white"
             android:id="@+id/bt_color_select"
@@ -278,11 +281,12 @@
 
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_delete_routine"
         android:layout_margin="10dp"
         android:visibility="gone"
         tools:visibility="visible"
         android:backgroundTint="@color/red_primary"
-        android:src="@drawable/ic_clear_white_24dp"
+        android:src="@drawable/ic_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

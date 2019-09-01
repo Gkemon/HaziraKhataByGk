@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import com.google.gson.GsonBuilder;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blogItem_for_main;
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
@@ -55,6 +57,8 @@ public class UtilsCommon {
         }
         return attendenceData;
     }
+
+
 
     //TODO: love BlogActivity
     public  static void loveBlog (BlogItem BlogItem,Context context){

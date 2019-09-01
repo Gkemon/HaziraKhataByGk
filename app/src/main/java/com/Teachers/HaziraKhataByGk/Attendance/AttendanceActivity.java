@@ -93,12 +93,8 @@ public class AttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setUpUI();
-
         loadDataFromServer();
-
 
     }
     @Override
@@ -106,10 +102,6 @@ public class AttendanceActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.all_student_data_delete_and_print, menu);
         return super.onCreateOptionsMenu(menu);
     }
-        @Override
-        protected void onResume () {
-            super.onResume();
-        }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
