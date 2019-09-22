@@ -12,6 +12,16 @@ public abstract class CommonCallback <T> implements CallBackContract<T> {
     }
 
     @Override
+    public void onWait() {
+
+    }
+    @Override
+    public void onWait(int sec){
+
+    }
+
+
+    @Override
     public void onSuccess(T response) {
 
     }
@@ -19,5 +29,7 @@ public abstract class CommonCallback <T> implements CallBackContract<T> {
 interface CallBackContract<T>{
     void onSuccess(T response);
     void onSuccess();
+    void onWait();
+    void onWait(int sec);
     void onFailure(String r);
 }

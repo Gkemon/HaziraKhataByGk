@@ -48,7 +48,7 @@
     android:padding="6sp"
     android:weightSum="1"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
         android:id="@+id/note_title_textinputLayout"
         app:hintTextAppearance="@style/Hints"
         android:layout_width="match_parent"
@@ -62,11 +62,11 @@
         android:hint="@string/note_title_hint"
         android:ems="10"
         android:layout_marginBottom="@dimen/margin_10" />
-    </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
         android:id="@+id/note_content_textinputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 android:maxLines="1000"
                 android:textSize="14sp"
                 app:layout_constraintTop_toTopOf="parent" />
-    </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
     </ScrollView>
     </LinearLayout>
     <LinearLayout

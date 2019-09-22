@@ -1,37 +1,92 @@
 package com.Teachers.HaziraKhataByGk.Model;
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class Student implements Parcelable {
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+
+import java.io.Serializable;
+import java.util.UUID;
+
+public class Student implements Serializable {
     private String roll;
     private String Name;
     private String ParentContact;
     private String StudentsContactNumber;
     private String ParentName;
+    private String parent2Name;
+    private String parent2Contact;
+    private String birthCertificateNo;
+    private String birthDate;
+    private String imageUrl;
     private String StudentClass;
     private String StudentSection;
+    private String uuid;
+
+    public String getRoll() {
+        return roll;
+    }
+
+    public void setRoll(String roll) {
+        this.roll = roll;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getStudentsContactNumber() {
+        return StudentsContactNumber;
+    }
+
+    public void setStudentsContactNumber(String studentsContactNumber) {
+        StudentsContactNumber = studentsContactNumber;
+    }
+
+    public String getParent2Name() {
+        return parent2Name;
+    }
+
+    public void setParent2Name(String parent2Name) {
+        this.parent2Name = parent2Name;
+    }
+
+    public String getParent2Contact() {
+        return parent2Contact;
+    }
+
+    public void setParent2Contact(String parent2Contact) {
+        this.parent2Contact = parent2Contact;
+    }
+
+    public String getBirthCertificateNo() {
+        return birthCertificateNo;
+    }
+
+    public void setBirthCertificateNo(String birthCertificateNo) {
+        this.birthCertificateNo = birthCertificateNo;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getImageUrl() {
+        return UtilsCommon.isValideString(imageUrl)?imageUrl:"";
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Student() {
     }
-    protected Student(Parcel in) {
-        this.roll = in.readString();
-        this.Name = in.readString();
-        this.ParentContact = in.readString();
-        this.StudentsContactNumber =in.readString();
-        this.ParentName=in.readString();
-        this.StudentClass=in.readString();
-        this.StudentSection=in.readString();
-    }
-    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
-        @Override
-        public Student createFromParcel(Parcel source) {
-            return new Student(source);
-        }
 
-        @Override
-        public Student[] newArray(int size) {
-            return new Student[size];
-        }
-    };
     public String getId() {
         return roll;
     }
@@ -82,21 +137,13 @@ public class Student implements Parcelable {
     public String getStudentSection(){
         return  StudentSection;
     }
-    @Override
-    public int describeContents() {
-        return 0;
+
+
+    public String getUuid() {
+        return uuid;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.roll);
-        dest.writeString(this.Name);
-        dest.writeString(this.ParentContact);
-        dest.writeString(this.StudentsContactNumber);
-        dest.writeString(this.ParentName);
-        dest.writeString(this.StudentClass);
-        dest.writeString(this.StudentSection);
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
-
-
 }

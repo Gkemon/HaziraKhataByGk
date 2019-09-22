@@ -5,10 +5,5 @@
     tools:context=".MainActivity"
     >
 
-    <item
-        android:id="@+id/action_add_task"
-        android:icon="@drawable/ic_schedule_new"
-        android:title="Add Task"
-        app:showAsAction="always" />
 
 </menu>

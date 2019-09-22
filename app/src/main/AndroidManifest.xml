@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.Teachers.HaziraKhataByGk">
 
     <uses-permission android:name="ANDROID.PERMISSION.INTERNET" />
     <uses-permission android:name="ANDROID.PERMISSION.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".HelperClassess.GlobalContext"
@@ -15,8 +18,12 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory="whateverString"
         android:windowSoftInputMode="stateHidden|adjustPan">
-
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <!-- for FB LOGIN -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -64,8 +71,6 @@
             android:name=".ClassRoomActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity android:name=".Attendance.AttendanceActivity">
-
-            <!-- android:theme="@style/AppThemeForNoActionBar"> -->
         </activity>
         <activity
             android:name=".StudentListShowActivity"
@@ -74,22 +79,13 @@
             android:name=".PrinterActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".StudentAddActivity"
+            android:name=".StudentAdd.StudentAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity android:name=".SingleStudentAllInformation.StudentAlIInfoShowActivity" />
         <!-- android:theme="@style/AppThemeForNoActionBar" -->
 
         <activity
             android:name=".NoteAddActivity"
-            android:theme="@style/AppThemeForNoActionBar" />
-        <activity
-            android:name=".Scheduler.ScheduleActivity"
-            android:theme="@style/AppThemeForNoActionBar" />
-        <activity
-            android:name=".Scheduler.AddToDoActivity"
-            android:theme="@style/AppThemeForNoActionBar" />
-        <activity
-            android:name=".Scheduler.ReminderActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
             android:name=".Widget.TextShowActivity"
@@ -103,14 +99,10 @@
             android:theme="@style/AppTheme.NoActionBarForBrowser" />
         <activity android:name=".BlogActivity" />
 
-        <service android:name=".Scheduler.TodoNotificationService" />
-        <service android:name=".Scheduler.DeleteNotificationService" />
 
         <activity
             android:name=".BottomNavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!-- Firebase Notifications -->
-        <!-- ./Firebase Notifications -->
 
         <activity
             android:name=".ModelTestChooseActivity"

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -27,15 +26,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
-import com.Teachers.HaziraKhataByGk.Scheduler.ScheduleActivity;
-import com.Teachers.HaziraKhataByGk.Scheduler.StoreRetrieveData;
-import com.Teachers.HaziraKhataByGk.Scheduler.ToDoItem;
 import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
@@ -59,7 +56,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static ArrayList<ClassItem> totalClassItems;
+    public static CustomArrayList<ClassItem> totalClassItems;
     public static ArrayList<NewsItem> NewsList;
     public static ArrayList<JobItems> Job_list;
     public static ArrayList<NewsItem> saved_newsItem_for_main;
@@ -78,11 +75,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
 
 
-    private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
 
     public PrefManagerForMain prefManagerForMain;
-    NavigationView navigationView;
+    
 
     public void setUpDrawer() {
 
@@ -137,11 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setMessage("আপনার সকল শিডিউল কাজগুলো মনে করিয়ে দিবে এই এপটি।শিডিউল রিমাইন্ডার পেতে হলে উপরের ঘড়ি চিহ্নটিতে ক্লিক করুন।");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                    (dialog, which) -> dialog.dismiss());
             alertDialog.show();
             prefManagerForMain.setFirstTimeLaunch(false);
 
@@ -158,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         OneSignal.startInit(this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification).unsubscribeWhenNotificationsAreDisabled(true).init();
+
 
         setUpDrawer();
         showHintDialogForFirstTime();
@@ -213,14 +206,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
 
 
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        authListener = firebaseAuth -> {
 
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null) {
 
-                }
             }
         };
 
@@ -238,21 +228,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
-    //TODO: TOOLBAR AND MENUS ARE DIFFERENT.Toolbar are the bar where we can set the menus items.
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_task:
-                Intent intent = new Intent(this, ScheduleActivity.class);
-                this.startActivity(intent);
-
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 
     @Override
@@ -352,8 +327,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setupViewPager() {
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new com.Teachers.HaziraKhataByGk.Tabs.ClassRoomFragments(), "শ্রেণী কার্যক্রম");

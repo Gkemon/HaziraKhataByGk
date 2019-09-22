@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.Firebase;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,8 +12,12 @@ import com.Teachers.HaziraKhataByGk.Adapter.SubjectMarkSheetAdaper;
 import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
+import com.Teachers.HaziraKhataByGk.StudentAdd.StudentAddActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.Teachers.HaziraKhataByGk.MainActivity.calledAlready;
+import static com.Teachers.HaziraKhataByGk.StudentListShowActivity.contactofSA;
 
 /**
  * Created by uy on 5/28/2018.
@@ -39,6 +46,43 @@ public class FirebaseCaller {
         initializationFirebase();
     }
 
+    public static void setStudentToServer(ClassItem classItem, Student student){
+        FirebaseCaller.getFirebaseDatabase().child("Users")
+                .child(FirebaseCaller.getUserID())
+                .child("Class")
+                .child(classItem.getName()+ classItem.getSection())
+                .child("Student")
+                .child(student.getId()).setValue(student);
+    }
+    public static void setStudentToServer(ClassItem classItem, Student student,CommonCallback commonCallback){
+
+        FirebaseCaller.getFirebaseDatabase().child("Users")
+                .child(FirebaseCaller.getUserID())
+                .child("Class")
+                .child(classItem.getName()+ classItem.getSection())
+                .child("Student")
+                .child(student.getId()).setValue(student).addOnSuccessListener(aVoid -> commonCallback.onSuccess())
+                .addOnFailureListener(e -> commonCallback.onFailure("Error in getting student from server : "+e.getLocalizedMessage()));
+    }
+    public static void removeStudentToServer(ClassItem classItem, String studentId){
+        FirebaseCaller.getFirebaseDatabase().child("Users")
+                .child(FirebaseCaller.getUserID())
+                .child("Class")
+                .child(classItem.getName()+ classItem.getSection())
+                .child("Student")
+                .child(studentId).removeValue();
+    }
+    public static void setStudentAttendanceToServer(ClassItem classItem, String studentId,AttendenceData attendenceData){
+
+        FirebaseCaller.
+                getFirebaseDatabase()
+                .child("Users").child(FirebaseCaller.getUserID())
+                .child("Class")
+                .child(classItem.getName() + classItem.getSection())
+                .child("Student").child(studentId)
+                .child("Attendance").push()
+                .setValue(attendenceData);
+    }
 
 
 
@@ -90,7 +134,7 @@ public class FirebaseCaller {
     public static DatabaseReference getFirebaseDatabase(){
         return FirebaseDatabase.getInstance().getReference();
     }
-    public  void initializationFirebase(){
+    public static void initializationFirebase(){
 
         if (!calledAlready) {
             firebaseDatabase = FirebaseDatabase.getInstance();

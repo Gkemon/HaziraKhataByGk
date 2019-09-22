@@ -63,7 +63,7 @@
                         android:orientation="vertical">
 
 
-                        <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+                        <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
                             android:id="@+id/toDoCustomTextInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -85,9 +85,9 @@
                                 android:textColorHint="@color/white" />
 
 
-                        </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+                        </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
 
-                        <com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout
+                        <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
                             android:id="@+id/toDoCustomTextInputTask"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                                 android:textColor="@color/icons"
                                 android:textColorHint="@color/white" />
 
-                        </com.Teachers.HaziraKhataByGk.Scheduler.CustomTextInputLayout>
+                        </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
 
                     </LinearLayout>
 

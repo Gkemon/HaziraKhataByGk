@@ -118,12 +118,16 @@
     //FOR STUDENT ACT ACTIVITY
     <string name="student_name">শিক্ষার্থীর নাম (আবশ্যিক) </string>
     <string name="student_roll">রোল/আইডি (আবশ্যিক) </string>
-    <string name="student_contact">শিক্ষার্থীর ফোন নাম্বার (ঐচ্ছিক) </string>
-    <string name="student_parent_contact">অভিভাবকের নাম্বার (ঐচ্ছিক)</string>
-    <string name="student_parent_name">অভিভাবকের নাম (ঐচ্ছিক) </string>
-    <string name="student_parent_contact2">দ্বিতীয় অভিভাবকের নাম্বার (ঐচ্ছিক)</string>
-    <string name="student_parent_name2">দ্বিতীয় অভিভাবকের নাম (ঐচ্ছিক) </string>
+    <string name="student_contact">শিক্ষার্থীর ফোন নাম্বার(ঐচ্ছিক)</string>
+    <string name="student_parent_contact">পিতা/অভিভাবকের নাম্বার(ঐচ্ছিক)</string>
+    <string name="student_parent_name">পিতা/অভিভাবকের নাম (ঐচ্ছিক) </string>
+    <string name="student_parent_contact2">মাতা/২য় অভিভাবকের নাম্বার(ঐচ্ছিক)</string>
+    <string name="student_parent_name2">মাতা/২য় অভিভাবকের নাম(ঐচ্ছিক)</string>
     <string name="class_record">এই শিক্ষার্থীর যাবতীয় ক্লাস রেকর্ড</string>
+    <string name="birth_certification_no">জন্মসনদের নাম্বার(ঐচ্ছিক)</string>
+    <string name="birth_date_selection_hints">জন্ম তারিখ সিলেক্ট করতে এখানে ক্লিক করুন</string>
+    <string name="upload_student_pro_pic_hints">শিক্ষার্থীর ছবি আপলোড করতে এখানে ক্লিক করুন</string>
+
 
     //FOR NOTE ADD ACTIVITY
     <string name="note_title_hint">নোটের শিরোনাম</string>

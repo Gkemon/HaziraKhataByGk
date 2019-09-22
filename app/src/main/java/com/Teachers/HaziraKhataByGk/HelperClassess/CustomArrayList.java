@@ -2,7 +2,7 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import java.util.ArrayList;
 
-public class MyArrayList <T>extends ArrayList {
+public class CustomArrayList <T> extends ArrayList <T> {
 
     @Override
     public int size() {
@@ -12,5 +12,13 @@ public class MyArrayList <T>extends ArrayList {
         }
         else
         return super.size();
+    }
+
+    @Override
+    public boolean add(T a){
+
+        if(a==null)return false;
+        else return super.add(a);
+
     }
 }

@@ -17,6 +17,8 @@
             android:id="@+id/btn_make_schedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:backgroundTint="@color/red_primary"
             android:text="রুটিন চাইলে এখানে ক্লিক করুন"
             android:textColor="@color/white" />

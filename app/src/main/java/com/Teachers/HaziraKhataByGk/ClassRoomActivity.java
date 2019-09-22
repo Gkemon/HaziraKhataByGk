@@ -312,21 +312,26 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
     void loadData(){
 
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users");
+        FirebaseCaller.getFirebaseDatabase().child(FirebaseCaller.getUserID());
+        FirebaseCaller.getFirebaseDatabase().child("Class");
+        FirebaseCaller.getFirebaseDatabase().child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection());
+        FirebaseCaller.getFirebaseDatabase().child("Student");
+        FirebaseCaller.getFirebaseDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                perStudentTotalAttendenceData=new HashMap<String, ArrayList<AttendenceData>>();
+                perStudentTotalAttendenceData = new HashMap<String, ArrayList<AttendenceData>>();
                 studentListFromAttendenceActivity.clear();
 
-                for (DataSnapshot StudentData : dataSnapshot.getChildren()){
+                for (DataSnapshot studentData : dataSnapshot.getChildren()) {
                     Student student;
-                    student = StudentData.getValue(Student.class);
+                    student = studentData.getValue(Student.class);
                     studentListFromAttendenceActivity.add(student);
                 }
 
-                studentListForPrintActiviyFromAttendenceActivity=studentListFromAttendenceActivity;
+                studentListForPrintActiviyFromAttendenceActivity = studentListFromAttendenceActivity;
 
                 Student student;
                 for (int i = 0; i < studentListFromAttendenceActivity.size(); i++) {

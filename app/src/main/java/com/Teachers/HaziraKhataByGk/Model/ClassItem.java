@@ -62,4 +62,11 @@ public class ClassItem implements Parcelable {
         dest.writeString(this.section);
     }
 
+    @Override
+    public String toString() {
+        return "ClassItem{" +
+                "name='" + name + '\'' +
+                ", section='" + section + '\'' +
+                '}';
+    }
 }

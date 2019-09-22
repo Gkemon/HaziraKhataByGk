@@ -33,6 +33,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:elevation="@dimen/activity_horizontal_margin">
 
             <EditText
@@ -45,11 +46,81 @@
                 android:textColor="@color/blueMiddle"
                 android:textColorHint="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/activity_horizontal_margin">
 
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="ফোন নাম্বার দিন"
+                android:inputType="phone"
+                android:textColor="@color/blueMiddle"
+                android:textColorHint="@android:color/white" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:elevation="@dimen/activity_horizontal_margin">
+
+            <EditText
+
+                android:id="@+id/et_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="পিন নাম্বার দিন"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/blueMiddle"
+                android:textColorHint="@android:color/white" />
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:id="@+id/timer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            >
+
+
+            <TextView
+                android:id="@+id/timer_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blueHight"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="00"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="15dp"
+                android:layout_marginLeft="10dp"
+                android:text="সেকেন্ড বাকি পিন আসার"/>
+
+
+
+        </LinearLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/pass_layout"
+            android:visibility="gone"
             android:elevation="@dimen/activity_horizontal_margin"
             app:passwordToggleEnabled="true">
 
@@ -67,21 +138,22 @@
         <!-- Login Button -->
 
         <Button
+            android:id="@+id/btn_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:backgroundTint="@color/parrot"
+            android:text="ফোন নাম্বার দিয়ে লগিন করুন"
+            android:textColor="@android:color/white" />
+
+        <Button
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
             android:backgroundTint="@color/parrot"
-            android:text="লগিন করুন"
+            android:text="ইমেইল দিয়ে লগিন করুন"
             android:textColor="@android:color/white" />
-        <!--<com.facebook.login.widget.LoginButton-->
-            <!--android:id="@+id/login_button"-->
-            <!--android:text="ফেসবুক দিয়ে লগিন করুন"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_marginTop="30dp"-->
-            <!--android:layout_marginBottom="30dp" />-->
         <Button
             android:id="@+id/btn_signOut"
             android:layout_width="fill_parent"
@@ -118,7 +190,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
             android:backgroundTint="@color/blueMiddle"
-            android:text="একাউন্ট খুলুন"
+            android:text="ইমেইল দিয়ে একাউন্ট খুলুন"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15dp" />

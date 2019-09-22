@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+
 import java.lang.ref.WeakReference;
 
 public class GlobalContext extends MultiDexApplication {
@@ -19,6 +21,7 @@ public class GlobalContext extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         GlobalContext.application =this;
+        FirebaseCaller.initializationFirebase();
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
@@ -28,12 +31,12 @@ public class GlobalContext extends MultiDexApplication {
 
             @Override
             public void onActivityStarted(Activity activity) {
-                mActivity=new WeakReference<Activity>(activity);
+
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
-
+                mActivity= new WeakReference<>(activity);
             }
 
             @Override

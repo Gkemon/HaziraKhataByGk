@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Scheduler;
+package com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils;
 
 
 import android.content.Context;
@@ -37,7 +37,7 @@ public class CustomTextInputLayout extends TextInputLayout {
         super.onDraw(canvas);
 
         if (!mIsHintSet && ViewCompat.isLaidOut(this)) {
-            // We have toTime reset the previous hint so that equals check pass
+            // We have to reset the previous hint so that equals check pass
             setHint(null);
 
             // In case that hint is changed programatically

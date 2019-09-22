@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -30,7 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class ClassAddActivity extends AppCompatActivity implements View.OnClickListener {
+public class  ClassAddActivity extends AppCompatActivity
+        implements View.OnClickListener {
 
 
     private EditText classNameEditText;
@@ -120,17 +122,14 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
 
 
             for(int i = 0; i<MainActivity.totalClassItems.size(); i++){
+                UtilsCommon.debugLog("Class: "+MainActivity.totalClassItems.get(i));
                 if(MainActivity.totalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.totalClassItems.get(i).getSection().equals(classitem.getSection())){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warning_for_add);
                     alertDialog.setMessage("এই একই নামের আরেকটি ক্লাসের নাম ইতিমধ্যে ডাটাবেজে রয়েছে।নতুন নাম ইনপুট দিন,ধন্যবাদ।");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
+                            (dialog, which) -> dialog.dismiss());
                     alertDialog.show();
                   return;
                 }
@@ -159,11 +158,7 @@ public class ClassAddActivity extends AppCompatActivity implements View.OnClickL
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
                     alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি ডিলেট করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
+                            (dialog, which) -> dialog.dismiss());
                     alertDialog.show();
                     return;
                 }
@@ -197,11 +192,7 @@ editClass();
                    alertDialog.setIcon(R.drawable.warnig_for_delete);
                    alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                           new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int which) {
-                                   dialog.dismiss();
-                               }
-                           });
+                           (dialog, which) -> dialog.dismiss());
                    alertDialog.show();
                    return;
                }
@@ -363,26 +354,20 @@ editClass();
                                 .child("Class")
                                 .child(classitem.getName()+classitem.getSection())
                                 .setValue(classitem)
-                                .addOnSuccessListener(ClassAddActivity.this, new OnSuccessListener<Void>() {
+                                .addOnCompleteListener(ClassAddActivity.this, aVoid -> {
 
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                                AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
-                                alertDialog.setMessage("আপনি যদি শ্রেণীর সকল ডাটা ডিলিট করতে চান তাহলে পরবর্তীতে শ্রেণীর নামের উপর লং প্রেস করুন।");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
+                                    AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
+                                    alertDialog.setMessage("আপনি যদি শ্রেণীর সকল ডাটা ডিলিট করতে চান তাহলে পরবর্তীতে শ্রেণীর নামের উপর লং প্রেস করুন।");
+                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                                            (dialog, which) -> {
                                                 dialog.dismiss();
-
                                                 finish();
+                                            });
+                                    alertDialog.show();
 
-                                            }
-                                        });
-                                alertDialog.show();
+                                });
 
-                            }
-                        });
+
 
 
 

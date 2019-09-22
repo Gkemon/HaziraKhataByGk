@@ -16,7 +16,7 @@ import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
-import com.Teachers.HaziraKhataByGk.HelperClassess.MyArrayList;
+import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -24,13 +24,10 @@ import com.Teachers.HaziraKhataByGk.Adapter.ClassListAdapter;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Routine.AllRoutineShowingDialog;
-import com.Teachers.HaziraKhataByGk.Scheduler.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -123,7 +120,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                MyArrayList<ClassItem> ClassIitems = new MyArrayList<>();
+                CustomArrayList<ClassItem> ClassIitems = new CustomArrayList<>();
 
                 for(DataSnapshot classData:dataSnapshot.getChildren()){
                     ClassIitems.add(classData.getValue(ClassItem.class));

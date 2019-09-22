@@ -1,41 +1,52 @@
-package com.Teachers.HaziraKhataByGk;
+package com.Teachers.HaziraKhataByGk.StudentAdd;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhotoUploader;
+import com.Teachers.HaziraKhataByGk.HelperClassess.PermissionActivity;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
+import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.Teachers.HaziraKhataByGk.StudentListShowActivity;
+import com.bumptech.glide.Glide;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.Teachers.HaziraKhataByGk.StudentAdd.StudentAddUtils.isRollExisted;
 import static com.Teachers.HaziraKhataByGk.StudentListShowActivity.contactofSA;
 
 
-public class StudentAddActivity extends AppCompatActivity implements View.OnClickListener{
+public class StudentAddActivity extends PermissionActivity implements View.OnClickListener{
 
     private EditText personName;
     private EditText phone;
@@ -43,10 +54,49 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     private EditText parentName;
     private EditText parentPhoneNumber;
     private Button btnAdd, btnEdit, btnDelete,btnClassRecord;
+    private ImageView imgProPic;
     private Student student;
-    public   String previousId,currentId;
-    public  static Activity activity;
+    public  String previousId,currentId;
+    public Activity activity;
+    public Uri imageUri=null;
 
+    @OnClick(R.id.btn_student_pro_pic_upload)
+    public void uploadProPic(){
+
+        if(checkHasPermission(RequestCode.PERMISSION_MULTIPLE,new CommonCallback() {
+            @Override
+            public void onSuccess() {
+                uploadProPic();
+            }
+        } ,new String[]{Manifest.permission
+                .READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+            if (validateRoll() && validateStudentName()) {
+                Intent intent = CropImage.activity(imageUri)
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setActivityTitle("Profile Pic")
+                        .setCropShape(CropImageView.CropShape.RECTANGLE)
+                        .setCropMenuCropButtonTitle("Done")
+                        .setRequestedSize(150, 120)
+                        .setFixAspectRatio(true)
+                        .setAspectRatio(6, 6)
+                        .setCropMenuCropButtonIcon(R.drawable.check)
+                        .getIntent(activity);
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+            } else {
+                DialogUtils.showInfoAlertDialog("সতর্কবানী", "ছবি আপলোডের পূর্বে দয়া করে নাম এবং রোল ইনপুট দিন");
+            }
+        }
+        else {
+            DialogUtils.showInfoAlertDialog("Permission","You didn't allow permission for this");
+        }
+
+
+    }
+
+    @OnClick(R.id.btn_birth_date_select)
+    public void setUpBirthdate(){
+
+    }
 
 
     public static List<AttendenceData> attendenceDataListBeforeEdit;
@@ -60,16 +110,36 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         intent.putExtra(StudentAddActivity.class.getSimpleName(), student);
         context.startActivity(intent);
     }
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                imageUri = result.getUri();
+
+                if(imageUri==null)
+                {
+                    UtilsCommon.showToast("Error in image selection.");
+                    UtilsCommon.debugLog("URL is null.");
+                    return;
+                }
+
+                Glide.with(this)
+                        .load(imageUri)
+                        .placeholder(R.drawable.ic_profile_pic)
+                        .error(R.drawable.ic_profile_pic)
+                        .into(imgProPic);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                UtilsCommon.debugLog("Error in Photo URL: "+error.getLocalizedMessage());
+            }
+        }
+    }
 
 
-        setContentView(R.layout.activity_student_act);
-        activity=this;
-
-
+    public void initView(){
         personName = findViewById(R.id.personTextFromStudentAct);
         rollNumber= findViewById(R.id.RollNumberFromStudentAct);
         //ADD TEXT CHANGE LISTENER
@@ -85,15 +155,24 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         btnEdit =findViewById(R.id.btnEditFromStudentAct);
         btnDelete =findViewById(R.id.btnDeleteFromStudentAct);
         btnClassRecord=findViewById(R.id.classRecord);
+        imgProPic=findViewById(R.id.img_pro_pic);
 
 
         btnAdd.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         btnClassRecord.setOnClickListener(this);
+    }
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
 
-        student=getIntent().getParcelableExtra(StudentAddActivity.class.getSimpleName());
+        setContentView(R.layout.activity_student_act);
+        activity=this;
+        ButterKnife.bind(this);
+        initView();
+        student=(Student)getIntent().getSerializableExtra(StudentAddActivity.class.getSimpleName());
 
 
         attendenceDataListBeforeEdit=new ArrayList<>();
@@ -106,6 +185,11 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             parentPhoneNumber.setText(student.getParentContact().trim());
             phone.setText(student.getPhone().trim());
             previousId=student.getId().trim();
+            Glide.with(this)
+                    .load(student.getImageUrl())
+                    .placeholder(R.drawable.ic_profile_pic)
+                    .error(R.drawable.ic_profile_pic)
+                    .into(imgProPic);
         }else{
             btnClassRecord.setVisibility(View.GONE);
             btnEdit.setVisibility(View.GONE);
@@ -126,46 +210,66 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             student.setParentContact(parentPhoneNumber.getText().toString().trim());
             student.setStudentClass(StaticData.currentClass.getName());
             student.setStudentSection(StaticData.currentClass.getSection());
+            student.setUuid(UUID.randomUUID().toString());
 
 
-            //CHECK THAT THE ITEM IS UNIQUE
-            for (int i = 0; i < StudentListShowActivity.studentList.size(); i++) {
-                if (StudentListShowActivity.studentList.get(i).getId().equals(student.getId())){
-                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                    alertDialog.setTitle("সতর্কীকরণ");
-                    alertDialog.setIcon(R.drawable.warning_for_add);
-                    alertDialog.setMessage("এই একই রোল ইতিমধ্যে  এই ক্লাসের  ডাটাবেজে রয়েছে।নতুন রোল ইনপুট দিন,ধন্যবাদ।");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                    return;
-                }
-            }
 
             if (student.getId() != null) {
                 if(submitForm()){
 
+                    //CHECK THAT THE ITEM IS UNIQUE
+                    if(isRollExisted(StudentListShowActivity.studentList,student.getId()))
+                        return;
 
-                    String section="";
-                    String className="";
+                    ClassItem classItem=new ClassItem();
 
                     if(StaticData.currentClass!=null) {
-                        section =StaticData.currentClass.getSection();
-                        className = StaticData.currentClass.getName();
+                        classItem=StaticData.currentClass;
                     }
                     else if(contactofSA!=null){
-                        section=contactofSA.getSection();
-                        className=contactofSA.getName();
+                        classItem=contactofSA;
                     }
 
 
-                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(className+section).child("Student").child(student.getId()).setValue(student);
-                Toast.makeText(this, "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
-                finish();
+                    FirebaseCaller.setStudentToServer(classItem, student, new CommonCallback() {
+                        @Override
+                        public void onFailure(String r) {
+                            UtilsCommon.debugLog("Error in photo uploading - "+r);
+                        }
+
+                        @Override
+                        public void onSuccess() {
+
+
+                            if(imageUri!=null&&UtilsCommon.isValideString(imageUri.toString()))
+                            FirebasePhotoUploader.getBuilder()
+                                    .setActivity(StudentAddActivity.this)
+                                    .setFileName(student.getUuid())
+                                    .setUri(imageUri)
+                                    .setServerStorageFolderName("StudentProfilePicture")
+                                    .setTargetDatabaseRef(FirebaseCaller.getSingleStudentDbRef(student).child("imageUrl"))
+                                    .setCallBack(new CommonCallback<Uri>() {
+                                        @Override
+                                        public void onFailure(String r) {
+                                            UtilsCommon.showToast("Error in photo uploading.");
+                                            UtilsCommon.debugLog("Error in photo uploading - "+r);
+                                        }
+
+                                        @Override
+                                        public void onSuccess(Uri response) {
+                                            finish();
+                                            UtilsCommon.showToast("Photo is uploaded");
+                                        }
+                                    }).build();
+                            else {
+                                Toast.makeText(StudentAddActivity.this, "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
+                                finish();
+                                UtilsCommon.debugLog("Student Image URI is null");
+                            }
+                        }
+                    });
+
+
             }
         }
         }
@@ -211,47 +315,39 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
                     className=contactofSA.getName();
                 }
 
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(className+section).child("Student").child(previousId).child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseCaller.getAttendanceDataForSingleStudent(className, section, previousId,
+                        new CommonCallback<ArrayList<AttendenceData>>() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                      final  ArrayList<AttendenceData> attendenceDatalistInFB=new ArrayList<AttendenceData>();
+                    public void onFailure(String r) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<AttendenceData> attendenceDataList) {
 
 
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            AttendenceData attendenceData;
-                            attendenceData=dataSnapshot1.getValue(AttendenceData.class);
-                            attendenceDatalistInFB.add(attendenceData);
-                        }
-
-                        attendenceDataListBeforeEdit=attendenceDatalistInFB;
+                        attendenceDataListBeforeEdit=attendenceDataList;
 
                         //Then first reinstall previous Student data;
-                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(student.getId()).setValue(student);
+                        FirebaseCaller.setStudentToServer(contactofSA,student);
 
 
                         //Then add attendance list of the specific Student before edit.This is an operation fromTime Student act activity;
                         if (StudentAddActivity.attendenceDataListBeforeEdit != null) {
                             for (int i = 0; i < StudentAddActivity.attendenceDataListBeforeEdit.size(); i++) {
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").child(currentId).child("Attendance").push().setValue(StudentAddActivity.attendenceDataListBeforeEdit.get(i));
+
+                                FirebaseCaller.
+                                        setStudentAttendanceToServer(contactofSA,currentId,
+                                        StudentAddActivity.attendenceDataListBeforeEdit.get(i));
                             }
                             currentId=null;
-
                         }
-                        else {
-
-                        }
-
-
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
                     }
                 });
 
 
-
                 //Then remove the old Student data
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(previousId).removeValue();
+                FirebaseCaller.removeStudentToServer(contactofSA,previousId);
 
                 Toast.makeText(this,"শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
                     previousId=null;
@@ -274,11 +370,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
                     alertDialog.setMessage("আপনি শিক্ষার্থীর নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি শিক্ষার্থীর ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই শিক্ষার্থীর ডাটা ডিলেট করতে হলে অবশ্যই সেই শিক্ষার্থীর ডাটাবেজে যেতে হবে।ধন্যবাদ ");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
+                            (dialog, which) -> dialog.dismiss());
                     alertDialog.show();
                     return;
                 }
@@ -296,7 +388,7 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
                     launchinIntent.putExtra("Student",student);
                     launchinIntent.putExtra("Roll", roll);
                     launchinIntent.putExtra("classItem", contactofSA);
-                    StudentAddActivity.activity.startActivity(launchinIntent);
+                    startActivity(launchinIntent);
         }
     }
 
@@ -315,7 +407,6 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
     }
     private boolean validateStudentName() {
         if (personName.getText().toString().trim().isEmpty()) {
-
             personName.setError(getString(R.string.error_massege_for_input));
             requestFocus(personName);
             return false;
@@ -328,12 +419,18 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
             requestFocus(rollNumber);
             return false;
         }
-        return true;
+        else return !isRollExisted(StudentListShowActivity.studentList, rollNumber.getText().toString().trim());
     }
 
     private void requestFocus(View view) {
         view.requestFocus();
     }
+
+    @Override
+    protected void onPermissionBlocked(String permission) {
+
+    }
+
     private class MyTextWatcher implements TextWatcher {
 
         private View view;
@@ -370,22 +467,16 @@ public class StudentAddActivity extends AppCompatActivity implements View.OnClic
         dialogBuilder.setView(dialogView);
         final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
         dialogBuilder.setTitle("আপনি কি আসলেই এই শিক্ষার্থীর সকল তথ্য ডিলিট করতে চান?");
-        dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");
-        dialogBuilder.setPositiveButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                if(edt.getText().toString().trim().equals("DELETE")){
+        dialogBuilder.setPositiveButton("ডিলিট করুন", (dialog, whichButton) -> {
 
-                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName()+ contactofSA.getSection()).child("Student").child(student.getId()).removeValue();
+                FirebaseCaller.removeStudentToServer(contactofSA,student.getId());
 
-                    Toast.makeText(StudentAddActivity.this,"এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
-                    previousId=null;
-                    finish();
-                }
-            }
+                Toast.makeText(StudentAddActivity.this,"এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
+                previousId=null;
+                finish();
+
         });
-        dialogBuilder.setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
+        dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
