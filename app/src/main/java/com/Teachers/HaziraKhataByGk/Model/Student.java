@@ -1,5 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Model;
 
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class Student implements Serializable {
     private String StudentClass;
     private String StudentSection;
     private String uuid;
+    private String gander= Constant.MALE;
 
     public String getRoll() {
         return roll;
@@ -145,5 +147,13 @@ public class Student implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getGander() {
+        return gander;
+    }
+
+    public void setGander(String gander) {
+        this.gander = gander;
     }
 }

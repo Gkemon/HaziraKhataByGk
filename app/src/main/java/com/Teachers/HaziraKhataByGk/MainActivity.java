@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         setUpDrawer();
-        showHintDialogForFirstTime();
         setupViewPager();
         setupTabIcons();
     }
@@ -210,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user == null) {
-
+               startActivity(new Intent (MainActivity.this,LoginActivity.class));
             }
         };
 

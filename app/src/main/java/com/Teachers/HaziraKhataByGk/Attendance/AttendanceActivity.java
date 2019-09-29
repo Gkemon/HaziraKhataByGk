@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
@@ -37,7 +37,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.Teachers.HaziraKhataByGk.ClassRoomActivity.FLAG_OF_CLASSROOM_ACTIVITY;
+import static com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity.FLAG_OF_CLASSROOM_ACTIVITY;
 
 public class AttendanceActivity extends AppCompatActivity {
 
@@ -157,9 +157,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         }
                     }
                 });
-                dialogBuilder.setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
+                dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {
                 });
                 AlertDialog b = dialogBuilder.create();
                 b.show();
@@ -176,7 +174,7 @@ public class AttendanceActivity extends AppCompatActivity {
         }
     }
 
-    void ShowIntroDialoage(){
+    void showIntroDialoage(){
         //TODO: For verifying this activity is newly opened or not and showing the instruction dialog
 
         SharedPreferences pref = AttendanceActivity.this.getSharedPreferences("IsFirst", 0); // 0 - for private mode
@@ -215,7 +213,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
         classitemAttendence = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
 
-        ShowIntroDialoage();
+        showIntroDialoage();
 
 
         studentListFromAttendenceActivity=new ArrayList<>();

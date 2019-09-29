@@ -3,10 +3,7 @@ package com.Teachers.HaziraKhataByGk;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +22,6 @@ import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by uy on 12/2/2017.
@@ -44,7 +40,7 @@ public class SignupActivity  extends AppCompatActivity {
         //Get Firebase auth instance
         btnSignIn = (Button) findViewById(R.id.button_to_sign_in);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
-        inputEmail = (EditText) findViewById(R.id.email);
+        inputEmail = (EditText) findViewById(R.id.et_email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnGuest = (Button) findViewById(R.id.btn_guest);

@@ -1,7 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Firebase;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,15 +8,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.SubjectMarkSheetAdaper;
-import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
-import com.Teachers.HaziraKhataByGk.StudentAdd.StudentAddActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,10 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static com.Teachers.HaziraKhataByGk.MainActivity.calledAlready;
-import static com.Teachers.HaziraKhataByGk.StudentListShowActivity.contactofSA;
 
 /**
  * Created by uy on 5/28/2018.
@@ -119,9 +113,14 @@ public class FirebaseCaller {
 
     }
     public static DatabaseReference getSingleStudentDbRef(Student student){
+        if(student!=null)
        return FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
                 child("Class").
                 child(student.getStudentClass() + student.getStudentSection()).child("Student").child(student.getId());
+        else {
+            UtilsCommon.showToast("Student is null");
+                return null;
+          }
     }
 
     public static DatabaseReference getSingleStudentAttendanceDbRef(String className,String sectionName,String roll){

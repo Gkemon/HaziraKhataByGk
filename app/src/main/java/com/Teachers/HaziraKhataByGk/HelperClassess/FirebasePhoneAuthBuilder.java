@@ -36,7 +36,7 @@ public class FirebasePhoneAuthBuilder {
         cTimer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                timerCallBack.onWait(millisUntilFinished/1000);
+                timerCallBack.onWait((int)millisUntilFinished/1000);
             }
 
             public void onFinish() {

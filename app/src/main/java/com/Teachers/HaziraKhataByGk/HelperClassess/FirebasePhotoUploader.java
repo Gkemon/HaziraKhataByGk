@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+
 public class FirebasePhotoUploader {
     private String fileName;
     private String serverStorageFolderName;
@@ -34,8 +35,11 @@ public class FirebasePhotoUploader {
     }
 
     public static FirebasePhotoUploader getBuilder() {
-        if (firebasePhotoUploader == null) return new FirebasePhotoUploader();
-        return firebasePhotoUploader;
+        if (firebasePhotoUploader == null){
+           firebasePhotoUploader = new FirebasePhotoUploader();
+           return firebasePhotoUploader;
+        }
+        else return firebasePhotoUploader;
     }
 
     public FirebasePhotoUploader setFileName(String fileName) {
@@ -64,7 +68,7 @@ public class FirebasePhotoUploader {
 
         if (file != null) {
 
-            final ProgressDialog progressDialog = new ProgressDialog(GlobalContext.getWeakActivity());
+            final ProgressDialog progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -87,7 +91,7 @@ public class FirebasePhotoUploader {
             }).addOnSuccessListener(taskSnapshot -> {
 
                 riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    targetDatabaseRef.setValue(uri)
+                    targetDatabaseRef.setValue(uri.toString())
                             .addOnSuccessListener(aVoid -> commonCallback.onSuccess(uri))
                             .addOnFailureListener(e -> commonCallback.onFailure(e.getLocalizedMessage()));
 

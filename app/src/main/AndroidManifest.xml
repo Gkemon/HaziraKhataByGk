@@ -68,7 +68,7 @@
             android:name=".AddEditClass.ClassAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".ClassRoomActivity"
+            android:name=".ClassRoom.ClassRoomActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity android:name=".Attendance.AttendanceActivity">
         </activity>

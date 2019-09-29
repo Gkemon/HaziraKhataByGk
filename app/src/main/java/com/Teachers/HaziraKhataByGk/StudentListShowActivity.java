@@ -1,6 +1,5 @@
 package com.Teachers.HaziraKhataByGk;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.Teachers.HaziraKhataByGk.Adapter.StudentListAdapter;
+import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class StudentListShowActivity extends AppCompatActivity implements RecyclerItemClickListener {
 
     private RecyclerView studentItems;
@@ -37,9 +36,6 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout linearLayoutForEmptyView;
     public static List<Student> studentList;
-    public static Activity Activity;
-
-
 
 
     @Override
@@ -49,13 +45,11 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
         setContentView(R.layout.student_activity);
         context = getApplicationContext();
-        studentItems = (RecyclerView) findViewById(R.id.studentFromStudentActivity);
-
-        btnAdd = (FloatingActionButton) findViewById(R.id.addFromStudentActivity);
+        studentItems = findViewById(R.id.studentFromStudentActivity);
+        btnAdd = findViewById(R.id.addFromStudentActivity);
         linearLayoutManager = new LinearLayoutManager(this);
         studentListAdapter = new StudentListAdapter(this);
         studentListAdapter.setOnItemClickListener(this);
-        Activity = this;
         context = this;
         studentItems.setLayoutManager(linearLayoutManager);
         studentItems.setAdapter(studentListAdapter);
@@ -63,13 +57,8 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
         contactofSA = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
 
         //For empty view
-        linearLayoutForEmptyView =findViewById(R.id.toDoEmptyView);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StudentAddActivity.start(context);
-            }
-        });
+        linearLayoutForEmptyView = findViewById(R.id.toDoEmptyView);
+        btnAdd.setOnClickListener(v -> StudentAddActivity.start(context));
 
 
     }
@@ -84,15 +73,14 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
         contactofSA = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
 
-        if(contactofSA.getName()!=null&&contactofSA.getSection()!=null)
-        {
+        if (contactofSA.getName() != null && contactofSA.getSection() != null) {
 
             FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     ProgressBar spinner;
-                    spinner = (ProgressBar)findViewById(R.id.progressBarInStudentActivity);
+                    spinner = (ProgressBar) findViewById(R.id.progressBarInStudentActivity);
                     spinner.setVisibility(View.GONE);
 
 
@@ -124,20 +112,20 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
         }
 
 
+    }
 
+    @Override
+    public void onItemClick(int position, View view) {
+
+        StaticData.currentStudent = studentListAdapter.getItem(position);
+        StudentAddActivity.start(this, studentListAdapter.getItem(position));
 
     }
-        @Override
-        public void onItemClick ( int position, View view){
 
-            StaticData.currentStudent=studentListAdapter.getItem(position);
-            StudentAddActivity.start(this, studentListAdapter.getItem(position));
+    @Override
+    public void onItemLongPressed(int position, View view) {
 
-        }
-        @Override
-        public void onItemLongPressed ( int position, View view){
-
-        }
+    }
 
     @Override
     public void onPause() {
@@ -151,4 +139,4 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
         super.onDestroy();
     }
 
-    }
+}

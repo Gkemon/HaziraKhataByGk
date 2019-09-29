@@ -1,179 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blueLight"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/ns_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:background="@color/blueLight">
+        android:layout_above="@+id/ll_crud"
+        android:layout_marginBottom="-2dp"
+        android:background="@color/blueLight"
+        android:padding="@dimen/activity_horizontal_margin">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
-        android:id="@+id/Student_name_textinputLayout"
-        android:layout_width="match_parent"
-        app:hintTextAppearance="@style/Hints"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/personTextFromStudentAct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/student_name"
-        android:ems="10"
-        android:layout_marginBottom="@dimen/margin_10" />
-    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
 
-    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
-        android:id="@+id/Roll_textinputLayout"
-        android:layout_width="match_parent"
-        app:hintTextAppearance="@style/Hints"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/RollNumberFromStudentAct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:hint="@string/student_roll"
-        android:layout_marginBottom="@dimen/margin_10" />
-    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+            <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+                android:id="@+id/Student_name_textinputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:hintTextAppearance="@style/Hints">
+
+                <EditText
+                    android:id="@+id/personTextFromStudentAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:ems="10"
+                    android:hint="@string/student_name"
+                    android:inputType="textPersonName" />
+            </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
+            <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+                android:id="@+id/Roll_textinputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:hintTextAppearance="@style/Hints">
+
+                <EditText
+                    android:id="@+id/RollNumberFromStudentAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:ems="10"
+                    android:hint="@string/student_roll"
+                    android:inputType="number" />
+            </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <RadioButton
-                    android:layout_width="0dp"
-                    android:text="ছেলে"
-                    android:layout_gravity="center"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-                <RadioButton
-                    android:text="মেয়ে"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-            </RadioGroup>
-    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
-        android:id="@+id/Student_number_textinputLayout"
-        android:layout_width="match_parent"
-        app:hintTextAppearance="@style/Hints"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/phoneNumbersFromStudentAct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:hint="@string/student_contact"
-        android:layout_marginBottom="@dimen/margin_10" />
-    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
-    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
-        android:id="@+id/parent_name_textinputLayout"
-        android:layout_width="match_parent"
-        app:hintTextAppearance="@style/Hints"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/personParentTextFromStudentAct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/student_parent_name"
-        android:ems="10"
-        android:layout_marginBottom="@dimen/margin_10" />
-    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
 
-    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
-        android:id="@+id/parentPhoneNumber_textinputLayout"
-        android:layout_width="match_parent"
-        app:hintTextAppearance="@style/Hints"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/ParentsphoneNumbersFromStudentAct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:hint="@string/student_parent_contact"
-        android:layout_marginBottom="@dimen/margin_10" />
-    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+                <RadioButton
+                    android:id="@+id/rb_male"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="ছেলে" />
+
+                <RadioButton
+                    android:id="@+id/rb_female"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="মেয়ে" />
+            </RadioGroup>
+
+            <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+                android:id="@+id/Student_number_textinputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:hintTextAppearance="@style/Hints">
+
+                <EditText
+                    android:id="@+id/phoneNumbersFromStudentAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:ems="10"
+                    android:hint="@string/student_contact"
+                    android:inputType="phone" />
+            </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
+            <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+                android:id="@+id/parent_name_textinputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:hintTextAppearance="@style/Hints">
+
+                <EditText
+                    android:id="@+id/personParentTextFromStudentAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:ems="10"
+                    android:hint="@string/student_parent_name"
+                    android:inputType="textPersonName" />
+            </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
+            <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+                android:id="@+id/parentPhoneNumber_textinputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:hintTextAppearance="@style/Hints">
+
+                <EditText
+                    android:id="@+id/ParentsphoneNumbersFromStudentAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:ems="10"
+                    android:hint="@string/student_parent_contact"
+                    android:inputType="phone" />
+            </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
             <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
                 android:id="@+id/parent2_name_textinputLayout"
                 android:layout_width="match_parent"
-                app:hintTextAppearance="@style/Hints"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content">
+                app:hintTextAppearance="@style/Hints">
+
                 <EditText
                     android:id="@+id/person2ParentTextFromStudentAct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/student_parent_name2"
+                    android:layout_marginBottom="@dimen/margin_10"
                     android:ems="10"
-                    android:layout_marginBottom="@dimen/margin_10" />
+                    android:hint="@string/student_parent_name2"
+                    android:inputType="textPersonName" />
             </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
             <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
                 android:id="@+id/parent2PhoneNumber_textinputLayout"
                 android:layout_width="match_parent"
-                app:hintTextAppearance="@style/Hints"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content">
+                app:hintTextAppearance="@style/Hints">
+
                 <EditText
                     android:id="@+id/Parents2phoneNumbersFromStudentAct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
+                    android:layout_marginBottom="@dimen/margin_10"
                     android:ems="10"
                     android:hint="@string/student_parent_contact2"
-                    android:layout_marginBottom="@dimen/margin_10" />
+                    android:inputType="phone" />
             </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
             <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
                 android:id="@+id/ll_birth_certificate"
                 android:layout_width="match_parent"
-                app:hintTextAppearance="@style/Hints"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content">
+                app:hintTextAppearance="@style/Hints">
+
                 <EditText
                     android:id="@+id/et_birth_certificate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
+                    android:layout_marginBottom="@dimen/margin_10"
                     android:ems="10"
                     android:hint="@string/birth_certification_no"
-                    android:layout_marginBottom="@dimen/margin_10" />
+                    android:inputType="text" />
             </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
             <Button
-                android:backgroundTint="#2196F3"
-                android:textColor="@color/white"
                 android:id="@+id/btn_birth_date_select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/birth_date_selection_hints"/>
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:id="@+id/img_pro_pic"
-                android:src="@drawable/ic_profile_pic"/>
-            <Button
                 android:backgroundTint="#2196F3"
-                android:textColor="@color/white"
+                android:text="@string/birth_date_selection_hints"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/img_pro_pic"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_profile_pic" />
+
+            <Button
                 android:id="@+id/btn_student_pro_pic_upload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/upload_student_pro_pic_hints"/>
-  <LinearLayout
+                android:backgroundTint="#2196F3"
+                android:text="@string/upload_student_pro_pic_hints"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+    <LinearLayout
+        android:id="@+id/ll_crud"
+        android:layout_above="@+id/classRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -197,22 +229,21 @@
             android:text="@string/edit" />
 
         <Button
-        android:backgroundTint="#F44336"
-        android:textColor="@color/white"
-        android:id="@+id/btnDeleteFromStudentAct"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="@string/delete"/>
+            android:backgroundTint="#F44336"
+            android:textColor="@color/white"
+            android:id="@+id/btnDeleteFromStudentAct"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"/>
 
     </LinearLayout>
     <Button
+        android:layout_alignParentBottom="true"
         android:backgroundTint="#2196F3"
         android:textColor="@color/white"
         android:id="@+id/classRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/class_record"/>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+</RelativeLayout>

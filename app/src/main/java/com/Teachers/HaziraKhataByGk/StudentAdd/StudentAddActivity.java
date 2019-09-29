@@ -16,10 +16,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.DatePickerBuilder;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhotoUploader;
 import com.Teachers.HaziraKhataByGk.HelperClassess.PermissionActivity;
@@ -39,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -48,35 +52,77 @@ import static com.Teachers.HaziraKhataByGk.StudentListShowActivity.contactofSA;
 
 public class StudentAddActivity extends PermissionActivity implements View.OnClickListener{
 
-    private EditText personName;
-    private EditText phone;
-    private EditText rollNumber;
-    private EditText parentName;
-    private EditText parentPhoneNumber;
+    private EditText etPersonName;
+    private EditText etPhone;
+    private EditText etRollNumber;
+    private EditText etParentName;
+    private EditText etParentPhoneNumber;
+
+    @BindView(R.id.person2ParentTextFromStudentAct)
+    public EditText etParent2Name;
+    @BindView(R.id.Parents2phoneNumbersFromStudentAct)
+    public EditText etParent2Phone;
+    @BindView(R.id.et_birth_certificate)
+    public EditText etBirthCertificate;
+    @BindView(R.id.rb_male)
+    public RadioButton rbMale;
+    @BindView(R.id.rb_female)
+    public RadioButton rbFemale;
+    @BindView(R.id.btn_birth_date_select)
+    public Button btnBirthDay;
+
+
+
     private Button btnAdd, btnEdit, btnDelete,btnClassRecord;
     private ImageView imgProPic;
     private Student student;
     public  String previousId,currentId;
     public Activity activity;
     public Uri imageUri=null;
+    private String birthDay;
 
+
+    @OnClick(R.id.btn_birth_date_select)
+    public void selectBirthDate(Button button){
+       DatePickerBuilder datePickerBuilder = DatePickerBuilder.getBuilder();
+
+       if(UtilsCommon.isValideString(student.getBirthDate()))
+         datePickerBuilder.setDateString_EEE_d_MMM_yyyy(student.getBirthDate());
+         datePickerBuilder.setActivity(this);
+
+         datePickerBuilder.setDateCallBack(new CommonCallback<String>() {
+             @Override
+             public void onFailure(String error) {
+
+             }
+
+             @Override
+             public void onSuccess(String response) {
+                 birthDay=response;
+                 student.setBirthDate(response);
+                 button.setText("জন্ম তারিখ: "+response);
+             }
+         })
+         .show();
+
+    }
     @OnClick(R.id.btn_student_pro_pic_upload)
-    public void uploadProPic(){
+    public void chooseProPic(){
 
         if(checkHasPermission(RequestCode.PERMISSION_MULTIPLE,new CommonCallback() {
             @Override
             public void onSuccess() {
-                uploadProPic();
+                chooseProPic();
             }
-        } ,new String[]{Manifest.permission
-                .READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+        } , Manifest.permission
+                .READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             if (validateRoll() && validateStudentName()) {
                 Intent intent = CropImage.activity(imageUri)
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setActivityTitle("Profile Pic")
                         .setCropShape(CropImageView.CropShape.RECTANGLE)
                         .setCropMenuCropButtonTitle("Done")
-                        .setRequestedSize(150, 120)
+                        .setAutoZoomEnabled(true)
                         .setFixAspectRatio(true)
                         .setAspectRatio(6, 6)
                         .setCropMenuCropButtonIcon(R.drawable.check)
@@ -87,7 +133,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
             }
         }
         else {
-            DialogUtils.showInfoAlertDialog("Permission","You didn't allow permission for this");
+           // DialogUtils.showInfoAlertDialog("Permission","You didn't allow permission for this");
         }
 
 
@@ -140,15 +186,15 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
 
     public void initView(){
-        personName = findViewById(R.id.personTextFromStudentAct);
-        rollNumber= findViewById(R.id.RollNumberFromStudentAct);
+        etPersonName = findViewById(R.id.personTextFromStudentAct);
+        etRollNumber = findViewById(R.id.RollNumberFromStudentAct);
         //ADD TEXT CHANGE LISTENER
-        personName.addTextChangedListener(new MyTextWatcher(personName));
-        rollNumber.addTextChangedListener(new MyTextWatcher(rollNumber));
+        etPersonName.addTextChangedListener(new MyTextWatcher(etPersonName));
+        etRollNumber.addTextChangedListener(new MyTextWatcher(etRollNumber));
 
-        phone = findViewById(R.id.phoneNumbersFromStudentAct);
-        parentName=findViewById(R.id.personParentTextFromStudentAct);
-        parentPhoneNumber=findViewById(R.id.ParentsphoneNumbersFromStudentAct);
+        etPhone = findViewById(R.id.phoneNumbersFromStudentAct);
+        etParentName =findViewById(R.id.personParentTextFromStudentAct);
+        etParentPhoneNumber =findViewById(R.id.ParentsphoneNumbersFromStudentAct);
 
 
         btnAdd = findViewById(R.id.btnAddFromStudentAct);
@@ -179,11 +225,30 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
         if(student != null){
             btnAdd.setVisibility(View.GONE);
-            personName.setText(student.getStudentName().trim());
-            rollNumber.setText(student.getId().trim());
-            parentName.setText(student.getParentName().trim());
-            parentPhoneNumber.setText(student.getParentContact().trim());
-            phone.setText(student.getPhone().trim());
+            etPersonName.setText(student.getStudentName().trim());
+            etRollNumber.setText(student.getId().trim());
+            etParentName.setText(student.getParentName().trim());
+            etParentPhoneNumber.setText(student.getParentContact().trim());
+            etPhone.setText(student.getPhone().trim());
+            if(student.getGander().equals(Constant.MALE)){
+                rbMale.setChecked(true);
+            }
+            else {
+                rbFemale.setChecked(true);
+            }
+
+            etBirthCertificate.setText(student.getBirthCertificateNo());
+            if(UtilsCommon.isValideString(student.getBirthDate()))
+            {
+                btnBirthDay.setText("জন্ম তারিখ: "+student.getBirthDate());
+                birthDay=student.getBirthDate();
+            }
+
+            etParent2Name.setText(student.getParent2Name());
+            etParent2Phone.setText(student.getParent2Contact());
+
+
+
             previousId=student.getId().trim();
             Glide.with(this)
                     .load(student.getImageUrl())
@@ -203,15 +268,19 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         if(v == btnAdd) {
 
             student = new Student();
-            student.setStudentName(personName.getText().toString().trim());
-            student.setId(rollNumber.getText().toString().trim());
-            student.setPhone(phone.getText().toString().trim());
-            student.setParentName(parentName.getText().toString().trim());
-            student.setParentContact(parentPhoneNumber.getText().toString().trim());
+            student.setStudentName(etPersonName.getText().toString().trim());
+            student.setId(etRollNumber.getText().toString().trim());
+            student.setPhone(etPhone.getText().toString().trim());
+            student.setParentName(etParentName.getText().toString().trim());
+            student.setParentContact(etParentPhoneNumber.getText().toString().trim());
             student.setStudentClass(StaticData.currentClass.getName());
             student.setStudentSection(StaticData.currentClass.getSection());
             student.setUuid(UUID.randomUUID().toString());
-
+            student.setBirthDate(birthDay);
+            student.setParent2Contact(etParent2Phone.getText().toString().trim());
+            student.setParent2Name(etParent2Name.getText().toString().trim());
+            student.setBirthCertificateNo(etBirthCertificate.getText().toString().trim());
+            student.setGander(rbMale.isChecked()?Constant.MALE:Constant.FEMALE);
 
 
             if (student.getId() != null) {
@@ -239,33 +308,9 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
                         @Override
                         public void onSuccess() {
-
-
-                            if(imageUri!=null&&UtilsCommon.isValideString(imageUri.toString()))
-                            FirebasePhotoUploader.getBuilder()
-                                    .setActivity(StudentAddActivity.this)
-                                    .setFileName(student.getUuid())
-                                    .setUri(imageUri)
-                                    .setServerStorageFolderName("StudentProfilePicture")
-                                    .setTargetDatabaseRef(FirebaseCaller.getSingleStudentDbRef(student).child("imageUrl"))
-                                    .setCallBack(new CommonCallback<Uri>() {
-                                        @Override
-                                        public void onFailure(String r) {
-                                            UtilsCommon.showToast("Error in photo uploading.");
-                                            UtilsCommon.debugLog("Error in photo uploading - "+r);
-                                        }
-
-                                        @Override
-                                        public void onSuccess(Uri response) {
-                                            finish();
-                                            UtilsCommon.showToast("Photo is uploaded");
-                                        }
-                                    }).build();
-                            else {
-                                Toast.makeText(StudentAddActivity.this, "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
-                                finish();
-                                UtilsCommon.debugLog("Student Image URI is null");
-                            }
+                            uploadProPicToServer();
+                            Toast.makeText(StudentAddActivity.this,
+                                    "নতুন শিক্ষার্থীর তথ্য ডাটাবেজে যুক্ত হয়েছে ,ধন্যবাদ।", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -274,15 +319,25 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         }
         }
         else if(v == btnEdit){
-            student.setStudentName(personName.getText().toString().trim());
-            student.setId(rollNumber.getText().toString().trim());
-            student.setPhone(phone.getText().toString().trim());
-            student.setParentName(parentName.getText().toString().trim());
-            student.setParentContact(parentPhoneNumber.getText().toString().trim());
-            currentId=rollNumber.getText().toString().trim();
+            student.setStudentName(etPersonName.getText().toString().trim());
+            student.setId(etRollNumber.getText().toString().trim());
+            student.setPhone(etPhone.getText().toString().trim());
+            student.setParentName(etParentName.getText().toString().trim());
+            student.setParentContact(etParentPhoneNumber.getText().toString().trim());
+            if(!UtilsCommon.isValideString(student.getUuid()))
+            student.setUuid(UUID.randomUUID().toString());
+            currentId= etRollNumber.getText().toString().trim();
+
+            student.setBirthDate(birthDay);
+            student.setParent2Contact(etParent2Phone.getText().toString().trim());
+            student.setParent2Name(etParent2Name.getText().toString().trim());
+            student.setBirthCertificateNo(etBirthCertificate.getText().toString().trim());
+            student.setGander(rbMale.isChecked()?Constant.MALE:Constant.FEMALE);
+
 
 
             //CHECK THAT THE ITEM IS UNIQUE
+            if(StudentListShowActivity.studentList!=null)
             for (int i = 0; i < StudentListShowActivity.studentList.size(); i++) {
                 if (StudentListShowActivity.studentList.get(i).getId().equals(student.getId())&&!previousId.equals(student.getId()))
                 {AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -329,7 +384,18 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                         attendenceDataListBeforeEdit=attendenceDataList;
 
                         //Then first reinstall previous Student data;
-                        FirebaseCaller.setStudentToServer(contactofSA,student);
+                        FirebaseCaller.setStudentToServer(contactofSA, student, new CommonCallback() {
+                            @Override
+                            public void onFailure(String r) {
+                                DialogUtils.showInfoAlertDialog("Error to save the student to " +
+                                        "server.","Log: "+r);
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                uploadProPicToServer();
+                            }
+                        });
 
 
                         //Then add attendance list of the specific Student before edit.This is an operation fromTime Student act activity;
@@ -352,19 +418,19 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                 Toast.makeText(this,"শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
                     previousId=null;
 
-                finish();
+
             }
 
         }else if(v == btnDelete) {
-            student.setStudentName(personName.getText().toString());
-            student.setId(rollNumber.getText().toString());
-            student.setPhone(phone.getText().toString());
-            student.setParentName(parentName.getText().toString());
-            student.setParentContact(parentPhoneNumber.getText().toString());
+            student.setStudentName(etPersonName.getText().toString());
+            student.setId(etRollNumber.getText().toString());
+            student.setPhone(etPhone.getText().toString());
+            student.setParentName(etParentName.getText().toString());
+            student.setParentContact(etParentPhoneNumber.getText().toString());
 
             //FOR AVOID SQL INJECTION
             for(int i = 0; i< StudentListShowActivity.studentList.size(); i++){
-                if(StudentListShowActivity.studentList.get(i).getId().equals(student.getId())&&!(previousId.equals(rollNumber.getText().toString()))){
+                if(StudentListShowActivity.studentList.get(i).getId().equals(student.getId())&&!(previousId.equals(etRollNumber.getText().toString()))){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -392,6 +458,33 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         }
     }
 
+    public void uploadProPicToServer(){
+        if(imageUri!=null&&UtilsCommon.isValideString(imageUri.toString()))
+            FirebasePhotoUploader.getBuilder()
+                    .setActivity(StudentAddActivity.this)
+                    .setFileName(student.getUuid())
+                    .setUri(imageUri)
+                    .setServerStorageFolderName("StudentProfilePicture")
+                    .setTargetDatabaseRef(FirebaseCaller.getSingleStudentDbRef(student).child("imageUrl"))
+                    .setCallBack(new CommonCallback<Uri>() {
+                        @Override
+                        public void onFailure(String r) {
+                            UtilsCommon.showToast("Error in photo uploading.");
+                            UtilsCommon.debugLog("Error in photo uploading - "+r);
+                        }
+
+                        @Override
+                        public void onSuccess(Uri response) {
+                            finish();
+                            UtilsCommon.showToast("Photo is uploaded");
+                        }
+                    }).build();
+        else {
+            finish();
+            UtilsCommon.debugLog("Student Image URI is null");
+        }
+    }
+
     private boolean submitForm() {
         if (!validateStudentName()) {
             Toast.makeText(getApplicationContext(), "দয়া করে শিক্ষার্থীর নাম অংশের ভুল সংশোধণ করুন,ধন্যবাদ", Toast.LENGTH_SHORT).show();
@@ -406,20 +499,20 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         return true;
     }
     private boolean validateStudentName() {
-        if (personName.getText().toString().trim().isEmpty()) {
-            personName.setError(getString(R.string.error_massege_for_input));
-            requestFocus(personName);
+        if (etPersonName.getText().toString().trim().isEmpty()) {
+            etPersonName.setError(getString(R.string.error_massege_for_input));
+            requestFocus(etPersonName);
             return false;
         }
         return true;
     }
     private boolean validateRoll() {
-        if (rollNumber.getText().toString().trim().isEmpty()) {
-            rollNumber.setError(getString(R.string.error_massege_for_input));
-            requestFocus(rollNumber);
+        if (etRollNumber.getText().toString().trim().isEmpty()) {
+            etRollNumber.setError(getString(R.string.error_massege_for_input));
+            requestFocus(etRollNumber);
             return false;
         }
-        else return !isRollExisted(StudentListShowActivity.studentList, rollNumber.getText().toString().trim());
+        else return true;
     }
 
     private void requestFocus(View view) {

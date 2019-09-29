@@ -43,7 +43,6 @@ List<String> sortedDateList =new ArrayList<>();
 ;
     public static Date getDateObjFromDateFormate(String dateText) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy");
-
         return format.parse (dateText);
 
     }

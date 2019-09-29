@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk;
+package com.Teachers.HaziraKhataByGk.ClassRoom;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,13 +25,18 @@ import com.Teachers.HaziraKhataByGk.Adapter.NoteListAdapter;
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
+import com.Teachers.HaziraKhataByGk.FeesAcitvity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
+import com.Teachers.HaziraKhataByGk.MarkSheetHomeActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.Teachers.HaziraKhataByGk.Model.Student;
+import com.Teachers.HaziraKhataByGk.NoteAddActivity;
+import com.Teachers.HaziraKhataByGk.PrinterActivity;
+import com.Teachers.HaziraKhataByGk.R;
+import com.Teachers.HaziraKhataByGk.StudentListShowActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -62,7 +67,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     public static ClassItem classitem;
     public static List<Notes> notesList;
     public Button feesButton,DailyAndMontlyRecord,marksheetButton;
-    View EmptyView;
+    View emptyView;
 
     public static String FLAG_OF_CLASSROOM_ACTIVITY="class_room";
 
@@ -79,11 +84,8 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_class_room);
-
-        Initialize();
+        initView();
 
     }
 
@@ -91,10 +93,9 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     protected void onResume() {
         super.onResume();
 
-
-        LoadNotes();
+        loadNotes();
         loadData();
-        ClickListenerForDailyAndMonthlyRecord();
+        clickListenerForDailyAndMonthlyRecord();
 
     }
 
@@ -122,24 +123,20 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
             LayoutInflater inflater = getActivity().getLayoutInflater();
             final View v = inflater.inflate(R.layout.pick_period, null);
             final EditText Subject = (EditText) v.findViewById(R.id.periodID);
-            builder.setView(v).setPositiveButton("উপস্থিতি নেয়া শুরু করুন", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    {
-                        final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
-                        int day = datePicker.getDayOfMonth();
-                        int month = datePicker.getMonth();
-                        int year = datePicker.getYear() - 1900;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateFormate);
-                        String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-                        String date = year + "-" + month + "-" + day;
-                        String subject = Subject.getText().toString();
-                        Intent launchinIntent = new Intent( v.getContext(), AttendanceActivity.class);
-                        launchinIntent.putExtra("DATE", formatedDate);
-                        launchinIntent.putExtra("SUBJECT", subject);
-                        launchinIntent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY, ClassRoomActivity.classitem);
-                        v.getContext().startActivity(launchinIntent);
-                    }
+            builder.setView(v).setPositiveButton("উপস্থিতি নেয়া শুরু করুন", (dialog, id) -> {
+                {
+                    final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+                    int day = datePicker.getDayOfMonth();
+                    int month = datePicker.getMonth();
+                    int year = datePicker.getYear() - 1900;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateFormate);
+                    String formatedDate = simpleDateFormat.format(new Date(year, month, day));
+                    String subject = Subject.getText().toString();
+                    Intent launchinIntent = new Intent( v.getContext(), AttendanceActivity.class);
+                    launchinIntent.putExtra("DATE", formatedDate);
+                    launchinIntent.putExtra("SUBJECT", subject);
+                    launchinIntent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY, ClassRoomActivity.classitem);
+                    v.getContext().startActivity(launchinIntent);
                 }
             }).setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -160,7 +157,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
     }
 
-    void LoadNotes(){
+    void loadNotes(){
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -174,10 +171,10 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
                 noteListAdapter.clear();
                 noteListAdapter.addAll(NotesList);
                 if(NotesList.size()==0){
-                    EmptyView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.VISIBLE);
                 }
                 else{
-                    EmptyView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.GONE);
                 }
                 NOTES.setAdapter(noteListAdapter);
             }
@@ -189,7 +186,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         });
     }
 
-    void ClickListenerForDailyAndMonthlyRecord(){
+    void clickListenerForDailyAndMonthlyRecord(){
         DailyAndMontlyRecord=(Button)findViewById(R.id.AttendenceRecordButtom);
         DailyAndMontlyRecord.setVisibility(View.GONE);
         DailyAndMontlyRecord.setOnClickListener(new View.OnClickListener() {
@@ -224,13 +221,13 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
             }
         });
     }
-    void Initialize(){
+    void initView(){
         activity = this;
         context = getApplicationContext();
         NOTES = (RecyclerView) findViewById(R.id.notes);
-        EmptyView = findViewById(R.id.toDoEmptyView);
+        emptyView = findViewById(R.id.toDoEmptyView);
         notesList=new ArrayList<Notes>();
-        btnAdd = (FloatingActionButton) findViewById(R.id.fabForNotes);
+        btnAdd =  findViewById(R.id.fabForNotes);
         feesButton=(Button)findViewById(R.id.feesButton);
         feesButton.setVisibility(View.GONE);
 
@@ -257,55 +254,38 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
 
 
 
-        feesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(ClassRoomActivity.this,FeesAcitvity.class);
-                activity.startActivity(intent);
-            }
+        feesButton.setOnClickListener(view -> {
+            Intent intent=new Intent(ClassRoomActivity.this, FeesAcitvity.class);
+            activity.startActivity(intent);
         });
 
-        marksheetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(ClassRoomActivity.this,MarkSheetHomeActivity.class);
-                intent.putExtra(Constant.CLASS_NAME,classitem.getName());
-                intent.putExtra(Constant.CLASS_SECTION,classitem.getSection());
-                activity.startActivity(intent);
-            }
+        marksheetButton.setOnClickListener(view -> {
+            Intent intent=new Intent(ClassRoomActivity.this, MarkSheetHomeActivity.class);
+            intent.putExtra(Constant.CLASS_NAME,classitem.getName());
+            intent.putExtra(Constant.CLASS_SECTION,classitem.getSection());
+            activity.startActivity(intent);
         });
 
 
         if (linearLayoutForPresent != null) {
-            linearLayoutForPresent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentManager fm = activity.getFragmentManager();
-                    createRequest request = new createRequest();
-                    request.show(fm, "Select");
-                }
+            linearLayoutForPresent.setOnClickListener(v -> {
+                FragmentManager fm = activity.getFragmentManager();
+                createRequest request = new createRequest();
+                request.show(fm, "Select");
             });
         }
 
         //FOR STUDENT PROFILE
         if (linearLayoutForStudentProfile != null) {
-            linearLayoutForStudentProfile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent launchinIntent = new Intent(activity, StudentListShowActivity.class);
-                    launchinIntent.putExtra(ClassRoomActivity.class.getSimpleName(), classitem);
-                    activity.startActivity(launchinIntent);
-                }
+            linearLayoutForStudentProfile.setOnClickListener(v -> {
+                Intent launchinIntent = new Intent(activity, StudentListShowActivity.class);
+                launchinIntent.putExtra(ClassRoomActivity.class.getSimpleName(), classitem);
+                activity.startActivity(launchinIntent);
             });
         }
 
         //FAB TO NOTE ACTIVITY
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NoteAddActivity.start(ClassRoomActivity.this);
-            }
-        });
+        btnAdd.setOnClickListener(v -> NoteAddActivity.start(ClassRoomActivity.this));
 
     }
 

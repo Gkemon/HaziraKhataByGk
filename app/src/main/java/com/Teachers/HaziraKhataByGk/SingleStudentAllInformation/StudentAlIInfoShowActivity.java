@@ -25,7 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
-import com.Teachers.HaziraKhataByGk.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
@@ -123,22 +123,19 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 totalAttendenceDataArrayList=response;
 
                 //TODO: Sorting by date
-                Collections.sort(totalAttendenceDataArrayList, new Comparator<AttendenceData>() {
-                    @Override
-                    public int compare(AttendenceData o1, AttendenceData o2) {
-                        ComparableDate comparableDate1,comparableDate2;
-                        comparableDate1 = new ComparableDate();
-                        comparableDate2 = new ComparableDate();
+                Collections.sort(totalAttendenceDataArrayList, (o1, o2) -> {
+                    ComparableDate comparableDate1,comparableDate2;
+                    comparableDate1 = new ComparableDate();
+                    comparableDate2 = new ComparableDate();
 
 
-                        try {
-                            comparableDate1.setDateTime(o1.getDate());
-                            comparableDate2.setDateTime(o2.getDate());
-                        }catch (Exception c){
-                        }
-
-                        return comparableDate1.compareTo(comparableDate2);
+                    try {
+                        comparableDate1.setDateTime(o1.getDate());
+                        comparableDate2.setDateTime(o2.getDate());
+                    }catch (Exception c){
                     }
+
+                    return comparableDate1.compareTo(comparableDate2);
                 });
 
                 //TODO: Sorting by date
@@ -194,9 +191,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                         }
                     }
                 });
-                dialogBuilder.setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
+                dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {
                 });
                 AlertDialog b = dialogBuilder.create();
                 b.show();
@@ -328,58 +323,51 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
                 }
             }
-        }).setNegativeButton("অনুপস্থিত", new DialogInterface.OnClickListener() {
-            public void onClick(final DialogInterface dialog, int id) {
-                final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
-                int day = datePicker.getDayOfMonth();
-                int month = datePicker.getMonth();
-                int year = datePicker.getYear()-1900 ;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-                String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-                String subject = Subject.getText().toString();
-                // if (subject.equals("")) subject = "অনির্ধারিত";
+        }).setNegativeButton("অনুপস্থিত", (dialog, id) -> {
+            final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+            int day = datePicker.getDayOfMonth();
+            int month = datePicker.getMonth();
+            int year = datePicker.getYear()-1900 ;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+            String formatedDate = simpleDateFormat.format(new Date(year, month, day));
+            String subject = Subject.getText().toString();
+            // if (subject.equals("")) subject = "অনির্ধারিত";
 
 
-                //ADD ATTENDANCE
-                AttendenceData attendenceData = new AttendenceData();
-                attendenceData.setStatus(false);
-                attendenceData.setSubject(subject);
-                attendenceData.setDate(formatedDate);
+            //ADD ATTENDANCE
+            AttendenceData attendenceData = new AttendenceData();
+            attendenceData.setStatus(false);
+            attendenceData.setSubject(subject);
+            attendenceData.setDate(formatedDate);
 
 
-                //  Add toTime database
-                FirebaseCaller.getFirebaseDatabase().child("Users").
-                        child(FirebaseCaller.getUserID()).child("Class").
-                        child(student.getStudentClass()+student.getStudentSection())
-                        .child("Student").child(student.getId()).child("Attendance").push()
-                        .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        loadDataFromServer();
+            //  Add toTime database
+            FirebaseCaller.getFirebaseDatabase().child("Users").
+                    child(FirebaseCaller.getUserID()).child("Class").
+                    child(student.getStudentClass()+student.getStudentSection())
+                    .child("Student").child(student.getId()).child("Attendance").push()
+                    .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    loadDataFromServer();
 
-                        dialog.dismiss();
-                    }
-                });
+                    dialog.dismiss();
+                }
+            });
 
 
-            }
         }).create().show();
     }
 
 
 
     public void initializePhoneNumbers(){
-        studentPhoneNumber.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                //ACTION_DIALER IS THE BEST SOLUTION TO MAKE CALL
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                //The 'tel:' prefix is required  otherwhise the following exception will be thrown: java.lang.IllegalStateException: Could not execute method of the activity.
-                callIntent.setData(Uri.parse("tel:" + student.getPhone()));
-                startActivity(callIntent);
-            }
-
+        studentPhoneNumber.setOnClickListener(arg0 -> {
+            //ACTION_DIALER IS THE BEST SOLUTION TO MAKE CALL
+            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+            //The 'tel:' prefix is required  otherwhise the following exception will be thrown: java.lang.IllegalStateException: Could not execute method of the activity.
+            callIntent.setData(Uri.parse("tel:" + student.getPhone()));
+            startActivity(callIntent);
         });
         parentPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -401,7 +389,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         final EditText Subject = v.findViewById(R.id.periodID);
         final CheckBox checkBox =v.findViewById(R.id.attMarker);//For attendance
         final CheckBox checkBox1 =v.findViewById(R.id.absentMarker);//For absent
-        final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+        final DatePicker datePicker = v.findViewById(R.id.datePicker);
 
 
         final AttendenceData attendenceData;
@@ -447,12 +435,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
 
         //Check and uncheck the check box vice versa
-        checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkBox1.setChecked(!checkBox.isChecked());
-            }
-        });
+        checkBox.setOnClickListener(v1 -> checkBox1.setChecked(!checkBox.isChecked()));
 
         checkBox1.setOnClickListener(new View.OnClickListener() {
             @Override

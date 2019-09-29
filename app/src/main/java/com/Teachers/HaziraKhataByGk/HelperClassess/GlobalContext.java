@@ -5,8 +5,10 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
+import android.support.v7.view.ContextThemeWrapper;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.R;
 
 import java.lang.ref.WeakReference;
 
@@ -15,12 +17,18 @@ public class GlobalContext extends MultiDexApplication {
     private static Application application;
     public static WeakReference<Activity> mActivity = null;
 
-    public static Activity getWeakActivity(){
-        return mActivity.get();
+    public static Context getWeakActivity(){
+        if(mActivity.get()!=null){
+            mActivity.get().getTheme().applyStyle(android.R.style.Theme_Dialog, true);
+            return mActivity.get();
+        } else return getAppContext();
     }
+
     public void onCreate() {
         super.onCreate();
-        GlobalContext.application =this;
+
+        getTheme().applyStyle(android.R.style.Theme_Dialog, true);
+
         FirebaseCaller.initializationFirebase();
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
@@ -61,12 +69,13 @@ public class GlobalContext extends MultiDexApplication {
             }
         });
 
+        GlobalContext.application =this;
     }
 
 
 
     public static Context getAppContext() {
-        return GlobalContext.application.getApplicationContext();
+        return  new ContextThemeWrapper(GlobalContext.application,android.R.style.Theme_Dialog);
     }
 
 }
