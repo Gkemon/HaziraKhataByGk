@@ -378,6 +378,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etEmail.setVisibility(View.GONE);
         etPassword.setVisibility(View.GONE);
         btnChangeEmail.setVisibility(View.GONE);
+        btnReset.setVisibility(View.GONE);
     }
     void showPhoneAuthWidget(){
         etPhone.setVisibility(View.VISIBLE);
@@ -389,6 +390,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etEmail.setVisibility(View.VISIBLE);
         etPassword.setVisibility(View.VISIBLE);
         btnChangeEmail.setVisibility(View.VISIBLE);
+        btnReset.setVisibility(View.VISIBLE);
     }
 }
 
