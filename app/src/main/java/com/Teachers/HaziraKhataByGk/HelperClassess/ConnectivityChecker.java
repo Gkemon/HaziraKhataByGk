@@ -27,7 +27,9 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.StrictMode;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import java.net.InetAddress;
 
@@ -37,7 +39,7 @@ import java.net.InetAddress;
  *
  */
 public class ConnectivityChecker {
-  
+
 	/**
 	 * Get the network info
 	 * @param context
@@ -54,6 +56,10 @@ public class ConnectivityChecker {
 	 * @return
 	 */
 	public static boolean isConnected(Context context){
+
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
 	    NetworkInfo info = ConnectivityChecker.getNetworkInfo(context);
 
 	    boolean hasInternet=false;
@@ -62,6 +68,7 @@ public class ConnectivityChecker {
 			hasInternet = !address.equals("");
 		}catch (Exception e){
 	    	hasInternet = false;
+            Log.d("GK","ERROR : "+e.getMessage());
 		}
 
 	    return (info != null && info.isConnected()&&hasInternet);

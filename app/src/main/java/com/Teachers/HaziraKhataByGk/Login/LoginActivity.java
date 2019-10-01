@@ -1,5 +1,7 @@
 package com.Teachers.HaziraKhataByGk.Login;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,10 +23,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhoneAuthBuilder;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -32,6 +37,8 @@ import com.Teachers.HaziraKhataByGk.ResetPasswordActivity;
 import com.Teachers.HaziraKhataByGk.SignupActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
+
+import butterknife.OnClick;
 
 /**
  * Created by uy on 12/2/2017.
@@ -50,11 +57,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public  static String email;
     Activity activity;
     public Context context;
+    LinearLayout llMain;
+    LinearLayout llBtnLoginPlaceHolderBellow;
+    LinearLayout llBtnLoginPlaceHolderUpper;
+    TextView tvTimer;
 
 
     public void initView(){
-        etEmail = (EditText) findViewById(R.id.et_email);
-        etPassword = (EditText) findViewById(R.id.password);
+        etEmail = findViewById(R.id.et_email);
+        etPassword = findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnEmailLogin = (Button) findViewById(R.id.btn_login);
@@ -69,7 +80,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etPhone=findViewById(R.id.et_phone);
         etPin=findViewById(R.id.et_code);
         btnPhone=findViewById(R.id.btn_phone);
+        tvTimer=findViewById(R.id.tv_timer);
+        llMain=findViewById(R.id.ll_main);
+        llBtnLoginPlaceHolderBellow =findViewById(R.id.ll_phone_btn_holder);
+        llBtnLoginPlaceHolderUpper = findViewById(R.id.ll_phone_btn_holder_upper);
     }
+
     public void setUpPhoneAuth(){
         FirebasePhoneAuthBuilder.getInstance()
                 .setPhoneNumber(etPhone.getText().toString())
@@ -77,25 +93,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .setVerificationCallBack(new CommonCallback<Boolean>() {
                     @Override
                     public void onSuccess(Boolean response) {
-                        super.onSuccess(response);
+                        UtilsCommon.debugLog("Phone auth response : "+response);
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }
 
                     @Override
                     public void onFailure(String r) {
-                        super.onFailure(r);
+                        UtilsCommon.debugLog("Phone auth error: "+r);
                     }
                 })
                 .setTimerCallBack(new CommonCallback<Long>() {
                     @Override
                     public void onWait(int sec) {
-
+                        tvTimer.setText(String.format("%d", sec));
                     }
 
                     @Override
                     public void onFailure(String r) {
-                        super.onFailure(r);
+                        UtilsCommon.debugLog("Phone auth timer error: "+r);
                     }
                 })
+
                 .build();
     }
 
@@ -148,7 +166,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 try{
                     AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-                    alertDialog.setMessage("আপনার তথ্যের সুরক্ষার জন্য আপনাকে অবশ্যই সাইন-ইন অথবা সাইন-আপ করতে হবে ।আগে একাউন্ট না খুলে থাকলে \"একাউন্ট খুলুন \" বাটনে ক্লিক করুন আর একাউন্ট করা থাকলে ইমেইল এবং পাসওয়ার্ড ব্যবহার করে \"লগিন করুন\" বাটন ক্লিক করুন");
+                    alertDialog.setMessage("আপনার তথ্যের সুরক্ষার জন্য আপনাকে অবশ্যই সাইন-ইন অথবা সাইন-আপ করতে" +
+                            " হবে ।আগে একাউন্ট না খুলে থাকলে ফোন নাম্বার দিয়ে অথবা ইমেইল দিয়ে একাউন্ট খুলুন আর একাউন্ট " +
+                            "করা থাকলে ইমেইল এবং পাসওয়ার্ড ব্যবহার করে \"লগিন করুন\" বাটন ক্লিক করুন।যদি বুঝতে সমস্যা " +
+                            "হয় তাহলে সবার নিচের সাহায্যের বাটনে ক্লিক করুন।");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
                             (dialog, which) -> dialog.dismiss());
                     alertDialog.show();
@@ -217,8 +238,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 btnReset.setOnClickListener(v -> startActivity(resetIntent));
                 help.setOnClickListener(view -> {
-                    Intent intent4 =  getFacebookIntent(context.getString(R.string.help_fb_url),context);
-
+                    Intent intent4 =
+                            getFacebookIntent(context.getString(R.string.help_fb_url),context);
                     startActivity(intent4);
 
 
@@ -318,6 +339,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }
+
     public static Intent getFacebookIntent(String url,Context context) {
 
         PackageManager pm = context.getPackageManager();
@@ -337,13 +359,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+
+
         if(v.getId()==btnEmailLogin.getId()){
+            btnEmailLogin.setAlpha(0.0f);
+
+
             hideAllPhoneAuthWidget();
             showEmailAuthWidget();
+
+            llBtnLoginPlaceHolderUpper.removeAllViews();
+            llBtnLoginPlaceHolderBellow.removeAllViews();
+            llBtnLoginPlaceHolderBellow.addView(btnPhone);
+
+
+
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 btnEmailLogin.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(),
                         R.color.colorDeepRedOrange));
                 btnEmailLogin.setText("লগিন করুন");
+                btnEmailLogin.animate().alpha(1.0f).setDuration(1500);
 
                 btnPhone.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(),
                         R.color.parrot));
@@ -352,45 +388,83 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             doEmailLogin();
         }
         else if(v.getId()==btnPhone.getId()){
+            btnPhone.setAlpha(0.0f);
+
             hideAllEmailAuthWidget();
             showPhoneAuthWidget();
+
+            llBtnLoginPlaceHolderBellow.removeAllViews();
+            llBtnLoginPlaceHolderUpper.removeAllViews();
+            llBtnLoginPlaceHolderUpper.addView(btnPhone);
+
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 btnPhone.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(),
                         R.color.colorDeepRedOrange));
                 btnPhone.setText("লগিন করুন");
+                btnPhone.animate().alpha(1.0f).setDuration(1500);
 
                 btnEmailLogin.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(),
                         R.color.parrot));
                 btnEmailLogin.setText("ইমেইল দিয়ে লগিন করুন");
             }
+            setUpPhoneAuth();
         }
+
 
     }
 
     void hideAllPhoneAuthWidget(){
-        etPhone.setVisibility(View.GONE);
-        etPin.setVisibility(View.GONE);
-        vTimerLayout.setVisibility(View.GONE);
+        showInvisibleAnimation(etPhone);
+        showInvisibleAnimation(etPin);
+        showInvisibleAnimation(vTimerLayout);
     }
     void hideAllEmailAuthWidget(){
-        passLayout.setVisibility(View.GONE);
-        etEmail.setVisibility(View.GONE);
-        etPassword.setVisibility(View.GONE);
-        btnChangeEmail.setVisibility(View.GONE);
-        btnReset.setVisibility(View.GONE);
+        showInvisibleAnimation(passLayout);
+        showInvisibleAnimation(etEmail);
+        showInvisibleAnimation(etPassword);
+        showInvisibleAnimation(btnChangeEmail);
+        showInvisibleAnimation(btnReset);
     }
     void showPhoneAuthWidget(){
-        etPhone.setVisibility(View.VISIBLE);
-        etPin.setVisibility(View.VISIBLE);
-        vTimerLayout.setVisibility(View.VISIBLE);
+        showVisibileAnimation(etPhone);
+        showVisibileAnimation(etPin);
+        showVisibileAnimation(vTimerLayout);
     }
     void showEmailAuthWidget(){
-        passLayout.setVisibility(View.VISIBLE);
-        etEmail.setVisibility(View.VISIBLE);
-        etPassword.setVisibility(View.VISIBLE);
-        btnChangeEmail.setVisibility(View.VISIBLE);
-        btnReset.setVisibility(View.VISIBLE);
+
+        showVisibileAnimation(passLayout);
+        showVisibileAnimation(etEmail);
+        showVisibileAnimation(etPassword);
+        showVisibileAnimation(btnChangeEmail);
+        showVisibileAnimation(btnReset);
+
+    }
+
+    void showVisibileAnimation(View v){
+        v.animate()
+                .alpha(1.0f)
+                .setDuration(1500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        v.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
+    void showInvisibleAnimation(View v){
+        v.animate()
+                .alpha(0.0f)
+                .setDuration(1500)
+                .setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                v.setVisibility(View.GONE);
+            }
+        });
     }
 }
 

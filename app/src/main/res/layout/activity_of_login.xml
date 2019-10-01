@@ -7,6 +7,7 @@
     android:background="@color/blueLight"
     android:id="@+id/CoordinatorLayout"
     android:fitsSystemWindows="true"
+    android:animateLayoutChanges="true"
     tools:context="com.Teachers.HaziraKhataByGk.Login.LoginActivity">
 
     <ScrollView
@@ -14,9 +15,10 @@
         android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:background="@color/blueLight"
         android:gravity="center"
+        android:id="@+id/ll_main"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
@@ -81,7 +83,7 @@
 
 
             <TextView
-                android:id="@+id/timer_time"
+                android:id="@+id/tv_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/blueHight"
@@ -104,14 +106,20 @@
 
 
         </LinearLayout>
-        <Button
-            android:id="@+id/btn_phone"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:backgroundTint="@color/parrot"
-            android:text="ফোন নাম্বার দিয়ে লগিন করুন"
-            android:textColor="@android:color/white" />
+        <LinearLayout
+            android:id="@+id/ll_phone_btn_holder_upper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_phone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:backgroundTint="@color/parrot"
+                android:text="ফোন নাম্বার দিয়ে লগিন করুন"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
 
 
         <android.support.design.widget.TextInputLayout
@@ -156,6 +164,12 @@
             android:backgroundTint="@color/parrot"
             android:text="ইমেইল দিয়ে লগিন করুন"
             android:textColor="@android:color/white" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_phone_btn_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_signup"

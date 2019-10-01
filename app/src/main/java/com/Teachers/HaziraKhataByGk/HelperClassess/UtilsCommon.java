@@ -40,6 +40,14 @@ import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
 public class UtilsCommon {
 
 
+    public static boolean isValidPhoneNumber(String phone){
+
+        if(!isValideString(phone))return false;
+
+        String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+       return phone.matches(pattern);
+    }
+
     public static final String DateFormate="EEE, d MMM yyyy";
 
     public static ArrayList<AttendenceData> getAttendanceListFromSnapshot(DataSnapshot snapshot){
