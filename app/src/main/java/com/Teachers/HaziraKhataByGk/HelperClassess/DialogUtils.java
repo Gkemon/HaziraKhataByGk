@@ -44,10 +44,10 @@ public class DialogUtils {
 
     }
 
-    public static void showInfoAlertDialog(String title, String message, final CommonCallback commonCallback){
+    public static void showInfoAlertDialog(String title, String message,Context context, final CommonCallback commonCallback){
 
         try {
-            AlertDialog alertDialog = new AlertDialog.Builder(GlobalContext.getWeakActivity())
+            AlertDialog alertDialog = new AlertDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
@@ -67,10 +67,10 @@ public class DialogUtils {
 
     }
 
-    public static void showInfoAlertDialog(String title, String message){
+    public static void showInfoAlertDialog(String title, String message,Context context){
 
         try {
-            AlertDialog alertDialog = new AlertDialog.Builder(GlobalContext.getWeakActivity())
+            AlertDialog alertDialog = new AlertDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {

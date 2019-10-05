@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsForMarkSheetActivity;
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
@@ -70,26 +71,23 @@ public class MarkSheetHomeActivity extends AppCompatActivity {
             sectionName=getIntent().getExtras().getString(Constant.CLASS_SECTION);
 
         }catch (Exception c){
-            className= ClassRoomActivity.classitem.getName();
-            sectionName= ClassRoomActivity.classitem.getSection();
+            className= UtilsCommon.getCurrentClass(MarkSheetHomeActivity.this).getName();
+            sectionName= UtilsCommon.getCurrentClass(MarkSheetHomeActivity.this).getSection();
         }
 
 
 
 
 
-        fab = (FloatingActionButton) findViewById(R.id.fabForAddSubject);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab =findViewById(R.id.fabForAddSubject);
+        fab.setOnClickListener(view -> {
 
-                listDistribution =new ArrayList<>();
-                distributionVSnumberTable=new HashMap<>();
-                listOfNumOfDistribution =new ArrayList<>();
+            listDistribution =new ArrayList<>();
+            distributionVSnumberTable=new HashMap<>();
+            listOfNumOfDistribution =new ArrayList<>();
 
-                CreatingSubjectEntryDialog();
+            CreatingSubjectEntryDialog();
 
-            }
         });
     }
 

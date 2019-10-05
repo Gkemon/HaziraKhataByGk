@@ -63,10 +63,7 @@ public class  ClassAddActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
 
-
         setContentView(R.layout.activity_act);
-
-
 
 
         classNameEditText = (EditText) findViewById(R.id.classText);
@@ -83,7 +80,8 @@ public class  ClassAddActivity extends AppCompatActivity
         btnEdit.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
 
-        classitem = getIntent().getParcelableExtra(ClassAddActivity.class.getSimpleName());
+        classitem = (ClassItem) getIntent().getSerializableExtra(ClassAddActivity.class.getSimpleName());
+        UtilsCommon.setCurrentClass(classitem,this);
 
         if (classitem != null) {
             btnAdd.setVisibility(View.GONE);

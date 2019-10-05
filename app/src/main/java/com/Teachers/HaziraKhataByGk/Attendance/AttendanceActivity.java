@@ -21,6 +21,7 @@ import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
@@ -93,6 +94,7 @@ public class AttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        classitemAttendence= UtilsCommon.getCurrentClass(this);
         setUpUI();
         loadDataFromServer();
 
@@ -119,7 +121,9 @@ public class AttendanceActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if(edt.getText().toString().trim().equals("DELETE")){
 
-                            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+                            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller
+                                    .getUserID()).child("Class").child(classitemAttendence.getName()
+                                    + classitemAttendence.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,12 +138,16 @@ public class AttendanceActivity extends AppCompatActivity {
                                     Student student;
                                     for (int i = 0; i < studentListForDeleteFromAttendenceActivity.size(); i++) {
                                         student = studentListForDeleteFromAttendenceActivity.get(i);
-                                        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Student").child(student.getId()).child("Attendance").removeValue();
-                                        Log.d("GK","REMOVE");
+                                        FirebaseCaller.getFirebaseDatabase().child("Users").
+                                                child(FirebaseCaller.getUserID()).child("Class").
+                                                child(classitemAttendence.getName()+ classitemAttendence.getSection()).
+                                                child("Student").child(student.getId()).child("Attendance").removeValue();
+
 
                                     }
 
-                                   Intent intent = new Intent(AttendanceActivity.this,AttendanceActivity.class);
+                                   Intent intent = new Intent(AttendanceActivity.this,
+                                           AttendanceActivity.class);
                                     intent.putExtra("DATE", time);
                                     intent.putExtra("SUBJECT", subject);
                                     intent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY, classitemAttendence);
@@ -180,16 +188,9 @@ public class AttendanceActivity extends AppCompatActivity {
         SharedPreferences pref = AttendanceActivity.this.getSharedPreferences("IsFirst", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         if(pref.getBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),true)){
-            final AlertDialog alertDialog = new AlertDialog.Builder(AttendanceActivity.this).create();
-            alertDialog.setMessage("আপনি যদি কোন শিক্ষার্থীর সম্পূর্ণ ডাটা দেখতে চান তাহলে এখানে উপস্থাপিত লিস্ট থেকে তার নামের উপর ক্লিক করুন , আপনি যদি ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলিট করতে চান তাহলে উপরের ডানপাশের ডিলিট চিহ্ন ক্লিক করুন আর যদি মাসিক উপস্থিতির রেকর্ড দেখতে অথবা প্রিন্ট করতে চান তাহলে উপরের প্রিন্ট চিহ্ন ক্লিক করুন ");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
-            DialogUtils.showInfoAlertDialog("", this.getString(R.string.info_attandance_activity_first_time),null);
+            DialogUtils.showInfoAlertDialog("",
+                    this.getString(R.string.info_attandance_activity_first_time),this,
+                    null);
             editor.putBoolean(classitemAttendence.getName()+classitemAttendence.getSection(),false);
             editor.apply();
 
@@ -211,7 +212,7 @@ public class AttendanceActivity extends AppCompatActivity {
         mainlayout=findViewById(R.id.mainLayout);
 
 
-        classitemAttendence = getIntent().getParcelableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
+        classitemAttendence =(ClassItem)getIntent().getSerializableExtra(FLAG_OF_CLASSROOM_ACTIVITY);
 
         showIntroDialoage();
 
@@ -252,7 +253,9 @@ public class AttendanceActivity extends AppCompatActivity {
 
 
     void loadDataFromServer(){
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(StaticData.currentClassName+StaticData.currentSection).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                child("Class").child(classitemAttendence.getName()+classitemAttendence.getSection()).
+                child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

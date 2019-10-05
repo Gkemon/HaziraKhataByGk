@@ -27,6 +27,8 @@ import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.FeesAcitvity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.GlobalContext;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.MarkSheetHomeActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -64,7 +66,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     private NoteListAdapter noteListAdapter;
     private Context context;
     private LinearLayout linearLayoutForPresent, linearLayoutForStudentProfile;
-    public static ClassItem classitem;
+    public  ClassItem classitem;
     public static List<Notes> notesList;
     public Button feesButton,DailyAndMontlyRecord,marksheetButton;
     View emptyView;
@@ -122,10 +124,10 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             final View v = inflater.inflate(R.layout.pick_period, null);
-            final EditText Subject = (EditText) v.findViewById(R.id.periodID);
+            final EditText Subject = v.findViewById(R.id.periodID);
             builder.setView(v).setPositiveButton("উপস্থিতি নেয়া শুরু করুন", (dialog, id) -> {
                 {
-                    final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
+                    final DatePicker datePicker = v.findViewById(R.id.datePicker);
                     int day = datePicker.getDayOfMonth();
                     int month = datePicker.getMonth();
                     int year = datePicker.getYear() - 1900;
@@ -135,33 +137,23 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
                     Intent launchinIntent = new Intent( v.getContext(), AttendanceActivity.class);
                     launchinIntent.putExtra("DATE", formatedDate);
                     launchinIntent.putExtra("SUBJECT", subject);
-                    launchinIntent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY, ClassRoomActivity.classitem);
+                    launchinIntent.putExtra(FLAG_OF_CLASSROOM_ACTIVITY,
+                            UtilsCommon.getCurrentClass(v.getContext()));
                     v.getContext().startActivity(launchinIntent);
                 }
-            }).setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
+            }).setNegativeButton("বাদ দিন", (dialog, id) -> dialog.dismiss());
             return builder.create();
         }
     }
 
 
-
-    @Override
-    protected void onStart() {
-
-        classitem = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
-        super.onStart();
-
-    }
-
     void loadNotes(){
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                child("Class").child(classitem.getName()+ classitem.getSection()).
+                child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Notes> NotesList=new ArrayList<Notes>();
+                List<Notes> NotesList=new ArrayList<>();
                 for(DataSnapshot NoteData:dataSnapshot.getChildren()){
                     Notes Notes=new Notes();
                     Notes=NoteData.getValue(Notes.class);
@@ -185,7 +177,6 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
             }
         });
     }
-
     void clickListenerForDailyAndMonthlyRecord(){
         DailyAndMontlyRecord=(Button)findViewById(R.id.AttendenceRecordButtom);
         DailyAndMontlyRecord.setVisibility(View.GONE);
@@ -224,14 +215,14 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
     void initView(){
         activity = this;
         context = getApplicationContext();
-        NOTES = (RecyclerView) findViewById(R.id.notes);
+        NOTES =  findViewById(R.id.notes);
         emptyView = findViewById(R.id.toDoEmptyView);
-        notesList=new ArrayList<Notes>();
+        notesList=new ArrayList<>();
         btnAdd =  findViewById(R.id.fabForNotes);
-        feesButton=(Button)findViewById(R.id.feesButton);
+        feesButton=findViewById(R.id.feesButton);
         feesButton.setVisibility(View.GONE);
 
-        marksheetButton = (Button) findViewById(R.id.marksheet);
+        marksheetButton =findViewById(R.id.marksheet);
 
 
         studentListFromAttendenceActivity=new ArrayList<>();
@@ -248,9 +239,8 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         linearLayoutForPresent = (LinearLayout) findViewById(R.id.CardlayoutForAttendence);
 
         //FOR GETTING THE CURRENT CLASS
-        classitem = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
-        StaticData.currentClassName=classitem.getName();
-        StaticData.currentSection=classitem.getSection();
+        classitem = (ClassItem)getIntent().getSerializableExtra(ClassRoomActivity.class.getSimpleName());
+        UtilsCommon.setCurrentClass(classitem,this);
 
 
 
@@ -295,14 +285,14 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
         FirebaseCaller.getFirebaseDatabase().child("Users");
         FirebaseCaller.getFirebaseDatabase().child(FirebaseCaller.getUserID());
         FirebaseCaller.getFirebaseDatabase().child("Class");
-        FirebaseCaller.getFirebaseDatabase().child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection());
+        FirebaseCaller.getFirebaseDatabase().child(classitem.getName()+classitem.getSection());
         FirebaseCaller.getFirebaseDatabase().child("Student");
         FirebaseCaller.getFirebaseDatabase().addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                perStudentTotalAttendenceData = new HashMap<String, ArrayList<AttendenceData>>();
+                perStudentTotalAttendenceData = new HashMap<>();
                 studentListFromAttendenceActivity.clear();
 
                 for (DataSnapshot studentData : dataSnapshot.getChildren()) {

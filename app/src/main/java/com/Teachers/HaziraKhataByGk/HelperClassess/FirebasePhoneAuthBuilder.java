@@ -2,8 +2,6 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.app.Activity;
 import android.os.CountDownTimer;
-import android.text.TextUtils;
-import android.view.View;
 
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.google.firebase.FirebaseException;
@@ -27,35 +25,40 @@ public class FirebasePhoneAuthBuilder {
     public boolean isNewUser;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private CommonCallback<Boolean> newUserCallBack;
-    public CountDownTimer cTimer = null;
-
+    public CountDownTimer cTimer;
+    private CommonCallback<Boolean> codeGettingCallBack;
+    private static FirebasePhoneAuthBuilder firebasePhoneAuthBuilder;
 
 
     public void startCountDownTimer() {
         stopTimer();
 
-        cTimer = new CountDownTimer(60000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
-                timerCallBack.onWait((int) millisUntilFinished / 1000);
-            }
+            cTimer = new CountDownTimer(120000, 1000) {
 
-            public void onFinish() {
-                timerCallBack.onSuccess();
+                public void onTick(long millisUntilFinished) {
+                    timerCallBack.onWait((int) millisUntilFinished / 1000);
+                }
 
-                DialogUtils.showInfoAlertDialog("পিন নাম্বার আসেনি?", "যদি পিন নাম্বার না এসে " +
-                        "থাকে তাহলে কি আবার পিন নাম্বার পাঠাবো আমরা?", new CommonCallback() {
-                    @Override
-                    public void onSuccess() {
-                        resendVerificationCode(phoneNumber,mResendToken);
-                    }
-                });
+                public void onFinish() {
+                    timerCallBack.onSuccess();
+                    timerCallBack=null;
+
+                    DialogUtils.showInfoAlertDialog("পিন নাম্বার আসেনি?", "যদি পিন নাম্বার না এসে " +
+                            "থাকে তাহলে কি আবার পিন নাম্বার পাঠাবো আমরা?",activity,new CommonCallback() {
+                        @Override
+                        public void onSuccess() {
+                            resendVerificationCode(phoneNumber,mResendToken);
+                        }
+                    });
 
 
-            }
-        };
+                }
+            };
+            cTimer.start();
 
-        cTimer.start();
+
+
     }
 
     public void build() {
@@ -65,14 +68,22 @@ public class FirebasePhoneAuthBuilder {
             verificationCallBack.onFailure("No active internet connection available.");
         } else {
 
-            if (!validatePhoneNumber()) return;
+            if (!validatePhoneNumber()){
+                verificationCallBack.onFailure("Invalid phone number.");
+                return;
+            }
 
             if (UtilsCommon.isValideString(pin)) {
                 verifyPhoneNumberWithCode(mVerificationId, pin);
                 return;
             }
 
-            startCountDownTimer();
+
+            if(timerCallBack!=null)
+            {
+                startCountDownTimer();
+            }
+
 
             mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 @Override
@@ -86,6 +97,7 @@ public class FirebasePhoneAuthBuilder {
 
                 @Override
                 public void onVerificationFailed(FirebaseException e) {
+
 
 
                     UtilsCommon.debugLog("Phone auth error : " + e.getLocalizedMessage());
@@ -102,6 +114,7 @@ public class FirebasePhoneAuthBuilder {
                 public void onCodeSent(String verificationId,
                                        PhoneAuthProvider.ForceResendingToken token) {
                     UtilsCommon.debugLog("onCodeSent:" + verificationId);
+                    codeGettingCallBack.onSuccess();
                     mVerificationId = verificationId;
                     mResendToken = token;
                 }
@@ -115,7 +128,10 @@ public class FirebasePhoneAuthBuilder {
 
     void stopTimer() {
         if (cTimer != null)
+        {
             cTimer.cancel();
+            timerCallBack.onWait(120);
+        }
     }
 
     public FirebasePhoneAuthBuilder setPhoneNumber(String phoneNumber) {
@@ -142,6 +158,10 @@ public class FirebasePhoneAuthBuilder {
         this.verificationCallBack = verificationCallBack;
         return this;
     }
+    public FirebasePhoneAuthBuilder setCodeGettingCallBack(CommonCallback<Boolean> codeGettingCallBack) {
+        this.codeGettingCallBack = codeGettingCallBack;
+        return this;
+    }
 
     public FirebasePhoneAuthBuilder setActivity(Activity activity) {
         this.activity = activity;
@@ -154,7 +174,12 @@ public class FirebasePhoneAuthBuilder {
     }
 
     public static FirebasePhoneAuthBuilder getInstance() {
-        return new FirebasePhoneAuthBuilder();
+
+        if(firebasePhoneAuthBuilder==null)
+        {
+            return firebasePhoneAuthBuilder =new FirebasePhoneAuthBuilder();
+        }
+        else return firebasePhoneAuthBuilder;
     }
 
 
@@ -176,6 +201,7 @@ public class FirebasePhoneAuthBuilder {
             if (task.isSuccessful()) {
                 UtilsCommon.debugLog("Phone auth success");
 
+                if(newUserCallBack!=null)
                 if (Objects.requireNonNull(task.getResult()).getAdditionalUserInfo().isNewUser()) {
                     newUserCallBack.onSuccess(true);
                 } else {
@@ -197,7 +223,7 @@ public class FirebasePhoneAuthBuilder {
     private void startPhoneNumberVerification(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
+                120,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 activity,               // Activity (for callback binding)
                 mCallbacks);        // OnVerificationStateChangedCallbacks
@@ -216,7 +242,7 @@ public class FirebasePhoneAuthBuilder {
                                         PhoneAuthProvider.ForceResendingToken token) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
+                120,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 activity,               // Activity (for callback binding)
                 mCallbacks,         // OnVerificationStateChangedCallbacks

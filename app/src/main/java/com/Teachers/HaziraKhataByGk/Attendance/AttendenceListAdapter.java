@@ -194,7 +194,7 @@ public void setCheckHash(HashMap<Integer,Boolean> hash){
         String massegeOfDailyPersentage = "আজকের মোট উপস্থিত শিক্ষার্থীর সংখ্যা " + (int) totalAttendendStudentNumber + ",মোট অনুপস্থিত শিক্ষার্থীর সংখ্যা " + (int) totalAbsentStudentNumber + ", এবং শতকরা উপস্থিতির হার " + (int) totalAbsentStudentNumberPersentage + "%";
 
 
-        DialogUtils.showInfoAlertDialog("", massegeOfDailyPersentage, new CommonCallback(){
+        DialogUtils.showInfoAlertDialog("", massegeOfDailyPersentage, activity,new CommonCallback(){
             @Override
             public void onSuccess() {
                 activity.finish();

@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             style="@style/RadioButtonCustomStyle"
-            android:text="Present all"
+            android:text="সকলে উপস্থিত"
              />
         <RadioButton
             android:id="@+id/rb_absent_all"
@@ -31,7 +31,7 @@
             android:button="@drawable/selector_radio"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Absent all"/>
+            android:text="সকলে অনুপস্থিত"/>
     </RadioGroup>
     <ListView
         android:layout_below="@+id/rg_present_absent_all"

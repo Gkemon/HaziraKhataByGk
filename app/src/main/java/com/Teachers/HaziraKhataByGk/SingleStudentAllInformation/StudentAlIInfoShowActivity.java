@@ -35,10 +35,12 @@ import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
+import com.Teachers.HaziraKhataByGk.NoteAddActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,8 +97,8 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         roll = getIntent().getStringExtra("Roll");
         activity = this;
 
-        classItem =getIntent().getParcelableExtra("classItem");
-        student = getIntent().getParcelableExtra("Student");
+        classItem =(ClassItem)getIntent().getSerializableExtra("classItem");
+        student =(Student) getIntent().getSerializableExtra("Student");
 
         dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(student);
 
@@ -108,7 +110,8 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
     public void loadDataFromServer(){
 
-        FirebaseCaller.getAttendanceDataForSingleStudent(classItem.getName(), classItem.getSection(), roll, new CommonCallback<ArrayList<AttendenceData>>() {
+        FirebaseCaller.getAttendanceDataForSingleStudent(classItem.getName(), classItem.getSection(),
+                roll, new CommonCallback<ArrayList<AttendenceData>>() {
             @Override
             public void onFailure(String r) {
                 super.onFailure(r);
@@ -178,13 +181,15 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (edt.getText().toString().trim().equals("DELETE")) {
 
-                            FirebaseCaller.getSingleStudentAttendanceDbRef(StaticData.currentClassName,StaticData.currentSection,roll).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    loadDataFromServer();
-                                    emptyView.setVisibility(View.VISIBLE);
-                                }
-                            });
+                            FirebaseCaller.getSingleStudentAttendanceDbRef
+                                    (UtilsCommon.getCurrentClass(StudentAlIInfoShowActivity.
+                                                    this).getName(),
+                                            UtilsCommon.getCurrentClass(
+                                                    StudentAlIInfoShowActivity.this).getSection(),roll).
+                                    removeValue().addOnSuccessListener(aVoid -> {
+                                                loadDataFromServer();
+                                                emptyView.setVisibility(View.VISIBLE);
+                                            });
 
 
 
@@ -252,7 +257,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             charSequence = charSequence1;
         } else {
             String charSequence2 = " শিক্ষার্থীর নাম: " + student.getStudentName() + " \n" +
-                    " রোল :" + roll + "    ক্লাস :" + ClassRoomActivity.classitem.getName() + "\n মোট ক্লাস:" + totalClass + "  উপস্থিতি :" + attendClass + "   শতকরা :" + totalAttendPersenten + "% ";
+                    " রোল :" + roll + "    ক্লাস :" + classItem.getName() + "\n মোট ক্লাস:" + totalClass + "  উপস্থিতি :" + attendClass + "   শতকরা :" + totalAttendPersenten + "% ";
             charSequence = charSequence2;
         }
         studentName.setText(charSequence);
@@ -487,7 +492,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                                         FirebaseCaller.getFirebaseDatabase().child("Users")
                                                 .child(FirebaseCaller.getUserID())
                                                 .child("Class")
-                                                .child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection())
+                                                .child(classItem.getName() + classItem.getSection())
                                                 .child("Student")
                                                 .child(student.getId())
                                                 .child("Attendance")
@@ -526,7 +531,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                             .child("Users")
                             .child(FirebaseCaller.getUserID())
                             .child("Class")
-                            .child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection())
+                            .child(classItem.getName() + classItem.getSection())
                             .child("Student")
                             .child(student.getId())
                             .child("Attendance")

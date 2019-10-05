@@ -11,9 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.Teachers.HaziraKhataByGk.Adapter.StudentListAdapter;
-import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
-import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
@@ -31,7 +30,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
     private RecyclerView studentItems;
     private FloatingActionButton btnAdd;
     private Context context;
-    public static ClassItem contactofSA;
+    public  ClassItem classItem;
     private StudentListAdapter studentListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout linearLayoutForEmptyView;
@@ -54,11 +53,11 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
         studentItems.setLayoutManager(linearLayoutManager);
         studentItems.setAdapter(studentListAdapter);
         studentList = new ArrayList<>();
-        contactofSA = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
+        classItem = UtilsCommon.getCurrentClass(this);
 
         //For empty view
         linearLayoutForEmptyView = findViewById(R.id.toDoEmptyView);
-        btnAdd.setOnClickListener(v -> StudentAddActivity.start(context));
+        btnAdd.setOnClickListener(v -> StudentAddActivity.start(context, classItem));
 
 
     }
@@ -71,16 +70,16 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
         //FOR GETTING SPECIFIC CLASS'S STUDENTS
 
-        contactofSA = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
+        if (classItem.getName() != null && classItem.getSection() != null) {
 
-        if (contactofSA.getName() != null && contactofSA.getSection() != null) {
-
-            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(contactofSA.getName() + contactofSA.getSection()).child("Student").addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                    child("Class").child(classItem.getName() + classItem.getSection()).child("Student")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     ProgressBar spinner;
-                    spinner = (ProgressBar) findViewById(R.id.progressBarInStudentActivity);
+                    spinner = findViewById(R.id.progressBarInStudentActivity);
                     spinner.setVisibility(View.GONE);
 
 
@@ -116,10 +115,8 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void onItemClick(int position, View view) {
-
-        StaticData.currentStudent = studentListAdapter.getItem(position);
+        UtilsCommon.setCurrentStudent(studentListAdapter.getItem(position),this);
         StudentAddActivity.start(this, studentListAdapter.getItem(position));
-
     }
 
     @Override

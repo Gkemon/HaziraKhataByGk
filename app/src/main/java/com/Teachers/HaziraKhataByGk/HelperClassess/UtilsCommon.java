@@ -17,8 +17,10 @@ import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SignupActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +49,43 @@ public class UtilsCommon {
         String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
        return phone.matches(pattern);
     }
+
+    public static Student getCurrentStudent(Context context){
+        String studentPref = "currentProfile";
+        Gson gson = new Gson();
+            SharedPreferenceManager sharedPreferenceManager =
+                    new SharedPreferenceManager(context, studentPref);
+            String json = sharedPreferenceManager.getValue("student", "");
+            return gson.fromJson(json, Student.class);
+    }
+
+    public static void setCurrentStudent(Student student,Activity activity){
+        String studentPref = "currentProfile";
+        Gson gson = new Gson();
+        String json = gson.toJson(student);
+        SharedPreferenceManager sharedPreferenceManager=
+                new SharedPreferenceManager(activity,studentPref);
+        sharedPreferenceManager.setValue("student", json);
+    }
+    public static ClassItem getCurrentClass(Context context){
+        String classPref = "currentClass";
+        Gson gson = new Gson();
+        SharedPreferenceManager sharedPreferenceManager =
+                new SharedPreferenceManager(context, classPref);
+        String json = sharedPreferenceManager.getValue("currentClass", "");
+        return gson.fromJson(json, ClassItem.class);
+    }
+
+    public static void setCurrentClass(ClassItem classItem,Activity activity){
+        String classPref = "currentClass";
+        Gson gson = new Gson();
+        String json = gson.toJson(classItem);
+        SharedPreferenceManager sharedPreferenceManager=
+                new SharedPreferenceManager(activity,classPref);
+        sharedPreferenceManager.setValue("currentClass", json);
+    }
+
+
 
     public static final String DateFormate="EEE, d MMM yyyy";
 

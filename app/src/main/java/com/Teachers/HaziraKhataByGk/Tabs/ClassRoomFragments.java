@@ -105,13 +105,11 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
 
     @Override
     public void onItemClick(int position, View view) {
-        StaticData.currentClass = classListAdapter.getItem(position);
         ClassRoomActivity.start(getContext(), classListAdapter.getItem(position));
     }
 
     @Override
     public void onItemLongPressed(int position, View view) {
-        StaticData.currentClass = classListAdapter.getItem(position);
         ClassAddActivity.start(getContext(), classListAdapter.getItem(position));
     }
 

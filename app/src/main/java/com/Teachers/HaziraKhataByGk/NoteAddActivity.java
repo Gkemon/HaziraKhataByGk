@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.google.android.gms.ads.AdRequest;
 import com.google.firebase.database.DataSnapshot;
@@ -116,7 +117,11 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
             if (submitForm()) {
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+                FirebaseCaller.getFirebaseDatabase().child("Users").
+                        child(FirebaseCaller.getUserID()).child("Class").
+                        child(UtilsCommon.getCurrentClass(this).getName() +
+                                UtilsCommon.getCurrentClass(this).getSection()).
+                        child("Notes").child(Notes.getheading()).setValue(Notes);
                 Toast.makeText(this, "নোটটি সার্ভারে যুক্ত হয়েছে,ধন্যবাদ ।", Toast.LENGTH_SHORT).show();
 
                 finish();
@@ -130,7 +135,10 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                Notes.setContent(content.getText().toString().trim());
 
 
-            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                    child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                    UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     List<Notes> NotesList=new ArrayList<Notes>();
@@ -168,9 +176,13 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
             if(submitForm()){
                 //Then remove the old Student data
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                        child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                        UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes").child(previousTitle).removeValue();
                 //Then first reinstall previous Student data;
-                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                        child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                        UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
 
             }
 
@@ -277,15 +289,12 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(DialogInterface dialog, int whichButton) {
                 if(edt.getText().toString().trim().equals("DELETE")){
 
-                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName()+ ClassRoomActivity.classitem.getSection()).child("Notes").child(title.getText().toString()).removeValue();
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                            child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                            UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes").
+                            child(title.getText().toString()).removeValue();
                     Toast.makeText(NoteAddActivity.this, "নোটটি ডিলিট হচ্ছে!", Toast.LENGTH_SHORT).show();
 
-                    //ADMOB
-                    AdRequest adRequest = new AdRequest.Builder()
-                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                            // Check the LogCat toTime get your test device ID
-                            .addTestDevice("26CA880D6BB164E39D8DF26A04B579B6")
-                            .build();
 
                     finish();
 
@@ -379,9 +388,18 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
 
                             if (submitForm()) {
                                 //Then remove the old Student data
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(previousTitle).removeValue();
+                                FirebaseCaller.getFirebaseDatabase().child("Users").
+                                        child(FirebaseCaller.getUserID()).child("Class").
+                                        child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()
+                                                + UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).
+                                        child("Notes").child(previousTitle).removeValue();
                                 //Then first reinstall previous Student data;
-                                FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(ClassRoomActivity.classitem.getName() + ClassRoomActivity.classitem.getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
+                                FirebaseCaller.getFirebaseDatabase().child("Users").
+                                        child(FirebaseCaller.getUserID()).child("Class").
+                                        child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName() +
+                                                UtilsCommon.getCurrentClass(NoteAddActivity.this).
+                                                        getSection()).child("Notes").
+                                        child(Notes.getheading()).setValue(Notes);
                             }
                             Toast.makeText(NoteAddActivity.this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();
                             finish();

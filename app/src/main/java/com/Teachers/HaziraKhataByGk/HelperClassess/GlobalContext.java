@@ -8,6 +8,8 @@ import android.support.multidex.MultiDexApplication;
 import android.support.v7.view.ContextThemeWrapper;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.Model.ClassItem;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 
 import java.lang.ref.WeakReference;
@@ -16,6 +18,26 @@ public class GlobalContext extends MultiDexApplication {
 
     private static Application application;
     public static WeakReference<Activity> mActivity = null;
+    public static Student currentStudent;
+    public static ClassItem currentClass;
+
+    public static ClassItem getCurrentClass() {
+        return currentClass;
+    }
+
+    public static void setCurrentClass(ClassItem currentClass) {
+        GlobalContext.currentClass = currentClass;
+    }
+
+    public static Student getCurrentStudent() {
+        return currentStudent;
+    }
+
+    public static void setCurrentStudent(Student currentStudent) {
+        GlobalContext.currentStudent = currentStudent;
+    }
+
+
 
     public static Context getWeakActivity(){
         if(mActivity.get()!=null){

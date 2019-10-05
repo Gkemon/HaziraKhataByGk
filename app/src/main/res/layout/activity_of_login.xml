@@ -34,8 +34,11 @@
 
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/tl_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:elevation="@dimen/activity_horizontal_margin">
 
             <EditText
@@ -45,29 +48,25 @@
                 android:layout_marginBottom="10dp"
                 android:hint="ফোন নাম্বার দিন"
                 android:inputType="phone"
-                android:textColor="@color/blueMiddle"
-                android:visibility="gone"
-                android:textColorHint="@android:color/white"
-                tools:visibility="gone" />
+                android:textColor="@color/blueMiddle" android:textColorHint="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:visibility="visible"
+            android:id="@+id/tl_pin"
             android:elevation="@dimen/activity_horizontal_margin">
 
             <EditText
-
                 android:id="@+id/et_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="পিন নাম্বার দিন"
-                android:inputType="textEmailAddress"
+                android:inputType="numberDecimal"
                 android:textColor="@color/blueMiddle"
-                android:textColorHint="@android:color/white"
-                android:visibility="gone" />
+                android:textColorHint="@android:color/white"/>
         </android.support.design.widget.TextInputLayout>
         <LinearLayout
             android:visibility="gone"
@@ -87,9 +86,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/blueHight"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="20dp"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:textSize="20sp"
                 android:text="00"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"/>
@@ -97,11 +96,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="15dp"
-                android:layout_marginLeft="10dp"
-                android:text="সেকেন্ড বাকি পিন আসার"/>
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:textSize="12sp"
+                android:layout_marginLeft="5sp"
+                android:text="সেকেন্ড বাকি পিন ইনপুট দেয়ার। যেই ফোনে এই সিম লাগালো সেই ফোনের ইনবক্স চেক করুন।"/>
 
 
 
@@ -114,7 +113,6 @@
                 android:id="@+id/btn_phone"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
                 android:backgroundTint="@color/parrot"
                 android:text="ফোন নাম্বার দিয়ে লগিন করুন"
                 android:textColor="@android:color/white" />
@@ -125,10 +123,11 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/tl_email"
+            android:visibility="gone"
             android:elevation="@dimen/activity_horizontal_margin">
 
             <EditText
-                android:visibility="gone"
                 android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,7 +179,8 @@
             android:text="আগে একাউন্ট না খুলে থাকলে ক্লিক করুন"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:visibility="gone" />
         <Button
             android:id="@+id/btn_signOut"
             android:layout_width="fill_parent"
@@ -190,6 +190,7 @@
             android:text="সাইন আউট করুন"
             android:textAllCaps="false"
             android:textColor="@color/white" />
+
         <Button
             android:id="@+id/btn_reset_password"
             android:layout_width="fill_parent"
@@ -198,7 +199,8 @@
             android:backgroundTint="@color/blueMiddle"
             android:text="পাসওয়ার্ড ভুলে গিয়েছেন?"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/change_email"

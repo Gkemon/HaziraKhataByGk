@@ -3,10 +3,12 @@ package com.Teachers.HaziraKhataByGk.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by wim on 4/26/16.
  */
-public class ClassItem implements Parcelable {
+public class ClassItem implements Serializable {
 
     private String name;
     private String section;
@@ -21,19 +23,6 @@ public class ClassItem implements Parcelable {
         this.name = in.readString();
         this.section = in.readString();
     }
-
-
-    public static final Parcelable.Creator<ClassItem> CREATOR = new Parcelable.Creator<ClassItem>() {
-        @Override
-        public ClassItem createFromParcel(Parcel source) {
-            return new ClassItem(source);
-        }
-
-        @Override
-        public ClassItem[] newArray(int size) {
-            return new ClassItem[size];
-        }
-    };
 
     public String getName() {
         return name;
@@ -51,16 +40,7 @@ public class ClassItem implements Parcelable {
         this.section = section;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.section);
-    }
 
     @Override
     public String toString() {

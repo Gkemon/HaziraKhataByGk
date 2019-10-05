@@ -20,6 +20,7 @@ public class Constant {
     public static final String DateFormate="EEE, d MMM yyyy";
     public static final String MALE="male";
     public static final String FEMALE="female";
+    public static final String CLASS = "class";
     public static ArrayList<Student> globalStudentList = new ArrayList<>();
 
 

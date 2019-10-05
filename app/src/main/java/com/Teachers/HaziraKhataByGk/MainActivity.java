@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public static boolean calledAlready = false;
-    public static String mEmail;
+    public  String mProfileHeader;
     // public static FirebaseUser mFirebaseUser;
     Toolbar toolbar;
 
@@ -98,10 +98,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         if (FirebaseCaller.getCurrentUser() != null) {
-            mEmail = FirebaseCaller.getCurrentUser().getEmail();
+
+            if(UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().getEmail()))
+            mProfileHeader = FirebaseCaller.getCurrentUser().getEmail();
+            else  if(UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().getPhoneNumber()))
+            mProfileHeader=FirebaseCaller.getCurrentUser().getPhoneNumber();
 
         } else {
-            mEmail = "এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন";
+            mProfileHeader = "এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন";
         }
 
 
@@ -110,18 +114,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView emailText = (TextView) nav_header.findViewById(R.id.user_email);
 
 
-        emailText.setText(mEmail);
+        emailText.setText(mProfileHeader);
 
 
-        nav_header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.putExtra("FLAG", "INSIDE");
-                startActivity(intent);
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-                drawer.closeDrawer(GravityCompat.START);
-            }
+        nav_header.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.putExtra("FLAG", "INSIDE");
+            startActivity(intent);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+            drawer.closeDrawer(GravityCompat.START);
         });
 
     }
