@@ -61,7 +61,8 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
         LoadingPopup.showLoadingPopUp(getActivity());
 
 
-        rootView.findViewById(R.id.help).setOnClickListener(v -> UtilsCommon.openWithFaceBook(getString(R.string.help_fb_url),context));
+        rootView.findViewById(R.id.help).setOnClickListener(v -> UtilsCommon.openWithFaceBook
+                (getString(R.string.help_fb_url),context));
 
         //VIEWS
         recyclerViewForClass = rootView.findViewById(R.id.recycleViewFromFragmentOne);
@@ -115,24 +116,33 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
 
      public  void loadDataFromServer(){
         //For loading class_room fromTime Server
+          FirebaseCaller.getFirebaseDatabase().keepSynced(true);
         FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                CustomArrayList<ClassItem> ClassIitems = new CustomArrayList<>();
+                CustomArrayList<ClassItem> classItems = new CustomArrayList<>();
 
                 for(DataSnapshot classData:dataSnapshot.getChildren()){
-                    ClassIitems.add(classData.getValue(ClassItem.class));
+                    ClassItem classItem;
+                    try{
+                        classItem = classData.getValue(ClassItem.class);
+                    }catch (Exception e){
+                        continue;
+                    }
+                    if(classItem==null||classItem.getName()==null)continue;
+                    classItems.add(classItem);
+
                 }
 
-                MainActivity.totalClassItems=ClassIitems;
+                 UtilsCommon.setAllClass(classItems,getActivity());
 
-                if(ClassIitems.size()==0)emptyView.setVisibility(View.VISIBLE);
+                if(classItems.size()==0)emptyView.setVisibility(View.VISIBLE);
                 else emptyView.setVisibility(View.GONE);
 
 
                 //SET ADAPTER
                 classListAdapter.clear();
-                classListAdapter.addAll(ClassIitems);
+                classListAdapter.addAll(classItems);
                 classListAdapter.notifyDataSetChanged();
                 LoadingPopup.hideLoadingPopUp();
 

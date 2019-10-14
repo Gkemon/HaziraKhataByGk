@@ -196,7 +196,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         hideAllPhoneAuthWidget();
                     }
-
                 }
             }
         }
@@ -260,12 +259,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     auth.signOut();
-
                                     progressBar.setVisibility(View.GONE);
                                 } else {
-
                                     Toast.makeText(context,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-
                                 }
 
                             });
@@ -379,11 +375,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
             AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-            alertDialog.setMessage(" আপনার ডিভাইসের সমস্যার কারনে লগিন হচ্ছেনা । দয়া করে আবার চেষ্টা করুন অথবা ডেভেলপারকে জানান ফেসবুক গ্রুপে পোস্ট করে,ধন্যবাদ । সমস্যাটি হল : "+e.getMessage());
+            alertDialog.setMessage(" আপনার ডিভাইসের সমস্যার কারনে লগিন হচ্ছেনা । দয়া করে আবার চেষ্টা করুন অথবা ডেভেলপারকে জানান " +
+                    "ফেসবুক গ্রুপে পোস্ট করে,ধন্যবাদ । সমস্যাটি হল : "+e.getMessage());
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"পোস্ট দিন",
                     (dialog, which) -> {
 
-                        Intent intent5 =  getFacebookIntent("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",LoginActivity.this);
+                        Intent intent5 =  getFacebookIntent
+                                (getString(R.string.help_fb_url),
+                                LoginActivity.this);
 
                         try {
                             startActivity(intent5);
@@ -497,6 +496,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         showInvisibleAnimation(tlPass);
         showInvisibleAnimation(btnChangeEmail);
         showInvisibleAnimation(btnReset);
+        showInvisibleAnimation(btnSignOut);
     }
     void showPhoneAuthWidget(){
         showVisibileAnimation(tlPhone);
@@ -511,7 +511,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         showVisibileAnimation(btnChangeEmail);
         showVisibileAnimation(btnReset);
         showVisibileAnimation(btnSignup);
-
+        showVisibileAnimation(btnSignOut);
 
     }
 

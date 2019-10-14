@@ -22,19 +22,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class StudentListShowActivity extends AppCompatActivity implements RecyclerItemClickListener {
 
-    private RecyclerView studentItems;
+    private RecyclerView rvStudent;
     private FloatingActionButton btnAdd;
     private Context context;
     public  ClassItem classItem;
     private StudentListAdapter studentListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout linearLayoutForEmptyView;
-    public static List<Student> studentList;
+    private ArrayList<Student> studentList;
 
 
     @Override
@@ -44,20 +43,20 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
         setContentView(R.layout.student_activity);
         context = getApplicationContext();
-        studentItems = findViewById(R.id.studentFromStudentActivity);
+        rvStudent = findViewById(R.id.studentFromStudentActivity);
         btnAdd = findViewById(R.id.addFromStudentActivity);
         linearLayoutManager = new LinearLayoutManager(this);
         studentListAdapter = new StudentListAdapter(this);
         studentListAdapter.setOnItemClickListener(this);
         context = this;
-        studentItems.setLayoutManager(linearLayoutManager);
-        studentItems.setAdapter(studentListAdapter);
-        studentList = new ArrayList<>();
+        rvStudent.setLayoutManager(linearLayoutManager);
+        rvStudent.setAdapter(studentListAdapter);
         classItem = UtilsCommon.getCurrentClass(this);
 
         //For empty view
         linearLayoutForEmptyView = findViewById(R.id.toDoEmptyView);
-        btnAdd.setOnClickListener(v -> StudentAddActivity.start(context, classItem));
+        btnAdd.setEnabled(false);
+        btnAdd.setOnClickListener(v -> StudentAddActivity.start(context, classItem,studentList));
 
 
     }
@@ -82,6 +81,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
                     spinner = findViewById(R.id.progressBarInStudentActivity);
                     spinner.setVisibility(View.GONE);
 
+                    btnAdd.setEnabled(true);
 
                     final ArrayList<Student> studentListFromServer = new ArrayList<Student>();
                     for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
@@ -89,8 +89,8 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
                         student = StudentData.getValue(Student.class);
                         studentListFromServer.add(student);
                     }
-                    StudentListShowActivity.studentList = new ArrayList<>();
-                    StudentListShowActivity.studentList = studentListFromServer;
+
+                       studentList = studentListFromServer;
 
                     if (studentList.size() == 0) {
                         linearLayoutForEmptyView.setVisibility(View.VISIBLE);
@@ -100,7 +100,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
                     studentListAdapter.clear();
                     studentListAdapter.addAll(studentList);
-                    studentItems.setAdapter(studentListAdapter);
+                    rvStudent.setAdapter(studentListAdapter);
                 }
 
                 @Override
@@ -116,7 +116,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
     @Override
     public void onItemClick(int position, View view) {
         UtilsCommon.setCurrentStudent(studentListAdapter.getItem(position),this);
-        StudentAddActivity.start(this, studentListAdapter.getItem(position));
+        StudentAddActivity.start(this, studentListAdapter.getItem(position),studentList);
     }
 
     @Override

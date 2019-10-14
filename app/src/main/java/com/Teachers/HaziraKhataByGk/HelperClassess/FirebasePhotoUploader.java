@@ -68,10 +68,11 @@ public class FirebasePhotoUploader {
 
         if (file != null) {
 
-            final ProgressDialog progressDialog = new ProgressDialog(activity);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            try{
+                final ProgressDialog progressDialog = new ProgressDialog(activity);
+                progressDialog.setTitle("Uploading...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -106,6 +107,9 @@ public class FirebasePhotoUploader {
                     .addOnPausedListener(taskSnapshot ->
                             commonCallback.onWait()
                     );
+            }catch (Exception e){
+
+            }
 
         }
     }

@@ -11,14 +11,16 @@ android {
         disable 'RestrictedApi'
     }
     defaultConfig {
+
         applicationId "com.Teachers.HaziraKhataByGk"
         minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 18
-        versionName "1.18"
+        targetSdkVersion 28
+        versionCode 24
+        versionName "2.0.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [onesignal_app_id: "611c83ef-2af7-48c6-921c-f22f31e7ccd9", onesignal_google_project_number: "REMOTE"]
+        manifestPlaceholders = [onesignal_app_id: "611c83ef-2af7-48c6-921c-f22f31e7ccd9",
+                                onesignal_google_project_number: "REMOTE"]
 
     }
     dexOptions {

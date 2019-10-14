@@ -20,7 +20,7 @@ public class DialogUtils {
 
     }
 
-    public static void showDateDialog(Calendar calendar, DatePickerDialog.OnDateSetListener commonCallback){
+    public static void showDateDialog(Calendar calendar,Context context ,DatePickerDialog.OnDateSetListener commonCallback){
 
         if(calendar==null)
             calendar=Calendar.getInstance();
@@ -35,7 +35,7 @@ public class DialogUtils {
 
 
         try {
-            new DatePickerDialog(GlobalContext.getWeakActivity(), onDateSetListener, calendar
+            new DatePickerDialog(context, onDateSetListener, calendar
                     .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH)).show();
         }catch (Exception e){

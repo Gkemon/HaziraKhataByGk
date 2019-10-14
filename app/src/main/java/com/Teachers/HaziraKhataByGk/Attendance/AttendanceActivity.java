@@ -206,9 +206,9 @@ public class AttendanceActivity extends AppCompatActivity {
         checkHash = new HashMap<>();
         perStudentTotalAttendenceData= new HashMap<>();
 
-        listView = (ListView) findViewById(R.id.attendanceListViwe);
-        linearLayoutForEmptyView=(LinearLayout)findViewById(R.id.toDoEmptyView);
-        Button saveAttendenceButton = (Button) findViewById(R.id.buttonSaveAttendance);
+        listView = findViewById(R.id.attendanceListViwe);
+        linearLayoutForEmptyView=findViewById(R.id.toDoEmptyView);
+        Button saveAttendenceButton = findViewById(R.id.buttonSaveAttendance);
         mainlayout=findViewById(R.id.mainLayout);
 
 
@@ -222,7 +222,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
         names = new ArrayList<>();
         rolls = new ArrayList<>();
-        attendencePercentage=new ArrayList<Integer>();
+        attendencePercentage=new ArrayList<>();
 
         time = getIntent().getStringExtra("DATE");
         //"Wed, 3 Jan 2018"
@@ -285,14 +285,17 @@ public class AttendanceActivity extends AppCompatActivity {
                 Student student;
                 for (int i = 0; i < studentListFromAttendenceActivity.size(); i++) {
                     student = studentListFromAttendenceActivity.get(i);
+                    if(student==null)continue;
+
                     totalAttendPersenten = 0;
                     totalClass = dataSnapshot.child(student.getId()).child("Attendance").getChildrenCount();
-                    AttendenceData attendenceData = null;
+                    AttendenceData attendenceData ;
                     attendenceDataArrayListForPerStudent =new ArrayList<>();
                     long temp1=0;
 
 
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child(student.getId()).child("Attendance").getChildren()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child(student.getId()).
+                            child("Attendance").getChildren()) {
 
                         attendenceData = dataSnapshot1.getValue(AttendenceData.class);
                         attendenceDataArrayListForPerStudent.add(attendenceData);
@@ -321,13 +324,13 @@ public class AttendanceActivity extends AppCompatActivity {
                         previousClassAttendenceStatus=true;
 
                     if(previousClassAttendenceStatus){
-                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "\n" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
+                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "<br>" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
                                 + attendClass + " শতকরা :" + totalAttendPersenten + "%");
                     }
                     else
                     {
-                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "\n" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
-                                + attendClass + " শতকরা :" + totalAttendPersenten + "%\n(গতক্লাসে অনুপস্থিত)");
+                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" +  "<br>" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
+                                + attendClass + " শতকরা :" + totalAttendPersenten + "%<br> <font color=\"#F44336\">(গতক্লাসে অনুপস্থিত)</font>");
                     }
                     previousClassAttendenceStatus=true;
                     attendClass = 0;

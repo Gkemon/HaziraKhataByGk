@@ -29,7 +29,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blogItem_for_main;
@@ -55,7 +58,7 @@ public class UtilsCommon {
         Gson gson = new Gson();
             SharedPreferenceManager sharedPreferenceManager =
                     new SharedPreferenceManager(context, studentPref);
-            String json = sharedPreferenceManager.getValue("student", "");
+            String json = sharedPreferenceManager.getValue("item_student", "");
             return gson.fromJson(json, Student.class);
     }
 
@@ -65,7 +68,7 @@ public class UtilsCommon {
         String json = gson.toJson(student);
         SharedPreferenceManager sharedPreferenceManager=
                 new SharedPreferenceManager(activity,studentPref);
-        sharedPreferenceManager.setValue("student", json);
+        sharedPreferenceManager.setValue("item_student", json);
     }
     public static ClassItem getCurrentClass(Context context){
         String classPref = "currentClass";
@@ -83,6 +86,28 @@ public class UtilsCommon {
         SharedPreferenceManager sharedPreferenceManager=
                 new SharedPreferenceManager(activity,classPref);
         sharedPreferenceManager.setValue("currentClass", json);
+    }
+
+    public static void setAllClass(CustomArrayList<ClassItem> classItemList,Activity activity){
+        String classPref = "classList";
+        Gson gson = new Gson();
+        Type baseType = new TypeToken<CustomArrayList<ClassItem>>() {}.getType();
+
+        String json = gson.toJson(classItemList,baseType);
+        SharedPreferenceManager sharedPreferenceManager=
+                new SharedPreferenceManager(activity,classPref);
+        sharedPreferenceManager.setValue("classList", json);
+    }
+
+    public static CustomArrayList<ClassItem> getAllClass(Activity activity){
+        String classPref = "classList";
+        Gson gson = new Gson();
+        SharedPreferenceManager sharedPreferenceManager =
+                new SharedPreferenceManager(activity, classPref);
+        String json = sharedPreferenceManager.getValue("classList", "");
+        Type baseType = new TypeToken<CustomArrayList<ClassItem>>() {}.getType();
+
+        return gson.fromJson(json, baseType);
     }
 
 
@@ -470,7 +495,9 @@ public class UtilsCommon {
 
         SharedPreferences pref = context.getSharedPreferences("teacher_blog_saved", 0);
 
-        if(pref.getBoolean(BlogItem.getURL(), false) && pref.getBoolean(BlogItem.getHeading(), false) && pref.getBoolean(BlogItem.getDate(), false)&&pref.getBoolean(BlogItem.getWriter(), false) ){
+        if(pref.getBoolean(BlogItem.getURL(), false) &&
+                pref.getBoolean(BlogItem.getHeading(), false) &&
+                pref.getBoolean(BlogItem.getDate(), false)&&pref.getBoolean(BlogItem.getWriter(), false) ){
             return true;
         }
         return false;

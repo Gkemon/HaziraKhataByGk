@@ -155,7 +155,7 @@ public class NibondhonFragment extends Fragment implements RecyclerItemClickList
          if(position==0){
 
 
-             Intent intent=new Intent(context, TextShowActivity.class);
+             Intent intent=new Intent(getContext(), TextShowActivity.class);
              intent.putExtra("subjectName","1");
              startActivity(intent);
 

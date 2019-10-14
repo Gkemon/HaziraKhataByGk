@@ -2,22 +2,31 @@ package com.Teachers.HaziraKhataByGk.Attendance;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.UtilsView;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -69,12 +78,25 @@ public class AttendenceListAdapter extends BaseAdapter {
 
             final int pos = position;
             Log.d("GK",position + " position");
-            TextView textView = (TextView) v.findViewById(R.id.attendanceText);
-             String text;
-             text=(nameList.get(position));
-            textView.setText(text);
+
+            Student student = studentArrayList.get(position);
+
+            TextView textView =  v.findViewById(R.id.attendanceText);
+            ImageView  imgProfilePic= v.findViewById(R.id.img_profile);
+            String text;
+            text=(nameList.get(position));
+            textView.setText(Html.fromHtml(text));
 
 
+
+        if(UtilsCommon.isValideString(student.getImageUrl()))
+            Glide.with(activity)
+                    .load(student.getImageUrl())
+                    .apply(UtilsView.getLoadingOptionForGlide(activity))
+                    .into(imgProfilePic);
+        else {
+            imgProfilePic.setVisibility(View.GONE);
+        }
 
 
             final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance

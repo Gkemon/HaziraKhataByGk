@@ -11,18 +11,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.UtilsView;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.validation.Validator;
+
 public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.StudentHolder>{
 
-    public static List<Student> studentList;
+    public  List<Student> studentList;
     private Context context;
 
     private RecyclerItemClickListener recyclerItemClickListener;
@@ -63,7 +68,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 
     @Override
     public StudentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.student, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_student, parent, false);
 
         final StudentHolder StudentHolder = new StudentHolder(view);
 
@@ -94,7 +99,15 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 //        Bitmap letterBitmap = letterTile.getLetterTile(Student.getStudentName(),
 //                String.valueOf(Student.getId()), tileSize, tileSize);
 
-        //FOR TEXTDRAWABLE IMAGE CREATING
+
+
+        if(UtilsCommon.isValideString(student.getImageUrl()))
+        Glide.with(context)
+                .load(student.getImageUrl())
+                .apply(UtilsView.getLoadingOptionForGlide(context))
+                .into(holder.thumb);
+        else {
+            //FOR TEXTDRAWABLE IMAGE CREATING
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getRandomColor();
         TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
@@ -103,8 +116,10 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
                 .toUpperCase()
                 .endConfig()
                 .buildRoundRect(student.getStudentName().substring(0,1), color,10);
+            holder.thumb.setImageDrawable(myDrawable);
+        }
 
-        holder.thumb.setImageDrawable(myDrawable);
+
         String name="নাম: "+student.getStudentName(),roll="রোল: "+student.getId();
         holder.name.setText(name);
         holder.phone.setText(roll);

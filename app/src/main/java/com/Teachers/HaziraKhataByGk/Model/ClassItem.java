@@ -19,10 +19,6 @@ public class ClassItem implements Serializable {
         this.name=name;
         this.section=section;
     }
-    protected ClassItem(Parcel in) {
-        this.name = in.readString();
-        this.section = in.readString();
-    }
 
     public String getName() {
         return name;

@@ -21,10 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.calledAlready;
 
 /**
  * Created by uy on 5/28/2018.
@@ -35,6 +33,7 @@ public class FirebaseCaller {
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;
     public static FirebaseAuth auth;
+    private static boolean calledAlready;
 
     public FirebaseCaller(){
         initializationFirebase();
@@ -56,7 +55,7 @@ public class FirebaseCaller {
                 .child(classItem.getName()+ classItem.getSection())
                 .child("Student")
                 .child(student.getId()).setValue(student).addOnSuccessListener(aVoid -> commonCallback.onSuccess())
-                .addOnFailureListener(e -> commonCallback.onFailure("Error in getting student from server : "+e.getLocalizedMessage()));
+                .addOnFailureListener(e -> commonCallback.onFailure("Error in getting item_student from server : "+e.getLocalizedMessage()));
     }
     public static void removeStudentToServer(ClassItem classItem, String studentId){
         FirebaseCaller.getFirebaseDatabase().child("Users")
@@ -142,7 +141,6 @@ public class FirebaseCaller {
                 firebaseDatabase.setPersistenceEnabled(true);
             }
             catch (Exception e){
-                calledAlready = true;
             }
 
             databaseReference = firebaseDatabase.getReference();

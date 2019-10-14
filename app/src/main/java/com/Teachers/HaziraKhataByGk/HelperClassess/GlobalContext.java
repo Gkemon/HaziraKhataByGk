@@ -18,27 +18,6 @@ public class GlobalContext extends MultiDexApplication {
 
     private static Application application;
     public static WeakReference<Activity> mActivity = null;
-    public static Student currentStudent;
-    public static ClassItem currentClass;
-
-    public static ClassItem getCurrentClass() {
-        return currentClass;
-    }
-
-    public static void setCurrentClass(ClassItem currentClass) {
-        GlobalContext.currentClass = currentClass;
-    }
-
-    public static Student getCurrentStudent() {
-        return currentStudent;
-    }
-
-    public static void setCurrentStudent(Student currentStudent) {
-        GlobalContext.currentStudent = currentStudent;
-    }
-
-
-
     public static Context getWeakActivity(){
         if(mActivity.get()!=null){
             mActivity.get().getTheme().applyStyle(android.R.style.Theme_Dialog, true);

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
@@ -46,7 +46,7 @@ public class  ClassAddActivity extends AppCompatActivity
     public static String previousSectionName;
 
 
-
+    CustomArrayList<ClassItem> classItemList;
     public static void start(Context context) {
         Intent intent = new Intent(context, ClassAddActivity.class);
         context.startActivity(intent);
@@ -83,6 +83,10 @@ public class  ClassAddActivity extends AppCompatActivity
         classitem = (ClassItem) getIntent().getSerializableExtra(ClassAddActivity.class.getSimpleName());
         UtilsCommon.setCurrentClass(classitem,this);
 
+        classItemList = new CustomArrayList<>();
+        classItemList =UtilsCommon.getAllClass(ClassAddActivity.this);
+
+
         if (classitem != null) {
             btnAdd.setVisibility(View.GONE);
             classNameEditText.setText(classitem.getName());
@@ -111,7 +115,7 @@ public class  ClassAddActivity extends AppCompatActivity
             //CHECK THAT THE ITEM IS UNIQUE
 
             //for avoiding null pointer exeption
-            if(MainActivity.totalClassItems == null)
+            if(classItemList == null)
             {
                 startActivity(new Intent(this,MainActivity.class));
                 return;
@@ -119,9 +123,10 @@ public class  ClassAddActivity extends AppCompatActivity
 
 
 
-            for(int i = 0; i<MainActivity.totalClassItems.size(); i++){
-                UtilsCommon.debugLog("Class: "+MainActivity.totalClassItems.get(i));
-                if(MainActivity.totalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.totalClassItems.get(i).getSection().equals(classitem.getSection())){
+            for(int i = 0; i<classItemList.size(); i++){
+                
+                if(classItemList.get(i).getName().equals(classitem.getName())&&
+                        classItemList.get(i).getSection().equals(classitem.getSection())){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warning_for_add);
@@ -147,10 +152,15 @@ public class  ClassAddActivity extends AppCompatActivity
             classitem.setSection(sectionEditText.getText().toString());
 
             //FOR AVOID SQL INJECTION
-            for(int i = 0; i<MainActivity.totalClassItems.size(); i++){
+
+            if(classItemList !=null)
+            for(int i = 0; i< classItemList.size(); i++){
 
 
-                if(MainActivity.totalClassItems.get(i).getName().equals(classitem.getName())&&MainActivity.totalClassItems.get(i).getSection().equals(classitem.getSection())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
+                if(classItemList.get(i).getName().equals(classitem.getName())&&
+                        classItemList.get(i).getSection().equals(classitem.getSection())
+                        &&!(previousClassName.equals(classNameEditText.getText().toString())&&
+                        previousSectionName.equals(sectionEditText.getText().toString()))){
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -166,7 +176,7 @@ public class  ClassAddActivity extends AppCompatActivity
             DeleteDialog();
         }
         else {
-editClass();
+        editClass();
 
 
         }
@@ -178,13 +188,20 @@ editClass();
 
 
         //For Random click check
-        btnEdit.setOnClickListener(null);
+        btnEdit.setEnabled(false);
+
+        if(!validateClassName()){
+            btnEdit.setEnabled(true);
+            return;
+        }
 
            //FOR AVOID SQL INJECTION
-           for(int i = 0; i<MainActivity.totalClassItems.size(); i++){
+           for(int i = 0; i<classItemList.size(); i++){
 
-
-               if(MainActivity.totalClassItems.get(i).getName().equals(classNameEditText.getText().toString().trim())&&MainActivity.totalClassItems.get(i).getSection().equals(sectionEditText.getText().toString().trim())&&!(previousClassName.equals(classNameEditText.getText().toString())&& previousSectionName.equals(sectionEditText.getText().toString()))){
+               if(classItemList.get(i).getName().equals(classNameEditText.getText().toString().trim())
+                       &&classItemList.get(i).getSection().equals(sectionEditText.getText().toString().trim())
+                       &&!(previousClassName.equals(classNameEditText.getText().toString())&&
+                       previousSectionName.equals(sectionEditText.getText().toString()))){
                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                    alertDialog.setTitle("সতর্কীকরণ");
                    alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -212,8 +229,9 @@ editClass();
            fromDBRef.child("name").setValue(classNameEditText.getText().toString().trim());
            fromDBRef.child("section").setValue(sectionEditText.getText().toString().trim());
 
-
+           if(!fromDBRef.toString().equals(toDBRef.toString()))
            copyRecord(fromDBRef,toDBRef);
+           else btnEdit.setEnabled(true);
 
         }
 

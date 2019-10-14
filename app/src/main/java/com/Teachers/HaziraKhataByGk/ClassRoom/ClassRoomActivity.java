@@ -249,6 +249,7 @@ public class ClassRoomActivity extends AppCompatActivity  implements RecyclerIte
             activity.startActivity(intent);
         });
 
+        marksheetButton.setVisibility(View.GONE);
         marksheetButton.setOnClickListener(view -> {
             Intent intent=new Intent(ClassRoomActivity.this, MarkSheetHomeActivity.class);
             intent.putExtra(Constant.CLASS_NAME,classitem.getName());

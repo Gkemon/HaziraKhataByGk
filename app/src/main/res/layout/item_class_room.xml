@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:baselineAligned="false"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_10">
 
     <LinearLayout
-        android:padding="10dp"
+        android:baselineAligned="false"
         android:layout_gravity="center"
+        android:padding="10dp"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/thumb"
+            android:layout_gravity="center"
             android:layout_width="100dp"
             android:layout_height="100dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:singleLine="false"
                 android:id="@+id/name"
+                android:textAlignment="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray_deep"
                 android:textSize="14sp"/>
 
             <TextView
+                tools:text="22233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333111133"
                 android:id="@+id/phone"
+                android:maxLines="2"
+                android:lines="2"
+                android:textAlignment="center"
+                android:singleLine="false"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray_deep"

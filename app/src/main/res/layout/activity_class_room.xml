@@ -51,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="পরিক্ষার মার্কশীট তৈরী"
+        android:visibility="visible"
         style="@style/ButtonOrangeStyle" />
 
     <Button

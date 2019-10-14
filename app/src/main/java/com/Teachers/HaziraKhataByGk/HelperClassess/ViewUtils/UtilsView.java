@@ -2,9 +2,11 @@ package com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.GlobalContext;
 import com.Teachers.HaziraKhataByGk.R;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -20,7 +22,7 @@ public class UtilsView {
         showVisibileAnimation(targetView);
     }
 
-    public static RequestOptions getLoadingOptionForGlide(){
+    public static RequestOptions getLoadingOptionForGlide(Context context){
         return new RequestOptions()
                 .centerCrop()
                 .placeholder(R.drawable.progress_animation)

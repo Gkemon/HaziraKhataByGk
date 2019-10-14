@@ -70,6 +70,7 @@ public class LoadingPopup extends Dialog {
 
     public static LoadingPopup getInstance(Activity activity){
 
+
         if(dialog==null){
             if(activity==null) dialog=new LoadingPopup(GlobalContext.getWeakActivity());
             else dialog=new LoadingPopup(activity);

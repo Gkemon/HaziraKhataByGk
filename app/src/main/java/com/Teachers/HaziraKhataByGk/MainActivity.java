@@ -56,29 +56,21 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static CustomArrayList<ClassItem> totalClassItems;
+
     public static ArrayList<NewsItem> NewsList;
     public static ArrayList<JobItems> Job_list;
     public static ArrayList<NewsItem> saved_newsItem_for_main;
     public static ArrayList<BlogItem> saved_blogItem_for_main;
 
-    public Context context;
+
     public Activity activity;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DrawerLayout drawer;
-
-
-    public static boolean calledAlready = false;
     public  String mProfileHeader;
     // public static FirebaseUser mFirebaseUser;
     Toolbar toolbar;
 
-
-    private FirebaseAuth.AuthStateListener authListener;
-
-    public PrefManagerForMain prefManagerForMain;
-    
 
     public void setUpDrawer() {
 
@@ -121,24 +113,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.putExtra("FLAG", "INSIDE");
             startActivity(intent);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+            DrawerLayout drawer = findViewById(R.id.drawerLayout);
             drawer.closeDrawer(GravityCompat.START);
         });
 
-    }
-
-    public void showHintDialogForFirstTime() {
-
-        prefManagerForMain = new PrefManagerForMain(this);
-        if (prefManagerForMain.isFirstTimeLaunch()) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setMessage("আপনার সকল শিডিউল কাজগুলো মনে করিয়ে দিবে এই এপটি।শিডিউল রিমাইন্ডার পেতে হলে উপরের ঘড়ি চিহ্নটিতে ক্লিক করুন।");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                    (dialog, which) -> dialog.dismiss());
-            alertDialog.show();
-            prefManagerForMain.setFirstTimeLaunch(false);
-
-        }
     }
 
     @Override
@@ -206,11 +184,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
 
 
-        authListener = firebaseAuth -> {
+        //startActivity(new Intent (MainActivity.this,LoginActivity.class));
+        FirebaseAuth.AuthStateListener authListener = firebaseAuth -> {
 
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user == null) {
-               startActivity(new Intent (MainActivity.this,LoginActivity.class));
+                //startActivity(new Intent (MainActivity.this,LoginActivity.class));
             }
         };
 
@@ -244,13 +223,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.instruction:
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/", context);
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/notes/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%B6%E0%A6%BF%E0%A6%95%E0%A7%8D%E0%A6%B7%E0%A6%95-%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F-%E0%A6%95%E0%A6%AE%E0%A6%BF%E0%A6%89%E0%A6%A8%E0%A6%BF%E0%A6%9F%E0%A6%BF/%E0%A6%B9%E0%A6%BE%E0%A6%9C%E0%A6%BF%E0%A6%B0%E0%A6%BE-%E0%A6%96%E0%A6%BE%E0%A6%A4%E0%A6%BE-%E0%A6%8F%E0%A6%AA%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B9%E0%A6%BE%E0%A6%B0%E0%A6%AC%E0%A6%BF%E0%A6%A7%E0%A6%BF/2045598845687496/", this);
 
                 break;
 
             case R.id.questuon_answer:
 
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/", context);
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/", this);
 
                 break;
 
@@ -262,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/", context);
+       UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/", MainActivity.this);
 
                             }
                         });
@@ -311,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.facebook_community_Title:
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045342365713144/", context);
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045342365713144/", this);
 
                 break;
 

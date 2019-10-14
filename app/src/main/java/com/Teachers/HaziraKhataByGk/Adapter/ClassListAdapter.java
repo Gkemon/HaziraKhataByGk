@@ -18,6 +18,8 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -69,7 +71,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
     @Override
     public ContactHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class_room, parent, false);
 
         final ContactHolder contactHolder = new ContactHolder(view);
 
@@ -149,6 +151,24 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                     else {
                         sectionName="সেকশন/সেশন: "+classitem.getSection();
                     }
+
+
+                    if(classitem.getName()==null)
+                    { //Quick fix
+                        FirebaseCaller.getFirebaseDatabase().child("Users")
+                                .child(FirebaseCaller.getUserID())
+                                .child("Class")
+                                .child("nullnull").removeValue();
+
+                        FirebaseCaller.getFirebaseDatabase().child("Users")
+                                .child(FirebaseCaller.getUserID())
+                                .child("Class")
+                                .child("null").removeValue();
+                    }
+
+
+
+
 
 
 

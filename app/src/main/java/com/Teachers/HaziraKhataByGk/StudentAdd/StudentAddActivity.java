@@ -3,7 +3,6 @@ package com.Teachers.HaziraKhataByGk.StudentAdd;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
-import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DatePickerBuilder;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
@@ -36,9 +34,6 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
 import com.Teachers.HaziraKhataByGk.StudentListShowActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -53,8 +48,7 @@ import butterknife.OnClick;
 import static com.Teachers.HaziraKhataByGk.StudentAdd.StudentAddUtils.isRollExisted;
 
 
-
-public class StudentAddActivity extends PermissionActivity implements View.OnClickListener{
+public class StudentAddActivity extends PermissionActivity implements View.OnClickListener {
 
     private EditText etPersonName;
     private EditText etPhone;
@@ -76,49 +70,50 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
     public Button btnBirthDay;
 
 
-
-    private Button btnAdd, btnEdit, btnDelete,btnClassRecord;
+    private Button btnAdd, btnEdit, btnDelete, btnClassRecord;
     private ImageView imgProPic;
     private Student student;
-    public  String previousId,currentId;
+    public String previousId, currentId;
     public Activity activity;
-    public Uri imageUri=null;
+    public Uri imageUri = null;
     private String birthDay;
+    private ArrayList<Student> studentList;
 
 
     @OnClick(R.id.btn_birth_date_select)
-    public void selectBirthDate(Button button){
-       DatePickerBuilder datePickerBuilder = DatePickerBuilder.getBuilder();
+    public void selectBirthDate(Button button) {
+        DatePickerBuilder datePickerBuilder = DatePickerBuilder.getBuilder();
 
-       if(student!=null&&UtilsCommon.isValideString(student.getBirthDate()))
-         datePickerBuilder.setDateString_EEE_d_MMM_yyyy(student.getBirthDate());
-         datePickerBuilder.setActivity(this);
+        if (student != null && UtilsCommon.isValideString(student.getBirthDate()))
+            datePickerBuilder.setDateString_EEE_d_MMM_yyyy(student.getBirthDate());
+        datePickerBuilder.setActivity(this);
 
-         datePickerBuilder.setDateCallBack(new CommonCallback<String>() {
-             @Override
-             public void onFailure(String error) {
+        datePickerBuilder.setDateCallBack(new CommonCallback<String>() {
+            @Override
+            public void onFailure(String error) {
 
-             }
+            }
 
-             @Override
-             public void onSuccess(String response) {
-                 birthDay=response;
-                 student.setBirthDate(response);
-                 button.setText("জন্ম তারিখ: "+response);
-             }
-         })
-         .show();
+            @Override
+            public void onSuccess(String response) {
+                birthDay = response;
+                student.setBirthDate(response);
+                button.setText("জন্ম তারিখ: " + response);
+            }
+        })
+                .show();
 
     }
-    @OnClick(R.id.btn_student_pro_pic_upload)
-    public void chooseProPic(){
 
-        if(checkHasPermission(RequestCode.PERMISSION_MULTIPLE,new CommonCallback() {
+    @OnClick(R.id.btn_student_pro_pic_upload)
+    public void chooseProPic() {
+
+        if (checkHasPermission(RequestCode.PERMISSION_MULTIPLE, new CommonCallback() {
             @Override
             public void onSuccess() {
                 chooseProPic();
             }
-        } , Manifest.permission
+        }, Manifest.permission
                 .READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             if (validateRoll() && validateStudentName()) {
                 Intent intent = CropImage.activity(imageUri)
@@ -134,31 +129,30 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                 startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
             } else {
                 DialogUtils.showInfoAlertDialog("সতর্কবানী",
-                        "ছবি আপলোডের পূর্বে দয়া করে নাম এবং রোল ইনপুট দিন",this);
+                        "ছবি আপলোডের পূর্বে দয়া করে নাম এবং রোল ইনপুট দিন", this);
             }
         }
 
 
     }
 
-    @OnClick(R.id.btn_birth_date_select)
-    public void setUpBirthdate(){
-
-    }
-
 
     public static List<AttendenceData> attendenceDataListBeforeEdit;
-    public static void start(Context context,ClassItem classItem){
+
+    public static void start(Context context, ClassItem classItem, ArrayList<Student> studentList) {
         Intent intent = new Intent(context, StudentAddActivity.class);
-        intent.putExtra(Constant.CLASS,classItem);
+        intent.putExtra("studentList", studentList);
+        intent.putExtra(Constant.CLASS, classItem);
         context.startActivity(intent);
     }
 
-    public static void start(Context context, Student student){
+    public static void start(Context context, Student student, ArrayList<Student> studentList) {
         Intent intent = new Intent(context, StudentAddActivity.class);
+        intent.putExtra("studentList", studentList);
         intent.putExtra(StudentAddActivity.class.getSimpleName(), student);
         context.startActivity(intent);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -167,8 +161,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
             if (resultCode == RESULT_OK) {
                 imageUri = result.getUri();
 
-                if(imageUri==null)
-                {
+                if (imageUri == null) {
                     UtilsCommon.showToast("Error in image selection.");
                     UtilsCommon.debugLog("URL is null.");
                     return;
@@ -176,18 +169,18 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
                 Glide.with(this)
                         .load(imageUri)
-                        .apply(UtilsView.getLoadingOptionForGlide())
+                        .apply(UtilsView.getLoadingOptionForGlide(this))
                         .into(imgProPic);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
-                UtilsCommon.debugLog("Error in Photo URL: "+error.getLocalizedMessage());
+                UtilsCommon.debugLog("Error in Photo URL: " + error.getLocalizedMessage());
             }
         }
     }
 
 
-    public void initView(){
+    public void initView() {
         etPersonName = findViewById(R.id.personTextFromStudentAct);
         etRollNumber = findViewById(R.id.RollNumberFromStudentAct);
         //ADD TEXT CHANGE LISTENER
@@ -195,15 +188,15 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         etRollNumber.addTextChangedListener(new MyTextWatcher(etRollNumber));
 
         etPhone = findViewById(R.id.phoneNumbersFromStudentAct);
-        etParentName =findViewById(R.id.personParentTextFromStudentAct);
-        etParentPhoneNumber =findViewById(R.id.ParentsphoneNumbersFromStudentAct);
+        etParentName = findViewById(R.id.personParentTextFromStudentAct);
+        etParentPhoneNumber = findViewById(R.id.ParentsphoneNumbersFromStudentAct);
 
 
         btnAdd = findViewById(R.id.btnAddFromStudentAct);
-        btnEdit =findViewById(R.id.btnEditFromStudentAct);
-        btnDelete =findViewById(R.id.btnDeleteFromStudentAct);
-        btnClassRecord=findViewById(R.id.classRecord);
-        imgProPic=findViewById(R.id.img_pro_pic);
+        btnEdit = findViewById(R.id.btnEditFromStudentAct);
+        btnDelete = findViewById(R.id.btnDeleteFromStudentAct);
+        btnClassRecord = findViewById(R.id.classRecord);
+        imgProPic = findViewById(R.id.img_pro_pic);
 
 
         btnAdd.setOnClickListener(this);
@@ -211,52 +204,53 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         btnDelete.setOnClickListener(this);
         btnClassRecord.setOnClickListener(this);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         setContentView(R.layout.activity_student_act);
-        activity=this;
+        activity = this;
         ButterKnife.bind(this);
         initView();
-        student=(Student)getIntent().getSerializableExtra(StudentAddActivity.class.getSimpleName());
+        student = (Student) getIntent().getSerializableExtra(StudentAddActivity.class.getSimpleName());
+        studentList = (ArrayList<Student>) getIntent().getSerializableExtra("studentList");
 
 
-        attendenceDataListBeforeEdit=new ArrayList<>();
+        attendenceDataListBeforeEdit = new ArrayList<>();
 
-        if(student != null){
+        if (student != null) {
             btnAdd.setVisibility(View.GONE);
             etPersonName.setText(student.getStudentName().trim());
             etRollNumber.setText(student.getId().trim());
             etParentName.setText(student.getParentName().trim());
             etParentPhoneNumber.setText(student.getParentContact().trim());
             etPhone.setText(student.getPhone().trim());
-            if(student.getGander().equals(Constant.MALE)){
+            if (student.getGander().equals(Constant.MALE)) {
                 rbMale.setChecked(true);
-            }
-            else {
+            } else {
                 rbFemale.setChecked(true);
             }
 
             etBirthCertificate.setText(student.getBirthCertificateNo());
-            if(UtilsCommon.isValideString(student.getBirthDate()))
-            {
-                btnBirthDay.setText("জন্ম তারিখ: "+student.getBirthDate());
-                birthDay=student.getBirthDate();
+            if (UtilsCommon.isValideString(student.getBirthDate())) {
+                btnBirthDay.setText("জন্ম তারিখ: " + student.getBirthDate());
+                birthDay = student.getBirthDate();
             }
 
             etParent2Name.setText(student.getParent2Name());
             etParent2Phone.setText(student.getParent2Contact());
 
 
-            previousId=student.getId().trim();
+            previousId = student.getId().trim();
 
             Glide.with(this)
                     .load(student.getImageUrl())
-                    .apply(UtilsView.getLoadingOptionForGlide())
+                    .apply(UtilsView.getLoadingOptionForGlide(this))
                     .into(imgProPic);
-        }else{
+        } else {
+            student = new Student();
             btnClassRecord.setVisibility(View.GONE);
             btnEdit.setVisibility(View.GONE);
             btnDelete.setVisibility(View.GONE);
@@ -266,16 +260,15 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        if(v == btnAdd) {
+        if (v == btnAdd) {
 
-            student = new Student();
             student.setStudentName(etPersonName.getText().toString().trim());
             student.setId(etRollNumber.getText().toString().trim());
             student.setPhone(etPhone.getText().toString().trim());
             student.setParentName(etParentName.getText().toString().trim());
             student.setParentContact(etParentPhoneNumber.getText().toString().trim());
 
-            if(UtilsCommon.getCurrentStudent(this)!=null){
+            if (UtilsCommon.getCurrentStudent(this) != null) {
                 student.setStudentClass(UtilsCommon.getCurrentClass(this).getName());
                 student.setStudentSection(UtilsCommon.getCurrentClass(this).getSection());
             }
@@ -285,29 +278,27 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
             student.setParent2Contact(etParent2Phone.getText().toString().trim());
             student.setParent2Name(etParent2Name.getText().toString().trim());
             student.setBirthCertificateNo(etBirthCertificate.getText().toString().trim());
-            student.setGander(rbMale.isChecked()?Constant.MALE:Constant.FEMALE);
+            student.setGander(rbMale.isChecked() ? Constant.MALE : Constant.FEMALE);
 
 
             if (student.getId() != null) {
-                if(submitForm()){
+                if (submitForm()) {
 
                     //CHECK THAT THE ITEM IS UNIQUE
-                    if(isRollExisted(StudentListShowActivity.studentList,student.getId()))
+                    if (isRollExisted(studentList, student.getId(),this))
                         return;
 
-                    ClassItem classItem=new ClassItem();
+                    ClassItem classItem = new ClassItem();
 
-                    if(UtilsCommon.getCurrentClass(this)!=null) {
-                        classItem=UtilsCommon.getCurrentClass(this);
-                    }
-                    else return;
-
+                    if (UtilsCommon.getCurrentClass(this) != null) {
+                        classItem = UtilsCommon.getCurrentClass(this);
+                    } else return;
 
 
                     FirebaseCaller.setStudentToServer(classItem, student, new CommonCallback() {
                         @Override
                         public void onFailure(String r) {
-                            UtilsCommon.debugLog("Error in photo uploading - "+r);
+                            UtilsCommon.debugLog("Error in photo uploading - " + r);
                         }
 
                         @Override
@@ -319,110 +310,109 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                     });
 
 
+                }
             }
-        }
-        }
-        else if(v == btnEdit){
+        } else if (v == btnEdit) {
             student.setStudentName(etPersonName.getText().toString().trim());
             student.setId(etRollNumber.getText().toString().trim());
             student.setPhone(etPhone.getText().toString().trim());
-            if(UtilsCommon.getCurrentStudent(this)!=null){
+            if (UtilsCommon.getCurrentStudent(this) != null) {
                 student.setStudentClass(UtilsCommon.getCurrentClass(this).getName());
                 student.setStudentSection(UtilsCommon.getCurrentClass(this).getSection());
             }
             student.setParentName(etParentName.getText().toString().trim());
             student.setParentContact(etParentPhoneNumber.getText().toString().trim());
-            if(!UtilsCommon.isValideString(student.getUuid()))
-            student.setUuid(UUID.randomUUID().toString());
-            currentId= etRollNumber.getText().toString().trim();
+            if (!UtilsCommon.isValideString(student.getUuid()))
+                student.setUuid(UUID.randomUUID().toString());
+            currentId = etRollNumber.getText().toString().trim();
 
             student.setBirthDate(birthDay);
             student.setParent2Contact(etParent2Phone.getText().toString().trim());
             student.setParent2Name(etParent2Name.getText().toString().trim());
             student.setBirthCertificateNo(etBirthCertificate.getText().toString().trim());
-            student.setGander(rbMale.isChecked()?Constant.MALE:Constant.FEMALE);
-
+            student.setGander(rbMale.isChecked() ? Constant.MALE : Constant.FEMALE);
 
 
             //CHECK THAT THE ITEM IS UNIQUE
-            if(StudentListShowActivity.studentList!=null)
-            for (int i = 0; i < StudentListShowActivity.studentList.size(); i++) {
-                if (StudentListShowActivity.studentList.get(i).getId().equals(student.getId())
-                        &&!previousId.equals(student.getId()))
-                {AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("সতর্কীকরণ");
-                alertDialog.setIcon(R.drawable.warning_for_add);
-                alertDialog.setMessage("এই একই রোল ইতিমধ্যে এই ক্লাসের ডাটাবেজে রয়েছে।নতুন রোল ইনপুট দিন,ধন্যবাদ।");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                        (dialog, which) -> dialog.dismiss());
-                alertDialog.show();
-                return;
+            if (studentList != null)
+                for (int i = 0; i < studentList.size(); i++) {
+                    if (studentList.get(i).getId().equals(student.getId())
+                            && !previousId.equals(student.getId())) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                        alertDialog.setTitle("সতর্কীকরণ");
+                        alertDialog.setIcon(R.drawable.warning_for_add);
+                        alertDialog.setMessage("এই একই রোল ইতিমধ্যে এই ক্লাসের ডাটাবেজে রয়েছে।নতুন রোল ইনপুট দিন,ধন্যবাদ।");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                                (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                        return;
+                    }
                 }
-            }
 
             //FOR VALIDATION
-            if(submitForm()){
+            if (submitForm()) {
                 //First GETTING ITS ATTENDANCE DATA
 
 
                 FirebaseCaller.getAttendanceDataForSingleStudent(student.getStudentClass(),
                         student.getStudentSection(), previousId,
                         new CommonCallback<ArrayList<AttendenceData>>() {
-                    @Override
-                    public void onFailure(String r) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(ArrayList<AttendenceData> attendenceDataList) {
-
-
-                        attendenceDataListBeforeEdit=attendenceDataList;
-
-                        //Then first reinstall previous Student data;
-                        FirebaseCaller.setStudentToServer
-                                (UtilsCommon.getCurrentClass(StudentAddActivity.this),
-                                student, new CommonCallback() {
                             @Override
                             public void onFailure(String r) {
-                                DialogUtils.showInfoAlertDialog("Error to save the student to " +
-                                        "server.","Log: "+r,StudentAddActivity.this);
+
                             }
 
                             @Override
-                            public void onSuccess() {
-                                uploadProPicToServer();
+                            public void onSuccess(ArrayList<AttendenceData> attendenceDataList) {
+
+
+                                attendenceDataListBeforeEdit = attendenceDataList;
+
+                                //Then first reinstall previous Student data;
+                                FirebaseCaller.setStudentToServer
+                                        (UtilsCommon.getCurrentClass(StudentAddActivity.this),
+                                                student, new CommonCallback() {
+                                                    @Override
+                                                    public void onFailure(String r) {
+                                                        DialogUtils.showInfoAlertDialog("Error" +
+                                                                " to save the item_student to " +
+                                                                "server.", "Log: " + r, StudentAddActivity.this);
+                                                    }
+
+                                                    @Override
+                                                    public void onSuccess() {
+                                                        uploadProPicToServer();
+                                                    }
+                                                });
+
+
+                                //Then add attendance list of the specific Student before edit.This is an
+                                // operation fromTime Student act activity;
+                                if (StudentAddActivity.attendenceDataListBeforeEdit != null) {
+                                    for (int i = 0; i < StudentAddActivity.attendenceDataListBeforeEdit.size(); i++) {
+
+                                        FirebaseCaller.
+                                                setStudentAttendanceToServer(UtilsCommon.
+                                                                getCurrentClass(StudentAddActivity.this), currentId,
+                                                        StudentAddActivity.attendenceDataListBeforeEdit.get(i));
+                                    }
+                                    currentId = null;
+                                }
                             }
                         });
 
 
-                        //Then add attendance list of the specific Student before edit.This is an
-                        // operation fromTime Student act activity;
-                        if (StudentAddActivity.attendenceDataListBeforeEdit != null) {
-                            for (int i = 0; i < StudentAddActivity.attendenceDataListBeforeEdit.size(); i++) {
-
-                                FirebaseCaller.
-                                        setStudentAttendanceToServer(UtilsCommon.
-                                                        getCurrentClass(StudentAddActivity.this),currentId,
-                                        StudentAddActivity.attendenceDataListBeforeEdit.get(i));
-                            }
-                            currentId=null;
-                        }
-                    }
-                });
-
-
                 //Then remove the old Student data
-                FirebaseCaller.removeStudentToServer( UtilsCommon.getCurrentClass(
-                        StudentAddActivity.this),previousId);
+                FirebaseCaller.removeStudentToServer(UtilsCommon.getCurrentClass(
+                        StudentAddActivity.this), previousId);
 
-                Toast.makeText(this,"শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ",Toast.LENGTH_SHORT).show();
-                    previousId=null;
+                Toast.makeText(this, "শিক্ষার্থীর নতুন ডাটা এডিট হয়েছে,ধন্যবাদ ", Toast.LENGTH_SHORT).show();
+                previousId = null;
 
 
             }
 
-        }else if(v == btnDelete) {
+        } else if (v == btnDelete) {
             student.setStudentName(etPersonName.getText().toString());
             student.setId(etRollNumber.getText().toString());
             student.setPhone(etPhone.getText().toString());
@@ -430,13 +420,13 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
             student.setParentContact(etParentPhoneNumber.getText().toString());
 
             //FOR AVOID SQL INJECTION
-            for(int i = 0; i< StudentListShowActivity.studentList.size(); i++){
-                if(StudentListShowActivity.studentList.get(i).getId().equals(student.getId())&&!(previousId.equals(etRollNumber.getText().toString()))){
+            for (int i = 0; i < studentList.size(); i++) {
+                if (studentList.get(i).getId().equals(student.getId()) && !(previousId.equals(etRollNumber.getText().toString()))) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
                     alertDialog.setMessage("আপনি শিক্ষার্থীর নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি শিক্ষার্থীর ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই শিক্ষার্থীর ডাটা ডিলেট করতে হলে অবশ্যই সেই শিক্ষার্থীর ডাটাবেজে যেতে হবে।ধন্যবাদ ");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
                             (dialog, which) -> dialog.dismiss());
                     alertDialog.show();
                     return;
@@ -445,20 +435,19 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
 
             deleteDialogForStudent();
-        }
-        else if(v==btnClassRecord){
-                    Intent launchinIntent = new Intent(this, StudentAlIInfoShowActivity.class);
-                    String roll = previousId;
-                    launchinIntent.putExtra("Student",student);
-                    launchinIntent.putExtra("Roll", roll);
-                    launchinIntent.putExtra("classItem",
-                            UtilsCommon.getCurrentClass(StudentAddActivity.this));
-                    startActivity(launchinIntent);
+        } else if (v == btnClassRecord) {
+            Intent launchinIntent = new Intent(this, StudentAlIInfoShowActivity.class);
+            String roll = previousId;
+            launchinIntent.putExtra("Student", student);
+            launchinIntent.putExtra("Roll", roll);
+            launchinIntent.putExtra("classItem",
+                    UtilsCommon.getCurrentClass(StudentAddActivity.this));
+            startActivity(launchinIntent);
         }
     }
 
-    public void uploadProPicToServer(){
-        if(imageUri!=null&&UtilsCommon.isValideString(imageUri.toString()))
+    public void uploadProPicToServer() {
+        if (imageUri != null && UtilsCommon.isValideString(imageUri.toString()))
             FirebasePhotoUploader.getBuilder()
                     .setActivity(StudentAddActivity.this)
                     .setFileName(student.getUuid())
@@ -469,7 +458,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                         @Override
                         public void onFailure(String r) {
                             UtilsCommon.showToast("Error in photo uploading.");
-                            UtilsCommon.debugLog("Error in photo uploading - "+r);
+                            UtilsCommon.debugLog("Error in photo uploading - " + r);
                         }
 
                         @Override
@@ -489,7 +478,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
             Toast.makeText(getApplicationContext(), "দয়া করে শিক্ষার্থীর নাম অংশের ভুল সংশোধণ করুন,ধন্যবাদ", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(!validateRoll()){
+        if (!validateRoll()) {
             Toast.makeText(getApplicationContext(), "দয়া করে শিক্ষার্থীর রোল অংশের ভুল সংশোধণ করুন,ধন্যবাদ", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -497,6 +486,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         Toast.makeText(getApplicationContext(), "সঠিক তথ্য ইনপুট দেয়ার জন্য আপনাকে ধন্যবাদ", Toast.LENGTH_SHORT).show();
         return true;
     }
+
     private boolean validateStudentName() {
         if (etPersonName.getText().toString().trim().isEmpty()) {
             etPersonName.setError(getString(R.string.error_massege_for_input));
@@ -505,13 +495,13 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         }
         return true;
     }
+
     private boolean validateRoll() {
         if (etRollNumber.getText().toString().trim().isEmpty()) {
             etRollNumber.setError(getString(R.string.error_massege_for_input));
             requestFocus(etRollNumber);
             return false;
-        }
-        else return true;
+        } else return true;
     }
 
     private void requestFocus(View view) {
@@ -561,12 +551,12 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         dialogBuilder.setTitle("আপনি কি আসলেই এই শিক্ষার্থীর সকল তথ্য ডিলিট করতে চান?");
         dialogBuilder.setPositiveButton("ডিলিট করুন", (dialog, whichButton) -> {
 
-                FirebaseCaller.removeStudentToServer(UtilsCommon.
-                        getCurrentClass(StudentAddActivity.this),student.getId());
+            FirebaseCaller.removeStudentToServer(UtilsCommon.
+                    getCurrentClass(StudentAddActivity.this), student.getId());
 
-                Toast.makeText(StudentAddActivity.this,"এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
-                previousId=null;
-                finish();
+            Toast.makeText(StudentAddActivity.this, "এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।", Toast.LENGTH_LONG).show();
+            previousId = null;
+            finish();
 
         });
         dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {

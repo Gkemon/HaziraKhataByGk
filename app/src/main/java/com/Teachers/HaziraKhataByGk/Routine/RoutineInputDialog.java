@@ -82,7 +82,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     @OnClick(R.id.bt_from_time)
     public void showFromTimeDialog(){
-        DialogUtils.showDateDialog(null, (view, year, month, dayOfMonth) -> {
+        DialogUtils.showDateDialog(null,getContext(), (view, year, month, dayOfMonth) -> {
 
         });
     }

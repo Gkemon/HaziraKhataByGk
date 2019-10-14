@@ -186,6 +186,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
+            android:visibility="gone"
             android:backgroundTint="@color/blueMiddle"
             android:text="সাইন আউট করুন"
             android:textAllCaps="false"
