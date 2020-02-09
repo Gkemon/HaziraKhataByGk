@@ -39,40 +39,13 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         />
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/ads"-->
-        <!--android:orientation="vertical">-->
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark"-->
-            <!--android:layout_height="6sp">-->
-        <!--</View>-->
-        <!--<com.google.android.gms.ads.AdView-->
-            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/adViewInHome"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--ads:adSize="SMART_BANNER"-->
-            <!--ads:adUnitId="@string/Banner_ad_id">-->
-        <!--</com.google.android.gms.ads.AdView>-->
-
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark"-->
-            <!--android:layout_height="6sp">-->
-        <!--</View>-->
-    <!--</LinearLayout>-->
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/ads"
         android:id="@+id/studentFromStudentActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addFromStudentActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

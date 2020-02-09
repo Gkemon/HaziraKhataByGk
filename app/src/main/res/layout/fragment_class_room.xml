@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_make_schedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:text="রুটিন চাইলে এখানে ক্লিক করুন"
             android:textColor="@color/white" />
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_current_schedule_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
 
@@ -88,14 +88,14 @@
             app:backgroundTint="@color/red_secondary" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleViewFromFragmentOne"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_class_room"
         android:layout_below="@+id/schedule_card" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

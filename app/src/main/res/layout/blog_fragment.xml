@@ -4,10 +4,7 @@
     android:layout_height="match_parent"
     android:background="#e3f2fd"
     tools:context="com.Teachers.HaziraKhataByGk.Tabs.Fragments.BlogFragment">
-
-
-
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/blogPost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -98,6 +95,6 @@
             android:textSize="14sp" />
     </LinearLayout>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

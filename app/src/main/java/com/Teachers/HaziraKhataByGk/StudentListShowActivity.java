@@ -2,13 +2,13 @@ package com.Teachers.HaziraKhataByGk;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.StudentListAdapter;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
@@ -17,6 +17,7 @@ import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.StudentAdd.StudentAddActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -26,10 +27,10 @@ import java.util.ArrayList;
 
 public class StudentListShowActivity extends AppCompatActivity implements RecyclerItemClickListener {
 
+    public ClassItem classItem;
     private RecyclerView rvStudent;
     private FloatingActionButton btnAdd;
     private Context context;
-    public  ClassItem classItem;
     private StudentListAdapter studentListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout linearLayoutForEmptyView;
@@ -56,7 +57,7 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
         //For empty view
         linearLayoutForEmptyView = findViewById(R.id.toDoEmptyView);
         btnAdd.setEnabled(false);
-        btnAdd.setOnClickListener(v -> StudentAddActivity.start(context, classItem,studentList));
+        btnAdd.setOnClickListener(v -> StudentAddActivity.start(context, classItem, studentList));
 
 
     }
@@ -74,40 +75,40 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
             FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
                     child("Class").child(classItem.getName() + classItem.getSection()).child("Student")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    ProgressBar spinner;
-                    spinner = findViewById(R.id.progressBarInStudentActivity);
-                    spinner.setVisibility(View.GONE);
+                            ProgressBar spinner;
+                            spinner = findViewById(R.id.progressBarInStudentActivity);
+                            spinner.setVisibility(View.GONE);
 
-                    btnAdd.setEnabled(true);
+                            btnAdd.setEnabled(true);
 
-                    final ArrayList<Student> studentListFromServer = new ArrayList<Student>();
-                    for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
-                        Student student;
-                        student = StudentData.getValue(Student.class);
-                        studentListFromServer.add(student);
-                    }
+                            final ArrayList<Student> studentListFromServer = new ArrayList<Student>();
+                            for (DataSnapshot StudentData : dataSnapshot.getChildren()) {
+                                Student student;
+                                student = StudentData.getValue(Student.class);
+                                studentListFromServer.add(student);
+                            }
 
-                       studentList = studentListFromServer;
+                            studentList = studentListFromServer;
 
-                    if (studentList.size() == 0) {
-                        linearLayoutForEmptyView.setVisibility(View.VISIBLE);
-                    } else {
-                        linearLayoutForEmptyView.setVisibility(View.GONE);
-                    }
+                            if (studentList.size() == 0) {
+                                linearLayoutForEmptyView.setVisibility(View.VISIBLE);
+                            } else {
+                                linearLayoutForEmptyView.setVisibility(View.GONE);
+                            }
 
-                    studentListAdapter.clear();
-                    studentListAdapter.addAll(studentList);
-                    rvStudent.setAdapter(studentListAdapter);
-                }
+                            studentListAdapter.clear();
+                            studentListAdapter.addAll(studentList);
+                            rvStudent.setAdapter(studentListAdapter);
+                        }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                        }
+                    });
         }
 
 
@@ -115,8 +116,8 @@ public class StudentListShowActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void onItemClick(int position, View view) {
-        UtilsCommon.setCurrentStudent(studentListAdapter.getItem(position),this);
-        StudentAddActivity.start(this, studentListAdapter.getItem(position),studentList);
+        UtilsCommon.setCurrentStudent(studentListAdapter.getItem(position), this);
+        StudentAddActivity.start(this, studentListAdapter.getItem(position), studentList);
     }
 
     @Override

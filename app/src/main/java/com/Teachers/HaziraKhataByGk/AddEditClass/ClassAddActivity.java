@@ -4,10 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,6 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
@@ -23,7 +24,6 @@ import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,22 +31,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class  ClassAddActivity extends AppCompatActivity
+public class ClassAddActivity extends AppCompatActivity
         implements View.OnClickListener {
-
-
-    private EditText classNameEditText;
-    private EditText sectionEditText;
-    private Button btnAdd, btnEdit, btnDelete;
-    private ClassItem classitem = null;
 
 
     //This is for avoiding Delete SQL injection
     public static String previousClassName;
     public static String previousSectionName;
-
-
     CustomArrayList<ClassItem> classItemList;
+    private EditText classNameEditText;
+    private EditText sectionEditText;
+    private Button btnAdd, btnEdit, btnDelete;
+    private ClassItem classitem = null;
+
     public static void start(Context context) {
         Intent intent = new Intent(context, ClassAddActivity.class);
         context.startActivity(intent);
@@ -81,19 +78,19 @@ public class  ClassAddActivity extends AppCompatActivity
         btnDelete.setOnClickListener(this);
 
         classitem = (ClassItem) getIntent().getSerializableExtra(ClassAddActivity.class.getSimpleName());
-        UtilsCommon.setCurrentClass(classitem,this);
+        UtilsCommon.setCurrentClass(classitem, this);
 
         classItemList = new CustomArrayList<>();
-        classItemList =UtilsCommon.getAllClass(ClassAddActivity.this);
+        classItemList = UtilsCommon.getAllClass(ClassAddActivity.this);
 
 
         if (classitem != null) {
             btnAdd.setVisibility(View.GONE);
             classNameEditText.setText(classitem.getName());
             sectionEditText.setText(classitem.getSection());
-            previousClassName=classitem.getName();
-            previousSectionName =classitem.getSection();
-        }else {
+            previousClassName = classitem.getName();
+            previousSectionName = classitem.getSection();
+        } else {
             btnDelete.setVisibility(View.GONE);
             btnEdit.setVisibility(View.GONE);
         }
@@ -107,45 +104,41 @@ public class  ClassAddActivity extends AppCompatActivity
             classitem.setSection(sectionEditText.getText().toString().trim());
 
 
-
-            if(FirebaseCaller.getCurrentUser()==null){
+            if (FirebaseCaller.getCurrentUser() == null) {
                 UtilsCommon.showDialogForSignUp(this);
                 return;
             }
             //CHECK THAT THE ITEM IS UNIQUE
 
             //for avoiding null pointer exeption
-            if(classItemList == null)
-            {
-                startActivity(new Intent(this,MainActivity.class));
+            if (classItemList == null) {
+                startActivity(new Intent(this, MainActivity.class));
                 return;
             }
 
 
+            for (int i = 0; i < classItemList.size(); i++) {
 
-            for(int i = 0; i<classItemList.size(); i++){
-                
-                if(classItemList.get(i).getName().equals(classitem.getName())&&
-                        classItemList.get(i).getSection().equals(classitem.getSection())){
+                if (classItemList.get(i).getName().equals(classitem.getName()) &&
+                        classItemList.get(i).getSection().equals(classitem.getSection())) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warning_for_add);
                     alertDialog.setMessage("এই একই নামের আরেকটি ক্লাসের নাম ইতিমধ্যে ডাটাবেজে রয়েছে।নতুন নাম ইনপুট দিন,ধন্যবাদ।");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
                             (dialog, which) -> dialog.dismiss());
                     alertDialog.show();
-                  return;
+                    return;
                 }
             }
 
-            if(submitForm()){
+            if (submitForm()) {
 
-            confirmDialog();
+                confirmDialog();
 
             }
 
-        }
-        else if (v == btnDelete) {
+        } else if (v == btnDelete) {
             classitem = new ClassItem();
 
             classitem.setName(classNameEditText.getText().toString());
@@ -153,87 +146,86 @@ public class  ClassAddActivity extends AppCompatActivity
 
             //FOR AVOID SQL INJECTION
 
-            if(classItemList !=null)
-            for(int i = 0; i< classItemList.size(); i++){
+            if (classItemList != null)
+                for (int i = 0; i < classItemList.size(); i++) {
 
 
-                if(classItemList.get(i).getName().equals(classitem.getName())&&
-                        classItemList.get(i).getSection().equals(classitem.getSection())
-                        &&!(previousClassName.equals(classNameEditText.getText().toString())&&
-                        previousSectionName.equals(sectionEditText.getText().toString()))){
-                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                    alertDialog.setTitle("সতর্কীকরণ");
-                    alertDialog.setIcon(R.drawable.warnig_for_delete);
-                    alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি ডিলেট করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                            (dialog, which) -> dialog.dismiss());
-                    alertDialog.show();
-                    return;
+                    if (classItemList.get(i).getName().equals(classitem.getName()) &&
+                            classItemList.get(i).getSection().equals(classitem.getSection())
+                            && !(previousClassName.equals(classNameEditText.getText().toString()) &&
+                            previousSectionName.equals(sectionEditText.getText().toString()))) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                        alertDialog.setTitle("সতর্কীকরণ");
+                        alertDialog.setIcon(R.drawable.warnig_for_delete);
+                        alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি ডিলেট করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                                (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                        return;
+                    }
+
                 }
 
-            }
-
             DeleteDialog();
-        }
-        else {
-        editClass();
+        } else {
+            editClass();
 
 
         }
 
 
-        }
+    }
 
-       public void editClass(){
+    public void editClass() {
 
 
         //For Random click check
         btnEdit.setEnabled(false);
 
-        if(!validateClassName()){
+        if (!validateClassName()) {
             btnEdit.setEnabled(true);
             return;
         }
 
-           //FOR AVOID SQL INJECTION
-           for(int i = 0; i<classItemList.size(); i++){
+        //FOR AVOID SQL INJECTION
+        for (int i = 0; i < classItemList.size(); i++) {
 
-               if(classItemList.get(i).getName().equals(classNameEditText.getText().toString().trim())
-                       &&classItemList.get(i).getSection().equals(sectionEditText.getText().toString().trim())
-                       &&!(previousClassName.equals(classNameEditText.getText().toString())&&
-                       previousSectionName.equals(sectionEditText.getText().toString()))){
-                   AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                   alertDialog.setTitle("সতর্কীকরণ");
-                   alertDialog.setIcon(R.drawable.warnig_for_delete);
-                   alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
-                   alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                           (dialog, which) -> dialog.dismiss());
-                   alertDialog.show();
-                   return;
-               }
-
-           }
-
-           DatabaseReference fromDBRef=FirebaseCaller.getFirebaseDatabase().child("Users")
-                   .child(FirebaseCaller.getUserID())
-                   .child("Class")
-                   .child(previousClassName + previousSectionName);
-
-           DatabaseReference toDBRef=FirebaseCaller.getFirebaseDatabase().child("Users")
-                   .child(FirebaseCaller.getUserID())
-                   .child("Class")
-                   .child(classNameEditText.getText().toString().trim() + sectionEditText.getText().toString().trim());
-
-
-           //Rename the class name and section
-           fromDBRef.child("name").setValue(classNameEditText.getText().toString().trim());
-           fromDBRef.child("section").setValue(sectionEditText.getText().toString().trim());
-
-           if(!fromDBRef.toString().equals(toDBRef.toString()))
-           copyRecord(fromDBRef,toDBRef);
-           else btnEdit.setEnabled(true);
+            if (classItemList.get(i).getName().equals(classNameEditText.getText().toString().trim())
+                    && classItemList.get(i).getSection().equals(sectionEditText.getText().toString().trim())
+                    && !(previousClassName.equals(classNameEditText.getText().toString()) &&
+                    previousSectionName.equals(sectionEditText.getText().toString()))) {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("সতর্কীকরণ");
+                alertDialog.setIcon(R.drawable.warnig_for_delete);
+                alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                        (dialog, which) -> dialog.dismiss());
+                alertDialog.show();
+                return;
+            }
 
         }
+
+        DatabaseReference fromDBRef = FirebaseCaller.getFirebaseDatabase().child("Users")
+                .child(FirebaseCaller.getUserID())
+                .child("Class")
+                .child(previousClassName + previousSectionName);
+
+        DatabaseReference toDBRef = FirebaseCaller.getFirebaseDatabase().child("Users")
+                .child(FirebaseCaller.getUserID())
+                .child("Class")
+                .child(classNameEditText.getText().toString().trim() + sectionEditText.getText().toString().trim());
+
+
+        //Rename the class name and section
+        fromDBRef.child("name").setValue(classNameEditText.getText().toString().trim());
+        fromDBRef.child("section").setValue(sectionEditText.getText().toString().trim());
+
+        if (!fromDBRef.toString().equals(toDBRef.toString()))
+            copyRecord(fromDBRef, toDBRef);
+        else btnEdit.setEnabled(true);
+
+    }
 
     private void copyRecord(final DatabaseReference fromPath, final DatabaseReference toPath) {
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -244,13 +236,7 @@ public class  ClassAddActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isComplete()) {
                             UtilsCommon.debugLog("Copy Class Complete");
-                            fromPath.removeValue().addOnSuccessListener(ClassAddActivity.this, new
-                                    OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            ClassAddActivity.this.finish();
-                                        }
-                                    });
+                            fromPath.removeValue().addOnSuccessListener(ClassAddActivity.this, aVoid -> ClassAddActivity.this.finish());
 
                         } else {
                             UtilsCommon.debugLog("Copy Class Not Complete");
@@ -269,37 +255,7 @@ public class  ClassAddActivity extends AppCompatActivity
 
     }
 
-
-
-//EDIT TEXT MATERIAL STYLE
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-
-            case R.id.classText:
-                validateClassName();
-                break;
-            case R.id.sectionText:
-                //validateSectionName();
-                break;
-            }
-        }
-    }
-//FOR VALIDATION
+    //FOR VALIDATION
     private boolean submitForm() {
         if (!validateClassName()) {
             Toast.makeText(getApplicationContext(), "দয়া করে ক্লাসের নাম অংশের ভুল সংশোধন করুন,ধন্যবাদ", Toast.LENGTH_LONG).show();
@@ -318,11 +274,9 @@ public class  ClassAddActivity extends AppCompatActivity
         return true;
     }
 
-
     private void requestFocus(View view) {
-      view.requestFocus();
+        view.requestFocus();
     }
-
 
     public void DeleteDialog() {
 
@@ -336,19 +290,19 @@ public class  ClassAddActivity extends AppCompatActivity
         dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");
         dialogBuilder.setPositiveButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(edt.getText().toString().trim().equals("DELETE")){
+                if (edt.getText().toString().trim().equals("DELETE")) {
 
 
-                        //FOR DELETE
-                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(classitem.getName()+classitem.getSection()).removeValue();
+                    //FOR DELETE
+                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").child(classitem.getName() + classitem.getSection()).removeValue();
 
 
-                        Toast.makeText(ClassAddActivity.this,"ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।",Toast.LENGTH_LONG).show();
-                        previousClassName=null;
+                    Toast.makeText(ClassAddActivity.this, "ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।", Toast.LENGTH_LONG).show();
+                    previousClassName = null;
                     finish();
 
 
-                    }
+                }
             }
         });
         dialogBuilder.setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
@@ -359,37 +313,60 @@ public class  ClassAddActivity extends AppCompatActivity
         b.show();
     }
 
-
     public void confirmDialog() {
 
 
-                        FirebaseCaller.getFirebaseDatabase()
-                                .child("Users")
-                                .child(FirebaseCaller
-                                .getUserID())
-                                .child("Class")
-                                .child(classitem.getName()+classitem.getSection())
-                                .setValue(classitem)
-                                .addOnCompleteListener(ClassAddActivity.this, aVoid -> {
+        FirebaseCaller.getFirebaseDatabase()
+                .child("Users")
+                .child(FirebaseCaller
+                        .getUserID())
+                .child("Class")
+                .child(classitem.getName() + classitem.getSection())
+                .setValue(classitem)
+                .addOnCompleteListener(ClassAddActivity.this, aVoid -> {
 
-                                    AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
-                                    alertDialog.setMessage("আপনি যদি শ্রেণীর সকল ডাটা ডিলিট করতে চান তাহলে পরবর্তীতে শ্রেণীর নামের উপর লং প্রেস করুন।");
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"ওকে",
-                                            (dialog, which) -> {
-                                                dialog.dismiss();
-                                                finish();
-                                            });
-                                    alertDialog.show();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ClassAddActivity.this).create();
+                    alertDialog.setMessage("আপনি যদি শ্রেণীর সকল ডাটা ডিলিট করতে চান তাহলে পরবর্তীতে শ্রেণীর নামের উপর লং প্রেস করুন।");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                            (dialog, which) -> {
+                                dialog.dismiss();
+                                finish();
+                            });
+                    alertDialog.show();
 
-                                });
-
-
-
+                });
 
 
     }
 
+    //EDIT TEXT MATERIAL STYLE
+    private class MyTextWatcher implements TextWatcher {
 
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+
+                case R.id.classText:
+                    validateClassName();
+                    break;
+                case R.id.sectionText:
+                    //validateSectionName();
+                    break;
+            }
+        }
+    }
 
 
 }

@@ -5,35 +5,12 @@
     android:background="@color/blueLight"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!--<include layout="@layout/base_toolbar"/>-->
-
-    <!--Put all strings toTime string.xml-->
     <LinearLayout
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ads"
         android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adViewInHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId="ca-app-pub-8499573931707406/7695814352">
-        </com.google.android.gms.ads.AdView>
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="6sp">
-        </View>
     </LinearLayout>
     <Button
         android:id="@+id/toDoReminderRemoveButton"

@@ -8,20 +8,6 @@ import android.os.Parcelable;
  */
 
 public class JobItems implements Parcelable {
-    private String post;
-    private String institute;
-    private String place;
-    private String URL;
-    public JobItems(){
-    }
-
-    protected JobItems(Parcel in) {
-        this.post = in.readString();
-        this.URL = in.readString();
-        this.institute=in.readString();
-        this.place=in.readString();
-    }
-
     public static final Parcelable.Creator<JobItems> CREATOR = new Parcelable.Creator<JobItems>() {
         @Override
         public JobItems createFromParcel(Parcel source) {
@@ -33,6 +19,20 @@ public class JobItems implements Parcelable {
             return new JobItems[size];
         }
     };
+    private String post;
+    private String institute;
+    private String place;
+    private String URL;
+
+    public JobItems() {
+    }
+
+    protected JobItems(Parcel in) {
+        this.post = in.readString();
+        this.URL = in.readString();
+        this.institute = in.readString();
+        this.place = in.readString();
+    }
 
     @Override
     public int describeContents() {
@@ -48,27 +48,36 @@ public class JobItems implements Parcelable {
     }
 
 
-    public String getPost(){
+    public String getPost() {
         return post;
     }
-    public String getInstitute(){
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
+    public String getInstitute() {
         return institute;
     }
-    public String getPlace(){
+
+    public void setInstitute(String institute) {
+        this.institute = institute;
+    }
+
+    public String getPlace() {
         return place;
     }
-    public String getURL(){return URL;}
 
+    public void setPlace(String place) {
+        this.place = place;
+    }
 
-    public void setPost(String post){
-        this.post=post;
+    public String getURL() {
+        return URL;
     }
-    public void setInstitute(String institute){
-        this.institute=institute;
+
+    public void setURL(String URL) {
+        this.URL = URL;
     }
-    public void setPlace(String place){
-        this.place=place;
-    }
-    public void setURL(String URL){this.URL=URL;}
 
 }

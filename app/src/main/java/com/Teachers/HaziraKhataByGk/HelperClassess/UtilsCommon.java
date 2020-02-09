@@ -8,11 +8,13 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -45,32 +47,35 @@ import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
 public class UtilsCommon {
 
 
-    public static boolean isValidPhoneNumber(String phone){
+    public static final String DateFormate = "EEE, d MMM yyyy";
 
-        if(!isValideString(phone))return false;
+    public static boolean isValidPhoneNumber(String phone) {
+
+        if (!isValideString(phone)) return false;
 
         String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
-       return phone.matches(pattern);
+        return phone.matches(pattern);
     }
 
-    public static Student getCurrentStudent(Context context){
+    public static Student getCurrentStudent(Context context) {
         String studentPref = "currentProfile";
         Gson gson = new Gson();
-            SharedPreferenceManager sharedPreferenceManager =
-                    new SharedPreferenceManager(context, studentPref);
-            String json = sharedPreferenceManager.getValue("item_student", "");
-            return gson.fromJson(json, Student.class);
+        SharedPreferenceManager sharedPreferenceManager =
+                new SharedPreferenceManager(context, studentPref);
+        String json = sharedPreferenceManager.getValue("item_student", "");
+        return gson.fromJson(json, Student.class);
     }
 
-    public static void setCurrentStudent(Student student,Activity activity){
+    public static void setCurrentStudent(Student student, Activity activity) {
         String studentPref = "currentProfile";
         Gson gson = new Gson();
         String json = gson.toJson(student);
-        SharedPreferenceManager sharedPreferenceManager=
-                new SharedPreferenceManager(activity,studentPref);
+        SharedPreferenceManager sharedPreferenceManager =
+                new SharedPreferenceManager(activity, studentPref);
         sharedPreferenceManager.setValue("item_student", json);
     }
-    public static ClassItem getCurrentClass(Context context){
+
+    public static ClassItem getCurrentClass(Context context) {
         String classPref = "currentClass";
         Gson gson = new Gson();
         SharedPreferenceManager sharedPreferenceManager =
@@ -79,73 +84,71 @@ public class UtilsCommon {
         return gson.fromJson(json, ClassItem.class);
     }
 
-    public static void setCurrentClass(ClassItem classItem,Activity activity){
+    public static void setCurrentClass(ClassItem classItem, Activity activity) {
         String classPref = "currentClass";
         Gson gson = new Gson();
         String json = gson.toJson(classItem);
-        SharedPreferenceManager sharedPreferenceManager=
-                new SharedPreferenceManager(activity,classPref);
+        SharedPreferenceManager sharedPreferenceManager =
+                new SharedPreferenceManager(activity, classPref);
         sharedPreferenceManager.setValue("currentClass", json);
     }
 
-    public static void setAllClass(CustomArrayList<ClassItem> classItemList,Activity activity){
+    public static void setAllClass(CustomArrayList<ClassItem> classItemList, Activity activity) {
         String classPref = "classList";
         Gson gson = new Gson();
-        Type baseType = new TypeToken<CustomArrayList<ClassItem>>() {}.getType();
+        Type baseType = new TypeToken<CustomArrayList<ClassItem>>() {
+        }.getType();
 
-        String json = gson.toJson(classItemList,baseType);
-        SharedPreferenceManager sharedPreferenceManager=
-                new SharedPreferenceManager(activity,classPref);
+        String json = gson.toJson(classItemList, baseType);
+        SharedPreferenceManager sharedPreferenceManager =
+                new SharedPreferenceManager(activity, classPref);
         sharedPreferenceManager.setValue("classList", json);
     }
 
-    public static CustomArrayList<ClassItem> getAllClass(Activity activity){
+    public static CustomArrayList<ClassItem> getAllClass(Activity activity) {
         String classPref = "classList";
         Gson gson = new Gson();
         SharedPreferenceManager sharedPreferenceManager =
                 new SharedPreferenceManager(activity, classPref);
         String json = sharedPreferenceManager.getValue("classList", "");
-        Type baseType = new TypeToken<CustomArrayList<ClassItem>>() {}.getType();
+        Type baseType = new TypeToken<CustomArrayList<ClassItem>>() {
+        }.getType();
 
         return gson.fromJson(json, baseType);
     }
 
+    public static ArrayList<AttendenceData> getAttendanceListFromSnapshot(DataSnapshot snapshot) {
 
+        ArrayList<AttendenceData> attendenceData = new ArrayList<>();
 
-    public static final String DateFormate="EEE, d MMM yyyy";
-
-    public static ArrayList<AttendenceData> getAttendanceListFromSnapshot(DataSnapshot snapshot){
-
-        ArrayList<AttendenceData> attendenceData= new ArrayList<>();
-
-        for(long i=0;i<snapshot.getChildrenCount();i++){
+        for (long i = 0; i < snapshot.getChildrenCount(); i++) {
             attendenceData.add(snapshot.getValue(AttendenceData.class));
         }
         return attendenceData;
     }
 
-    public static boolean isValideString(String s){
+    public static boolean isValideString(String s) {
 
-        if(s==null)return false;
+        if (s == null) return false;
         else return !s.isEmpty();
 
     }
 
 
     //TODO: love BlogActivity
-    public  static void loveBlog (BlogItem BlogItem,Context context){
+    public static void loveBlog(BlogItem BlogItem, Context context) {
 
 
         SharedPreferences pref = context.getSharedPreferences("teacher_blog_loved", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
-        String URL,title,name,date;
-        URL= BlogItem.getURL();
-        title= BlogItem.getHeading();
-        name= BlogItem.getWriter();
-        date= BlogItem.getDate();
+        String URL, title, name, date;
+        URL = BlogItem.getURL();
+        title = BlogItem.getHeading();
+        name = BlogItem.getWriter();
+        date = BlogItem.getDate();
         // if url is already bookmarked, unbookmark it
-        if (pref.getBoolean(URL, false)&&pref.getBoolean(title, false)&&pref.getBoolean(name, false)&&pref.getBoolean(date, false)){
+        if (pref.getBoolean(URL, false) && pref.getBoolean(title, false) && pref.getBoolean(name, false) && pref.getBoolean(date, false)) {
             editor.putBoolean(URL, false);
             editor.putBoolean(title, false);
             editor.putBoolean(name, false);
@@ -160,22 +163,22 @@ public class UtilsCommon {
         editor.apply();
         editor.commit();
     }
+
     //TODO: save news
     public static boolean saveBlog(Context context, BlogItem blogItem) {
         BlogItem blog;
-        blog=blogItem;
-        boolean exist=false;
+        blog = blogItem;
+        boolean exist = false;
 
-        if(saved_blogItem_for_main==null)
-        {
+        if (saved_blogItem_for_main == null) {
             showDialogForSignUp(context);
             return false;
         }
 
         //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
-        for(int i = 0; i< saved_blogItem_for_main.size(); i++){
-            if(blog.getURL().equals(saved_blogItem_for_main.get(i).getURL())&&blog.getDate().equals(saved_blogItem_for_main.get(i).getDate())&&blog.getHeading().equals(saved_blogItem_for_main.get(i).getHeading())&&blog.getWriter().equals(saved_blogItem_for_main.get(i).getWriter())){
-                exist=true;
+        for (int i = 0; i < saved_blogItem_for_main.size(); i++) {
+            if (blog.getURL().equals(saved_blogItem_for_main.get(i).getURL()) && blog.getDate().equals(saved_blogItem_for_main.get(i).getDate()) && blog.getHeading().equals(saved_blogItem_for_main.get(i).getHeading()) && blog.getWriter().equals(saved_blogItem_for_main.get(i).getWriter())) {
+                exist = true;
             }
         }
 
@@ -184,7 +187,7 @@ public class UtilsCommon {
 
         //TODO: for bookmark in browser activity
 
-        if ((pref.getBoolean(blog.getURL(), false) && pref.getBoolean(blog.getHeading(), false) && pref.getBoolean(blog.getDate(), false)&&pref.getBoolean(blog.getWriter(), false))||exist) {
+        if ((pref.getBoolean(blog.getURL(), false) && pref.getBoolean(blog.getHeading(), false) && pref.getBoolean(blog.getDate(), false) && pref.getBoolean(blog.getWriter(), false)) || exist) {
 
             editor.putBoolean(blog.getURL(), false);
             editor.putBoolean(blog.getHeading(), false);
@@ -203,8 +206,10 @@ public class UtilsCommon {
                         snapshot.getRef().child("writer").removeValue();
                     }
                 }
+
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onCancelled(DatabaseError databaseError) {
+                }
             });
         } else {
             editor.putBoolean(blog.getURL(), true);
@@ -221,35 +226,31 @@ public class UtilsCommon {
     }
 
 
-    public static void hideNotificationStatus(Activity activity){
+    public static void hideNotificationStatus(Activity activity) {
         activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
 
-    public static void showToast(String msg){
-        Toast.makeText(GlobalContext.getAppContext(),msg,Toast.LENGTH_LONG).show();
+    public static void showToast(String msg) {
+        Toast.makeText(GlobalContext.getAppContext(), msg, Toast.LENGTH_LONG).show();
     }
 
 
-    public static void showDialogForSignUp(final Context activity){
+    public static void showDialogForSignUp(final Context activity) {
 
-        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(activity).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
         alertDialog.setTitle("আপনি এখনো লগিন করেননি বা একাউন্ট খুলেননি");
         alertDialog.setIcon(R.drawable.warnig_for_delete);
         alertDialog.setMessage("আপনি একাউন্ট না খুলে থাকলে সাইন আপ করুন।আর যদি আপনার আগেই একাউন্ট থেকে থাকে তাহলে লগিন করুন।");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"সাইন আপ",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        activity.startActivity(new Intent(activity, SignupActivity.class));
-                    }
-                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "সাইন আপ",
+                (dialog, which) -> activity.startActivity(new Intent(activity, SignupActivity.class)));
 
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "লগিন", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                    activity.startActivity(new Intent(activity, LoginActivity.class));
+                activity.startActivity(new Intent(activity, LoginActivity.class));
             }
         });
 
@@ -263,12 +264,13 @@ public class UtilsCommon {
         alertDialog.show();
     }
 
-    public static void debugLog(String msg){
+    public static void debugLog(String msg) {
 
         final StackTraceElement stackTrace = new Exception().getStackTrace()[1];
 
         String fileName = stackTrace.getFileName();
-        if (fileName == null) fileName="";  // It is necessary if you want toTime use proguard obfuscation.
+        if (fileName == null)
+            fileName = "";  // It is necessary if you want toTime use proguard obfuscation.
 
         final String info = stackTrace.getMethodName() + " (" + fileName + ":"
                 + stackTrace.getLineNumber() + ")";
@@ -280,23 +282,20 @@ public class UtilsCommon {
     public static boolean saveNews(Context context, NewsItem newsItem1) {
         NewsItem NewsItem;
         NewsItem = newsItem1;
-        boolean exist=false;
-
+        boolean exist = false;
 
 
         //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
 
-        if(saved_newsItem_for_main==null)
-        {
+        if (saved_newsItem_for_main == null) {
             showDialogForSignUp(context);
             return false;
         }
-        for(int i = 0; i< saved_newsItem_for_main.size(); i++){
-            if(NewsItem.getURL().equals(saved_newsItem_for_main.get(i).getURL())&& NewsItem.getDate().equals(saved_newsItem_for_main.get(i).getDate())&& NewsItem.getHeading().equals(saved_newsItem_for_main.get(i).getHeading())){
-                exist=true;
+        for (int i = 0; i < saved_newsItem_for_main.size(); i++) {
+            if (NewsItem.getURL().equals(saved_newsItem_for_main.get(i).getURL()) && NewsItem.getDate().equals(saved_newsItem_for_main.get(i).getDate()) && NewsItem.getHeading().equals(saved_newsItem_for_main.get(i).getHeading())) {
+                exist = true;
             }
         }
-
 
 
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata", 0); // 0 - for private mode
@@ -304,7 +303,7 @@ public class UtilsCommon {
 
         //TODO: for bookmark in browser activity
 
-        if ((pref.getBoolean(newsItem1.getURL(), false) && pref.getBoolean(newsItem1.getHeading(), false) && pref.getBoolean(newsItem1.getDate(), false))||exist) {
+        if ((pref.getBoolean(newsItem1.getURL(), false) && pref.getBoolean(newsItem1.getHeading(), false) && pref.getBoolean(newsItem1.getDate(), false)) || exist) {
 
 
             editor.putBoolean(newsItem1.getURL(), false);
@@ -324,8 +323,10 @@ public class UtilsCommon {
                         snapshot.getRef().child("heading").removeValue();
                     }
                 }
+
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onCancelled(DatabaseError databaseError) {
+                }
             });
         } else {
             editor.putBoolean(newsItem1.getURL(), true);
@@ -341,7 +342,7 @@ public class UtilsCommon {
     }
 
     //TODO: check news
-    public static boolean isNewsBookmarked(NewsItem NewsItem,Context context){
+    public static boolean isNewsBookmarked(NewsItem NewsItem, Context context) {
 
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata", 0);
 
@@ -349,7 +350,7 @@ public class UtilsCommon {
     }
 
     //TODO: love news
-    public static void NewsLoved(Context context, String url,String heading,String Date) {
+    public static void NewsLoved(Context context, String url, String heading, String Date) {
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata_loved_news", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
@@ -369,9 +370,9 @@ public class UtilsCommon {
     }
 
     //TODO: check love news
-    public static boolean isNewsLoved(Context context,String url,String heading,String Date) {
+    public static boolean isNewsLoved(Context context, String url, String heading, String Date) {
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata_loved_news", 0);
-        if(pref.getBoolean(url, false)&&pref.getBoolean(heading, false)&&pref.getBoolean(Date, false)){
+        if (pref.getBoolean(url, false) && pref.getBoolean(heading, false) && pref.getBoolean(Date, false)) {
             return true;
         }
         return false;
@@ -379,18 +380,18 @@ public class UtilsCommon {
 
 
     //TODO: save job
-    public static void saveJob(Context context,String post, String institute , String place ,String URL) {
+    public static void saveJob(Context context, String post, String institute, String place, String URL) {
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata_save_job", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
         // if url is already bookmarked, unbookmark it
-        if (pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
+        if (pref.getBoolean(URL, false) && pref.getBoolean(post, false) && pref.getBoolean(institute, false) && pref.getBoolean(place, false)) {
             editor.putBoolean(URL, false);
             editor.putBoolean(post, false);
             editor.putBoolean(institute, false);
             editor.putBoolean(place, false);
 
-            Query query=FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
+            Query query = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -401,6 +402,7 @@ public class UtilsCommon {
                         snapshot.getRef().child("place").removeValue();
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
@@ -414,7 +416,7 @@ public class UtilsCommon {
             editor.putBoolean(institute, true);
             editor.putBoolean(place, true);
 
-            Query query=FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
+            Query query = FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_jobs").orderByChild("url").equalTo(URL);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -425,13 +427,14 @@ public class UtilsCommon {
                         snapshot.getRef().child("place").removeValue();
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
 
-            JobItems JobItems=new JobItems();
+            JobItems JobItems = new JobItems();
             JobItems.setInstitute(institute);
             JobItems.setPlace(place);
             JobItems.setURL(URL);
@@ -445,23 +448,22 @@ public class UtilsCommon {
 
 
     //TODO: check jobs
-    public static boolean isJobSaved(Context context,String post, String institute , String place ,String URL) {
+    public static boolean isJobSaved(Context context, String post, String institute, String place, String URL) {
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata_save_job", 0);
-        if(pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
+        if (pref.getBoolean(URL, false) && pref.getBoolean(post, false) && pref.getBoolean(institute, false) && pref.getBoolean(place, false)) {
             return true;
         }
         return false;
     }
 
 
-
     //TODO: love job
-    public static void LoveJob(Context context,String post, String institute , String place ,String URL) {
+    public static void LoveJob(Context context, String post, String institute, String place, String URL) {
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata_love_job", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
         // if url is already bookmarked, unbookmark it
-        if (pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
+        if (pref.getBoolean(URL, false) && pref.getBoolean(post, false) && pref.getBoolean(institute, false) && pref.getBoolean(place, false)) {
             editor.putBoolean(URL, false);
             editor.putBoolean(post, false);
             editor.putBoolean(institute, false);
@@ -482,7 +484,7 @@ public class UtilsCommon {
 
 
     //TODO: check news as if loved or not
-    public  static boolean isBlogLove(BlogItem BlogItem,Context context){
+    public static boolean isBlogLove(BlogItem BlogItem, Context context) {
         SharedPreferences pref = context.getSharedPreferences("teacher_blog_loved", 0);
 
         return pref.getBoolean(BlogItem.getURL(), false) && pref.getBoolean(BlogItem.getHeading(), false) && pref.getBoolean(BlogItem.getDate(), false) && pref.getBoolean(BlogItem.getWriter(), false);
@@ -490,14 +492,14 @@ public class UtilsCommon {
 
 
     //TODO: check news
-    public static boolean isBlogBookmarked(BlogItem BlogItem, Context context){
+    public static boolean isBlogBookmarked(BlogItem BlogItem, Context context) {
 
 
         SharedPreferences pref = context.getSharedPreferences("teacher_blog_saved", 0);
 
-        if(pref.getBoolean(BlogItem.getURL(), false) &&
+        if (pref.getBoolean(BlogItem.getURL(), false) &&
                 pref.getBoolean(BlogItem.getHeading(), false) &&
-                pref.getBoolean(BlogItem.getDate(), false)&&pref.getBoolean(BlogItem.getWriter(), false) ){
+                pref.getBoolean(BlogItem.getDate(), false) && pref.getBoolean(BlogItem.getWriter(), false)) {
             return true;
         }
         return false;
@@ -505,9 +507,9 @@ public class UtilsCommon {
 
 
     //TODO: check love jobs
-    public static boolean isJobLoved(Context context,String post, String institute , String place ,String URL) {
+    public static boolean isJobLoved(Context context, String post, String institute, String place, String URL) {
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata_love_job", 0);
-        if(pref.getBoolean(URL, false)&&pref.getBoolean(post, false)&&pref.getBoolean(institute, false)&&pref.getBoolean(place, false)){
+        if (pref.getBoolean(URL, false) && pref.getBoolean(post, false) && pref.getBoolean(institute, false) && pref.getBoolean(place, false)) {
             return true;
         }
         return false;
@@ -515,7 +517,7 @@ public class UtilsCommon {
 
 
     //TODO: for opeing in fb app if it is installed.
-    public static void openWithFaceBook(String url,Context context) {
+    public static void openWithFaceBook(String url, Context context) {
 
 
         PackageManager pm;
@@ -529,28 +531,23 @@ public class UtilsCommon {
             if (applicationInfo.enabled) {
                 uri = Uri.parse("fb://facewebmodal/f?href=" + url);
             }
-        }
-        catch (PackageManager.NameNotFoundException ignored) {
+        } catch (PackageManager.NameNotFoundException ignored) {
 
         }
 
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         try {
             context.startActivity(intent);
-        }
-        catch (Exception e){
-            Toast.makeText(context,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(context, "ERROR " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
-        return ;
+        return;
     }
 
     public static void openInAppBrowser(String url, Context context) {
 
-        //TODO: for opening webview in App
-//        Intent intent = new Intent(MainActivity.activity, BrowsingActivity.class_room);
-//        intent.putExtra("URL", url);
-//        startActivity(intent);
+
         //TODO: for opening default browser
         if (!url.startsWith("http://") && !url.startsWith("https://"))
             url = "http://" + url;
@@ -559,25 +556,22 @@ public class UtilsCommon {
         context.startActivity(intent);
 
     }
-    public static void logObject(Object object){
+
+    public static void logObject(Object object) {
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
         gson.toJson(object);
         Logger.json(gson.toJson(object));
     }
 
-    public static void logString(String object){
-        Logger.d("GK",object);
+    public static void logString(String object) {
+        Logger.d("GK", object);
 
     }
 
-    public static boolean isNumeric(String str)
-    {
-        try
-        {
+    public static boolean isNumeric(String str) {
+        try {
             double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;

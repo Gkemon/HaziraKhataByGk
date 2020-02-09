@@ -5,10 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,9 +20,12 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
-import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
-import com.Teachers.HaziraKhataByGk.Constant.StaticData;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
@@ -35,35 +34,63 @@ import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
-import com.Teachers.HaziraKhataByGk.NoteAddActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
+import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDate.intMonthToStringMonthConvertor;
+
 public class StudentAlIInfoShowActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, RecyclerItemClickListener {
-    private TextView studentName;
+    public static String time, yearWithDate, year, month, day;
     public Button studentPhoneNumber;
     public Button parentPhoneNumber;
     public ClassItem classItem;
     public RecyclerView rvDataWiseAttendence;
-    public  Student student;
-    public static String time,yearWithDate,year,month,day;
+    public Student student;
     public Spinner spinnerMonth;
-    public SingleStudentAttendanceAdapter  mAdapter;
+    public SingleStudentAttendanceAdapter mAdapter;
     public DatabaseReference dbRefSingleStudent;
     public ArrayList<AttendenceData> totalAttendenceDataArrayList;
     ProgressBar progressBar;
     String roll;
-
     LinearLayout emptyView;
     Activity activity;
+    private TextView studentName;
+
+    public static int StringMonthToIntMonthConvertor(String month) {
+
+        if (month.equals("Jan")) {
+
+            return 0;
+        } else if (month.equals("Feb")) {
+            return 1;
+        } else if (month.equals("Mar")) {
+            return 2;
+        } else if (month.equals("Apr")) {
+            return 3;
+        } else if (month.equals("May")) {
+            return 4;
+        } else if (month.equals("Jun")) {
+            return 5;
+        } else if (month.equals("Jul")) {
+            return 6;
+        } else if (month.equals("Aug")) {
+            return 7;
+        } else if (month.equals("Sep")) {
+            return 8;
+        } else if (month.equals("Oct")) {
+            return 9;
+        } else if (month.equals("Nov")) {
+            return 10;
+        } else return 11;
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,93 +98,88 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         init();
     }
 
-
-
-    void init(){
+    void init() {
 
 
         setContentView(R.layout.student_info_show_activity);
-        studentName =  findViewById(R.id.studentName);
-        studentPhoneNumber =findViewById(R.id.studentPhoneNumber);
+        studentName = findViewById(R.id.studentName);
+        studentPhoneNumber = findViewById(R.id.studentPhoneNumber);
         parentPhoneNumber = findViewById(R.id.parentPhoneNumber);
         spinnerMonth = findViewById(R.id.spinner_month);
-        progressBar =findViewById(R.id.progressBarInSingleStudentActivity);
+        progressBar = findViewById(R.id.progressBarInSingleStudentActivity);
         spinnerMonth.setOnItemSelectedListener(this);
-        emptyView =findViewById(R.id.toDoEmptyView);
-        rvDataWiseAttendence=findViewById(R.id.rv_dateWishAttendance);
+        emptyView = findViewById(R.id.toDoEmptyView);
+        rvDataWiseAttendence = findViewById(R.id.rv_dateWishAttendance);
 
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvDataWiseAttendence.setLayoutManager(layoutManager);
-        mAdapter = new SingleStudentAttendanceAdapter(this,this);
+        mAdapter = new SingleStudentAttendanceAdapter(this, this);
         rvDataWiseAttendence.setAdapter(mAdapter);
 
 
-        totalAttendenceDataArrayList =new ArrayList<>();
+        totalAttendenceDataArrayList = new ArrayList<>();
         roll = getIntent().getStringExtra("Roll");
         activity = this;
 
-        classItem =(ClassItem)getIntent().getSerializableExtra("classItem");
-        student =(Student) getIntent().getSerializableExtra("Student");
+        classItem = (ClassItem) getIntent().getSerializableExtra("classItem");
+        student = (Student) getIntent().getSerializableExtra("Student");
 
-        dbRefSingleStudent=FirebaseCaller.getSingleStudentDbRef(student);
+        dbRefSingleStudent = FirebaseCaller.getSingleStudentDbRef(student);
 
 
         loadDataFromServer();
         initializePhoneNumbers();
     }
 
-
-    public void loadDataFromServer(){
+    public void loadDataFromServer() {
 
         FirebaseCaller.getAttendanceDataForSingleStudent(classItem.getName(), classItem.getSection(),
                 roll, new CommonCallback<ArrayList<AttendenceData>>() {
-            @Override
-            public void onFailure(String r) {
-                super.onFailure(r);
-                progressBar.setVisibility(View.GONE);
-                emptyView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSuccess(ArrayList<AttendenceData> response) {
-                super.onSuccess(response);
-
-                totalAttendenceDataArrayList=response;
-
-                //TODO: Sorting by date
-                Collections.sort(totalAttendenceDataArrayList, (o1, o2) -> {
-                    ComparableDate comparableDate1,comparableDate2;
-                    comparableDate1 = new ComparableDate();
-                    comparableDate2 = new ComparableDate();
-
-
-                    try {
-                        comparableDate1.setDateTime(o1.getDate());
-                        comparableDate2.setDateTime(o2.getDate());
-                    }catch (Exception c){
+                    @Override
+                    public void onFailure(String r) {
+                        super.onFailure(r);
+                        progressBar.setVisibility(View.GONE);
+                        emptyView.setVisibility(View.VISIBLE);
                     }
 
-                    return comparableDate1.compareTo(comparableDate2);
+                    @Override
+                    public void onSuccess(ArrayList<AttendenceData> response) {
+                        super.onSuccess(response);
+
+                        totalAttendenceDataArrayList = response;
+
+                        //TODO: Sorting by date
+                        Collections.sort(totalAttendenceDataArrayList, (o1, o2) -> {
+                            ComparableDate comparableDate1, comparableDate2;
+                            comparableDate1 = new ComparableDate();
+                            comparableDate2 = new ComparableDate();
+
+
+                            try {
+                                comparableDate1.setDateTime(o1.getDate());
+                                comparableDate2.setDateTime(o2.getDate());
+                            } catch (Exception c) {
+                            }
+
+                            return comparableDate1.compareTo(comparableDate2);
+                        });
+
+                        //TODO: Sorting by date
+
+
+                        if (totalAttendenceDataArrayList.size() == 0)
+                            emptyView.setVisibility(View.VISIBLE);
+
+
+                        setUpHeader(totalAttendenceDataArrayList);
+                        setUpAttandanceList(totalAttendenceDataArrayList);
+
+                        spinnerMonth.setSelection(0);
+                        progressBar.setVisibility(View.GONE);
+                    }
                 });
-
-                //TODO: Sorting by date
-
-
-                if(totalAttendenceDataArrayList.size()==0)
-                    emptyView.setVisibility(View.VISIBLE);
-
-
-                setUpHeader(totalAttendenceDataArrayList);
-                setUpAttandanceList(totalAttendenceDataArrayList);
-
-                spinnerMonth.setSelection(0);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -185,12 +207,11 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                                     (UtilsCommon.getCurrentClass(StudentAlIInfoShowActivity.
                                                     this).getName(),
                                             UtilsCommon.getCurrentClass(
-                                                    StudentAlIInfoShowActivity.this).getSection(),roll).
+                                                    StudentAlIInfoShowActivity.this).getSection(), roll).
                                     removeValue().addOnSuccessListener(aVoid -> {
-                                                loadDataFromServer();
-                                                emptyView.setVisibility(View.VISIBLE);
-                                            });
-
+                                loadDataFromServer();
+                                emptyView.setVisibility(View.VISIBLE);
+                            });
 
 
                         }
@@ -211,23 +232,17 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         }
     }
 
-
-    public void setUpAttandanceList(ArrayList<AttendenceData> attandanceList){
+    public void setUpAttandanceList(ArrayList<AttendenceData> attandanceList) {
 
         rvDataWiseAttendence.setItemViewCacheSize(attandanceList.size());
         mAdapter.setAttendenceDataArrayList(attandanceList);
 
-            }
+    }
 
-
-
-
-
-    public void setUpHeader(ArrayList<AttendenceData> attendenceDataArrayList){
+    public void setUpHeader(ArrayList<AttendenceData> attendenceDataArrayList) {
 
         long totalAttendPersenten = 0;
         long totalClass = attendenceDataArrayList.size();
-
 
 
         //For Empty view
@@ -241,10 +256,9 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         long attendClass = 0;
 
 
-        for(AttendenceData attendenceData:attendenceDataArrayList){
-            if(attendenceData.getStatus())attendClass++;
+        for (AttendenceData attendenceData : attendenceDataArrayList) {
+            if (attendenceData.getStatus()) attendClass++;
         }
-
 
 
         if (totalClass != 0)   //THIS IS FOR AVOID ARITHMETIC EXCEPTION
@@ -264,29 +278,27 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
     }
 
-
-
     public void getDatewiseAttendenceList(final String date) {
 
         ArrayList<AttendenceData> attendenceDataArrayList = new ArrayList<>();
-        UtilsCommon.debugLog("SIZE: "+totalAttendenceDataArrayList.size()+" "+date);
+        UtilsCommon.debugLog("SIZE: " + totalAttendenceDataArrayList.size() + " " + date);
 
-        if(date.isEmpty())
-            attendenceDataArrayList=totalAttendenceDataArrayList;
+        if (date.isEmpty())
+            attendenceDataArrayList = totalAttendenceDataArrayList;
         else
-        for(int i= 0;i<totalAttendenceDataArrayList.size();i++){
+            for (int i = 0; i < totalAttendenceDataArrayList.size(); i++) {
 
-            UtilsCommon.debugLog(totalAttendenceDataArrayList.get(i).getDate());
-            if(totalAttendenceDataArrayList.get(i).getDate().contains(date))
-                attendenceDataArrayList.add(totalAttendenceDataArrayList.get(i));
-        }
+                UtilsCommon.debugLog(totalAttendenceDataArrayList.get(i).getDate());
+                if (totalAttendenceDataArrayList.get(i).getDate().contains(date))
+                    attendenceDataArrayList.add(totalAttendenceDataArrayList.get(i));
+            }
 
         setUpAttandanceList(attendenceDataArrayList);
         setUpHeader(attendenceDataArrayList);
 
     }
 
-    public void createDialogForAddAttendence(){
+    public void createDialogForAddAttendence() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater1 = this.getLayoutInflater();
         final View v = inflater1.inflate(R.layout.dialoage_for_single_attendence_items, null);
@@ -298,11 +310,11 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
                     int day = datePicker.getDayOfMonth();
                     int month = datePicker.getMonth();
-                    int year = datePicker.getYear()-1900 ;
+                    int year = datePicker.getYear() - 1900;
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                     String formatedDate = simpleDateFormat.format(new Date(year, month, day));
-                  //  String date = year + "-" + month + "-" + day;
+                    //  String date = year + "-" + month + "-" + day;
                     String subject = Subject.getText().toString();
                     // if (subject.equals("")) subject = "অনির্ধারিত";
 
@@ -315,7 +327,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                     //Add toTime database
                     FirebaseCaller.getFirebaseDatabase().child("Users").
                             child(FirebaseCaller.getUserID()).child("Class").
-                            child(student.getStudentClass()+student.getStudentSection())
+                            child(student.getStudentClass() + student.getStudentSection())
                             .child("Student").child(student.getId()).child("Attendance").push()
                             .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                         @Override
@@ -332,7 +344,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
             int day = datePicker.getDayOfMonth();
             int month = datePicker.getMonth();
-            int year = datePicker.getYear()-1900 ;
+            int year = datePicker.getYear() - 1900;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
             String formatedDate = simpleDateFormat.format(new Date(year, month, day));
             String subject = Subject.getText().toString();
@@ -349,7 +361,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             //  Add toTime database
             FirebaseCaller.getFirebaseDatabase().child("Users").
                     child(FirebaseCaller.getUserID()).child("Class").
-                    child(student.getStudentClass()+student.getStudentSection())
+                    child(student.getStudentClass() + student.getStudentSection())
                     .child("Student").child(student.getId()).child("Attendance").push()
                     .setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                 @Override
@@ -364,9 +376,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
         }).create().show();
     }
 
-
-
-    public void initializePhoneNumbers(){
+    public void initializePhoneNumbers() {
         studentPhoneNumber.setOnClickListener(arg0 -> {
             //ACTION_DIALER IS THE BEST SOLUTION TO MAKE CALL
             Intent callIntent = new Intent(Intent.ACTION_DIAL);
@@ -385,55 +395,50 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             }
         });
     }
-    public void createDialogForEdit(int pos1){
+
+    public void createDialogForEdit(int pos1) {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        final int pos2= totalAttendenceDataArrayList.size()-1-pos1;
-        final int pos=pos1;
+        final int pos2 = totalAttendenceDataArrayList.size() - 1 - pos1;
+        final int pos = pos1;
         final View v = inflater.inflate(R.layout.dialoage_for_edit_single_attendence_items, null);
         final EditText Subject = v.findViewById(R.id.periodID);
-        final CheckBox checkBox =v.findViewById(R.id.attMarker);//For attendance
-        final CheckBox checkBox1 =v.findViewById(R.id.absentMarker);//For absent
+        final CheckBox checkBox = v.findViewById(R.id.attMarker);//For attendance
+        final CheckBox checkBox1 = v.findViewById(R.id.absentMarker);//For absent
         final DatePicker datePicker = v.findViewById(R.id.datePicker);
 
 
         final AttendenceData attendenceData;
 
-        attendenceData=totalAttendenceDataArrayList.get(pos);
+        attendenceData = totalAttendenceDataArrayList.get(pos);
 
         UtilsCommon.debugLog(attendenceData.toString());
 
-        time=attendenceData.getDate();
+        time = attendenceData.getDate();
         yearWithDate = time.substring(Math.max(time.length() - 8, 0));
-        month = yearWithDate.substring(0,Math.min(yearWithDate.length(), 3));
+        month = yearWithDate.substring(0, Math.min(yearWithDate.length(), 3));
         year = time.substring(Math.max(time.length() - 4, 0));
 
-        if(time.substring(6,6).equals(" "))
-        {
-            day = time.substring(5,5);
-        }
-        else
-        {
-            day = time.substring(5,7);
+        if (time.substring(6, 6).equals(" ")) {
+            day = time.substring(5, 5);
+        } else {
+            day = time.substring(5, 7);
         }
 
-        int Month=StringMonthToIntMonthConvertor(month);
+        int Month = StringMonthToIntMonthConvertor(month);
 
 
-
-        datePicker.updateDate(Integer.valueOf(year.trim()),Month,Integer.valueOf(day.trim()));
+        datePicker.updateDate(Integer.valueOf(year.trim()), Month, Integer.valueOf(day.trim()));
 
         Subject.setText(attendenceData.getSubject());
 
 
-        if(attendenceData.getStatus())
-        {
-            Log.d("GK","TRUE");
+        if (attendenceData.getStatus()) {
+            Log.d("GK", "TRUE");
             checkBox.setChecked(true);
             checkBox1.setChecked(false);
-        }
-        else {
-            Log.d("GK","FALSE");
+        } else {
+            Log.d("GK", "FALSE");
             checkBox1.setChecked(true);
             checkBox.setChecked(false);
         }
@@ -458,7 +463,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
                             int day = datePicker.getDayOfMonth();
                             int month = datePicker.getMonth();
-                            int year = datePicker.getYear()-1900 ;
+                            int year = datePicker.getYear() - 1900;
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
                             String formatedDate = simpleDateFormat.format(new Date(year, month, day));
 
@@ -471,22 +476,21 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
 
                             //set date
-                            if(student!=null){
+                            if (student != null) {
                                 //REMOVE FIRST
-                                Log.d("GK","if "+roll+" "+student.getId());
+                                Log.d("GK", "if " + roll + " " + student.getId());
                                 //set subject
                                 FirebaseCaller.getFirebaseDatabase().
                                         child("Users").
                                         child(FirebaseCaller.getUserID()).
                                         child("Class").
-                                        child(student.getStudentClass()+student.getStudentSection()).
+                                        child(student.getStudentClass() + student.getStudentSection()).
                                         child("Student").child(student.getId()).
                                         child("Attendance").
-                                        child( attendenceData.getKey()).
+                                        child(attendenceData.getKey()).
                                         removeValue().addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-
 
 
                                         FirebaseCaller.getFirebaseDatabase().child("Users")
@@ -496,7 +500,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                                                 .child("Student")
                                                 .child(student.getId())
                                                 .child("Attendance")
-                                                .child( attendenceData.getKey()).setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
+                                                .child(attendenceData.getKey()).setValue(attendenceData).addOnSuccessListener(StudentAlIInfoShowActivity.this, new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 loadDataFromServer();
@@ -508,10 +512,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                                 });
 
 
-
                             }
-
-
 
 
                         }
@@ -525,7 +526,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             public void onClick(final DialogInterface dialog, int id) {
 
 
-                if(student!=null){
+                if (student != null) {
 
                     FirebaseCaller.getFirebaseDatabase()
                             .child("Users")
@@ -553,101 +554,6 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
     }
 
-
-    public static String intMonthToStringMonthConvertor(int position){
-        if(position==0){
-            return "";
-        }else if(position==1)
-        {
-            return "Jan";
-        }
-        else if(position==2)
-        {
-            return "Feb";
-        }
-        else if(position==3)
-        {
-            return "Mar";
-        }
-        else if(position==4)
-        {
-            return "Apr";
-        }
-        else if(position==5)
-        {
-            return "May";
-        }
-        else if(position==6)
-        {
-            return "Jun";
-        }
-        else if(position==7)
-        {
-            return "Jul";
-        }
-        else if(position==8)
-        {
-            return "Aug";
-        }
-        else if(position==9)
-        {
-            return "Sep";
-        }
-        else if(position==10)
-        {
-            return "Oct";
-        }
-        else if(position==11)
-        {
-            return "Nov";
-        }
-        else
-        {
-            return "Dec";
-        }
-    }
-
-    public static int StringMonthToIntMonthConvertor(String month){
-
-        if(month.equals("Jan")){
-
-            return 0;
-        }
-        else if (month.equals("Feb")){
-            return 1;
-        }
-        else if (month.equals("Mar")){
-            return 2;
-        }
-        else if (month.equals("Apr")){
-            return 3;
-        }
-        else if (month.equals("May")){
-            return 4;
-        }
-        else if (month.equals("Jun")){
-            return 5;
-        }
-        else if (month.equals("Jul")){
-            return 6;
-        }
-        else if (month.equals("Aug")) {
-            return 7;
-        }
-        else if (month.equals("Sep")){
-            return 8;
-        }
-        else if (month.equals("Oct")){
-            return 9;
-        }
-        else if (month.equals("Nov")){
-            return 10;
-        }
-        else return 11;
-
-
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         getDatewiseAttendenceList(intMonthToStringMonthConvertor(position));
@@ -655,7 +561,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-    spinnerMonth.setSelection(0);
+        spinnerMonth.setSelection(0);
     }
 
     @Override

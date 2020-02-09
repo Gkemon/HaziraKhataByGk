@@ -1,20 +1,17 @@
 package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
 import com.Teachers.HaziraKhataByGk.Routine.RoutineItmBuilder;
-import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.Calendar;
 
 public class MockObjectsRepository {
 
-    public static RoutineItem getDummyRoutine(int newYear,int newMonth){
+    public static RoutineItem getDummyRoutine(int newYear, int newMonth) {
 
-        
 
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 3);
@@ -34,7 +31,6 @@ public class MockObjectsRepository {
                 .setType(Constant.ROUTINE_TYPE_ADMINISTRATIONAL)
                 .setDetails("This is demo")
                 .setLocation("Dhaka").build();
-
 
 
     }

@@ -4,16 +4,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.R;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
+import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
@@ -35,10 +36,12 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
         this.context = context;
         this.Notelist = new ArrayList<>();
     }
+
     private void add(Notes item) {
         Notelist.add(item);
         notifyItemInserted(Notelist.size() - 1);
     }
+
     public void addAll(List<Notes> Notelist) {
         for (Notes Notes : Notelist) {
             add(Notes);
@@ -58,9 +61,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
             remove(getItem(0));
         }
     }
+
     public Notes getItem(int position) {
         return Notelist.get(position);
     }
+
     @Override
     public notesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes, parent, false);
@@ -81,6 +86,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
 
         return notesHolder;
     }
+
     @Override
     public void onBindViewHolder(notesHolder holder, int position) {
 
@@ -88,7 +94,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
         final Resources res = context.getResources();
         final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
 
-          //for bitmap generate
+        //for bitmap generate
 //        LetterTile letterTile = new LetterTile(context);
 //        Bitmap letterBitmap = letterTile.getLetterTile(Notes.getheading(),
 //                Notes.getheading(), tileSize, tileSize);
@@ -101,7 +107,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
                 .useFont(Typeface.DEFAULT)
                 .toUpperCase()
                 .endConfig()
-                .buildRound(Notes.getheading().substring(0,1), color);
+                .buildRound(Notes.getheading().substring(0, 1), color);
         holder.thumbOfNote.setImageDrawable(myDrawable);
 
 //        String subjectName="শিরোনাম: "+Notes.getheading();
@@ -117,6 +123,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
         holder.TitleOfNotes.setTextColor(color);
         holder.ContentOfNotes.setText(Notes.getContent());
     }
+
     @Override
     public int getItemCount() {
         return Notelist.size();

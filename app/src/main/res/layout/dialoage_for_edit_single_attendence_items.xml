@@ -1,80 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_gravity="center"
-    android:orientation="vertical"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="10">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="শিক্ষার্থীর উপস্থিতির ডাটা পরিবর্তন"
-        android:textAlignment="center" />
-
-    <DatePicker
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/datePicker" />
+    android:orientation="vertical">
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-       >
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:weightSum="10">
 
         <TextView
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text=" উপস্থিত"
-            android:textColor="@color/gray_deep"
-            android:textSize="15sp" />
-        <CheckBox
-            android:id="@+id/attMarker"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:buttonTint="#4CAF50"
-            />
+            android:text="শিক্ষার্থীর উপস্থিতির ডাটা পরিবর্তন"
+            android:textAlignment="center" />
 
-        <TextView
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="অনুপস্থিত "
-            android:textColor="@color/gray_deep"
-            android:textSize="15sp" />
-        <CheckBox
-            android:id="@+id/absentMarker"
-            android:layout_width="wrap_content"
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:buttonTint="#E91E63"
-            />
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=" উপস্থিত"
+                android:textColor="@color/gray_deep"
+                android:textSize="15sp" />
+
+            <CheckBox
+                android:id="@+id/attMarker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#4CAF50"
+                android:checked="true" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="অনুপস্থিত "
+                android:textColor="@color/gray_deep"
+                android:textSize="15sp" />
+
+            <CheckBox
+                android:id="@+id/absentMarker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#E91E63"
+                android:checked="false" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/periodID"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="4"
+            android:ems="10"
+            android:hint="@string/subjectOrTopicHints"
+            android:inputType="text" />
     </LinearLayout>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:inputType="text"
-        android:hint="@string/subjectOrTopicHints"
-        android:ems="10"
-        android:layout_weight="4"
-        android:id="@+id/periodID"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
 
 </HorizontalScrollView>

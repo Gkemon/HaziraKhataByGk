@@ -1,34 +1,20 @@
 package com.Teachers.HaziraKhataByGk.SingleStudentAllInformation;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.R;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-
-import static com.Teachers.HaziraKhataByGk.R.id.ClickerForBlog;
-import static com.Teachers.HaziraKhataByGk.R.id.MetarialColorPlate;
-import static com.Teachers.HaziraKhataByGk.R.id.RelativeLayoutForNewsCard;
-import static com.Teachers.HaziraKhataByGk.R.id.SaveClicker;
-import static com.Teachers.HaziraKhataByGk.R.id.ShareClicker;
-import static com.Teachers.HaziraKhataByGk.R.id.dateOfNews;
-import static com.Teachers.HaziraKhataByGk.R.id.loveClicker;
 
 /**
  * Created by uy on 10/28/2017.
@@ -40,10 +26,11 @@ public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleS
     private Context context;
 
 
-    public SingleStudentAttendanceAdapter (Context context,RecyclerItemClickListener recyclerItemClickListener){
-        this.recyclerItemClickListener=recyclerItemClickListener;
-        this.context=context;
+    public SingleStudentAttendanceAdapter(Context context, RecyclerItemClickListener recyclerItemClickListener) {
+        this.recyclerItemClickListener = recyclerItemClickListener;
+        this.context = context;
     }
+
     public void setAttendenceDataArrayList(ArrayList<AttendenceData> attendenceDataArrayList) {
         this.attendenceDataArrayList = attendenceDataArrayList;
         notifyDataSetChanged();
@@ -76,7 +63,7 @@ public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleS
     public void onBindViewHolder(final SingleStudentAttendanceViewHolder holder, int position) {
 
         AttendenceData attendenceData = attendenceDataArrayList.get(position);
-        String subject="";
+        String subject = "";
         if (!attendenceData.getSubject().equals("")) {
             subject = "(" + attendenceData.getSubject() + ")";
         }
@@ -88,12 +75,11 @@ public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleS
             holder.textView.setText(attendenceData.getDate() + subject + "  অনুপস্থিত");
         }
 
-        if(attendenceData.getStatus()) {
+        if (attendenceData.getStatus()) {
             Glide.with(context)
                     .load((Integer) R.drawable.present)
                     .into(holder.imageView);
-        }
-        else {
+        } else {
             Glide.with(context)
                     .load((Integer) R.drawable.absent)
                     .into(holder.imageView);
@@ -101,6 +87,7 @@ public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleS
 
 
     }
+
     @Override
     public int getItemCount() {
         return attendenceDataArrayList == null ? 0 : attendenceDataArrayList.size();
@@ -109,13 +96,13 @@ public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleS
 
 class SingleStudentAttendanceViewHolder extends RecyclerView.ViewHolder {
 
-    TextView textView ;
+    TextView textView;
     ImageView imageView;
 
     public SingleStudentAttendanceViewHolder(View v) {
         super(v);
-         textView = v.findViewById(R.id.SingleStudentAttendeceDateList);
-         imageView= v.findViewById(R.id.PresentOrAbsent);
+        textView = v.findViewById(R.id.SingleStudentAttendeceDateList);
+        imageView = v.findViewById(R.id.PresentOrAbsent);
     }
 
 

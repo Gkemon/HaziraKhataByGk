@@ -1,23 +1,10 @@
 package com.Teachers.HaziraKhataByGk;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,12 +12,21 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
-import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
@@ -39,7 +35,8 @@ import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NewsFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NibondhonFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.TotthojhuriFragment;
-import com.Teachers.HaziraKhataByGk.Widget.PrefManagerForMain;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,13 +61,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public Activity activity;
+    public String mProfileHeader;
+    // public static FirebaseUser mFirebaseUser;
+    Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DrawerLayout drawer;
-    public  String mProfileHeader;
-    // public static FirebaseUser mFirebaseUser;
-    Toolbar toolbar;
-
 
     public void setUpDrawer() {
 
@@ -91,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (FirebaseCaller.getCurrentUser() != null) {
 
-            if(UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().getEmail()))
-            mProfileHeader = FirebaseCaller.getCurrentUser().getEmail();
-            else  if(UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().getPhoneNumber()))
-            mProfileHeader=FirebaseCaller.getCurrentUser().getPhoneNumber();
+            if (UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().getEmail()))
+                mProfileHeader = FirebaseCaller.getCurrentUser().getEmail();
+            else if (UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().getPhoneNumber()))
+                mProfileHeader = FirebaseCaller.getCurrentUser().getPhoneNumber();
 
         } else {
             mProfileHeader = "এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন";
@@ -208,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         Intent intent = new Intent();
@@ -241,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-       UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/", MainActivity.this);
+                                UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/", MainActivity.this);
 
                             }
                         });

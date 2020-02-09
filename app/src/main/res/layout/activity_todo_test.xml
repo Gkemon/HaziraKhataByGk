@@ -15,36 +15,10 @@
             android:orientation="vertical"
 
             >
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/ads"-->
-            <!--android:orientation="vertical">-->
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark"-->
-            <!--android:layout_height="6sp">-->
-            <!--</View>-->
-            <!--<com.google.android.gms.ads.AdView-->
-            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/adViewInHome"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--ads:adSize="SMART_BANNER"-->
-            <!--ads:adUnitId="ca-app-pub-8499573931707406/7695814352">-->
-            <!--</com.google.android.gms.ads.AdView>-->
 
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark"-->
-            <!--android:layout_height="6sp">-->
-            <!--</View>-->
-            <!--</LinearLayout>-->
             <include layout="@layout/base_toolbar" />
 
-            <android.support.design.widget.CoordinatorLayout
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -275,7 +249,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <android.support.design.widget.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/makeToDoFloatingActionButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -285,7 +259,7 @@
                     app:fabSize="normal"
                     app:layout_anchor="@id/editTextParentLinearLayout"
                     app:layout_anchorGravity="bottom|right" />
-            </android.support.design.widget.CoordinatorLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </LinearLayout>
 
     <ProgressBar
@@ -295,37 +269,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         tools:visibility="invisible"></ProgressBar>
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/ads"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:orientation="vertical">-->
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:background="@color/colorPrimaryDark"-->
-        <!--android:layout_height="6sp">-->
-        <!--</View>-->
-        <!--<com.google.android.gms.ads.AdView-->
-        <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/adViewInHome"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--ads:adSize="SMART_BANNER"-->
-        <!--ads:adUnitId="ca-app-pub-8499573931707406/7695814352">-->
-        <!--</com.google.android.gms.ads.AdView>-->
-
-        <!--&lt;!&ndash;<View&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="@color/colorPrimaryDark"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="6sp">&ndash;&gt;-->
-        <!--&lt;!&ndash;</View>&ndash;&gt;-->
-        <!--</LinearLayout>-->
 
 </RelativeLayout>

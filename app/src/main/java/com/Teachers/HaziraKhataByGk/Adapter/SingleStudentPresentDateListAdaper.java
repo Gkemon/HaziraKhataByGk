@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -21,25 +21,25 @@ import java.util.Collections;
  */
 
 public class SingleStudentPresentDateListAdaper extends BaseAdapter {
-   public ArrayList<String> attendenceListForSingleStudent;
-   public Activity activity;
+    public ArrayList<String> attendenceListForSingleStudent;
+    public Activity activity;
 
-   public ClassItem ClassIitem;
+    public ClassItem ClassIitem;
 
-   public ArrayList<AttendenceData> attendenceDataArrayList;
-   public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
+    public ArrayList<AttendenceData> attendenceDataArrayList;
+    public ArrayList<Boolean> absentPresent;//For Creating  Drawable "P" and "A"
     public String roll;
 
 
     public SingleStudentPresentDateListAdaper(Activity activity, ArrayList<String> attendenceListForSingleStudent, ArrayList<Boolean> absentPresent, ClassItem ClassIitem, ArrayList<AttendenceData> attendenceDataArrayList, String roll) {
         this.attendenceListForSingleStudent = attendenceListForSingleStudent;
         this.activity = activity;
-        this.absentPresent=absentPresent;
+        this.absentPresent = absentPresent;
         this.ClassIitem = ClassIitem;
-        this.attendenceDataArrayList=attendenceDataArrayList;
-        this.roll=roll;
+        this.attendenceDataArrayList = attendenceDataArrayList;
+        this.roll = roll;
 
-      //  Collections.reverse(this.attendenceListKEYForSingleStudent);//TO REVERSE THE ATTENDANCE LIST KEY;
+        //  Collections.reverse(this.attendenceListKEYForSingleStudent);//TO REVERSE THE ATTENDANCE LIST KEY;
         Collections.reverse(this.attendenceDataArrayList);//TO REVERSE THE ATTENDANCE LIST;
         Collections.reverse(this.absentPresent);//TO REVERSE THE BOOLEAN LIST;
         Collections.reverse(this.attendenceListForSingleStudent);//TO REVERSE THE ARRAY LIST;
@@ -70,28 +70,25 @@ public class SingleStudentPresentDateListAdaper extends BaseAdapter {
         }
         final int pos = position;
         TextView textView = (TextView) v.findViewById(R.id.SingleStudentAttendeceDateList);
-        ImageView imageView=(ImageView) v.findViewById(R.id.PresentOrAbsent);
+        ImageView imageView = (ImageView) v.findViewById(R.id.PresentOrAbsent);
 
         textView.setText((attendenceListForSingleStudent.get(position)));
 
-        if(absentPresent.get(pos)) {
+        if (absentPresent.get(pos)) {
 
             Glide.with(activity)
                     .load((Integer) R.drawable.present)
                     .into(imageView);
 
-                    //imageView.setBackgroundResource(R.drawable.present);
-        }
-        else {
+            //imageView.setBackgroundResource(R.drawable.present);
+        } else {
 
             Glide.with(activity)
                     .load((Integer) R.drawable.absent)
                     .into(imageView);
 
-                    //imageView.setBackgroundResource(R.drawable.absent);
+            //imageView.setBackgroundResource(R.drawable.absent);
         }
-
-
 
 
         return v;

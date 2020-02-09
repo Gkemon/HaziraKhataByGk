@@ -3,18 +3,18 @@ package com.Teachers.HaziraKhataByGk;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class ModelTestChooseActivity extends AppCompatActivity {
     public static Context context;
-    Button min15,min30,min60;
     public LinearLayout adlayout;
-
+    Button min15, min30, min60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +26,17 @@ public class ModelTestChooseActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.model_test_choose);
-        context=this;
-        min15=(Button)findViewById(R.id.min15);
-        min30=(Button)findViewById(R.id.min30);
-        min60=(Button)findViewById(R.id.min60);
+        context = this;
+        min15 = (Button) findViewById(R.id.min15);
+        min30 = (Button) findViewById(R.id.min30);
+        min60 = (Button) findViewById(R.id.min60);
 
 
         min15.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ModelTestChooseActivity.context, ModelTestActivity.class);
-                intent.putExtra("time","15");
+                Intent intent = new Intent(ModelTestChooseActivity.context, ModelTestActivity.class);
+                intent.putExtra("time", "15");
                 startActivity(intent);
             }
         });
@@ -44,8 +44,8 @@ public class ModelTestChooseActivity extends AppCompatActivity {
         min30.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ModelTestChooseActivity.context, ModelTestActivity.class);
-                intent.putExtra("time","30");
+                Intent intent = new Intent(ModelTestChooseActivity.context, ModelTestActivity.class);
+                intent.putExtra("time", "30");
                 startActivity(intent);
             }
         });
@@ -53,8 +53,8 @@ public class ModelTestChooseActivity extends AppCompatActivity {
         min60.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ModelTestChooseActivity.context, ModelTestActivity.class);
-                intent.putExtra("time","60");
+                Intent intent = new Intent(ModelTestChooseActivity.context, ModelTestActivity.class);
+                intent.putExtra("time", "60");
                 startActivity(intent);
             }
         });

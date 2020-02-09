@@ -2,8 +2,6 @@ package com.Teachers.HaziraKhataByGk.Routine;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
-import java.util.Calendar;
-
 
 public class RoutineItem extends WeekViewEvent {
 
@@ -25,7 +23,6 @@ public class RoutineItem extends WeekViewEvent {
     public void setDetails(String details) {
         this.details = details;
     }
-
 
 
 }

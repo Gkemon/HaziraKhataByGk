@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Adapter;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.MainActivity;
-import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
@@ -37,6 +37,7 @@ import static com.Teachers.HaziraKhataByGk.R.id.tv_card_main_3_title;
 public class NewsAdapter extends RecyclerView.Adapter<newsViewHolder> {
     private ArrayList<NewsItem> list;
     private RecyclerItemClickListener recyclerItemClickListener;
+
     public NewsAdapter(ArrayList<NewsItem> Data) {
         list = Data;
     }
@@ -46,7 +47,7 @@ public class NewsAdapter extends RecyclerView.Adapter<newsViewHolder> {
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.news_item_cards, parent, false);
-        final  newsViewHolder holder = new newsViewHolder(view);
+        final newsViewHolder holder = new newsViewHolder(view);
         //CLICK LISTENER
         holder.itemView.findViewById(ClickerForNews).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +96,12 @@ public class NewsAdapter extends RecyclerView.Adapter<newsViewHolder> {
         });
         return holder;
     }
+
     public void setOnItemClickListener(RecyclerItemClickListener recyclerItemClickListener) {
         this.recyclerItemClickListener = recyclerItemClickListener;
     }
 
-//TODO:set saved icon on onBindViewHolder not onCreateViewHolder
+    //TODO:set saved icon on onBindViewHolder not onCreateViewHolder
     @Override
     public void onBindViewHolder(final newsViewHolder holder, int position) {
         // FOR GENERATING METARIAL COLOR FOR NEWS CARDS SIDE
@@ -111,31 +113,32 @@ public class NewsAdapter extends RecyclerView.Adapter<newsViewHolder> {
                 .useFont(Typeface.DEFAULT)
                 .toUpperCase()
                 .endConfig()
-                .buildRect("",color);
-        ImageView savedIcon=(ImageView)holder.itemView.findViewById(R.id.SaveClickerIcon);
-        ImageView lovedIcon=(ImageView)holder.itemView.findViewById(R.id.lovedIcon);
+                .buildRect("", color);
+        ImageView savedIcon = (ImageView) holder.itemView.findViewById(R.id.SaveClickerIcon);
+        ImageView lovedIcon = (ImageView) holder.itemView.findViewById(R.id.lovedIcon);
 
 
         //TODO: check if save or unsaved
-        if(UtilsCommon.isNewsBookmarked(list.get(position),holder.itemView.getContext())){
+        if (UtilsCommon.isNewsBookmarked(list.get(position), holder.itemView.getContext())) {
             savedIcon.setImageResource(R.drawable.ic_saved_icon);
         }
-        if(UtilsCommon.isNewsLoved(holder.itemView.getContext(),list.get(position).getURL(),list.get(position).getHeading(),list.get(position).getDate())){
+        if (UtilsCommon.isNewsLoved(holder.itemView.getContext(), list.get(position).getURL(), list.get(position).getHeading(), list.get(position).getDate())) {
             lovedIcon.setImageResource(R.drawable.ic_love_icon);
         }
 
         holder.titleTextView.setText(list.get(position).getHeading());
-        String date="তারিখ :"+list.get(position).getDate();
+        String date = "তারিখ :" + list.get(position).getDate();
         holder.Date.setText(date);
         holder.sideDrawable.setImageDrawable(myDrawable);
     }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
 }
 
- class newsViewHolder extends RecyclerView.ViewHolder {
+class newsViewHolder extends RecyclerView.ViewHolder {
 
     public TextView titleTextView;
     public TextView Date;
@@ -143,16 +146,16 @@ public class NewsAdapter extends RecyclerView.Adapter<newsViewHolder> {
     public LinearLayout share;
     public LinearLayout save;
     public LinearLayout love;
-     public RelativeLayout cardsRelativeLayout;
+    public RelativeLayout cardsRelativeLayout;
 
     public newsViewHolder(View v) {
         super(v);
         titleTextView = (TextView) v.findViewById(tv_card_main_3_title);
-        Date=(TextView)v.findViewById(dateOfNews);
-        cardsRelativeLayout=(RelativeLayout)v.findViewById(RelativeLayoutForNewsCard);
-        sideDrawable=(ImageView)v.findViewById(MetarialColorPlate);
-        share=(LinearLayout)v.findViewById(ShareClicker);
-        save=(LinearLayout)v.findViewById(SaveClicker);
-        love=(LinearLayout)v.findViewById(loveClicker);
+        Date = (TextView) v.findViewById(dateOfNews);
+        cardsRelativeLayout = (RelativeLayout) v.findViewById(RelativeLayoutForNewsCard);
+        sideDrawable = (ImageView) v.findViewById(MetarialColorPlate);
+        share = (LinearLayout) v.findViewById(ShareClicker);
+        save = (LinearLayout) v.findViewById(SaveClicker);
+        love = (LinearLayout) v.findViewById(loveClicker);
     }
 }

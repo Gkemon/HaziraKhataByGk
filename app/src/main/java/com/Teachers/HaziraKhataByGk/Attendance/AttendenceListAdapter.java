@@ -2,8 +2,6 @@ package com.Teachers.HaziraKhataByGk.Attendance;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,15 +17,12 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.UtilsView;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
-import com.Teachers.HaziraKhataByGk.Model.Student;
-import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
+import com.Teachers.HaziraKhataByGk.Model.Student;
+import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,23 +33,21 @@ import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.checkHa
 public class AttendenceListAdapter extends BaseAdapter {
 
 
-    public static FirebaseAuth auth;
     public ClassItem classItem;
-
-    private   ArrayList<String> nameList;
     public Activity activity;
-    private ArrayList<Boolean> attendanceList;
     public List<Student> studentArrayList;
+    private ArrayList<String> nameList;
+    private ArrayList<Boolean> attendanceList;
+
     public AttendenceListAdapter(Activity activity, ArrayList<String> nameList, ClassItem classItem, List<Student> studentArrayList) {
         this.nameList = nameList;
         this.activity = activity;
         this.classItem = classItem;
         attendanceList = new ArrayList<>();
-        for(int i=0; i<nameList.size(); i++)
-        {
+        for (int i = 0; i < nameList.size(); i++) {
             attendanceList.add(new Boolean(true));
         }
-        this.studentArrayList=studentArrayList;
+        this.studentArrayList = studentArrayList;
     }
 
 
@@ -76,20 +69,19 @@ public class AttendenceListAdapter extends BaseAdapter {
             v = vi.inflate(R.layout.attendence_item, null);
         }
 
-            final int pos = position;
-            Log.d("GK",position + " position");
+        final int pos = position;
+        Log.d("GK", position + " position");
 
-            Student student = studentArrayList.get(position);
+        Student student = studentArrayList.get(position);
 
-            TextView textView =  v.findViewById(R.id.attendanceText);
-            ImageView  imgProfilePic= v.findViewById(R.id.img_profile);
-            String text;
-            text=(nameList.get(position));
-            textView.setText(Html.fromHtml(text));
+        TextView textView = v.findViewById(R.id.attendanceText);
+        ImageView imgProfilePic = v.findViewById(R.id.img_profile);
+        String text;
+        text = (nameList.get(position));
+        textView.setText(Html.fromHtml(text));
 
 
-
-        if(UtilsCommon.isValideString(student.getImageUrl()))
+        if (UtilsCommon.isValideString(student.getImageUrl()))
             Glide.with(activity)
                     .load(student.getImageUrl())
                     .apply(UtilsView.getLoadingOptionForGlide(activity))
@@ -99,81 +91,80 @@ public class AttendenceListAdapter extends BaseAdapter {
         }
 
 
-            final CheckBox checkBox = (CheckBox)v.findViewById(R.id.attMarker);//For attendance
-            final CheckBox checkBox1 =(CheckBox) v.findViewById(R.id.absentMarker);//For absent
+        final CheckBox checkBox = (CheckBox) v.findViewById(R.id.attMarker);//For attendance
+        final CheckBox checkBox1 = (CheckBox) v.findViewById(R.id.absentMarker);//For absent
 
 
-
-        if(checkHash.containsKey(pos)){
-            if(checkHash.get(pos)) {
+        if (checkHash.containsKey(pos)) {
+            if (checkHash.get(pos)) {
                 checkBox.setChecked(true);
                 checkBox1.setChecked(false);
-                attendanceList.set(pos,checkBox.isChecked());
-            }
-            else {
+                attendanceList.set(pos, checkBox.isChecked());
+            } else {
 
-                attendanceList.set(pos,false);
+                attendanceList.set(pos, false);
                 checkBox.setChecked(false);
                 checkBox1.setChecked(true);
             }
-        }else {
+        } else {
             checkBox.setChecked(true);
             checkBox1.setChecked(false);
         }
 
 
-
-            //How toTime add set onlickListern in Growable listView adapter
+        //How toTime add set onlickListern in Growable listView adapter
 
         v.findViewById(R.id.attendanceText).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent launchinIntent = new Intent(activity, StudentAlIInfoShowActivity.class);
-                    String roll = AttendanceActivity.rolls.get(pos);
+            @Override
+            public void onClick(View v) {
+                Intent launchinIntent = new Intent(activity, StudentAlIInfoShowActivity.class);
+                String roll = AttendanceActivity.rolls.get(pos);
 
-                    launchinIntent.putExtra("Student", studentArrayList.get(position));
-                    launchinIntent.putExtra("classItem", classItem);
-                    launchinIntent.putExtra("Roll", roll);
-                    activity.startActivity(launchinIntent);
-                }
-            });
+                launchinIntent.putExtra("Student", studentArrayList.get(position));
+                launchinIntent.putExtra("classItem", classItem);
+                launchinIntent.putExtra("Roll", roll);
+                activity.startActivity(launchinIntent);
+            }
+        });
 
 
-            //Check and uncheck the check box vice versa
-            checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("GK",pos + " pos in checkBox of list view");
-                    attendanceList.set(pos,checkBox.isChecked());
-                    checkBox1.setChecked(!checkBox.isChecked());
-                    checkHash.put(pos,checkBox.isChecked());
-                }
-            });
+        //Check and uncheck the check box vice versa
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("GK", pos + " pos in checkBox of list view");
+                attendanceList.set(pos, checkBox.isChecked());
+                checkBox1.setChecked(!checkBox.isChecked());
+                checkHash.put(pos, checkBox.isChecked());
+            }
+        });
 
-            checkBox1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    attendanceList.set(pos,!checkBox1.isChecked());
-                    checkBox.setChecked(!checkBox1.isChecked());
-                    checkHash.put(pos,!checkBox1.isChecked());
-                }
-            });
+        checkBox1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attendanceList.set(pos, !checkBox1.isChecked());
+                checkBox.setChecked(!checkBox1.isChecked());
+                checkHash.put(pos, !checkBox1.isChecked());
+            }
+        });
 
         return v;
     }
 
-public void setCheckHash(HashMap<Integer,Boolean> hash){
-        checkHash=hash;
-}
+    public void setCheckHash(HashMap<Integer, Boolean> hash) {
+        checkHash = hash;
+    }
 
     public void clear() {
         while (getItemCount() > 0) {
             remove(getItem(0));
         }
     }
+
     public String getItem(int position) {
         return nameList.get(position);
     }
+
     public void remove(String item) {
         int position = nameList.indexOf(item);
         if (position > -1) {
@@ -185,8 +176,8 @@ public void setCheckHash(HashMap<Integer,Boolean> hash){
     public int getItemCount() {
         return nameList.size();
     }
-    public void saveAll() {
 
+    public void saveAll() {
 
 
         double totalAttendendStudentNumber = 0;
@@ -216,7 +207,7 @@ public void setCheckHash(HashMap<Integer,Boolean> hash){
         String massegeOfDailyPersentage = "আজকের মোট উপস্থিত শিক্ষার্থীর সংখ্যা " + (int) totalAttendendStudentNumber + ",মোট অনুপস্থিত শিক্ষার্থীর সংখ্যা " + (int) totalAbsentStudentNumber + ", এবং শতকরা উপস্থিতির হার " + (int) totalAbsentStudentNumberPersentage + "%";
 
 
-        DialogUtils.showInfoAlertDialog("", massegeOfDailyPersentage, activity,new CommonCallback(){
+        DialogUtils.showInfoAlertDialog("", massegeOfDailyPersentage, activity, new CommonCallback() {
             @Override
             public void onSuccess() {
                 activity.finish();
@@ -225,11 +216,7 @@ public void setCheckHash(HashMap<Integer,Boolean> hash){
         });
 
 
-
-
-
-
-
-    }}
+    }
+}
 
 

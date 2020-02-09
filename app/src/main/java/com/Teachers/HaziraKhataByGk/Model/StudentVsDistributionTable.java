@@ -7,7 +7,10 @@ import java.util.ArrayList;
  * Created by uy on 6/17/2018.
  */
 
-public class StudentVsDistributionTable implements Serializable{
+public class StudentVsDistributionTable implements Serializable {
+
+    public String studentID;
+    public ArrayList<DistributionVSnumberTable> distributionVSnumberTableArrayList;
 
     public String getStudentID() {
         return studentID;
@@ -24,8 +27,5 @@ public class StudentVsDistributionTable implements Serializable{
     public void setDistributionVSnumberTableArrayList(ArrayList<DistributionVSnumberTable> distributionVSnumberTableArrayList) {
         this.distributionVSnumberTableArrayList = distributionVSnumberTableArrayList;
     }
-
-    public String studentID;
-    public ArrayList<DistributionVSnumberTable> distributionVSnumberTableArrayList;
 
 }

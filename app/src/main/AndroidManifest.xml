@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.Teachers.HaziraKhataByGk">
 
     <uses-permission android:name="ANDROID.PERMISSION.INTERNET" />
@@ -11,25 +10,16 @@
 
     <application
         android:name=".HelperClassess.GlobalContext"
-        android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/main_icon_hd_half"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:appComponentFactory"
-        android:appComponentFactory="whateverString"
         android:windowSoftInputMode="stateHidden|adjustPan">
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <!-- for FB LOGIN -->
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -82,7 +72,6 @@
             android:name=".StudentAdd.StudentAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity android:name=".SingleStudentAllInformation.StudentAlIInfoShowActivity" />
-        <!-- android:theme="@style/AppThemeForNoActionBar" -->
 
         <activity
             android:name=".NoteAddActivity"

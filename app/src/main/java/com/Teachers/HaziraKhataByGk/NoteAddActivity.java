@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,11 +14,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
-import com.google.android.gms.ads.AdRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -34,29 +34,26 @@ import java.util.List;
  */
 
 public class NoteAddActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText title;
-    private EditText content;
-
-
-    private com.Teachers.HaziraKhataByGk.Model.Notes Notes;
-    private Button ADD,Save, btnDelete;
-    public static String currentTitle,previousTitle,currentContent,previousContent;
+    public static String currentTitle, previousTitle, currentContent, previousContent;
+    public LinearLayout ButtonLayout;
     Activity activity;
     boolean isEdited;
-    public LinearLayout ButtonLayout;
+    private EditText title;
+    private EditText content;
+    private com.Teachers.HaziraKhataByGk.Model.Notes Notes;
+    private Button ADD, Save, btnDelete;
 
-
-
-
-    public static void start(Context context){
+    public static void start(Context context) {
         Intent intent = new Intent(context, NoteAddActivity.class);
         context.startActivity(intent);
     }
-    public static void start(Context context, Notes Notes){
+
+    public static void start(Context context, Notes Notes) {
         Intent intent = new Intent(context, NoteAddActivity.class);
         intent.putExtra(ClassRoomActivity.class.getSimpleName(), Notes);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,16 +62,16 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
         activity = this;
         title = (EditText) findViewById(R.id.Title);
         content = (EditText) findViewById(R.id.content);
-        isEdited=false;
+        isEdited = false;
 
         //ADD TEXT CHANGE LISTENER
         title.addTextChangedListener(new MyTextWatcher(title));
         content.addTextChangedListener(new MyTextWatcher(content));
 
-        ADD=(Button) findViewById(R.id.ADD);
+        ADD = (Button) findViewById(R.id.ADD);
         Save = (Button) findViewById(R.id.SAVE);
         btnDelete = (Button) findViewById(R.id.DELETE);
-        ButtonLayout=(LinearLayout)findViewById(R.id.buttomLinearLayout);
+        ButtonLayout = (LinearLayout) findViewById(R.id.buttomLinearLayout);
         Notes = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
         ADD.setOnClickListener(this);
         Save.setOnClickListener(this);
@@ -83,18 +80,18 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
             ADD.setVisibility(View.GONE);
             title.setText(Notes.getheading());
             content.setText(Notes.getContent());
-            previousTitle=Notes.getheading();
-            previousContent=Notes.getContent();
-        }
-        else{
+            previousTitle = Notes.getheading();
+            previousContent = Notes.getContent();
+        } else {
             Save.setVisibility(View.GONE);
             btnDelete.setVisibility(View.GONE);
         }
 
     }
+
     @Override
     public void onClick(View v) {
-        if(v==ADD) {
+        if (v == ADD) {
             Notes = new Notes();
             Notes.setheading(title.getText().toString().trim());
             Notes.setContent(content.getText().toString().trim());
@@ -127,37 +124,36 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
 
             }
-        }
-        else if(v == Save){
+        } else if (v == Save) {
 
 
-               Notes.setheading(title.getText().toString().trim());
-               Notes.setContent(content.getText().toString().trim());
+            Notes.setheading(title.getText().toString().trim());
+            Notes.setContent(content.getText().toString().trim());
 
 
             FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
-                    child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                    child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName() +
                     UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    List<Notes> NotesList=new ArrayList<Notes>();
-                    for(DataSnapshot NoteData:dataSnapshot.getChildren()){
-                        Notes Notes=new Notes();
-                        Notes=NoteData.getValue(Notes.class);
-                        NotesList.add(Notes);
-                    }
-                    ClassRoomActivity.notesList=NotesList;
-                }
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<Notes> NotesList = new ArrayList<Notes>();
+                            for (DataSnapshot NoteData : dataSnapshot.getChildren()) {
+                                Notes Notes = new Notes();
+                                Notes = NoteData.getValue(Notes.class);
+                                NotesList.add(Notes);
+                            }
+                            ClassRoomActivity.notesList = NotesList;
+                        }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
 
             //CHECK THAT THE ITEM IS UNIQUE
             for (int i = 0; i < ClassRoomActivity.notesList.size(); i++) {
-                if (ClassRoomActivity.notesList.get(i).getheading().equals(Notes.getheading())&&!previousTitle.equals(title.getText().toString())) {
+                if (ClassRoomActivity.notesList.get(i).getheading().equals(Notes.getheading()) && !previousTitle.equals(title.getText().toString())) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warning_for_add);
@@ -174,34 +170,32 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
             }
 
 
-            if(submitForm()){
+            if (submitForm()) {
                 //Then remove the old Student data
                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
-                        child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                        child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName() +
                         UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes").child(previousTitle).removeValue();
                 //Then first reinstall previous Student data;
                 FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
-                        child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                        child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName() +
                         UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes").child(Notes.getheading()).setValue(Notes);
 
             }
 
             Toast.makeText(this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();
-            previousTitle=null;
-
+            previousTitle = null;
 
 
             finish();
 
 
-
-        }else if(v == btnDelete){
+        } else if (v == btnDelete) {
             Notes.setheading(title.getText().toString());
             Notes.setContent(content.getText().toString());
 
             //FOR AVOID SQL INJECTION
             for (int i = 0; i < ClassRoomActivity.notesList.size(); i++) {
-                if (ClassRoomActivity.notesList.get(i).getheading().equals(Notes.getheading())&&!previousTitle.equals(title.getText().toString())) {
+                if (ClassRoomActivity.notesList.get(i).getheading().equals(Notes.getheading()) && !previousTitle.equals(title.getText().toString())) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("সতর্কীকরণ");
                     alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -221,38 +215,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        public void afterTextChanged(Editable editable) {
-
-            switch (view.getId()) {
-
-                case R.id.title:
-                    validateNoteTitle();
-                    break;
-                case R.id.content:
-                   // validateRoll();
-                    break;
-            }
-        }
-    }
-
-    boolean validateNoteTitle(){
+    boolean validateNoteTitle() {
         if (title.getText().toString().trim().isEmpty()) {
             title.setError(getString(R.string.error_massege_for_input));
             requestFocus(title);
@@ -262,10 +225,10 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
-
     private void requestFocus(View view) {
         view.requestFocus();
     }
+
     private boolean submitForm() {
         if (!validateNoteTitle()) {
             Toast.makeText(getApplicationContext(), "দয়া করে নোটের শিরোনাম অংশের ভুল সংশোধণ করুন,ধন্যবাদ", Toast.LENGTH_SHORT).show();
@@ -287,10 +250,10 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
         dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");
         dialogBuilder.setPositiveButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(edt.getText().toString().trim().equals("DELETE")){
+                if (edt.getText().toString().trim().equals("DELETE")) {
 
                     FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
-                            child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName()+
+                            child("Class").child(UtilsCommon.getCurrentClass(NoteAddActivity.this).getName() +
                             UtilsCommon.getCurrentClass(NoteAddActivity.this).getSection()).child("Notes").
                             child(title.getText().toString()).removeValue();
                     Toast.makeText(NoteAddActivity.this, "নোটটি ডিলিট হচ্ছে!", Toast.LENGTH_SHORT).show();
@@ -314,7 +277,6 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
     protected void onStart() {
 
 
-
         super.onStart();
     }
 
@@ -336,25 +298,21 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
     public void onBackPressed() {
 
         //TODO: Check the note is edited or not
-        currentTitle=title.getText().toString();
-        currentContent=content.getText().toString();
+        currentTitle = title.getText().toString();
+        currentContent = content.getText().toString();
 
-        if(previousContent==null||previousTitle==null){
-            isEdited=false;
-        }
-        else {
-            if(previousTitle.equals(currentTitle)&&previousContent.equals(currentContent)){
-                isEdited=false;
-            }
-            else
-            {
-                isEdited=true;
+        if (previousContent == null || previousTitle == null) {
+            isEdited = false;
+        } else {
+            if (previousTitle.equals(currentTitle) && previousContent.equals(currentContent)) {
+                isEdited = false;
+            } else {
+                isEdited = true;
             }
         }
 
 
-
-        if(isEdited) {
+        if (isEdited) {
 
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("সতর্কীকরণ");
@@ -412,16 +370,45 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
                         }
-                        });
+                    });
             alertDialog.show();
 
 
-        }
-        else {
+        } else {
             finish();
         }
 
 
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        public void afterTextChanged(Editable editable) {
+
+            switch (view.getId()) {
+
+                case R.id.title:
+                    validateNoteTitle();
+                    break;
+                case R.id.content:
+                    // validateRoll();
+                    break;
+            }
+        }
     }
 
 }

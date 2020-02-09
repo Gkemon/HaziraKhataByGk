@@ -4,25 +4,28 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.multidex.MultiDexApplication;
-import android.support.v7.view.ContextThemeWrapper;
+
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.multidex.MultiDexApplication;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.Model.ClassItem;
-import com.Teachers.HaziraKhataByGk.Model.Student;
-import com.Teachers.HaziraKhataByGk.R;
 
 import java.lang.ref.WeakReference;
 
 public class GlobalContext extends MultiDexApplication {
 
-    private static Application application;
     public static WeakReference<Activity> mActivity = null;
-    public static Context getWeakActivity(){
-        if(mActivity.get()!=null){
+    private static Application application;
+
+    public static Context getWeakActivity() {
+        if (mActivity.get() != null) {
             mActivity.get().getTheme().applyStyle(android.R.style.Theme_Dialog, true);
             return mActivity.get();
         } else return getAppContext();
+    }
+
+    public static Context getAppContext() {
+        return new ContextThemeWrapper(GlobalContext.application, android.R.style.Theme_Dialog);
     }
 
     public void onCreate() {
@@ -45,7 +48,7 @@ public class GlobalContext extends MultiDexApplication {
 
             @Override
             public void onActivityResumed(Activity activity) {
-                mActivity= new WeakReference<>(activity);
+                mActivity = new WeakReference<>(activity);
             }
 
             @Override
@@ -65,18 +68,12 @@ public class GlobalContext extends MultiDexApplication {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-                if(mActivity!=null)
-                mActivity.clear();
+                if (mActivity != null)
+                    mActivity.clear();
             }
         });
 
-        GlobalContext.application =this;
-    }
-
-
-
-    public static Context getAppContext() {
-        return  new ContextThemeWrapper(GlobalContext.application,android.R.style.Theme_Dialog);
+        GlobalContext.application = this;
     }
 
 }

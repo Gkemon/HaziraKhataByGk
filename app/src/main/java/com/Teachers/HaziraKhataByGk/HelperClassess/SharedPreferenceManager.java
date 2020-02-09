@@ -10,7 +10,6 @@ import android.content.SharedPreferences.Editor;
  * <p>
  * <br/>
  * <br/>
- *
  **/
 public class SharedPreferenceManager {
 

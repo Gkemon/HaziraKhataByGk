@@ -4,7 +4,6 @@ import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Student implements Serializable {
     private String roll;
@@ -20,7 +19,10 @@ public class Student implements Serializable {
     private String StudentClass;
     private String StudentSection;
     private String uuid;
-    private String gander= Constant.MALE;
+    private String gander = Constant.MALE;
+
+    public Student() {
+    }
 
     public String getRoll() {
         return roll;
@@ -79,14 +81,11 @@ public class Student implements Serializable {
     }
 
     public String getImageUrl() {
-        return UtilsCommon.isValideString(imageUrl)?imageUrl:"";
+        return UtilsCommon.isValideString(imageUrl) ? imageUrl : "";
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public Student() {
     }
 
     public String getId() {
@@ -105,12 +104,14 @@ public class Student implements Serializable {
         this.Name = name;
     }
 
-    public String getParentName(){
+    public String getParentName() {
         return ParentName;
     }
-    public void setParentName(String name){
-        this.ParentName=name;
+
+    public void setParentName(String name) {
+        this.ParentName = name;
     }
+
     public String getParentContact() {
         return ParentContact;
     }
@@ -127,19 +128,21 @@ public class Student implements Serializable {
         this.StudentsContactNumber = phone;
     }
 
-    public void setStudentClass(String studentClass){
-        this.StudentClass=studentClass;
-    }
-    public void setStudentSection(String studentSection){
-        this.StudentSection=studentSection;
-    }
-    public String getStudentClass(){
-        return  StudentClass;
-    }
-    public String getStudentSection(){
-        return  StudentSection;
+    public String getStudentClass() {
+        return StudentClass;
     }
 
+    public void setStudentClass(String studentClass) {
+        this.StudentClass = studentClass;
+    }
+
+    public String getStudentSection() {
+        return StudentSection;
+    }
+
+    public void setStudentSection(String studentSection) {
+        this.StudentSection = studentSection;
+    }
 
     public String getUuid() {
         return uuid;

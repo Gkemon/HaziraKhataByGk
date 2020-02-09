@@ -2,28 +2,24 @@ package com.Teachers.HaziraKhataByGk.Tabs;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.fragment.app.Fragment;
+
+import com.Teachers.HaziraKhataByGk.BlogActivity;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.MainActivity;
-import com.Teachers.HaziraKhataByGk.BlogActivity;
-
-import java.util.Objects;
 
 
 public class BlogFragment extends Fragment {
-   View root;
-   Button post,see;
-   Context context;
+    View root;
+    Button post, see;
+    Context context;
+
     public BlogFragment() {
         // Required empty public constructor
     }
@@ -37,23 +33,22 @@ public class BlogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root=inflater.inflate(R.layout.blog_fragment, container, false);
+        root = inflater.inflate(R.layout.blog_fragment, container, false);
 
         //TODO: FOR POST
-        post=(Button)root.findViewById(R.id.write);
-        post.setOnClickListener(new View.OnClickListener(){
-
+        post = (Button) root.findViewById(R.id.write);
+        post.setOnClickListener(new View.OnClickListener() {
 
 
             @Override
             public void onClick(View v) {
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045745182339529/",getActivity());
-                }
+                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045745182339529/", getActivity());
+            }
         });
 
         //TODO: FOR SEE
-        see=(Button)root.findViewById(R.id.read);
-        see.setOnClickListener(new View.OnClickListener(){
+        see = (Button) root.findViewById(R.id.read);
+        see.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -62,12 +57,12 @@ public class BlogFragment extends Fragment {
             }
         });
 
-        return root ;
+        return root;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.context=context;
+        this.context = context;
     }
 }

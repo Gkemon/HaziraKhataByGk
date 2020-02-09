@@ -4,32 +4,32 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
-import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 
 /**
  * Created by uy on 10/29/2017.
  */
 
-public class BrowsingActivity extends AppCompatActivity{
-    private String url,TAG,title;
+public class BrowsingActivity extends AppCompatActivity {
+    public static Activity activity;
+    CoordinatorLayout coordinatorLayout;
+    private String url, TAG, title;
     private WebView webView;
     private ProgressBar progressBar;
     private float m_downX;
     private NewsItem NewsItem;
     private JobItems jobItems;
     private BlogItem BlogItem;
-    public static Activity activity;
-
-    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +37,14 @@ public class BrowsingActivity extends AppCompatActivity{
         //setContentView(R.layout.activity_browser);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setTitle("");
         Intent i = getIntent();
         url = getIntent().getStringExtra("URL");
-        TAG=getIntent().getStringExtra("TAG");
-        activity=this;
+        TAG = getIntent().getStringExtra("TAG");
+        activity = this;
 
-        if(TAG!=null) {
+        if (TAG != null) {
             if (TAG.equals("NEWS")) {
                 Log.d("GK", "TAG IS NEWS");
                 NewsItem = new NewsItem();
@@ -63,8 +63,6 @@ public class BrowsingActivity extends AppCompatActivity{
                 title = webView.getTitle();
             }
         }
-
-
 
 
         // if no url is passed, close the activity
@@ -86,9 +84,9 @@ public class BrowsingActivity extends AppCompatActivity{
         //TODO:This is for default browser
         if (!url.startsWith("http://") && !url.startsWith("https://"))
             url = "http://" + url;
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
 
 
     }

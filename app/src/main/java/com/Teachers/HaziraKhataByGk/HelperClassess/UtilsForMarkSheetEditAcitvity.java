@@ -1,11 +1,12 @@
 package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.app.Activity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.MarkSheetEditAdapter;
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
@@ -23,13 +24,13 @@ import static com.Teachers.HaziraKhataByGk.Constant.Constant.globalStudentList;
  */
 
 public class UtilsForMarkSheetEditAcitvity {
-    public static int count=0;
+    public static int count = 0;
 
 
-    public static void getStudentList(final String className, final String sectionName, final RecyclerView recyclerView, final Activity activity, final SubjectMarkSheet subjectMarkSheet, final String key, final Button saveButton,final Button printButton) {
-FirebaseCaller firebaseCaller =new FirebaseCaller();
+    public static void getStudentList(final String className, final String sectionName, final RecyclerView recyclerView, final Activity activity, final SubjectMarkSheet subjectMarkSheet, final String key, final Button saveButton, final Button printButton) {
+        FirebaseCaller firebaseCaller = new FirebaseCaller();
 
-firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseCaller.getDatabaseReferenceForGetStudentList(className, sectionName).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -40,15 +41,15 @@ firebaseCaller.getDatabaseReferenceForGetStudentList(className,sectionName).addL
                     student = StudentData.getValue(Student.class);
                     globalStudentList.add(student);
                 }
-                Log.d("GK","Student list size :"+ globalStudentList.size());
+                Log.d("GK", "Student list size :" + globalStudentList.size());
 
 
-                if(Constant.globalStudentList !=null){
-                    Log.d("GK","Student list size in oncreate :"+ globalStudentList.size());
+                if (Constant.globalStudentList != null) {
+                    Log.d("GK", "Student list size in oncreate :" + globalStudentList.size());
 
                     UtilsCommon.logString(key);
 
-                  final MarkSheetEditAdapter markSheetEditAdapter = new MarkSheetEditAdapter(activity, globalStudentList,subjectMarkSheet,className,sectionName,key);
+                    final MarkSheetEditAdapter markSheetEditAdapter = new MarkSheetEditAdapter(activity, globalStudentList, subjectMarkSheet, className, sectionName, key);
                     LinearLayoutManager MyLayoutManager = new LinearLayoutManager(activity);
                     MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setAdapter(markSheetEditAdapter);

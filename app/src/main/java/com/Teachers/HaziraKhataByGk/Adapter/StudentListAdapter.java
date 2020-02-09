@@ -4,18 +4,19 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.UtilsView;
+import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -23,11 +24,9 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.validation.Validator;
+public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.StudentHolder> {
 
-public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.StudentHolder>{
-
-    public  List<Student> studentList;
+    public List<Student> studentList;
     private Context context;
 
     private RecyclerItemClickListener recyclerItemClickListener;
@@ -100,27 +99,26 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 //                String.valueOf(Student.getId()), tileSize, tileSize);
 
 
-
-        if(UtilsCommon.isValideString(student.getImageUrl()))
-        Glide.with(context)
-                .load(student.getImageUrl())
-                .apply(UtilsView.getLoadingOptionForGlide(context))
-                .into(holder.thumb);
+        if (UtilsCommon.isValideString(student.getImageUrl()))
+            Glide.with(context)
+                    .load(student.getImageUrl())
+                    .apply(UtilsView.getLoadingOptionForGlide(context))
+                    .into(holder.thumb);
         else {
             //FOR TEXTDRAWABLE IMAGE CREATING
-        ColorGenerator generator = ColorGenerator.MATERIAL;
-        int color = generator.getRandomColor();
-        TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
-                .textColor(Color.WHITE)
-                .useFont(Typeface.DEFAULT)
-                .toUpperCase()
-                .endConfig()
-                .buildRoundRect(student.getStudentName().substring(0,1), color,10);
+            ColorGenerator generator = ColorGenerator.MATERIAL;
+            int color = generator.getRandomColor();
+            TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
+                    .textColor(Color.WHITE)
+                    .useFont(Typeface.DEFAULT)
+                    .toUpperCase()
+                    .endConfig()
+                    .buildRoundRect(student.getStudentName().substring(0, 1), color, 10);
             holder.thumb.setImageDrawable(myDrawable);
         }
 
 
-        String name="নাম: "+student.getStudentName(),roll="রোল: "+student.getId();
+        String name = "নাম: " + student.getStudentName(), roll = "রোল: " + student.getId();
         holder.name.setText(name);
         holder.phone.setText(roll);
     }

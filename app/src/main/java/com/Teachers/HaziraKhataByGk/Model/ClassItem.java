@@ -1,8 +1,5 @@
 package com.Teachers.HaziraKhataByGk.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 /**
@@ -15,9 +12,10 @@ public class ClassItem implements Serializable {
 
     public ClassItem() {
     }
+
     public ClassItem(String name, String section) {
-        this.name=name;
-        this.section=section;
+        this.name = name;
+        this.section = section;
     }
 
     public String getName() {
@@ -35,7 +33,6 @@ public class ClassItem implements Serializable {
     public void setSection(String section) {
         this.section = section;
     }
-
 
 
     @Override

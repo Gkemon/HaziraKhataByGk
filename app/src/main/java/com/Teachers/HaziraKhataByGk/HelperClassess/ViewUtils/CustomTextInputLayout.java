@@ -3,12 +3,14 @@ package com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import androidx.core.view.ViewCompat;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 public class CustomTextInputLayout extends TextInputLayout {
 
@@ -27,7 +29,7 @@ public class CustomTextInputLayout extends TextInputLayout {
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (child instanceof EditText) {
             // Since hint will be nullify on EditText once on parent addView, store hint value locally
-            mHint = ((EditText)child).getHint();
+            mHint = ((EditText) child).getHint();
         }
         super.addView(child, index, params);
     }
@@ -41,7 +43,7 @@ public class CustomTextInputLayout extends TextInputLayout {
             setHint(null);
 
             // In case that hint is changed programatically
-            CharSequence currentEditTextHint =  getEditText().getHint();
+            CharSequence currentEditTextHint = getEditText().getHint();
 
             if (currentEditTextHint != null && currentEditTextHint.length() > 0) {
                 mHint = currentEditTextHint;

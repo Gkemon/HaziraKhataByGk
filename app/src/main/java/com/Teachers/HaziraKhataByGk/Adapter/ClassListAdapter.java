@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
 /**
  * Created by wim on 5/1/16.
  */
-public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.ContactHolder>{
+public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.ContactHolder> {
 
     private ArrayList<ClassItem> classitemList;
     private Context context;
@@ -44,7 +43,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
     }
 
     public void addAll(ArrayList<ClassItem> classitemList) {
-        if(classitemList!=null) {
+        if (classitemList != null) {
             for (ClassItem classitem : classitemList) {
                 add(classitem);
             }
@@ -105,13 +104,12 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
     @Override
     public void onBindViewHolder(ContactHolder holder, int position) {
-        if(classitemList==null){
+        if (classitemList == null) {
 
-        }
-        else {
+        } else {
             final ClassItem classitem = classitemList.get(position);
 
-            if (classitem != null&&classitem.getName()!=null) {
+            if (classitem != null && classitem.getName() != null) {
                 final Resources res = context.getResources();
                 final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
 
@@ -122,7 +120,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                     ColorGenerator generator = ColorGenerator.MATERIAL;
                     int color = generator.getRandomColor();
 
-                    if(classitem.getName().isEmpty()){
+                    if (classitem.getName().isEmpty()) {
 
                         FirebaseCaller.getFirebaseDatabase()
                                 .child("Users")
@@ -139,22 +137,20 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                             .useFont(Typeface.DEFAULT)
                             .toUpperCase()
                             .endConfig()
-                            .buildRoundRect(classitem.getName().substring(0,1), color,12);
+                            .buildRoundRect(classitem.getName().substring(0, 1), color, 12);
 
                     holder.thumb.setImageDrawable(myDrawable);
-                    String className="ক্লাস: "+classitem.getName();
-                    String sectionName="";
+                    String className = "ক্লাস: " + classitem.getName();
+                    String sectionName = "";
 
-                    if(classitem.getSection().equals("")){
-                        sectionName="";
+                    if (classitem.getSection().equals("")) {
+                        sectionName = "";
+                    } else {
+                        sectionName = "সেকশন/সেশন: " + classitem.getSection();
                     }
-                    else {
-                        sectionName="সেকশন/সেশন: "+classitem.getSection();
-                    }
 
 
-                    if(classitem.getName()==null)
-                    { //Quick fix
+                    if (classitem.getName() == null) { //Quick fix
                         FirebaseCaller.getFirebaseDatabase().child("Users")
                                 .child(FirebaseCaller.getUserID())
                                 .child("Class")
@@ -167,19 +163,14 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                     }
 
 
+                    if (classitem.getName() != null && !classitem.getName().isEmpty())
+                        holder.name.setText(className);
 
-
-
-
-
-                    if(classitem.getName()!=null&&!classitem.getName().isEmpty())
-                       holder.name.setText(className);
-
-                    if(classitem.getSection()!=null&&!classitem.getSection().isEmpty())
+                    if (classitem.getSection() != null && !classitem.getSection().isEmpty())
                         holder.phone.setText(sectionName);
 
-                }catch (Exception e){
-                    Toast.makeText(context,"ERROR "+e.getMessage(),Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(context, "ERROR " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
 

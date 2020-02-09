@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Adapter;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.BlogActivity;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
+import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
@@ -36,6 +36,7 @@ import static com.Teachers.HaziraKhataByGk.R.id.loveClicker;
 public class BlogAdapter extends RecyclerView.Adapter<blogViewHolder> {
     private ArrayList<BlogItem> list;
     private RecyclerItemClickListener recyclerItemClickListener;
+
     public BlogAdapter(ArrayList<BlogItem> Data) {
         list = Data;
     }
@@ -45,7 +46,7 @@ public class BlogAdapter extends RecyclerView.Adapter<blogViewHolder> {
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.blog_cards, parent, false);
-        final  blogViewHolder holder = new blogViewHolder(view);
+        final blogViewHolder holder = new blogViewHolder(view);
         //CLICK LISTENER
         holder.itemView.findViewById(ClickerForBlog).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +95,7 @@ public class BlogAdapter extends RecyclerView.Adapter<blogViewHolder> {
         });
         return holder;
     }
+
     public void setOnItemClickListener(RecyclerItemClickListener recyclerItemClickListener) {
         this.recyclerItemClickListener = recyclerItemClickListener;
     }
@@ -110,27 +112,28 @@ public class BlogAdapter extends RecyclerView.Adapter<blogViewHolder> {
                 .useFont(Typeface.DEFAULT)
                 .toUpperCase()
                 .endConfig()
-                .buildRect("",color);
-        ImageView savedIcon=(ImageView)holder.itemView.findViewById(R.id.SaveClickerIcon);
-        ImageView lovedIcon=(ImageView)holder.itemView.findViewById(R.id.lovedIcon);
+                .buildRect("", color);
+        ImageView savedIcon = (ImageView) holder.itemView.findViewById(R.id.SaveClickerIcon);
+        ImageView lovedIcon = (ImageView) holder.itemView.findViewById(R.id.lovedIcon);
 
 
         //TODO: check if save or unsaved
-        if(UtilsCommon.isBlogBookmarked(list.get(position),holder.itemView.getContext())){
+        if (UtilsCommon.isBlogBookmarked(list.get(position), holder.itemView.getContext())) {
             savedIcon.setImageResource(R.drawable.ic_saved_icon);
         }
-        if(UtilsCommon.isBlogLove(list.get(position),holder.itemView.getContext())){
+        if (UtilsCommon.isBlogLove(list.get(position), holder.itemView.getContext())) {
             lovedIcon.setImageResource(R.drawable.ic_love_icon);
         }
 
         holder.titleTextView.setText(list.get(position).getHeading());
-        CharSequence writer,date;
-        writer ="শিক্ষকের নাম: "+list.get(position).getWriter();
-        date="তারিখ :"+list.get(position).getDate();
+        CharSequence writer, date;
+        writer = "শিক্ষকের নাম: " + list.get(position).getWriter();
+        date = "তারিখ :" + list.get(position).getDate();
         holder.writer.setText(writer);
         holder.Date.setText(date);
         holder.sideDrawable.setImageDrawable(myDrawable);
     }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -151,12 +154,12 @@ class blogViewHolder extends RecyclerView.ViewHolder {
     public blogViewHolder(View v) {
         super(v);
         titleTextView = (TextView) v.findViewById(R.id.titleOfBlog);
-        Date=(TextView)v.findViewById(dateOfNews);
-        cardsRelativeLayout=(RelativeLayout)v.findViewById(RelativeLayoutForNewsCard);
-        sideDrawable=(ImageView)v.findViewById(MetarialColorPlate);
-        share=(LinearLayout)v.findViewById(ShareClicker);
-        save=(LinearLayout)v.findViewById(SaveClicker);
-        love=(LinearLayout)v.findViewById(loveClicker);
-        writer=(TextView)v.findViewById(R.id.TeachersName);
+        Date = (TextView) v.findViewById(dateOfNews);
+        cardsRelativeLayout = (RelativeLayout) v.findViewById(RelativeLayoutForNewsCard);
+        sideDrawable = (ImageView) v.findViewById(MetarialColorPlate);
+        share = (LinearLayout) v.findViewById(ShareClicker);
+        save = (LinearLayout) v.findViewById(SaveClicker);
+        love = (LinearLayout) v.findViewById(loveClicker);
+        writer = (TextView) v.findViewById(R.id.TeachersName);
     }
 }

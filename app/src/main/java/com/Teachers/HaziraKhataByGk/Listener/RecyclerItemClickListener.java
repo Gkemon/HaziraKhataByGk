@@ -8,6 +8,7 @@ import android.view.View;
 public interface RecyclerItemClickListener {
 
     void onItemClick(int position, View view);
+
     void onItemLongPressed(int position, View view);
 
 }

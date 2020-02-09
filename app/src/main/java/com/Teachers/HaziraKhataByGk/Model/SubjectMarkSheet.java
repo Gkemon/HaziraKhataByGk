@@ -12,6 +12,7 @@ public class SubjectMarkSheet implements Serializable {
     public String subjectName;
     public Double totalNumber;
     public ArrayList<DistributionVSnumberTable> distributionVSnumberTable;// example: "home work" <--> 15
+    public ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList;
 
     public ArrayList<StudentVsDistributionTable> getStudentVsDistributionTableArrayList() {
         return studentVsDistributionTableArrayList;
@@ -21,14 +22,16 @@ public class SubjectMarkSheet implements Serializable {
         this.studentVsDistributionTableArrayList = studentVsDistributionTableArrayList;
     }
 
-    public ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList;
-
-
     public ArrayList<DistributionVSnumberTable> getDistributionVSnumberTable() {
         return distributionVSnumberTable;
     }
+
     public void setDistributionVSnumberTable(ArrayList<DistributionVSnumberTable> distributionVSnumberTable) {
         this.distributionVSnumberTable = distributionVSnumberTable;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
     }
 
     public void setSubjectName(String subjectName) {
@@ -36,27 +39,17 @@ public class SubjectMarkSheet implements Serializable {
     }
 
 
-    public void setTotalNumber(Double totalNumber) {
-        this.totalNumber = totalNumber;
-    }
-
-
-
-
-
 //    public void setStudentVsDistributionTable(HashMap<String, HashMap<String, Integer>> studentVsDistributionTable) {
 //        this.studentVsDistributionTable = studentVsDistributionTable;
 //    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
 
     public Double getTotalNumber() {
         return totalNumber;
     }
 
-
+    public void setTotalNumber(Double totalNumber) {
+        this.totalNumber = totalNumber;
+    }
 
 
 //    public HashMap<String, HashMap<String, Integer>> getStudentVsDistributionTable() {

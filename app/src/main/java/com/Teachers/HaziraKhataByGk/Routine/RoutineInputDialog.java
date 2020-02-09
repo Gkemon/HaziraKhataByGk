@@ -1,23 +1,18 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.gk.emon.android.BanglaDaysPicker;
@@ -54,72 +49,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     RoutineItem routineItem;
 
-    @OnClick(R.id.rb_temporary_routine)
-    public void showDateSelectButton(){
-        btnDateSelect.setVisibility(View.VISIBLE);
-    }
-
-    @OnClick(R.id.rb_permanent_routine)
-    public void hideDateSelecButton(){
-        btnDateSelect.setVisibility(View.GONE);
-    }
-
-    @OnClick(R.id.btn_tutorial)
-    public void showTutorial(){
-
-    }
-
-    @OnClick(R.id.btn_delete_routine)
-    public void deleteRoutine(){
-
-    }
-
-
-    @OnClick(R.id.cancel)
-    public void cancel(){
-        dismiss();
-    }
-
-    @OnClick(R.id.bt_from_time)
-    public void showFromTimeDialog(){
-        DialogUtils.showDateDialog(null,getContext(), (view, year, month, dayOfMonth) -> {
-
-        });
-    }
-
-    @OnClick(R.id.bt_to_time)
-    public void showToTimeDialog(){
-
-    }
-
-
-    @OnClick(R.id.save)
-    public void saveRoutine(){
-
-
-         if(rbClassRoutine.isSelected())
-        {
-            routineItem.setType(Constant.ROUTINE_TYPE_CLASS);
-        }
-        else if(rbExamRoutine.isSelected())
-        {
-            routineItem.setType(Constant.ROUTINE_TYPE_EXAM);
-        }
-        else routineItem.setType(Constant.ROUTINE_TYPE_ADMINISTRATIONAL);
-
-
-        routineItem.setName(etSubject.getText().toString());
-        routineItem.setLocation((etRoom.getText().toString()));
-        ///routineItem.setStartTime();
-
-
-
-
-    }
-
-
-
-    public static void showDialog(android.support.v4.app.FragmentManager manager) {
+    public static void showDialog(FragmentManager manager) {
 
         RoutineInputDialog dialog = new RoutineInputDialog();
         FragmentTransaction ft = manager.beginTransaction();
@@ -127,22 +57,74 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     }
 
+    @OnClick(R.id.rb_temporary_routine)
+    public void showDateSelectButton() {
+        btnDateSelect.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.rb_permanent_routine)
+    public void hideDateSelecButton() {
+        btnDateSelect.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.btn_tutorial)
+    public void showTutorial() {
+
+    }
+
+    @OnClick(R.id.btn_delete_routine)
+    public void deleteRoutine() {
+
+    }
+
+    @OnClick(R.id.cancel)
+    public void cancel() {
+        dismiss();
+    }
+
+    @OnClick(R.id.bt_from_time)
+    public void showFromTimeDialog() {
+        DialogUtils.showDateDialog(null, getContext(), (view, year, month, dayOfMonth) -> {
+
+        });
+    }
+
+    @OnClick(R.id.bt_to_time)
+    public void showToTimeDialog() {
+
+    }
+
+    @OnClick(R.id.save)
+    public void saveRoutine() {
 
 
+        if (rbClassRoutine.isSelected()) {
+            routineItem.setType(Constant.ROUTINE_TYPE_CLASS);
+        } else if (rbExamRoutine.isSelected()) {
+            routineItem.setType(Constant.ROUTINE_TYPE_EXAM);
+        } else routineItem.setType(Constant.ROUTINE_TYPE_ADMINISTRATIONAL);
+
+
+        routineItem.setName(etSubject.getText().toString());
+        routineItem.setLocation((etRoom.getText().toString()));
+        ///routineItem.setStartTime();
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.dialog_add_routine_item, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         initData();
 
         return view;
     }
 
-    void initData(){
+    void initData() {
         routineItem = new RoutineItem();
     }
 

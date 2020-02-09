@@ -1,11 +1,13 @@
 package com.Teachers.HaziraKhataByGk.Widget;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.design.bottomnavigation.LabelVisibilityMode;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
+
+import androidx.annotation.RequiresApi;
+
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 import java.lang.reflect.Field;
 

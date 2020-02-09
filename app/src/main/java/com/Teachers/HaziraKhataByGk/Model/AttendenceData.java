@@ -9,13 +9,17 @@ import java.text.ParseException;
  */
 
 
-public class AttendenceData implements Comparable<AttendenceData>  {
+public class AttendenceData implements Comparable<AttendenceData> {
+    public String key;
     private boolean status;
-    private String subject="";
-    private String date="";
-    private String attendenceClass="";
-    private String attendenceSection="";
-    private String studentRollForAttendence="";
+    private String subject = "";
+    private String date = "";
+    private String attendenceClass = "";
+    private String attendenceSection = "";
+    private String studentRollForAttendence = "";
+
+    public AttendenceData() {
+    }
 
     public String getKey() {
         return key;
@@ -38,43 +42,52 @@ public class AttendenceData implements Comparable<AttendenceData>  {
                 '}';
     }
 
-    public  String key;
-    public AttendenceData(){
-    }
-    public void setStatus(boolean status){
-        this.status=status;
-    }
-    public void setSubject(String subject){
-        this.subject=subject;
-    }
-    public void setDate(String date){
-        this.date=date;
-    }
-    public boolean getStatus(){
+    public boolean getStatus() {
         return status;
     }
-    public String getSubject(){
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getSubject() {
         return subject;
     }
-    public String getDate()
-    {
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getDate() {
         return date;
     }
-    public void setStudentRollForAttendence(String studentRollForAttendence){
-        this.studentRollForAttendence=studentRollForAttendence;
+
+    public void setDate(String date) {
+        this.date = date;
     }
-    public void setAttendenceClass(String attendenceClass){
-        this.attendenceClass=attendenceClass;
+
+    public String getAttendenceClass() {
+        return attendenceClass;
     }
-    public void setAttendenceSection(String studentSection){this.attendenceSection=studentSection;}
-    public String getAttendenceClass(){
-        return  attendenceClass;
+
+    public void setAttendenceClass(String attendenceClass) {
+        this.attendenceClass = attendenceClass;
     }
-    public String getAttendenceSection(){
-        return  attendenceSection;
+
+    public String getAttendenceSection() {
+        return attendenceSection;
     }
-    public String getStudentRollForAttendence(){
-        return  studentRollForAttendence;
+
+    public void setAttendenceSection(String studentSection) {
+        this.attendenceSection = studentSection;
+    }
+
+    public String getStudentRollForAttendence() {
+        return studentRollForAttendence;
+    }
+
+    public void setStudentRollForAttendence(String studentRollForAttendence) {
+        this.studentRollForAttendence = studentRollForAttendence;
     }
 
     @Override

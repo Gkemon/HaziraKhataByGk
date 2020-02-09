@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="20sp"
-    android:id="@+id/main"
     android:background="@drawable/selector_row"
+    android:elevation="20sp"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 

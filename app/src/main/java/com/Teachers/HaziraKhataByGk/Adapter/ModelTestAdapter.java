@@ -1,7 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.Teachers.HaziraKhataByGk.R;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
+import com.Teachers.HaziraKhataByGk.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.List;
  * Created by uy on 11/26/2017.
  */
 
-public class ModelTestAdapter extends RecyclerView.Adapter<ModelTestAdapter.questionHolder>  {
+public class ModelTestAdapter extends RecyclerView.Adapter<ModelTestAdapter.questionHolder> {
     public static List<String> QuestonList;
     private Context context;
-   // public static SparseBooleanArray selectedItems;
+    // public static SparseBooleanArray selectedItems;
     private RecyclerItemClickListener recyclerItemClickListener;
 
     public ModelTestAdapter(Context context) {
@@ -30,10 +31,12 @@ public class ModelTestAdapter extends RecyclerView.Adapter<ModelTestAdapter.ques
         this.QuestonList = new ArrayList<>();
 //        selectedItems=new SparseBooleanArray();
     }
+
     private void add(String item) {
         QuestonList.add(item);
         notifyItemInserted(QuestonList.size() - 1);
     }
+
     public void addAll(List<String> Notelist) {
         for (String Notes : Notelist) {
             add(Notes);
@@ -53,6 +56,7 @@ public class ModelTestAdapter extends RecyclerView.Adapter<ModelTestAdapter.ques
             remove(getItem(0));
         }
     }
+
     public String getItem(int position) {
         return QuestonList.get(position);
     }
@@ -109,12 +113,10 @@ public class ModelTestAdapter extends RecyclerView.Adapter<ModelTestAdapter.ques
     }
 
 
-
     @Override
     public int getItemCount() {
         return QuestonList.size();
     }
-
 
 
     public void setOnItemClickListener(RecyclerItemClickListener recyclerItemClickListener) {
@@ -122,16 +124,14 @@ public class ModelTestAdapter extends RecyclerView.Adapter<ModelTestAdapter.ques
     }
 
 
-
-
-   public static class questionHolder extends RecyclerView.ViewHolder {
+    public static class questionHolder extends RecyclerView.ViewHolder {
         Button question;
         LinearLayout linearLayout;
 
         public questionHolder(View itemView) {
             super(itemView);
-            linearLayout=(LinearLayout)itemView.findViewById(R.id.main);
-            question=(Button)itemView.findViewById(R.id.question_of_model_test) ;
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.main);
+            question = (Button) itemView.findViewById(R.id.question_of_model_test);
             question.setGravity(Gravity.START);
         }
     }

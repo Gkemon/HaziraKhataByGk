@@ -15,6 +15,9 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class FirebasePhoneAuthBuilder {
+    private static FirebasePhoneAuthBuilder firebasePhoneAuthBuilder;
+    public boolean isNewUser;
+    public CountDownTimer cTimer;
     String phoneNumber;
     String pin;
     CommonCallback<Long> timerCallBack;
@@ -22,41 +25,43 @@ public class FirebasePhoneAuthBuilder {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private Activity activity;
     private String mVerificationId;
-    public boolean isNewUser;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private CommonCallback<Boolean> newUserCallBack;
-    public CountDownTimer cTimer;
     private CommonCallback<Boolean> codeGettingCallBack;
-    private static FirebasePhoneAuthBuilder firebasePhoneAuthBuilder;
 
+    public static FirebasePhoneAuthBuilder getInstance() {
+
+        if (firebasePhoneAuthBuilder == null) {
+            return firebasePhoneAuthBuilder = new FirebasePhoneAuthBuilder();
+        } else return firebasePhoneAuthBuilder;
+    }
 
     public void startCountDownTimer() {
         stopTimer();
 
 
-            cTimer = new CountDownTimer(120000, 1000) {
+        cTimer = new CountDownTimer(120000, 1000) {
 
-                public void onTick(long millisUntilFinished) {
-                    timerCallBack.onWait((int) millisUntilFinished / 1000);
-                }
+            public void onTick(long millisUntilFinished) {
+                timerCallBack.onWait((int) millisUntilFinished / 1000);
+            }
 
-                public void onFinish() {
-                    timerCallBack.onSuccess();
-                    timerCallBack=null;
+            public void onFinish() {
+                timerCallBack.onSuccess();
+                timerCallBack = null;
 
-                    DialogUtils.showInfoAlertDialog("পিন নাম্বার আসেনি?", "যদি পিন নাম্বার না এসে " +
-                            "থাকে তাহলে কি আবার পিন নাম্বার পাঠাবো আমরা?",activity,new CommonCallback() {
-                        @Override
-                        public void onSuccess() {
-                            resendVerificationCode(phoneNumber,mResendToken);
-                        }
-                    });
+                DialogUtils.showInfoAlertDialog("পিন নাম্বার আসেনি?", "যদি পিন নাম্বার না এসে " +
+                        "থাকে তাহলে কি আবার পিন নাম্বার পাঠাবো আমরা?", activity, new CommonCallback() {
+                    @Override
+                    public void onSuccess() {
+                        resendVerificationCode(phoneNumber, mResendToken);
+                    }
+                });
 
 
-                }
-            };
-            cTimer.start();
-
+            }
+        };
+        cTimer.start();
 
 
     }
@@ -68,7 +73,7 @@ public class FirebasePhoneAuthBuilder {
             verificationCallBack.onFailure("No active internet connection available.");
         } else {
 
-            if (!validatePhoneNumber()){
+            if (!validatePhoneNumber()) {
                 verificationCallBack.onFailure("Invalid phone number.");
                 return;
             }
@@ -79,8 +84,7 @@ public class FirebasePhoneAuthBuilder {
             }
 
 
-            if(timerCallBack!=null)
-            {
+            if (timerCallBack != null) {
                 startCountDownTimer();
             }
 
@@ -97,7 +101,6 @@ public class FirebasePhoneAuthBuilder {
 
                 @Override
                 public void onVerificationFailed(FirebaseException e) {
-
 
 
                     UtilsCommon.debugLog("Phone auth error : " + e.getLocalizedMessage());
@@ -127,8 +130,7 @@ public class FirebasePhoneAuthBuilder {
     }
 
     void stopTimer() {
-        if (cTimer != null)
-        {
+        if (cTimer != null) {
             cTimer.cancel();
             timerCallBack.onWait(120);
         }
@@ -136,13 +138,12 @@ public class FirebasePhoneAuthBuilder {
 
     public FirebasePhoneAuthBuilder setPhoneNumber(String phoneNumber) {
 
-        if(!phoneNumber.contains("+880"))
-            phoneNumber="+880"+phoneNumber;
+        if (!phoneNumber.contains("+880"))
+            phoneNumber = "+880" + phoneNumber;
 
         this.phoneNumber = phoneNumber;
         return this;
     }
-
 
     public FirebasePhoneAuthBuilder setPin(String pin) {
         this.pin = pin;
@@ -158,6 +159,7 @@ public class FirebasePhoneAuthBuilder {
         this.verificationCallBack = verificationCallBack;
         return this;
     }
+
     public FirebasePhoneAuthBuilder setCodeGettingCallBack(CommonCallback<Boolean> codeGettingCallBack) {
         this.codeGettingCallBack = codeGettingCallBack;
         return this;
@@ -172,16 +174,6 @@ public class FirebasePhoneAuthBuilder {
         this.newUserCallBack = newUserCallBack;
         return this;
     }
-
-    public static FirebasePhoneAuthBuilder getInstance() {
-
-        if(firebasePhoneAuthBuilder==null)
-        {
-            return firebasePhoneAuthBuilder =new FirebasePhoneAuthBuilder();
-        }
-        else return firebasePhoneAuthBuilder;
-    }
-
 
     private boolean validatePhoneNumber() {
 
@@ -201,12 +193,12 @@ public class FirebasePhoneAuthBuilder {
             if (task.isSuccessful()) {
                 UtilsCommon.debugLog("Phone auth success");
 
-                if(newUserCallBack!=null)
-                if (Objects.requireNonNull(task.getResult()).getAdditionalUserInfo().isNewUser()) {
-                    newUserCallBack.onSuccess(true);
-                } else {
-                    newUserCallBack.onSuccess(false);
-                }
+                if (newUserCallBack != null)
+                    if (Objects.requireNonNull(task.getResult()).getAdditionalUserInfo().isNewUser()) {
+                        newUserCallBack.onSuccess(true);
+                    } else {
+                        newUserCallBack.onSuccess(false);
+                    }
 
                 verificationCallBack.onSuccess();
 

@@ -8,34 +8,8 @@
     android:background="@color/blueLight"
     android:layout_height="match_parent"
     android:id="@+id/parentLayout">
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/ads"-->
-        <!--android:orientation="vertical">-->
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark"-->
-            <!--android:layout_height="6sp">-->
-        <!--</View>-->
-        <!--<com.google.android.gms.ads.AdView-->
-            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/adViewInHome"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--ads:adSize="SMART_BANNER"-->
-            <!--ads:adUnitId="@string/Banner_ad_id">-->
-        <!--</com.google.android.gms.ads.AdView>-->
 
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark"-->
-            <!--android:layout_height="6sp">-->
-        <!--</View>-->
-    <!--</LinearLayout>-->
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/myCoordinatorLayout"
         android:layout_width="match_parent"
         android:gravity="center"
@@ -65,7 +39,7 @@
 
     </LinearLayout>
 
-    <!--<android.support.design.widget.AppBarLayout-->
+    <!--<com.google.android.material.appbar.AppBarLayout-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--app:elevation="0dp"-->
@@ -73,7 +47,7 @@
         <!--&gt;-->
 
         <!--&lt;!&ndash;<include layout="@layout/base_toolbar"/>&ndash;&gt;-->
-    <!--</android.support.design.widget.AppBarLayout>-->
+    <!--</com.google.android.material.appbar.AppBarLayout>-->
 
         <com.Teachers.HaziraKhataByGk.Scheduler.RecyclerViewEmptySupport
             android:id="@+id/toDoRecyclerView"
@@ -84,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:src="@drawable/ic_add_white_24dp"
             android:id="@+id/addToDoItemFAB"
             android:background="@color/blueMiddle"
@@ -97,5 +71,5 @@
             android:tint="#FFFFFF"
             app:backgroundTint="#0472ae"
             app:rippleColor="#03A9F4"/>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

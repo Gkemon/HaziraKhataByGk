@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Adapter;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
+import com.Teachers.HaziraKhataByGk.R;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
@@ -29,9 +29,10 @@ import static com.Teachers.HaziraKhataByGk.R.id.shareClickerForjob;
  * Created by uy on 10/28/2017.
  */
 
-public class JobListAdapter extends RecyclerView.Adapter<JobViewHolder>{
+public class JobListAdapter extends RecyclerView.Adapter<JobViewHolder> {
     private ArrayList<JobItems> list;
     private RecyclerItemClickListener recyclerItemClickListener;
+
     public JobListAdapter(ArrayList<JobItems> Data) {
         list = Data;
     }
@@ -41,7 +42,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobViewHolder>{
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.jobs_item_cards, parent, false);
-        final  JobViewHolder holder = new JobViewHolder(view);
+        final JobViewHolder holder = new JobViewHolder(view);
         //CLICK LISTENER
         holder.itemView.findViewById(clickerForJob).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +90,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobViewHolder>{
         });
         return holder;
     }
+
     public void setOnItemClickListener(RecyclerItemClickListener recyclerItemClickListener) {
         this.recyclerItemClickListener = recyclerItemClickListener;
     }
@@ -104,28 +106,29 @@ public class JobListAdapter extends RecyclerView.Adapter<JobViewHolder>{
                 .useFont(Typeface.DEFAULT)
                 .toUpperCase()
                 .endConfig()
-                .buildRect("",color);
+                .buildRect("", color);
 
-        ImageView savedIcon=(ImageView)holder.itemView.findViewById(R.id.saveClickerIconForJob);
-        ImageView lovedIcon=(ImageView)holder.itemView.findViewById(R.id.lovedIconForJob);
+        ImageView savedIcon = (ImageView) holder.itemView.findViewById(R.id.saveClickerIconForJob);
+        ImageView lovedIcon = (ImageView) holder.itemView.findViewById(R.id.lovedIconForJob);
 
 
         //TODO: check if save or unsaved
-        if(UtilsCommon.isJobSaved(holder.itemView.getContext(),list.get(position).getPost(),list.get(position).getInstitute(),list.get(position).getPlace(),list.get(position).getURL())){
+        if (UtilsCommon.isJobSaved(holder.itemView.getContext(), list.get(position).getPost(), list.get(position).getInstitute(), list.get(position).getPlace(), list.get(position).getURL())) {
             savedIcon.setImageResource(R.drawable.ic_saved_icon);
         }
 
 
-        if(UtilsCommon.isJobLoved(holder.itemView.getContext(),list.get(position).getPost(),list.get(position).getInstitute(),list.get(position).getPlace(),list.get(position).getURL())){
+        if (UtilsCommon.isJobLoved(holder.itemView.getContext(), list.get(position).getPost(), list.get(position).getInstitute(), list.get(position).getPlace(), list.get(position).getURL())) {
             lovedIcon.setImageResource(R.drawable.ic_love_icon);
         }
-        String post="পদ: "+list.get(position).getPost(),place="স্থান: "+list.get(position).getPlace(),institute="প্রতিষ্ঠান: "+list.get(position).getInstitute();
+        String post = "পদ: " + list.get(position).getPost(), place = "স্থান: " + list.get(position).getPlace(), institute = "প্রতিষ্ঠান: " + list.get(position).getInstitute();
 
         holder.post.setText(post);
         holder.place.setText(place);
         holder.institute.setText(institute);
         holder.sideDrawable.setImageDrawable(myDrawable);
     }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -133,6 +136,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobViewHolder>{
 
 
 }
+
 class JobViewHolder extends RecyclerView.ViewHolder {
 
     public TextView post;
@@ -147,11 +151,11 @@ class JobViewHolder extends RecyclerView.ViewHolder {
     public JobViewHolder(View v) {
         super(v);
         post = (TextView) v.findViewById(R.id.post);
-        institute=(TextView)v.findViewById(R.id.institute);
-        place=(TextView)v.findViewById(R.id.place);
-        sideDrawable=(ImageView)v.findViewById(R.id.MetarialColorPlateForJob);
-        share=(LinearLayout)v.findViewById(R.id.shareClickerForjob);
-        save=(LinearLayout)v.findViewById(R.id.saveClickerForjob);
-        love=(LinearLayout)v.findViewById(R.id.loveClickerForjob);
+        institute = (TextView) v.findViewById(R.id.institute);
+        place = (TextView) v.findViewById(R.id.place);
+        sideDrawable = (ImageView) v.findViewById(R.id.MetarialColorPlateForJob);
+        share = (LinearLayout) v.findViewById(R.id.shareClickerForjob);
+        save = (LinearLayout) v.findViewById(R.id.saveClickerForjob);
+        love = (LinearLayout) v.findViewById(R.id.loveClickerForjob);
     }
 }

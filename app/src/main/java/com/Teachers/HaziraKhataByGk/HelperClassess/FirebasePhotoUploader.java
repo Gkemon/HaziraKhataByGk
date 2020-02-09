@@ -1,7 +1,9 @@
 package com.Teachers.HaziraKhataByGk.HelperClassess;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.net.Uri;
+
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
@@ -9,20 +11,25 @@ import com.google.firebase.storage.StorageReference;
 
 
 public class FirebasePhotoUploader {
+    private static FirebasePhotoUploader firebasePhotoUploader;
     private String fileName;
     private String serverStorageFolderName;
-    private static FirebasePhotoUploader firebasePhotoUploader;
     private CommonCallback<Uri> commonCallback;
     private Activity activity;
     private Uri uri;
     private DatabaseReference targetDatabaseRef;
 
+    public static FirebasePhotoUploader getBuilder() {
+        if (firebasePhotoUploader == null) {
+            firebasePhotoUploader = new FirebasePhotoUploader();
+            return firebasePhotoUploader;
+        } else return firebasePhotoUploader;
+    }
 
     public FirebasePhotoUploader setTargetDatabaseRef(DatabaseReference targetDatabaseRef) {
         this.targetDatabaseRef = targetDatabaseRef;
         return this;
     }
-
 
     public FirebasePhotoUploader setUri(Uri uri) {
         this.uri = uri;
@@ -34,19 +41,10 @@ public class FirebasePhotoUploader {
         return this;
     }
 
-    public static FirebasePhotoUploader getBuilder() {
-        if (firebasePhotoUploader == null){
-           firebasePhotoUploader = new FirebasePhotoUploader();
-           return firebasePhotoUploader;
-        }
-        else return firebasePhotoUploader;
-    }
-
     public FirebasePhotoUploader setFileName(String fileName) {
         this.fileName = fileName;
         return this;
     }
-
 
 
     public FirebasePhotoUploader setServerStorageFolderName(String url) {
@@ -63,51 +61,52 @@ public class FirebasePhotoUploader {
         uploadImage(uri);
     }
 
-     void uploadImage(Uri file) {
+    void uploadImage(Uri file) {
 
 
         if (file != null) {
 
-            try{
+            try {
                 final ProgressDialog progressDialog = new ProgressDialog(activity);
                 progressDialog.setTitle("Uploading...");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
 
-            FirebaseStorage storage = FirebaseStorage.getInstance();
+                FirebaseStorage storage = FirebaseStorage.getInstance();
 
-            final StorageReference riversRef =
-                    storage.getReference().child(serverStorageFolderName + "/" + fileName);
+                final StorageReference riversRef =
+                        storage.getReference().child(serverStorageFolderName + "/" + fileName);
 
-            //For replacing
-            riversRef.delete();
+                //For replacing
+                riversRef.delete();
 
-            riversRef.putFile(file).addOnProgressListener(taskSnapshot -> {
+                riversRef.putFile(file).addOnProgressListener(taskSnapshot -> {
 
-                double progress = ((taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount()) * 100);
-                commonCallback.onWait((int)progress);
-                progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                    double progress = ((taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount()) * 100);
+                    commonCallback.onWait((int) progress);
+                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
 
-            }).addOnSuccessListener(taskSnapshot -> {
+                }).addOnSuccessListener(taskSnapshot -> {
 
-                riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    targetDatabaseRef.setValue(uri.toString())
-                            .addOnSuccessListener(aVoid -> commonCallback.onSuccess(uri))
-                            .addOnFailureListener(e -> commonCallback.onFailure(e.getLocalizedMessage()));
+                    riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        targetDatabaseRef.setValue(uri.toString())
+                                .addOnSuccessListener(aVoid -> commonCallback.onSuccess(uri))
+                                .addOnFailureListener(e -> commonCallback.onFailure(e.getLocalizedMessage()));
 
-                }).addOnFailureListener(e ->{
-                commonCallback.onFailure("Not stored in server for network problem");
-                progressDialog.dismiss();});
-            }).addOnFailureListener(e -> {
-                        commonCallback.onFailure("Upload failed: " + e.getMessage());
+                    }).addOnFailureListener(e -> {
+                        commonCallback.onFailure("Not stored in server for network problem");
                         progressDialog.dismiss();
+                    });
+                }).addOnFailureListener(e -> {
+                    commonCallback.onFailure("Upload failed: " + e.getMessage());
+                    progressDialog.dismiss();
 
-                    })
-                    .addOnPausedListener(taskSnapshot ->
-                            commonCallback.onWait()
-                    );
-            }catch (Exception e){
+                })
+                        .addOnPausedListener(taskSnapshot ->
+                                commonCallback.onWait()
+                        );
+            } catch (Exception e) {
 
             }
 

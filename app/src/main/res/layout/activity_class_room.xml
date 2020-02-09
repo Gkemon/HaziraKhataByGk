@@ -96,14 +96,14 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/marksheet"
         android:id="@+id/notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
     <!--PROBLEM WITH FAB WHEN USING RECYCLEVIEW EVALUTION-->
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabForNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

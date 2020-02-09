@@ -1,19 +1,15 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.Teachers.HaziraKhataByGk.BlogActivity;
-import com.Teachers.HaziraKhataByGk.Constant.Constant;
+import androidx.fragment.app.Fragment;
+
 import com.Teachers.HaziraKhataByGk.HelperClassess.MockObjectsRepository;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.R;
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
@@ -27,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class RoutineWeekViewFragment extends Fragment implements MonthLoader.MonthChangeListener, WeekView.EventClickListener, WeekView.EventLongPressListener,WeekView.EmptyViewLongPressListener {
+public class RoutineWeekViewFragment extends Fragment implements MonthLoader.MonthChangeListener, WeekView.EventClickListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
     View root;
     Context context;
     private WeekView mWeekView;
@@ -38,12 +34,11 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        root=inflater.inflate(R.layout.fragment_routine_week_view, container, false);
+        root = inflater.inflate(R.layout.fragment_routine_week_view, container, false);
 
         mWeekView = root.findViewById(R.id.weekView);
         mWeekView.setOnEventClickListener(this);
@@ -52,7 +47,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
         mWeekView.setEmptyViewLongPressListener(this);
 
         setupDateTimeInterpreter(false);
-        return root ;
+        return root;
     }
 
 
@@ -74,10 +69,11 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
             }
         });
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.context=context;
+        this.context = context;
     }
 
     @Override
@@ -94,11 +90,11 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
         List<RoutineItem> events = new ArrayList<>();
-        if(getArguments()!=null){
+        if (getArguments() != null) {
             flag = getArguments().getString("key");
         }
 
-        events.add(MockObjectsRepository.getDummyRoutine(newYear,newMonth));
+        events.add(MockObjectsRepository.getDummyRoutine(newYear, newMonth));
 
         return events;
     }

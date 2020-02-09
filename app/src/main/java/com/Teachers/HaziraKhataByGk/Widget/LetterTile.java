@@ -19,23 +19,39 @@ import com.Teachers.HaziraKhataByGk.R;
  */
 public class LetterTile {
 
-    /** The number of available tile colors (see R.array.letter_tile_colors) */
+    /**
+     * The number of available tile colors (see R.array.letter_tile_colors)
+     */
     private static final int NUM_OF_TILE_COLORS = 8;
 
-    /** The {@link TextPaint} used toTime draw the letter onto the tile */
+    /**
+     * The {@link TextPaint} used toTime draw the letter onto the tile
+     */
     private final TextPaint mPaint = new TextPaint();
-    /** The bounds that enclose the letter */
+    /**
+     * The bounds that enclose the letter
+     */
     private final Rect mBounds = new Rect();
-    /** The {@link Canvas} toTime draw on */
+    /**
+     * The {@link Canvas} toTime draw on
+     */
     private final Canvas mCanvas = new Canvas();
-    /** The first char of the name being displayed */
+    /**
+     * The first char of the name being displayed
+     */
     private final char[] mFirstChar = new char[1];
 
-    /** The background colors of the tile */
+    /**
+     * The background colors of the tile
+     */
     private final TypedArray mColors;
-    /** The font size used toTime display the letter */
+    /**
+     * The font size used toTime display the letter
+     */
     private final int mTileLetterFontSize;
-    /** The default image toTime display */
+    /**
+     * The default image toTime display
+     */
     private final Bitmap mDefaultBitmap;
 
     /**
@@ -58,13 +74,22 @@ public class LetterTile {
     }
 
     /**
+     * @param c The char toTime check
+     * @return True if <code>c</code> is in the English alphabet or is a digit,
+     * false otherwise
+     */
+    private static boolean isEnglishLetterOrDigit(char c) {
+        return 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z' || '0' <= c && c <= '9';
+    }
+
+    /**
      * @param displayName The name used toTime create the letter for the tile
-     * @param key The key used toTime generate the background color for the tile
-     * @param width The desired width of the tile
-     * @param height The desired height of the tile
+     * @param key         The key used toTime generate the background color for the tile
+     * @param width       The desired width of the tile
+     * @param height      The desired height of the tile
      * @return A {@link Bitmap} that contains a letter used in the English
-     *         alphabet or digit, if there is no letter or digit available, a
-     *         default image is shown instead
+     * alphabet or digit, if there is no letter or digit available, a
+     * default image is shown instead
      */
     public Bitmap getLetterTile(String displayName, String key, int width, int height) {
         final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -87,18 +112,9 @@ public class LetterTile {
     }
 
     /**
-     * @param c The char toTime check
-     * @return True if <code>c</code> is in the English alphabet or is a digit,
-     *         false otherwise
-     */
-    private static boolean isEnglishLetterOrDigit(char c) {
-        return 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z' || '0' <= c && c <= '9';
-    }
-
-    /**
      * @param key The key used toTime generate the tile color
      * @return A new or previously chosen color for <code>key</code> used as the
-     *         tile background color
+     * tile background color
      */
     private int pickColor(String key) {
         // String.hashCode() is not supposed toTime change across java versions, so

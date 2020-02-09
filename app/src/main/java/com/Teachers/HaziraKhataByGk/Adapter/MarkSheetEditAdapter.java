@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -17,14 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout;
-import com.Teachers.HaziraKhataByGk.Model.Student;
-import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Model.DistributionVSnumberTable;
+import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.StudentVsDistributionTable;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
+import com.Teachers.HaziraKhataByGk.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,13 +39,13 @@ import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.logObject;
 
 public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdapter.markEditHolder> {
 
+    public static HashMap<Integer, ArrayList<EditText>> editTextHashMap;//For avoiding auto checking
     public ArrayList<Student> Students;
     public SubjectMarkSheet subjectMarkSheet;
     public ArrayList<StudentVsDistributionTable> studentVsDistributionTableArrayList;
-    private Activity activity;
-    String mainNumberSheetText ="";
     public String className, sectionName, key;
-    public static HashMap<Integer, ArrayList<EditText>> editTextHashMap;//For avoiding auto checking
+    String mainNumberSheetText = "";
+    private Activity activity;
 
 
     public MarkSheetEditAdapter(Activity activity, ArrayList<Student> Students, SubjectMarkSheet subjectMarkSheet, String className, String sectionName, String key) {
@@ -154,17 +155,17 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
             EditText editText = (EditText) holder.itemView.findViewById(i);
 
 
-            String number="";
-            if(subjectMarkSheet.getStudentVsDistributionTableArrayList()!=null)
-                if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position)!=null)
-                    if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList()!=null)
-                        if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i)!=null)
-                            if(subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i).distributionNumber!=null)
-             number=subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i).distributionNumber.toString();
+            String number = "";
+            if (subjectMarkSheet.getStudentVsDistributionTableArrayList() != null)
+                if (subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position) != null)
+                    if (subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList() != null)
+                        if (subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i) != null)
+                            if (subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i).distributionNumber != null)
+                                number = subjectMarkSheet.getStudentVsDistributionTableArrayList().get(position).getDistributionVSnumberTableArrayList().get(i).distributionNumber.toString();
 
 
-            if(number==null)
-            editText.setText("");
+            if (number == null)
+                editText.setText("");
             else editText.setText(number);
 
 
@@ -194,6 +195,77 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
         return Students.size();
     }
 
+    public void saveDataToServer() {
+
+        doProcessOfAllData();
+
+        Toast.makeText(activity, "সেভ করা হয়েছে", Toast.LENGTH_LONG).show();
+        activity.finish();
+    }
+
+    public void printData() {
+
+        doProcessOfAllData();
+        String temp = "বিষয় :" + subjectMarkSheet.getSubjectName() + "\n" + "মোট নাম্বার :" + subjectMarkSheet.getTotalNumber() + "\n" + "মোট বন্টন সংখ্যা : " + subjectMarkSheet.getDistributionVSnumberTable().size() + " টি " + "\n" + "বন্টনের নামগুলো এবং প্রতিটি বন্টনের মোট নাম্বারগুলো নিচে দেয়া হল \n\n";
+
+        for (int i = 0; i < subjectMarkSheet.getDistributionVSnumberTable().size(); i++) {
+            temp += (i + 1 + ") " + subjectMarkSheet.getDistributionVSnumberTable().get(i).distributionName + " (" + subjectMarkSheet.getDistributionVSnumberTable().get(i).distributionNumber + " নাম্বার )\n");
+        }
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                temp + mainNumberSheetText);
+        sendIntent.setType("text/plain");
+        activity.startActivity(sendIntent);
+
+    }
+
+    public void doProcessOfAllData() {
+        mainNumberSheetText = "";
+
+        for (int i = 0; i < editTextHashMap.size(); i++) {
+            ArrayList<DistributionVSnumberTable> distributionVSnumberTableArrayList = new ArrayList<>();
+
+            String temp2 = "";
+            for (int j = 0; j < editTextHashMap.get(i).size(); j++) {
+                Log.d("GK", "editTextHashMap :[ " + i + " ] [ " + j + " ] " + editTextHashMap.get(i).get(j).getText().toString());
+
+                DistributionVSnumberTable distributionVSnumberTable = new DistributionVSnumberTable();
+
+                distributionVSnumberTable.setDistributionName(subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName);
+                temp2 += "\n" + subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName + " ( " + editTextHashMap.get(i).get(j).getText().toString() + " নাম্বার )";
+
+                if (UtilsCommon.isNumeric(editTextHashMap.get(i).get(j).getText().toString()))
+                    distributionVSnumberTable.setDistributionNumber(Double.valueOf(editTextHashMap.get(i).get(j).getText().toString()));
+                distributionVSnumberTableArrayList.add(distributionVSnumberTable);
+
+            }
+
+            String temp1 = "\n নাম : " + Students.get(i).getStudentName() + " ( রোল :" + Students.get(i).getId() + " )\n";
+            mainNumberSheetText += (temp1 + temp2) + "\n";
+
+            StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
+            studentVsDistributionTable.setStudentID(Students.get(i).getId());
+            studentVsDistributionTable.setDistributionVSnumberTableArrayList(distributionVSnumberTableArrayList);
+
+
+            //logObject(studentVsDistributionTable);
+
+            studentVsDistributionTableArrayList.set(i, studentVsDistributionTable);
+            subjectMarkSheet.setStudentVsDistributionTableArrayList(studentVsDistributionTableArrayList);
+
+            logObject(studentVsDistributionTableArrayList);
+
+        }
+
+        Log.d("GK", "KEY :" + key);
+
+        FirebaseCaller firebaseCaller = new FirebaseCaller();
+        firebaseCaller.pushAndRemoveSubjectToServer(className, sectionName, subjectMarkSheet, key);
+
+
+    }
 
     public static class markEditHolder extends RecyclerView.ViewHolder {
 
@@ -261,79 +333,6 @@ public class MarkSheetEditAdapter extends RecyclerView.Adapter<MarkSheetEditAdap
 
 
         }
-
-
-    }
-
-
-    public void saveDataToServer() {
-
-        doProcessOfAllData();
-
-        Toast.makeText(activity,"সেভ করা হয়েছে",Toast.LENGTH_LONG).show();
-        activity.finish();
-    }
-
-    public void printData(){
-
-        doProcessOfAllData();
-        String temp="বিষয় :"+subjectMarkSheet.getSubjectName()+"\n"+"মোট নাম্বার :"+subjectMarkSheet.getTotalNumber()+"\n"+"মোট বন্টন সংখ্যা : "+subjectMarkSheet.getDistributionVSnumberTable().size()+" টি "+"\n"+"বন্টনের নামগুলো এবং প্রতিটি বন্টনের মোট নাম্বারগুলো নিচে দেয়া হল \n\n";
-
-        for(int i=0;i<subjectMarkSheet.getDistributionVSnumberTable().size();i++){
-            temp+=(i+1+") "+subjectMarkSheet.getDistributionVSnumberTable().get(i).distributionName +" ("+subjectMarkSheet.getDistributionVSnumberTable().get(i).distributionNumber +" নাম্বার )\n");
-        }
-
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT,
-                temp+ mainNumberSheetText);
-        sendIntent.setType("text/plain");
-        activity.startActivity(sendIntent);
-
-    }
-
-   public void doProcessOfAllData(){
-        mainNumberSheetText ="";
-
-        for (int i = 0; i < editTextHashMap.size(); i++) {
-            ArrayList<DistributionVSnumberTable> distributionVSnumberTableArrayList = new ArrayList<>();
-
-            String temp2="";
-            for (int j = 0; j < editTextHashMap.get(i).size(); j++) {
-                Log.d("GK", "editTextHashMap :[ " + i + " ] [ " + j + " ] " + editTextHashMap.get(i).get(j).getText().toString());
-
-                DistributionVSnumberTable distributionVSnumberTable = new DistributionVSnumberTable();
-
-                distributionVSnumberTable.setDistributionName(subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName);
-                temp2+="\n"+subjectMarkSheet.getDistributionVSnumberTable().get(j).distributionName+" ( "+editTextHashMap.get(i).get(j).getText().toString()+" নাম্বার )";
-
-                if(UtilsCommon.isNumeric(editTextHashMap.get(i).get(j).getText().toString()))
-                distributionVSnumberTable.setDistributionNumber(Double.valueOf(editTextHashMap.get(i).get(j).getText().toString()));
-                distributionVSnumberTableArrayList.add(distributionVSnumberTable);
-
-            }
-
-            String temp1 ="\n নাম : "+ Students.get(i).getStudentName()+ " ( রোল :"+ Students.get(i).getId()+" )\n";
-             mainNumberSheetText +=(temp1+temp2)+"\n";
-
-            StudentVsDistributionTable studentVsDistributionTable = new StudentVsDistributionTable();
-            studentVsDistributionTable.setStudentID(Students.get(i).getId());
-            studentVsDistributionTable.setDistributionVSnumberTableArrayList(distributionVSnumberTableArrayList);
-
-
-            //logObject(studentVsDistributionTable);
-
-            studentVsDistributionTableArrayList.set(i, studentVsDistributionTable);
-            subjectMarkSheet.setStudentVsDistributionTableArrayList(studentVsDistributionTableArrayList);
-
-            logObject(studentVsDistributionTableArrayList);
-
-        }
-
-       Log.d("GK","KEY :"+key);
-
-       FirebaseCaller firebaseCaller = new  FirebaseCaller();
-       firebaseCaller.pushAndRemoveSubjectToServer(className,sectionName,subjectMarkSheet,key);
 
 
     }

@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +15,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Widget.PrefManager;
 
@@ -25,16 +26,44 @@ import com.Teachers.HaziraKhataByGk.Widget.PrefManager;
  * Created by uy on 12/1/2017.
  */
 
-public class WelcomeActivity  extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
     private Button btnSkip, btnNext;
-    private PrefManager prefManager;
-    //FaceBook
+    //  viewpager change listener
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
+        @Override
+        public void onPageSelected(int position) {
+            addBottomDots(position);
+
+            // changing the next button text 'NEXT' / 'GOT IT'
+            if (position == layouts.length - 1) {
+                // last page. make button text toTime GOT IT
+                btnNext.setText(getString(R.string.start));
+                btnSkip.setVisibility(View.GONE);
+            } else {
+                // still pages are left
+                btnNext.setText(getString(R.string.next));
+                btnSkip.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+    };
+    //FaceBook
+    private PrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +73,6 @@ public class WelcomeActivity  extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
 
         // Checking for first time launch - before calling setContentView()
@@ -130,41 +158,11 @@ public class WelcomeActivity  extends AppCompatActivity {
 
     private void launchLoginScreen() {
         prefManager.setFirstTimeLaunch(false);
-        Intent intent=new Intent(WelcomeActivity.this, LoginActivity.class);
-        intent.putExtra("FLAG","OUTSIDE");
+        Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+        intent.putExtra("FLAG", "OUTSIDE");
         startActivity(intent);
         finish();
     }
-
-    //  viewpager change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            addBottomDots(position);
-
-            // changing the next button text 'NEXT' / 'GOT IT'
-            if (position == layouts.length - 1) {
-                // last page. make button text toTime GOT IT
-                btnNext.setText(getString(R.string.start));
-                btnSkip.setVisibility(View.GONE);
-            } else {
-                // still pages are left
-                btnNext.setText(getString(R.string.next));
-                btnSkip.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
 
     /**
      * Making notification bar transparent

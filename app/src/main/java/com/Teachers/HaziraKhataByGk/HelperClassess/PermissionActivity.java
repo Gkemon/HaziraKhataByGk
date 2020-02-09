@@ -3,10 +3,11 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 
@@ -16,14 +17,6 @@ import java.util.List;
 public abstract class PermissionActivity extends AppCompatActivity {
 
     public CommonCallback commonCallback;
-    public interface RequestCode {
-       // int PERMISSION_READ_PHONE_STATE = 0;
-       // int PERMISSION_FINE_LOCATION = 1;
-       // int PERMISSION_SEND_SMS = 2;
-        int PERMISSION_MULTIPLE = 3;
-        int PERMISSION_WRITE_EXTERNAL_STORAGE = 4;
-        int PERMISSION_READ_EXTERNAL_STORAGE=5;
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -73,11 +66,11 @@ public abstract class PermissionActivity extends AppCompatActivity {
      * -method/36193309#36193309 for details.
      */
     public boolean checkHasPermission(int requestCode, CommonCallback commonCallback, String... permissions) {
-        if (requestCode==RequestCode.PERMISSION_MULTIPLE&&!(permissions.length > 0)) {
+        if (requestCode == RequestCode.PERMISSION_MULTIPLE && !(permissions.length > 0)) {
             throw new IllegalArgumentException("must request at least one permission");
         }
 
-        this.commonCallback=commonCallback;
+        this.commonCallback = commonCallback;
         if (requestCode == RequestCode.PERMISSION_MULTIPLE) {
             List<String> permissions_ = new ArrayList<>();
 
@@ -126,7 +119,7 @@ public abstract class PermissionActivity extends AppCompatActivity {
                 .setNegativeButton("Not now", (dialog, which) -> { /* Do nothing */ })
                 .show();
     }
-    
+
     /**
      * Requests a single permission.
      */
@@ -237,4 +230,13 @@ public abstract class PermissionActivity extends AppCompatActivity {
      * Child class must override and decide what to do when a permission is blocked.
      */
     protected abstract void onPermissionBlocked(String permission);
+
+    public interface RequestCode {
+        // int PERMISSION_READ_PHONE_STATE = 0;
+        // int PERMISSION_FINE_LOCATION = 1;
+        // int PERMISSION_SEND_SMS = 2;
+        int PERMISSION_MULTIPLE = 3;
+        int PERMISSION_WRITE_EXTERNAL_STORAGE = 4;
+        int PERMISSION_READ_EXTERNAL_STORAGE = 5;
+    }
 }

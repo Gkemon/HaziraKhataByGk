@@ -1,26 +1,27 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
+import com.google.android.material.tabs.TabLayout;
 
 public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
     CustomViewPager viewPager;
     TabLayout tabLayout;
 
-    public static void showDialog(android.support.v4.app.FragmentManager manager) {
+    public static void showDialog(FragmentManager manager) {
 
         AllRoutineShowingDialog dialog = new AllRoutineShowingDialog();
         FragmentTransaction ft = manager.beginTransaction();

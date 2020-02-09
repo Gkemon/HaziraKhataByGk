@@ -1,7 +1,5 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
-import com.Teachers.HaziraKhataByGk.Constant.Constant;
-
 import java.util.Calendar;
 
 public class RoutineItmBuilder {
@@ -14,22 +12,22 @@ public class RoutineItmBuilder {
     public String location;
     public int color;
 
-    public static RoutineItmBuilder getInstance(){
-      return  new RoutineItmBuilder();
+    public static RoutineItmBuilder getInstance() {
+        return new RoutineItmBuilder();
     }
 
-    public RoutineItem build(){
+    public RoutineItem build() {
 
-       RoutineItem routineItem = new RoutineItem();
-       routineItem.setType(type);
-       routineItem.setDetails(details);
-       routineItem.setColor(color);
-       routineItem.setLocation(location);
-       routineItem.setName(name);
-       routineItem.setStartTime(startTime);
-       routineItem.setEndTime(endTime);
+        RoutineItem routineItem = new RoutineItem();
+        routineItem.setType(type);
+        routineItem.setDetails(details);
+        routineItem.setColor(color);
+        routineItem.setLocation(location);
+        routineItem.setName(name);
+        routineItem.setStartTime(startTime);
+        routineItem.setEndTime(endTime);
 
-       return routineItem;
+        return routineItem;
 
     }
 

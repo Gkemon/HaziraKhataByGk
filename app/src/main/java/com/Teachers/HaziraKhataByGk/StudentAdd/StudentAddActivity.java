@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
@@ -32,7 +33,6 @@ import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
-import com.Teachers.HaziraKhataByGk.StudentListShowActivity;
 import com.bumptech.glide.Glide;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -50,12 +50,7 @@ import static com.Teachers.HaziraKhataByGk.StudentAdd.StudentAddUtils.isRollExis
 
 public class StudentAddActivity extends PermissionActivity implements View.OnClickListener {
 
-    private EditText etPersonName;
-    private EditText etPhone;
-    private EditText etRollNumber;
-    private EditText etParentName;
-    private EditText etParentPhoneNumber;
-
+    public static List<AttendenceData> attendenceDataListBeforeEdit;
     @BindView(R.id.person2ParentTextFromStudentAct)
     public EditText etParent2Name;
     @BindView(R.id.Parents2phoneNumbersFromStudentAct)
@@ -68,17 +63,33 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
     public RadioButton rbFemale;
     @BindView(R.id.btn_birth_date_select)
     public Button btnBirthDay;
-
-
-    private Button btnAdd, btnEdit, btnDelete, btnClassRecord;
-    private ImageView imgProPic;
-    private Student student;
     public String previousId, currentId;
     public Activity activity;
     public Uri imageUri = null;
+    private EditText etPersonName;
+    private EditText etPhone;
+    private EditText etRollNumber;
+    private EditText etParentName;
+    private EditText etParentPhoneNumber;
+    private Button btnAdd, btnEdit, btnDelete, btnClassRecord;
+    private ImageView imgProPic;
+    private Student student;
     private String birthDay;
     private ArrayList<Student> studentList;
 
+    public static void start(Context context, ClassItem classItem, ArrayList<Student> studentList) {
+        Intent intent = new Intent(context, StudentAddActivity.class);
+        intent.putExtra("studentList", studentList);
+        intent.putExtra(Constant.CLASS, classItem);
+        context.startActivity(intent);
+    }
+
+    public static void start(Context context, Student student, ArrayList<Student> studentList) {
+        Intent intent = new Intent(context, StudentAddActivity.class);
+        intent.putExtra("studentList", studentList);
+        intent.putExtra(StudentAddActivity.class.getSimpleName(), student);
+        context.startActivity(intent);
+    }
 
     @OnClick(R.id.btn_birth_date_select)
     public void selectBirthDate(Button button) {
@@ -134,23 +145,6 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         }
 
 
-    }
-
-
-    public static List<AttendenceData> attendenceDataListBeforeEdit;
-
-    public static void start(Context context, ClassItem classItem, ArrayList<Student> studentList) {
-        Intent intent = new Intent(context, StudentAddActivity.class);
-        intent.putExtra("studentList", studentList);
-        intent.putExtra(Constant.CLASS, classItem);
-        context.startActivity(intent);
-    }
-
-    public static void start(Context context, Student student, ArrayList<Student> studentList) {
-        Intent intent = new Intent(context, StudentAddActivity.class);
-        intent.putExtra("studentList", studentList);
-        intent.putExtra(StudentAddActivity.class.getSimpleName(), student);
-        context.startActivity(intent);
     }
 
     @Override
@@ -285,7 +279,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                 if (submitForm()) {
 
                     //CHECK THAT THE ITEM IS UNIQUE
-                    if (isRollExisted(studentList, student.getId(),this))
+                    if (isRollExisted(studentList, student.getId(), this))
                         return;
 
                     ClassItem classItem = new ClassItem();
@@ -513,6 +507,29 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
     }
 
+    public void deleteDialogForStudent() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
+        dialogBuilder.setView(dialogView);
+        final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
+        dialogBuilder.setTitle("আপনি কি আসলেই এই শিক্ষার্থীর সকল তথ্য ডিলিট করতে চান?");
+        dialogBuilder.setPositiveButton("ডিলিট করুন", (dialog, whichButton) -> {
+
+            FirebaseCaller.removeStudentToServer(UtilsCommon.
+                    getCurrentClass(StudentAddActivity.this), student.getId());
+
+            Toast.makeText(StudentAddActivity.this, "এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।", Toast.LENGTH_LONG).show();
+            previousId = null;
+            finish();
+
+        });
+        dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
     private class MyTextWatcher implements TextWatcher {
 
         private View view;
@@ -539,30 +556,6 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                     break;
             }
         }
-    }
-
-
-    public void deleteDialogForStudent() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
-        dialogBuilder.setView(dialogView);
-        final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
-        dialogBuilder.setTitle("আপনি কি আসলেই এই শিক্ষার্থীর সকল তথ্য ডিলিট করতে চান?");
-        dialogBuilder.setPositiveButton("ডিলিট করুন", (dialog, whichButton) -> {
-
-            FirebaseCaller.removeStudentToServer(UtilsCommon.
-                    getCurrentClass(StudentAddActivity.this), student.getId());
-
-            Toast.makeText(StudentAddActivity.this, "এই শিক্ষার্থীর যাবতীয় সব তথ্য ডাটাবেজ থেকে ডিলেট হয়েছে,ধন্যবাদ।", Toast.LENGTH_LONG).show();
-            previousId = null;
-            finish();
-
-        });
-        dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {
-        });
-        AlertDialog b = dialogBuilder.create();
-        b.show();
     }
 
 }

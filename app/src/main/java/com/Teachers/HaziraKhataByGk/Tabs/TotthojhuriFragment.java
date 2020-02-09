@@ -3,21 +3,16 @@ package com.Teachers.HaziraKhataByGk.Tabs;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.Teachers.HaziraKhataByGk.MainActivity;
+import androidx.fragment.app.Fragment;
 import com.Teachers.HaziraKhataByGk.R;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 
 
 public class TotthojhuriFragment extends Fragment {
-    InterstitialAd mInterstitialAd;
+
     public TotthojhuriFragment() {
         // Required empty public constructor
     }
@@ -31,19 +26,18 @@ public class TotthojhuriFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.thottho_jhuri, container, false);
-        Button button1,button2,button3,button4,button5,button6,button7,button8,button9,button10,button11;
-        button1=(Button)view.findViewById(R.id.btn_dialog_1);
-        button2=(Button)view.findViewById(R.id.btn_dialog_2);
-        button3=(Button)view.findViewById(R.id.btn_dialog_3);
-        button4=(Button)view.findViewById(R.id.btn_dialog_4);
-        button5=(Button)view.findViewById(R.id.btn_dialog_5);
-        button6=(Button)view.findViewById(R.id.btn_dialog_6);
-        button7=(Button)view.findViewById(R.id.btn_dialog_7);
-        button8=(Button)view.findViewById(R.id.btn_dialog_8);
-        button9=(Button)view.findViewById(R.id.btn_dialog_9);
-        button10=(Button)view.findViewById(R.id.btn_dialog_10);
-
+        View view = inflater.inflate(R.layout.thottho_jhuri, container, false);
+        Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11;
+        button1 = (Button) view.findViewById(R.id.btn_dialog_1);
+        button2 = (Button) view.findViewById(R.id.btn_dialog_2);
+        button3 = (Button) view.findViewById(R.id.btn_dialog_3);
+        button4 = (Button) view.findViewById(R.id.btn_dialog_4);
+        button5 = (Button) view.findViewById(R.id.btn_dialog_5);
+        button6 = (Button) view.findViewById(R.id.btn_dialog_6);
+        button7 = (Button) view.findViewById(R.id.btn_dialog_7);
+        button8 = (Button) view.findViewById(R.id.btn_dialog_8);
+        button9 = (Button) view.findViewById(R.id.btn_dialog_9);
+        button10 = (Button) view.findViewById(R.id.btn_dialog_10);
 
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -60,10 +54,7 @@ public class TotthojhuriFragment extends Fragment {
             public void onClick(View v) {
 
 
-
                 openInAppBrowser("http://www.mopme.gov.bd/");
-
-
 
 
             }
@@ -76,7 +67,6 @@ public class TotthojhuriFragment extends Fragment {
                 openInAppBrowser("http://www.educationboard.gov.bd/");
 
 
-
             }
         });
         button4.setOnClickListener(new View.OnClickListener() {
@@ -87,13 +77,11 @@ public class TotthojhuriFragment extends Fragment {
                 openInAppBrowser("http://www.dshe.gov.bd/");
 
 
-
             }
         });
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
 
                 openInAppBrowser("http://www.dpe.gov.bd/");
@@ -141,17 +129,13 @@ public class TotthojhuriFragment extends Fragment {
         button10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 openInAppBrowser("http://10minuteschool.com/");
-                // Load ads into Interstitial Ads
-               // mInterstitialAd.loadAd(adRequest);
-
-
             }
         });
 
         return view;
     }
+
     private void openInAppBrowser(String url) {
 
         //TODO: for opening webview
@@ -166,7 +150,6 @@ public class TotthojhuriFragment extends Fragment {
         startActivity(intent);
 
     }
-
 
 
 }

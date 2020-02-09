@@ -2,9 +2,11 @@ package com.Teachers.HaziraKhataByGk.Widget;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Routine.AllRoutineShowingDialog;
@@ -12,7 +14,7 @@ import com.Teachers.HaziraKhataByGk.Routine.AllRoutineShowingDialog;
 
 public class BaseFullScreenDialog extends DialogFragment {
 
-    public static void showDialog(android.support.v4.app.FragmentManager manager){
+    public static void showDialog(FragmentManager manager) {
 
         AllRoutineShowingDialog dialog = new AllRoutineShowingDialog();
         FragmentTransaction ft = manager.beginTransaction();
@@ -34,12 +36,10 @@ public class BaseFullScreenDialog extends DialogFragment {
         if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            if(dialog.getWindow()!=null)
-            dialog.getWindow().setLayout(width, height);
+            if (dialog.getWindow() != null)
+                dialog.getWindow().setLayout(width, height);
         }
     }
-
-
 
 
 }

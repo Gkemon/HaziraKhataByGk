@@ -1,6 +1,18 @@
 package com.Teachers.HaziraKhataByGk.Listener;
 
-public abstract class CommonCallback <T> implements CallBackContract<T> {
+interface CallBackContract<T> {
+    void onSuccess(T response);
+
+    void onSuccess();
+
+    void onWait();
+
+    void onWait(int sec);
+
+    void onFailure(String r);
+}
+
+public abstract class CommonCallback<T> implements CallBackContract<T> {
     @Override
     public void onFailure(String r) {
 
@@ -15,8 +27,9 @@ public abstract class CommonCallback <T> implements CallBackContract<T> {
     public void onWait() {
 
     }
+
     @Override
-    public void onWait(int sec){
+    public void onWait(int sec) {
 
     }
 
@@ -25,11 +38,4 @@ public abstract class CommonCallback <T> implements CallBackContract<T> {
     public void onSuccess(T response) {
 
     }
-}
-interface CallBackContract<T>{
-    void onSuccess(T response);
-    void onSuccess();
-    void onWait();
-    void onWait(int sec);
-    void onFailure(String r);
 }

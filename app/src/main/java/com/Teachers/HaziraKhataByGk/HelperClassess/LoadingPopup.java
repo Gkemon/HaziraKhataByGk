@@ -7,29 +7,50 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.Teachers.HaziraKhataByGk.R;
 
 
 public class LoadingPopup extends Dialog {
 
-   public static LoadingPopup dialog;
+    public static LoadingPopup dialog;
 
 
     public LoadingPopup(@NonNull Context context) {
         super(context);
     }
 
-    public static void  showLoadingPopUp(Activity activity) {
-           try {
-               dialog.show();
-           } catch (Exception e) {
-               dialog = null;
-               getInstance(activity).show();
-           }
+    public static void showLoadingPopUp(Activity activity) {
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            dialog = null;
+            getInstance(activity).show();
+        }
     }
 
+    public static void hideLoadingPopUp() {
+
+
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+
+    }
+
+    public static LoadingPopup getInstance(Activity activity) {
+
+
+        if (dialog == null) {
+            if (activity == null) dialog = new LoadingPopup(GlobalContext.getWeakActivity());
+            else dialog = new LoadingPopup(activity);
+            return dialog;
+        } else return dialog;
+    }
 
     @Override
     public void dismiss() {
@@ -46,37 +67,14 @@ public class LoadingPopup extends Dialog {
         handler.postDelayed(() -> setCancelable(true), 3000);
     }
 
-    public static void hideLoadingPopUp(){
-
-
-        if(dialog!=null)
-        {
-            dialog.dismiss();
-            dialog=null;
-        }
-
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_progress_bar);
 
-        if(getWindow()!=null)
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (getWindow() != null)
+            getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-    }
-
-    public static LoadingPopup getInstance(Activity activity){
-
-
-        if(dialog==null){
-            if(activity==null) dialog=new LoadingPopup(GlobalContext.getWeakActivity());
-            else dialog=new LoadingPopup(activity);
-            return dialog;
-        }
-        else return dialog;
     }
 
 

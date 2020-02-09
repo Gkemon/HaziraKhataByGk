@@ -7,23 +7,7 @@ import android.os.Parcelable;
  * Created by uy on 11/21/2017.
  */
 
-public class BlogItem implements Parcelable{
-    private String heading;
-    private String URL;
-    private String Date;
-    private String writer;
-
-    public BlogItem(){
-    }
-
-    protected BlogItem(Parcel in) {
-        this.heading = in.readString();
-        this.URL = in.readString();
-        this.Date=in.readString();
-        this.writer=in.readString();
-    }
-
-
+public class BlogItem implements Parcelable {
     public static final Parcelable.Creator<BlogItem> CREATOR = new Parcelable.Creator<BlogItem>() {
         @Override
         public BlogItem createFromParcel(Parcel source) {
@@ -35,27 +19,53 @@ public class BlogItem implements Parcelable{
             return new BlogItem[size];
         }
     };
+    private String heading;
+    private String URL;
+    private String Date;
+    private String writer;
 
-    public String getHeading(){
+    public BlogItem() {
+    }
+
+
+    protected BlogItem(Parcel in) {
+        this.heading = in.readString();
+        this.URL = in.readString();
+        this.Date = in.readString();
+        this.writer = in.readString();
+    }
+
+    public String getHeading() {
         return this.heading;
     }
-    public String getURL(){
+
+    public void setHeading(String heading) {
+        this.heading = heading;
+    }
+
+    public String getURL() {
         return this.URL;
     }
-    public String getWriter(){return this.writer;}
-    public String getDate(){return this.Date;}
 
-    public void setHeading(String heading){
-        this.heading=heading;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
-    public void setURL(String URL){
-        this.URL=URL;
-    }
-    public void setDate(String Date){
-        this.Date=Date;
-    }
-    public void setWriter(String writer){this.writer=writer;}
 
+    public String getWriter() {
+        return this.writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getDate() {
+        return this.Date;
+    }
+
+    public void setDate(String Date) {
+        this.Date = Date;
+    }
 
     @Override
     public int describeContents() {
@@ -69,7 +79,6 @@ public class BlogItem implements Parcelable{
         dest.writeString(this.Date);
         dest.writeString(this.writer);
     }
-
 
 
 }
