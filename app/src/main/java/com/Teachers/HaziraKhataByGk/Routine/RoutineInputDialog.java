@@ -1,7 +1,11 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,7 +121,10 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
                 .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             public void onChooseColor(int position,int color) {
                 routineItem.setColor(color);
-                btnColorSelect.setBackgroundColor(color);
+
+                btnColorSelect.getBackground().mutate().setColorFilter(new
+                        PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
+
             }
 
             @Override
