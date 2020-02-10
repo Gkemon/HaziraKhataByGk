@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:text="মাস:"
         style="@style/TextViewTitlestyle"/>
-    <android.support.v7.widget.AppCompatSpinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:layout_marginTop="@dimen/margin_10"
         android:layout_marginBottom="@dimen/margin_10"
         android:prompt="@string/month_spinner_bangla"
@@ -97,7 +97,7 @@
         android:entries="@array/month_bd"
         android:id="@+id/spinner_month"
         android:layout_height="wrap_content">
-    </android.support.v7.widget.AppCompatSpinner>
+    </androidx.appcompat.widget.AppCompatSpinner>
     <View
         android:layout_width="match_parent"
         android:layout_height="2sp"
