@@ -16,23 +16,35 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.google.android.material.tabs.TabLayout;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
+    @BindView(R.id.viewpager)
     CustomViewPager viewPager;
+    @BindView(R.id.tabs)
     TabLayout tabLayout;
+
+    @OnClick(R.id.btn_add_routine)
+    public void addRoutine() {
+        if (getFragmentManager() != null) {
+            RoutineInputDialog.showDialog(getFragmentManager());
+        }
+    }
+
 
     public static void showDialog(FragmentManager manager) {
 
         AllRoutineShowingDialog dialog = new AllRoutineShowingDialog();
         FragmentTransaction ft = manager.beginTransaction();
-        dialog.show(ft, "AllRoutineShowingDialog");
+        dialog.show(ft, AllRoutineShowingDialog.class.getSimpleName());
 
     }
 
-    public void setupViewPager(View root) {
+    public void setupViewPager() {
 
-        viewPager = root.findViewById(R.id.viewpager);
-        tabLayout = root.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
@@ -60,17 +72,17 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
     public void setupTab() {
 
         TextView tabOne = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.custom_tab, null);
-        tabOne.setText("Class routine");
+        tabOne.setText(R.string.routine_class);
         tabOne.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_class_fragment, 0, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         TextView tabTwo = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("Exam routine");
+        tabTwo.setText(R.string.routine_exam);
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_nibondhon, 0, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         TextView tabThree = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.custom_tab, null);
-        tabThree.setText("Admin routine");
+        tabThree.setText(R.string.routine_admin);
         tabThree.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_job, 0, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabThree);
 
@@ -82,8 +94,9 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.dialog_show_routine, container, false);
+        ButterKnife.bind(this, view);
 
-        setupViewPager(view);
+        setupViewPager();
         setupTab();
 
         return view;

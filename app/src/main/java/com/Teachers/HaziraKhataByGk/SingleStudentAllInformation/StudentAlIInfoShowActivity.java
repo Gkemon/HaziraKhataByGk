@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDate.intMonthToStringMonthConvertor;
+import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime.intMonthToStringMonthConvertor;
 
 public class StudentAlIInfoShowActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, RecyclerItemClickListener {
     public static String time, yearWithDate, year, month, day;

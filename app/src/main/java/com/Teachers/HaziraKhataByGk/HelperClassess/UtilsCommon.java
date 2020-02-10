@@ -36,6 +36,7 @@ import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blogItem_for_main;
 import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
@@ -514,6 +515,8 @@ public class UtilsCommon {
         }
         return false;
     }
+
+
 
 
     //TODO: for opeing in fb app if it is installed.

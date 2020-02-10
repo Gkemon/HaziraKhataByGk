@@ -96,11 +96,60 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
         events.add(MockObjectsRepository.getDummyRoutine(newYear, newMonth));
 
-        return events;
+
+        List<WeekViewEvent> newEvents= new ArrayList<WeekViewEvent>();
+
+        for (WeekViewEvent event : events) {
+            Calendar dateTime = event .getStartTime();
+            Calendar dateEndTime = event .getEndTime();
+            Calendar monCal = getFirstDay(newMonth - 1, newYear, dateTime.get(Calendar.DAY_OF_WEEK));
+            int hday = dateTime.get(Calendar.HOUR_OF_DAY);
+            int mday = dateTime.get(Calendar.MINUTE);
+            int ehday = dateEndTime.get(Calendar.HOUR_OF_DAY);
+            int emday = dateEndTime.get(Calendar.MINUTE);
+            for (int k = monCal.get(Calendar.DAY_OF_MONTH); k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 7) {
+                Calendar startTime = Calendar.getInstance();
+                startTime.set(Calendar.MONTH, newMonth - 1);
+                startTime.set(Calendar.DAY_OF_MONTH, k);
+                startTime.set(Calendar.YEAR, newYear);
+                startTime.set(Calendar.HOUR_OF_DAY, hday);
+                startTime.set(Calendar.MINUTE, mday);
+                startTime.set(Calendar.SECOND, 0);
+                startTime.set(Calendar.MILLISECOND, 0);
+
+                Calendar endTime = (Calendar) startTime.clone();
+                endTime.set(Calendar.HOUR_OF_DAY, ehday);
+                endTime.set(Calendar.MINUTE, emday - 1);
+                endTime.set(Calendar.MONTH, newMonth - 1);
+                endTime.set(Calendar.SECOND, 59);
+                endTime.set(Calendar.MILLISECOND, 999);
+
+
+                WeekViewEvent newEvent = new WeekViewEvent(1, event .getName(), startTime, endTime);
+                newEvent.setColor(event .getColor());
+                newEvents.add(newEvent);
+            }
+        }
+
+        return newEvents;
+
     }
 
     @Override
     public void onEmptyViewLongPress(Calendar time) {
 
+    }
+
+    public static Calendar getFirstDay(int newMonth, int i, int weekday) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, newMonth);
+        c.set(Calendar.YEAR, i);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        int day = c.get(Calendar.DAY_OF_WEEK);
+        while (day != weekday) {
+            c.add(Calendar.DAY_OF_MONTH, 1);
+            day = c.get(Calendar.DAY_OF_WEEK);
+        }
+        return c;
     }
 }

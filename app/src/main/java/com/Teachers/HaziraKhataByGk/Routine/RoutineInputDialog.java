@@ -1,5 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.gk.emon.android.BanglaDaysPicker;
+import com.google.firebase.database.collection.LLRBNode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class RoutineInputDialog extends BaseFullScreenDialog {
 
@@ -46,14 +50,15 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     AppCompatButton btnColorSelect;
     @BindView(R.id.et_detail)
     EditText etDetails;
+    private ColorPicker colorPicker;
 
-    RoutineItem routineItem;
+    private RoutineItem routineItem;
 
     public static void showDialog(FragmentManager manager) {
 
         RoutineInputDialog dialog = new RoutineInputDialog();
         FragmentTransaction ft = manager.beginTransaction();
-        dialog.show(ft, "RoutineInputDialog");
+        dialog.show(ft, RoutineInputDialog.class.getSimpleName());
 
     }
 
@@ -83,15 +88,44 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     }
 
     @OnClick(R.id.bt_from_time)
-    public void showFromTimeDialog() {
-        DialogUtils.showDateDialog(null, getContext(), (view, year, month, dayOfMonth) -> {
+    public void showStartTimeDialog() {
 
-        });
+        DialogUtils.showTimeDialog(0, 0, getContext(),
+                (timePicker, hour, min) -> {
+                    routineItem.setStartTime(UtilsDateTime.getUnixTimeStampFromHourMin(hour, min));
+                });
+
     }
 
     @OnClick(R.id.bt_to_time)
-    public void showToTimeDialog() {
+    public void showEndTimeDialog() {
+        DialogUtils.showTimeDialog(0, 0, getContext(),
+                (timePicker, hour, min) -> {
+                    routineItem.setEndTime(UtilsDateTime.getUnixTimeStampFromHourMin(hour, min));
+                });
+    }
 
+    @OnClick(R.id.bt_color_select)
+    public void selectColor(AppCompatButton btnColorSelect){
+
+        if(getActivity()!=null)
+            colorPicker = new ColorPicker(getActivity());
+        if(colorPicker==null)return;
+
+        colorPicker
+                .setDefaultColorButton(Color.RED)
+                .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+            public void onChooseColor(int position,int color) {
+                routineItem.setColor(color);
+                btnColorSelect.setBackgroundColor(color);
+            }
+
+            @Override
+            public void onCancel(){
+                routineItem.setColor(Color.RED);
+            }
+        })
+        .show();
     }
 
     @OnClick(R.id.save)
@@ -107,7 +141,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
         routineItem.setName(etSubject.getText().toString());
         routineItem.setLocation((etRoom.getText().toString()));
-        ///routineItem.setStartTime();
+        routineItem.setDayList(banglaDaysPicker.getSelectedDays());
 
 
     }
@@ -124,7 +158,8 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         return view;
     }
 
-    void initData() {
+    private void initData() {
+
         routineItem = new RoutineItem();
     }
 

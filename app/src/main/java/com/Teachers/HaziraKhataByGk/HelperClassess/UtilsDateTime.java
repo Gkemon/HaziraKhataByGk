@@ -2,14 +2,42 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
-public class UtilsDate {
+public class UtilsDateTime {
     public static Date getDateObjFromDateFormate(String dateText) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy", Locale.ENGLISH);
         return format.parse(dateText);
-
     }
+
+    public static Calendar getUnixTimeStampFromHourMin(int hour, int min){
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, min);
+
+        return c;
+    }
+
+    public static String getAMPMTimeFromCalender(Calendar calendar){
+
+        if(calendar==null)return "No time";
+
+        StringBuilder time=new StringBuilder();
+        time.append(calendar.get(Calendar.HOUR));
+        time.append(":");
+        time.append(calendar.get(Calendar.MINUTE));
+        if (calendar.get(Calendar.AM_PM) == 0) {
+            time.append("AM");
+        } else {
+            time.append("PM");
+        }
+
+        return time.toString();
+    }
+
 
     public static String intMonthToStringMonthConvertor(int position) {
         if (position == 0) {

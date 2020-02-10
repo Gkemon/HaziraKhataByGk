@@ -49,7 +49,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
         AllRoutineShowingDialog.showDialog(getFragmentManager());
     }
 
-    void initiView() {
+    private void initiView() {
 
         ButterKnife.bind(this, rootView);
         emptyView = rootView.findViewById(R.id.toDoEmptyView);

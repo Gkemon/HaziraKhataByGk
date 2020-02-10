@@ -13,14 +13,17 @@ public class MockObjectsRepository {
     public static RoutineItem getDummyRoutine(int newYear, int newMonth) {
 
 
+
+
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 3);
         startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.MONTH, newMonth - 1);
         startTime.set(Calendar.YEAR, newYear);
         Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, 4);
+        endTime.add(Calendar.HOUR, 5);
         endTime.set(Calendar.MONTH, newMonth - 1);
+
 
         return RoutineItmBuilder.getInstance()
                 .setName("Demo")

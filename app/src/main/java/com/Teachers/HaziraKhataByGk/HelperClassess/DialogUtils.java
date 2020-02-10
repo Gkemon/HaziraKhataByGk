@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -14,7 +15,12 @@ import java.util.Calendar;
 public class DialogUtils {
 
 
-    public static void showTimeDialog(String time, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
+    public static void showTimeDialog(int hourOfDay,int minOfDay,Context context, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
+
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(context, onTimeSetListener, hourOfDay, minOfDay, false);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
 
     }
 
@@ -23,12 +29,9 @@ public class DialogUtils {
         if (calendar == null)
             calendar = Calendar.getInstance();
 
-        DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        DatePickerDialog.OnDateSetListener onDateSetListener = (view, year, month, dayOfMonth) -> {
 
 
-            }
         };
 
 

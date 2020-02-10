@@ -1634,6 +1634,9 @@ Ans: কর্মধারয় সমাস\n
     <string name="title_activity_month_wise_class_data">MonthWiseClassDataActivity</string>
     <string name="title_activity_mark_sheet_home">MarkSheetHomeActivity</string>
     <string name="info_attandance_activity_first_time">আপনি যদি কোন শিক্ষার্থীর সম্পূর্ণ ডাটা দেখতে চান তাহলে এখানে উপস্থাপিত লিস্ট থেকে তার নামের উপর ক্লিক করুন , আপনি যদি ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলিট করতে চান তাহলে উপরের ডানপাশের ডিলিট চিহ্ন ক্লিক করুন আর যদি মাসিক উপস্থিতির রেকর্ড দেখতে অথবা প্রিন্ট করতে চান তাহলে উপরের প্রিন্ট চিহ্ন ক্লিক করুন</string>
+    <string name="routine_admin">Admin routine</string>
+    <string name="routine_exam">Exam routine</string>
+    <string name="routine_class">Class routine</string>
 
 
 </resources>

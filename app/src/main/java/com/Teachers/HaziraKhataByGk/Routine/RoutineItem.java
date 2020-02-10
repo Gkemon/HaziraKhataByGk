@@ -2,11 +2,22 @@ package com.Teachers.HaziraKhataByGk.Routine;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
+import java.util.List;
+
 
 public class RoutineItem extends WeekViewEvent {
 
-    public String type;
-    public String details;
+    private String type;
+    private String details;
+    private List<Integer> dayList;
+
+    public List<Integer> getDayList() {
+        return dayList;
+    }
+
+    void setDayList(List<Integer> dayList) {
+        this.dayList = dayList;
+    }
 
     public String getType() {
         return type;

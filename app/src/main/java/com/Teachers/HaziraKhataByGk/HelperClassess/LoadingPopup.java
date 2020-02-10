@@ -56,7 +56,12 @@ public class LoadingPopup extends Dialog {
     public void dismiss() {
 
         Handler handler = new Handler();
-        handler.postDelayed(super::dismiss, 3000);
+        try {
+            handler.postDelayed(super::dismiss, 3000);
+        }catch (Exception e){
+            hideLoadingPopUp();
+        }
+
 
     }
 
@@ -64,7 +69,11 @@ public class LoadingPopup extends Dialog {
     public void show() {
         super.show();
         Handler handler = new Handler();
-        handler.postDelayed(() -> setCancelable(true), 3000);
+        try {
+            handler.postDelayed(() -> setCancelable(true), 3000);
+        }catch (Exception e){
+            hideLoadingPopUp();
+        }
     }
 
     @Override
