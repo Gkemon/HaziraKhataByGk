@@ -24,16 +24,12 @@ public class DialogUtils {
 
     }
 
-    public static void showDateDialog(Calendar calendar, Context context, DatePickerDialog.OnDateSetListener commonCallback) {
+    public static void showDateDialog(Calendar calendar, Context context, DatePickerDialog.OnDateSetListener onDateSetListener) {
 
+
+        //Year,month,date of month
         if (calendar == null)
             calendar = Calendar.getInstance();
-
-        DatePickerDialog.OnDateSetListener onDateSetListener = (view, year, month, dayOfMonth) -> {
-
-
-        };
-
 
         try {
             new DatePickerDialog(context, onDateSetListener, calendar

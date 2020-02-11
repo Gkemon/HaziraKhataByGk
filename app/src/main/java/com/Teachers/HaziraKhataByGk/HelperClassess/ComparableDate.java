@@ -11,7 +11,7 @@ public class ComparableDate implements Comparable<ComparableDate> {
     }
 
     public void setDateTime(String dateTime) throws ParseException {
-        this.dateTime = UtilsForDateCompare.getDateObjFromDateFormate(dateTime);
+        this.dateTime = UtilsDateTime.getDateObjFromDateFormate(dateTime);
     }
 
     @Override

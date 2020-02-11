@@ -1637,6 +1637,15 @@ Ans: কর্মধারয় সমাস\n
     <string name="routine_admin">Admin routine</string>
     <string name="routine_exam">Exam routine</string>
     <string name="routine_class">Class routine</string>
+    <string name="text_click">ক্লিক করুন</string>
+    <string name="text_end_time">শেষ সময়</string>
+    <string name="text_start_time">শুরুর সময়</string>
+    <string name="text_room_no">রুম নং</string>
+    <string name="text_subject">বিষয় :</string>
+    <string name="admin_routine">Admin routine</string>
+    <string name="exam_routine">Exam routine</string>
+    <string name="class_routine">Class routine</string>
+    <string name="please_select_routine_type_from_below">Please select routine type from below</string>
 
 
 </resources>

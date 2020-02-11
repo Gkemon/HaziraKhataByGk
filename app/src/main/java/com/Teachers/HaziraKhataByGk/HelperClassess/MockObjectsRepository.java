@@ -10,6 +10,8 @@ import java.util.Calendar;
 
 public class MockObjectsRepository {
 
+    public static RoutineItem mockRoutineItem;
+
     public static RoutineItem getDummyRoutine(int newYear, int newMonth) {
 
 

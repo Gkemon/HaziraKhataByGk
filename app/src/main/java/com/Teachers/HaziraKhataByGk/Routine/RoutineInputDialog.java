@@ -1,11 +1,9 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +16,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClassess.MockObjectsRepository;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.gk.emon.android.BanglaDaysPicker;
-import com.google.firebase.database.collection.LLRBNode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,51 +64,72 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     }
 
+    @OnClick(R.id.bt_date_select)
+    void showDate(AppCompatButton btn) {
+        DialogUtils.showDateDialog(null, getContext(), (datePicker, year, month, dayOfMonth) -> {
+            btn.setText(UtilsDateTime.getSimpleDateText(year,month,dayOfMonth));
+            try {
+                routineItem.setDate(UtilsDateTime.getDate(year,month,dayOfMonth));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
     @OnClick(R.id.rb_temporary_routine)
-    public void showDateSelectButton() {
+    void showDateSelectButton() {
+        routineItem.setPermanent(false);
+        banglaDaysPicker.setVisibility(View.GONE);
         btnDateSelect.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.rb_permanent_routine)
-    public void hideDateSelecButton() {
+    void hideDateSelecButton() {
+        routineItem.setPermanent(true);
+        banglaDaysPicker.setVisibility(View.VISIBLE);
         btnDateSelect.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.btn_tutorial)
-    public void showTutorial() {
+    void showTutorial() {
 
     }
 
     @OnClick(R.id.btn_delete_routine)
-    public void deleteRoutine() {
+    void deleteRoutine() {
 
     }
 
     @OnClick(R.id.cancel)
-    public void cancel() {
+    void cancel() {
         dismiss();
     }
 
     @OnClick(R.id.bt_from_time)
-    public void showStartTimeDialog() {
+    void showStartTimeDialog() {
 
         DialogUtils.showTimeDialog(0, 0, getContext(),
                 (timePicker, hour, min) -> {
+                    btnFromTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
+                            getUnixTimeStampFromHourMin(hour, min)));
                     routineItem.setStartTime(UtilsDateTime.getUnixTimeStampFromHourMin(hour, min));
                 });
 
     }
 
     @OnClick(R.id.bt_to_time)
-    public void showEndTimeDialog() {
+    void showEndTimeDialog() {
         DialogUtils.showTimeDialog(0, 0, getContext(),
                 (timePicker, hour, min) -> {
+                    btnToTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
+                            getUnixTimeStampFromHourMin(hour, min)));
                     routineItem.setEndTime(UtilsDateTime.getUnixTimeStampFromHourMin(hour, min));
                 });
     }
 
     @OnClick(R.id.bt_color_select)
-    public void selectColor(AppCompatButton btnColorSelect){
+    void selectColor(AppCompatButton btnColorSelect) {
 
         if(getActivity()!=null)
             colorPicker = new ColorPicker(getActivity());
@@ -124,7 +143,6 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
                 btnColorSelect.getBackground().mutate().setColorFilter(new
                         PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
-
             }
 
             @Override
@@ -138,7 +156,6 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     @OnClick(R.id.save)
     public void saveRoutine() {
 
-
         if (rbClassRoutine.isSelected()) {
             routineItem.setType(Constant.ROUTINE_TYPE_CLASS);
         } else if (rbExamRoutine.isSelected()) {
@@ -147,8 +164,11 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
 
         routineItem.setName(etSubject.getText().toString());
+        routineItem.setDetails(etDetails.getText().toString());
         routineItem.setLocation((etRoom.getText().toString()));
-        routineItem.setDayList(banglaDaysPicker.getSelectedDays());
+        routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
+
+        MockObjectsRepository.mockRoutineItem = routineItem;
 
 
     }

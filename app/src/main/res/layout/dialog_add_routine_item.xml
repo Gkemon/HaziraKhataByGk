@@ -26,7 +26,7 @@
     android:gravity="start"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Please select routine style from below">
+    android:text="@string/please_select_routine_type_from_below">
 
 </TextView>
     <RadioGroup
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:text="Class routine">
+            android:text="@string/class_routine">
         </RadioButton>
 
         <RadioButton
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Exam routine">
+            android:text="@string/exam_routine">
         </RadioButton>
 
         <RadioButton
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Admin routine">
+            android:text="@string/admin_routine">
         </RadioButton>
     </RadioGroup>
 
@@ -69,7 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:text="বিষয় :"
+            android:text="@string/text_subject"
             android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textSize="14sp"
@@ -95,7 +95,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:text="রুম নং"
+            android:text="@string/text_room_no"
             android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textSize="14sp"
@@ -122,18 +122,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:text="শুরুর সময়"
+            android:text="@string/text_start_time"
             android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:gravity="start" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonPrimaryColorStyle"
             android:id="@+id/bt_from_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:text="ক্লিক করুন"
+            android:text="@string/text_click"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
@@ -149,35 +150,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:text="শেষ সময়"
+            android:text="@string/text_end_time"
             android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:gravity="start" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonPrimaryColorStyle"
             android:id="@+id/bt_to_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:text="ক্লিক করুন"
+            android:text="@string/text_click"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             />
     </LinearLayout>
 
-
-    <com.gk.emon.android.BanglaDaysPicker
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/weekdays"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:sunday_first_day="true"
-        app:full_size="true"/>
-
         <TextView
+            tools:visibility="visible"
+            android:visibility="visible"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:textAlignment="textStart"
@@ -190,6 +184,8 @@
 
         </TextView>
         <RadioGroup
+            tools:visibility="visible"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -218,7 +214,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Select date"
+            tools:visibility="visible"
             android:visibility="gone" />
+        <com.gk.emon.android.BanglaDaysPicker
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/weekdays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:sunday_first_day="true"
+            app:full_size="true"/>
     <LinearLayout
         android:visibility="visible"
         android:layout_width="match_parent"

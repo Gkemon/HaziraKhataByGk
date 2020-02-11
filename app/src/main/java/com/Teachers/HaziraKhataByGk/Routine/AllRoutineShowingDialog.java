@@ -28,7 +28,7 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
     TabLayout tabLayout;
 
     @OnClick(R.id.btn_add_routine)
-    public void addRoutine() {
+     void addRoutine() {
         if (getFragmentManager() != null) {
             RoutineInputDialog.showDialog(getFragmentManager());
         }
@@ -43,7 +43,7 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
     }
 
-    public void setupViewPager() {
+     private void setupViewPager() {
 
         tabLayout.setupWithViewPager(viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());

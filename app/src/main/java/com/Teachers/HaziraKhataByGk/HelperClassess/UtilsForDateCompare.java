@@ -4,10 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-
-import static com.Teachers.HaziraKhataByGk.Constant.Constant.DateFormate;
 
 public class UtilsForDateCompare {
 
@@ -26,24 +23,15 @@ public class UtilsForDateCompare {
         Collections.sort(comparableDates);
 
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateFormate);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(UtilsDateTime.DATE_FORMATE_EEE_D_MMM_YYYY);
 
         List<String> sortedDateList = new ArrayList<>();
         for (ComparableDate s : comparableDates) {
             String formatedDate = simpleDateFormat.format(s.getDateTime());
             sortedDateList.add(formatedDate);
-
         }
-
 
         return sortedDateList;
     }
 
-    ;
-
-    public static Date getDateObjFromDateFormate(String dateText) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy");
-        return format.parse(dateText);
-
-    }
 }

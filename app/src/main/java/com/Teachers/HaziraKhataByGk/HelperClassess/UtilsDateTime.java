@@ -4,12 +4,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class UtilsDateTime {
+    public static String DATE_FORMATE_EEE_D_MMM_YYYY="EEE, d MMM yyyy";
+
+    public static SimpleDateFormat getSimpleDateFormate(String dateFormate){
+       return new SimpleDateFormat(dateFormate, Locale.ENGLISH);
+    }
+
     public static Date getDateObjFromDateFormate(String dateText) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy", Locale.ENGLISH);
-        return format.parse(dateText);
+        return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).parse(dateText);
+    }
+
+    public static String getSimpleDateText(int year,int month,int dayOfMonth){
+        return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).format(getDate(year,month,dayOfMonth));
+    }
+    public static Date getDate(int year,int month,int dayOfMonth) {
+        return new GregorianCalendar(year, month, dayOfMonth).getTime();
     }
 
     public static Calendar getUnixTimeStampFromHourMin(int hour, int min){
@@ -29,15 +42,44 @@ public class UtilsDateTime {
         time.append(calendar.get(Calendar.HOUR));
         time.append(":");
         time.append(calendar.get(Calendar.MINUTE));
-        if (calendar.get(Calendar.AM_PM) == 0) {
-            time.append("AM");
+        if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+            time.append(" AM");
         } else {
-            time.append("PM");
+            time.append(" PM");
         }
 
         return time.toString();
     }
 
+    public static int StringMonthToIntMonthConvertor(String month) {
+
+        if (month.equals("Jan")) {
+
+            return 0;
+        } else if (month.equals("Feb")) {
+            return 1;
+        } else if (month.equals("Mar")) {
+            return 2;
+        } else if (month.equals("Apr")) {
+            return 3;
+        } else if (month.equals("May")) {
+            return 4;
+        } else if (month.equals("Jun")) {
+            return 5;
+        } else if (month.equals("Jul")) {
+            return 6;
+        } else if (month.equals("Aug")) {
+            return 7;
+        } else if (month.equals("Sep")) {
+            return 8;
+        } else if (month.equals("Oct")) {
+            return 9;
+        } else if (month.equals("Nov")) {
+            return 10;
+        } else return 11;
+
+
+    }
 
     public static String intMonthToStringMonthConvertor(int position) {
         if (position == 0) {

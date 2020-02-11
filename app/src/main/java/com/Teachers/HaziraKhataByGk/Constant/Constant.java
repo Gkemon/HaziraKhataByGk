@@ -17,7 +17,6 @@ public class Constant {
     public static final String ROUTINE_TYPE_ADMINISTRATIONAL = "Administrational";
     public static final String ROUTINE_TYPE_CLASS = "Class_routine";
     public static final String ROUTINE_TYPE_EXAM = "Exam_routine";
-    public static final String DateFormate = "EEE, d MMM yyyy";
     public static final String MALE = "male";
     public static final String FEMALE = "female";
     public static final String CLASS = "class";

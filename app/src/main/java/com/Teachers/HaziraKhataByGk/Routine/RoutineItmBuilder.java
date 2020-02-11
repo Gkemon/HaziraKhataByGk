@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class RoutineItmBuilder {
     public String type;
@@ -11,6 +12,7 @@ public class RoutineItmBuilder {
     public String name;
     public String location;
     public int color;
+    public List<Integer> selectedDays;
 
     public static RoutineItmBuilder getInstance() {
         return new RoutineItmBuilder();
@@ -26,6 +28,7 @@ public class RoutineItmBuilder {
         routineItem.setName(name);
         routineItem.setStartTime(startTime);
         routineItem.setEndTime(endTime);
+        routineItem.setSelectedDayList(selectedDays);
 
         return routineItem;
 
@@ -40,8 +43,14 @@ public class RoutineItmBuilder {
         return this;
     }
 
+
     public String getDetails() {
         return details;
+    }
+
+    public RoutineItmBuilder setSelectedDays(List<Integer> selectedDays){
+        this.selectedDays=selectedDays;
+        return this;
     }
 
     public RoutineItmBuilder setDetails(String details) {

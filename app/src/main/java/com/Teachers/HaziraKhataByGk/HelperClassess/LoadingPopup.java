@@ -67,9 +67,9 @@ public class LoadingPopup extends Dialog {
 
     @Override
     public void show() {
-        super.show();
-        Handler handler = new Handler();
         try {
+            super.show();
+            Handler handler = new Handler();
             handler.postDelayed(() -> setCancelable(true), 3000);
         }catch (Exception e){
             hideLoadingPopUp();
