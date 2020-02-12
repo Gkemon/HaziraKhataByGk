@@ -94,41 +94,53 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
             flag = getArguments().getString("key");
         }
 
-        events.add(MockObjectsRepository.getDummyRoutine(newYear, newMonth));
+        events.add(MockObjectsRepository.mockRoutineItem);
 
 
-        List<WeekViewEvent> newEvents= new ArrayList<WeekViewEvent>();
+        List<WeekViewEvent> newEvents= new ArrayList<>();
 
-        for (WeekViewEvent event : events) {
-            Calendar dateTime = event .getStartTime();
-            Calendar dateEndTime = event .getEndTime();
-            Calendar monCal = getFirstDay(newMonth - 1, newYear, dateTime.get(Calendar.DAY_OF_WEEK));
-            int hday = dateTime.get(Calendar.HOUR_OF_DAY);
-            int mday = dateTime.get(Calendar.MINUTE);
-            int ehday = dateEndTime.get(Calendar.HOUR_OF_DAY);
-            int emday = dateEndTime.get(Calendar.MINUTE);
-            for (int k = monCal.get(Calendar.DAY_OF_MONTH); k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 7) {
-                Calendar startTime = Calendar.getInstance();
-                startTime.set(Calendar.MONTH, newMonth - 1);
-                startTime.set(Calendar.DAY_OF_MONTH, k);
-                startTime.set(Calendar.YEAR, newYear);
-                startTime.set(Calendar.HOUR_OF_DAY, hday);
-                startTime.set(Calendar.MINUTE, mday);
-                startTime.set(Calendar.SECOND, 0);
-                startTime.set(Calendar.MILLISECOND, 0);
+        for (RoutineItem event : events) {
 
-                Calendar endTime = (Calendar) startTime.clone();
-                endTime.set(Calendar.HOUR_OF_DAY, ehday);
-                endTime.set(Calendar.MINUTE, emday - 1);
-                endTime.set(Calendar.MONTH, newMonth - 1);
-                endTime.set(Calendar.SECOND, 59);
-                endTime.set(Calendar.MILLISECOND, 999);
+            if(event==null)continue;
+
+            Calendar dateTime = event.getStartTime();
+            Calendar dateEndTime = event.getEndTime();
 
 
-                WeekViewEvent newEvent = new WeekViewEvent(1, event .getName(), startTime, endTime);
-                newEvent.setColor(event .getColor());
-                newEvents.add(newEvent);
-            }
+                Calendar monCal = getFirstDay(newMonth - 1,
+                        newYear,dateTime.get(Calendar.DAY_OF_WEEK));
+                int hday = dateTime.get(Calendar.HOUR_OF_DAY);
+                int mday = dateTime.get(Calendar.MINUTE);
+                int ehday = dateEndTime.get(Calendar.HOUR_OF_DAY);
+                int emday = dateEndTime.get(Calendar.MINUTE);
+
+
+                for (int k = monCal.get(Calendar.DAY_OF_MONTH);
+                     k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 7) {
+                    Calendar startTime = Calendar.getInstance();
+                    startTime.set(Calendar.MONTH, newMonth - 1);
+                    startTime.set(Calendar.DAY_OF_MONTH, k);
+                    startTime.set(Calendar.YEAR, newYear);
+                    startTime.set(Calendar.HOUR_OF_DAY, hday);
+                    startTime.set(Calendar.MINUTE, mday);
+                    startTime.set(Calendar.SECOND, 0);
+                    startTime.set(Calendar.MILLISECOND, 0);
+
+                    Calendar endTime = (Calendar) startTime.clone();
+                    endTime.set(Calendar.HOUR_OF_DAY, ehday);
+                    endTime.set(Calendar.MINUTE, emday - 1);
+                    endTime.set(Calendar.MONTH, newMonth - 1);
+                    endTime.set(Calendar.SECOND, 59);
+                    endTime.set(Calendar.MILLISECOND, 999);
+
+
+                    WeekViewEvent newEvent = new WeekViewEvent(1,event.getName(),startTime,endTime);
+                    newEvent.setStartTime(startTime);
+                    newEvent.setEndTime(endTime);
+                    newEvent.setColor(event.getColor());
+                    newEvents.add(newEvent);
+                }
+
         }
 
         return newEvents;

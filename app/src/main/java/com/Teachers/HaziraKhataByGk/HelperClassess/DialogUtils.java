@@ -3,6 +3,7 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.os.Build;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -18,7 +19,12 @@ public class DialogUtils {
     public static void showTimeDialog(int hourOfDay,int minOfDay,Context context, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
 
         TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(context, onTimeSetListener, hourOfDay, minOfDay, false);//Yes 24 hour time
+        mTimePicker = new TimePickerDialog(context, (timePicker, hourOfDay1, min) -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                onTimeSetListener.onTimeSet(timePicker,timePicker.getHour(),timePicker.getMinute());
+            }
+            else onTimeSetListener.onTimeSet(timePicker,timePicker.getCurrentMinute(),timePicker.getCurrentMinute());
+        }, hourOfDay, minOfDay, false);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
 

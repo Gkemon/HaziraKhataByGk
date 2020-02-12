@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.HelperClassess.MockObjectsRepository;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
@@ -110,10 +112,11 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     void showStartTimeDialog() {
 
         DialogUtils.showTimeDialog(0, 0, getContext(),
-                (timePicker, hour, min) -> {
+                (timePicker, hourOfDay, min) -> {
+
                     btnFromTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
-                            getUnixTimeStampFromHourMin(hour, min)));
-                    routineItem.setStartTime(UtilsDateTime.getUnixTimeStampFromHourMin(hour, min));
+                            getUnixTimeStampFromHourMin(hourOfDay, min)));
+                    routineItem.setStartTime(UtilsDateTime.getUnixTimeStampFromHourMin(hourOfDay, min));
                 });
 
     }
@@ -121,10 +124,10 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     @OnClick(R.id.bt_to_time)
     void showEndTimeDialog() {
         DialogUtils.showTimeDialog(0, 0, getContext(),
-                (timePicker, hour, min) -> {
+                (timePicker, hourOfDay, min) -> {
                     btnToTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
-                            getUnixTimeStampFromHourMin(hour, min)));
-                    routineItem.setEndTime(UtilsDateTime.getUnixTimeStampFromHourMin(hour, min));
+                            getUnixTimeStampFromHourMin(hourOfDay, min)));
+                    routineItem.setEndTime(UtilsDateTime.getUnixTimeStampFromHourMin(hourOfDay, min));
                 });
     }
 
@@ -154,7 +157,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     }
 
     @OnClick(R.id.save)
-    public void saveRoutine() {
+    void saveRoutine() {
 
         if (rbClassRoutine.isSelected()) {
             routineItem.setType(Constant.ROUTINE_TYPE_CLASS);
@@ -168,13 +171,14 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         routineItem.setLocation((etRoom.getText().toString()));
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
 
+        if(isValidated())
         MockObjectsRepository.mockRoutineItem = routineItem;
 
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.dialog_add_routine_item, container, false);
@@ -183,6 +187,33 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         initData();
 
         return view;
+    }
+
+    private boolean isValidated(){
+        if(!UtilsCommon.isValideString(routineItem.getName()))
+        {
+            etSubject.setError(getString(R.string.please_input_subject));
+            return false;
+        }
+
+
+        if(routineItem.getStartTime()==null||
+                btnFromTime.getText().toString().equals(getString(R.string.text_click))){
+            UtilsCommon.showToast(getString(R.string.please_select_start_time));
+            btnToTime.requestFocus();
+            return false;
+        }
+
+        if(routineItem.getEndTime()==null||
+                btnToTime.getText().toString().equals(getString(R.string.text_click))) {
+            UtilsCommon.showToast(getString(R.string.please_select_end_time));
+            btnToTime.requestFocus();
+            return false;
+        }
+
+        return true;
+
+
     }
 
     private void initData() {

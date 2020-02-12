@@ -25,10 +25,10 @@ public class UtilsDateTime {
         return new GregorianCalendar(year, month, dayOfMonth).getTime();
     }
 
-    public static Calendar getUnixTimeStampFromHourMin(int hour, int min){
+    public static Calendar getUnixTimeStampFromHourMin(int hourOfDay, int min){
 
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, min);
 
         return c;
@@ -39,9 +39,12 @@ public class UtilsDateTime {
         if(calendar==null)return "No time";
 
         StringBuilder time=new StringBuilder();
-        time.append(calendar.get(Calendar.HOUR));
+
+        time.append(calendar.get(Calendar.HOUR)==0?"12":calendar.get(Calendar.HOUR));
+
         time.append(":");
-        time.append(calendar.get(Calendar.MINUTE));
+        int min= calendar.get(Calendar.MINUTE);
+        time.append(min <= 9 ?min+"0":min);
         if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
             time.append(" AM");
         } else {

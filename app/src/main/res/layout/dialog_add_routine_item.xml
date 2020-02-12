@@ -222,7 +222,7 @@
             android:id="@+id/weekdays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:sunday_first_day="true"
+            app:sunday_first_day="false"
             app:full_size="true"/>
     <LinearLayout
         android:visibility="visible"

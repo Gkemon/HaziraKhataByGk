@@ -1646,6 +1646,9 @@ Ans: কর্মধারয় সমাস\n
     <string name="exam_routine">Exam routine</string>
     <string name="class_routine">Class routine</string>
     <string name="please_select_routine_type_from_below">Please select routine type from below</string>
+    <string name="please_input_subject">Please input subject</string>
+    <string name="please_select_start_time">Please select start time</string>
+    <string name="please_select_end_time">Please select end time</string>
 
 
 </resources>
