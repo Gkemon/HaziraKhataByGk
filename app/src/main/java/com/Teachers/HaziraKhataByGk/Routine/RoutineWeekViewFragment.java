@@ -115,8 +115,12 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 int emday = dateEndTime.get(Calendar.MINUTE);
 
 
+                List<Integer> selectedDays=getAllSelectedDaysInMonth(event.getSelectedDayList());
                 for (int k = monCal.get(Calendar.DAY_OF_MONTH);
-                     k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 7) {
+                     k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 1) {
+
+                     if(!selectedDays.contains(k))continue;
+
                     Calendar startTime = Calendar.getInstance();
                     startTime.set(Calendar.MONTH, newMonth - 1);
                     startTime.set(Calendar.DAY_OF_MONTH, k);
@@ -147,15 +151,27 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     }
 
+    public List<Integer> getAllSelectedDaysInMonth(List<Integer> selectedDays){
+        //If selected day is 3 means monday which is on 3rd day in month then
+        // 10 , 17 will be selected.
+        List<Integer> selectedDaysInMonth = new ArrayList<>();
+        for(int selectedDay:selectedDays){
+            for(int i=0;i<5;i++){
+                selectedDaysInMonth.add((selectedDay+i*7));
+            }
+        }
+        return selectedDaysInMonth;
+    }
+
     @Override
     public void onEmptyViewLongPress(Calendar time) {
 
     }
 
-    public static Calendar getFirstDay(int newMonth, int i, int weekday) {
+    public static Calendar getFirstDay(int newMonth, int year, int weekday) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, newMonth);
-        c.set(Calendar.YEAR, i);
+        c.set(Calendar.YEAR, year);
         c.set(Calendar.DAY_OF_MONTH, 1);
         int day = c.get(Calendar.DAY_OF_WEEK);
         while (day != weekday) {

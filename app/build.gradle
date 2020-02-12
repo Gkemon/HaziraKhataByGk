@@ -82,7 +82,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.1'
     implementation 'com.github.alamkanak:android-week-view:1.2.6'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
-    implementation 'com.github.Gkemon:Android-Bangla-Day-Picker:1.0.1'
+    implementation 'com.github.Gkemon:Android-Bangla-Day-Picker:1.0.3'
     implementation 'com.google.android.gms:play-services-flags:17.0.0'
     implementation 'com.google.android.gms:play-services-basement:17.1.1'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
