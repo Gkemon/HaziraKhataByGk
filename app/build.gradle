@@ -54,6 +54,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation project(":local_libraries:Android-Week-View:library")
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.11.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.29.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
@@ -81,7 +82,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.jakewharton:butterknife:10.2.1'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
-    implementation project(":local_libraries:Android-Week-View:library")
     implementation 'com.github.Gkemon:Android-Bangla-Day-Picker:1.0.3'
     implementation 'com.google.android.gms:play-services-flags:17.0.0'
     implementation 'com.google.android.gms:play-services-basement:17.1.1'
