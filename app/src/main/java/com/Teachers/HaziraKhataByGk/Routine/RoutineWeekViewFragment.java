@@ -157,7 +157,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
         List<Integer> selectedDaysInMonth = new ArrayList<>();
         for(int selectedDay:selectedDays){
             for(int i=0;i<5;i++){
-                selectedDaysInMonth.add((selectedDay+i*7));
+                selectedDaysInMonth.add((selectedDay+i*7)+1);
             }
         }
         return selectedDaysInMonth;

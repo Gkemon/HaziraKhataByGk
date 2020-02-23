@@ -171,7 +171,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         routineItem.setLocation((etRoom.getText().toString()));
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
 
-        if(isValidated())
+       // if(isValidated())
         MockObjectsRepository.mockRoutineItem = routineItem;
 
 
