@@ -76,6 +76,10 @@ public class UtilsCommon {
         sharedPreferenceManager.setValue("item_student", json);
     }
 
+    public static void handleError(Throwable throwable){
+
+    }
+
     public static ClassItem getCurrentClass(Context context) {
         String classPref = "currentClass";
         Gson gson = new Gson();
@@ -522,9 +526,9 @@ public class UtilsCommon {
     //TODO: for opeing in fb app if it is installed.
     public static void openWithFaceBook(String url, Context context) {
 
+        if(context==null)return;
 
         PackageManager pm;
-
         pm = context.getPackageManager();
 
 
@@ -535,17 +539,17 @@ public class UtilsCommon {
                 uri = Uri.parse("fb://facewebmodal/f?href=" + url);
             }
         } catch (PackageManager.NameNotFoundException ignored) {
-
+         UtilsCommon.handleError(ignored);
         }
 
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         try {
             context.startActivity(intent);
         } catch (Exception e) {
+            UtilsCommon.handleError(e);
             Toast.makeText(context, "ERROR " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
-        return;
     }
 
     public static void openInAppBrowser(String url, Context context) {

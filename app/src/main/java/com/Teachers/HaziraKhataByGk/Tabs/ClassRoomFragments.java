@@ -2,6 +2,7 @@ package com.Teachers.HaziraKhataByGk.Tabs;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +113,8 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     public void loadDataFromServer() {
         //For loading class_room fromTime Server
         FirebaseCaller.getFirebaseDatabase().keepSynced(true);
-        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                child("Class").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 CustomArrayList<ClassItem> classItems = new CustomArrayList<>();
@@ -122,6 +124,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
                     try {
                         classItem = classData.getValue(ClassItem.class);
                     } catch (Exception e) {
+                        UtilsCommon.handleError(e);
                         continue;
                     }
                     if (classItem == null || classItem.getName() == null) continue;

@@ -32,14 +32,14 @@ public class LoadingPopup extends Dialog {
     }
 
     public static void hideLoadingPopUp() {
-
-
         if (dialog != null) {
-            dialog.dismiss();
+            try {
+                dialog.dismiss();
+            } catch (Exception e) {
+                UtilsCommon.handleError(e);
+            }
             dialog = null;
         }
-
-
     }
 
     public static LoadingPopup getInstance(Activity activity) {

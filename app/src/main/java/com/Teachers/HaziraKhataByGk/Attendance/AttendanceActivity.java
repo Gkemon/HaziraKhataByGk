@@ -282,49 +282,54 @@ public class AttendanceActivity extends AppCompatActivity {
                     if (student == null) continue;
 
                     totalAttendPersenten = 0;
-                    totalClass = dataSnapshot.child(student.getId()).child("Attendance").getChildrenCount();
-                    AttendenceData attendenceData;
-                    attendenceDataArrayListForPerStudent = new ArrayList<>();
-                    long temp1 = 0;
+                    try {
+
+                        totalClass = dataSnapshot.child(student.getId()).child("Attendance").
+                                getChildrenCount();
+                        AttendenceData attendenceData;
+                        attendenceDataArrayListForPerStudent = new ArrayList<>();
+                        long temp1 = 0;
 
 
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child(student.getId()).
-                            child("Attendance").getChildren()) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.child(student.getId()).child("Attendance").getChildren()) {
 
-                        attendenceData = dataSnapshot1.getValue(AttendenceData.class);
-                        attendenceDataArrayListForPerStudent.add(attendenceData);
-                        if (attendenceData != null) {
-                            if (attendenceData.getStatus()) attendClass++;
-                            temp1++;
-                            if (temp1 == totalClass) {
-                                previousClassAttendenceStatus = attendenceData.getStatus();
+                            attendenceData = dataSnapshot1.getValue(AttendenceData.class);
+                            attendenceDataArrayListForPerStudent.add(attendenceData);
+                            if (attendenceData != null) {
+                                if (attendenceData.getStatus()) attendClass++;
+                                temp1++;
+                                if (temp1 == totalClass) {
+                                    previousClassAttendenceStatus = attendenceData.getStatus();
+                                }
                             }
                         }
-                    }
 
 
-                    perStudentTotalAttendenceData.put(student.getId(), attendenceDataArrayListForPerStudent);
+                        perStudentTotalAttendenceData.put(student.getId(), attendenceDataArrayListForPerStudent);
 
 
-                    if (totalClass != 0)  //THIS IS FOR AVOID ARITHMETIC EXCEPTION
-                        totalAttendPersenten = (attendClass * 100) / totalClass;
+                        if (totalClass != 0)  //THIS IS FOR AVOID ARITHMETIC EXCEPTION
+                            totalAttendPersenten = (attendClass * 100) / totalClass;
 
-                    attendencePercentage.add((int) totalAttendPersenten);//TO GET PERCENTAGE FOR COLOR
+                        attendencePercentage.add((int) totalAttendPersenten);//TO GET PERCENTAGE FOR COLOR
 
 
-                    if (!dataSnapshot.child(student.getId()).child("Attendance").exists())
+                        if (!dataSnapshot.child(student.getId()).child("Attendance").exists())
+                            previousClassAttendenceStatus = true;
+
+                        if (previousClassAttendenceStatus) {
+                            names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "<br>" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
+                                    + attendClass + " শতকরা :" + totalAttendPersenten + "%");
+                        } else {
+                            names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "<br>" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
+                                    + attendClass + " শতকরা :" + totalAttendPersenten + "%<br> <font color=\"#F44336\">(গতক্লাসে অনুপস্থিত)</font>");
+                        }
                         previousClassAttendenceStatus = true;
-
-                    if (previousClassAttendenceStatus) {
-                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "<br>" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
-                                + attendClass + " শতকরা :" + totalAttendPersenten + "%");
-                    } else {
-                        names.add(" " + student.getStudentName() + ".( রোল :" + student.getId() + ")" + "<br>" + " মোট ক্লাস :" + totalClass + " উপস্থিতি :"
-                                + attendClass + " শতকরা :" + totalAttendPersenten + "%<br> <font color=\"#F44336\">(গতক্লাসে অনুপস্থিত)</font>");
+                        attendClass = 0;
+                        rolls.add(student.getId());
+                    }catch (Exception e){
+                        UtilsCommon.handleError(e);
                     }
-                    previousClassAttendenceStatus = true;
-                    attendClass = 0;
-                    rolls.add(student.getId());
                 }
                 attendenceListAdapter = new AttendenceListAdapter(AttendanceActivity.this, names, classitemAttendence, studentListFromAttendenceActivity);
                 listView.setAdapter(attendenceListAdapter);

@@ -86,7 +86,11 @@ public class FirebaseCaller {
     public static void getAttendanceDataForSingleStudent(String className, String sectionName, String roll, final CommonCallback<ArrayList<AttendenceData>> commonCallback) {
 
 
-        getSingleStudentAttendanceDbRef(className, sectionName, roll).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference databaseReference = getSingleStudentAttendanceDbRef(className, sectionName, roll);
+
+        if (databaseReference != null)
+            databaseReference.
+                    addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -126,10 +130,17 @@ public class FirebaseCaller {
         }
     }
 
-    public static DatabaseReference getSingleStudentAttendanceDbRef(String className, String sectionName, String roll) {
-        return FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
-                child("Class").
-                child(className + sectionName).child("Student").child(roll).child("Attendance");
+    public static DatabaseReference getSingleStudentAttendanceDbRef(String className, String sectionName,
+                                                                    String roll) {
+
+        try {
+            return FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
+                    child("Class").
+                    child(className + sectionName).child("Student").child(roll).child("Attendance");
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
 

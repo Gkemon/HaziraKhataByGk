@@ -39,10 +39,8 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime.intMonthToStringMonthConvertor;
 
@@ -167,26 +165,28 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 LayoutInflater inflater = this.getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
                 dialogBuilder.setView(dialogView);
-                final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
+                final EditText edt = dialogView.findViewById(R.id.custom_delete_dialauge_text);
                 dialogBuilder.setIcon(R.drawable.warnig_for_delete);
                 dialogBuilder.setTitle("শিক্ষার্থীর সকল উপস্থিতির ডাটা ডিলেট করতে চায়?");
                 dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");
-                dialogBuilder.setPositiveButton("ডিলিট করুন", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (edt.getText().toString().trim().equals("DELETE")) {
+                dialogBuilder.setPositiveButton("ডিলিট করুন", (dialog, whichButton) -> {
+                    if (edt.getText().toString().trim().equals("DELETE")) {
 
-                            FirebaseCaller.getSingleStudentAttendanceDbRef
-                                    (UtilsCommon.getCurrentClass(StudentAlIInfoShowActivity.
-                                                    this).getName(),
-                                            UtilsCommon.getCurrentClass(
-                                                    StudentAlIInfoShowActivity.this).getSection(), roll).
-                                    removeValue().addOnSuccessListener(aVoid -> {
+
+                        DatabaseReference databaseReference = FirebaseCaller.getSingleStudentAttendanceDbRef
+                                (UtilsCommon.getCurrentClass(StudentAlIInfoShowActivity.
+                                                this).getName(),
+                                        UtilsCommon.getCurrentClass(
+                                                StudentAlIInfoShowActivity.this).getSection(), roll);
+
+
+                        if (databaseReference != null)
+                            databaseReference.removeValue().addOnSuccessListener(aVoid -> {
                                 loadDataFromServer();
                                 emptyView.setVisibility(View.VISIBLE);
                             });
 
 
-                        }
                     }
                 });
                 dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {
