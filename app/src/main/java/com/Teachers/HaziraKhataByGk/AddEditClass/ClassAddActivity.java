@@ -171,8 +171,6 @@ public class ClassAddActivity extends AppCompatActivity
             DeleteDialog();
         } else {
             editClass();
-
-
         }
 
     }
@@ -180,6 +178,7 @@ public class ClassAddActivity extends AppCompatActivity
     private boolean isUpdatableClass(int index){
         if(classItemList==null||classitem==null||!UtilsCommon.isValideString(previousClassName))
             return false;
+        if(classItemList.size()-1>index)return false;
 
        return classItemList.get(index).getName().equals(classitem.getName()) &&
                 classItemList.get(index).getSection().equals(classitem.getSection())
@@ -201,17 +200,21 @@ public class ClassAddActivity extends AppCompatActivity
         //FOR AVOID SQL INJECTION
         for (int i = 0; i < classItemList.size(); i++) {
 
-            if (classItemList.get(i).getName().equals(classNameEditText.getText().toString().trim())
-                    && classItemList.get(i).getSection().equals(sectionEditText.getText().toString().trim())
-                    && !(previousClassName.equals(classNameEditText.getText().toString()) &&
-                    previousSectionName.equals(sectionEditText.getText().toString()))) {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("সতর্কীকরণ");
-                alertDialog.setIcon(R.drawable.warnig_for_delete);
-                alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                        (dialog, which) -> dialog.dismiss());
-                alertDialog.show();
+            if (isUpdatableClass(i)) {
+
+                try {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("সতর্কীকরণ");
+                    alertDialog.setIcon(R.drawable.warnig_for_delete);
+                    alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                            (dialog, which) -> dialog.dismiss());
+                    alertDialog.show();
+                }catch (Exception e){
+                    UtilsCommon.handleError(e);
+                }
+
+
                 return;
             }
 
