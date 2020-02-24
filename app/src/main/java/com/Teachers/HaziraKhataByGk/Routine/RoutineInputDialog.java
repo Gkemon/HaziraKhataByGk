@@ -16,13 +16,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
+import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.HelperClassess.MockObjectsRepository;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.gk.emon.android.BanglaDaysPicker;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -170,6 +174,20 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         routineItem.setDetails(etDetails.getText().toString());
         routineItem.setLocation((etRoom.getText().toString()));
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
+
+        FirebaseCaller.addRoutine(routineItem, new CommonCallback() {
+
+            @Override
+            public void onSuccess() {
+                EventBus.getDefault().post(new RoutineEvent());
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(String error) {
+               UtilsCommon.showToast("Routine is not saved for the problem :"+ error);
+            }
+        });
 
        // if(isValidated())
         MockObjectsRepository.mockRoutineItem = routineItem;

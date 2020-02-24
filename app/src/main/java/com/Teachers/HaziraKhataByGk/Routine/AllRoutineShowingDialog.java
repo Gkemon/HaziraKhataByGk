@@ -12,9 +12,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.google.android.material.tabs.TabLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +46,24 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         FragmentTransaction ft = manager.beginTransaction();
         dialog.show(ft, AllRoutineShowingDialog.class.getSimpleName());
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRoutinEventTriggered(RoutineEvent routineEvent) {
+        setupViewPager();
+        setupTab();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
      private void setupViewPager() {

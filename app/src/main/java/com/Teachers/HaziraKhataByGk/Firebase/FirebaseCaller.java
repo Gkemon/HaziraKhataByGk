@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,9 @@ import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
+import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -145,6 +149,7 @@ public class FirebaseCaller {
             try {
                 firebaseDatabase.setPersistenceEnabled(true);
             } catch (Exception e) {
+
             }
 
             databaseReference = firebaseDatabase.getReference();
@@ -177,6 +182,12 @@ public class FirebaseCaller {
     public static void deleteData(String className, String sectionName, String key) {
         databaseReference.child("Users").child(getUserID()).child("Class").child(className + sectionName).child("Subject").child(key).keepSynced(true);
         databaseReference.child("Users").child(getUserID()).child("Class").child(className + sectionName).child("Subject").child(key).removeValue();
+    }
+
+    public static void addRoutine(RoutineItem routineItem,CommonCallback commonCallback){
+        databaseReference.child("Users").child(getUserID()).push().setValue(routineItem)
+                .addOnSuccessListener(aVoid -> commonCallback.onSuccess())
+                .addOnFailureListener(e -> commonCallback.onFailure(e.getMessage()));
     }
 
     public static void getTotalSubject(final String className, final String sectionName, final RecyclerView recyclerView, final Activity activity, final TextView emptyText) {
