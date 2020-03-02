@@ -1,2 +1,0 @@
-include ':app'
-include ':local_libraries:Android-Week-View:library'
