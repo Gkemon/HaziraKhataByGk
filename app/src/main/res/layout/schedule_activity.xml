@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@color/blueLight"
+    android:layout_height="match_parent"
+    android:id="@+id/parentLayout">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/myCoordinatorLayout"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        >
+
+    <LinearLayout
+        android:id="@+id/toDoEmptyView"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:src="@drawable/remainder"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+        <TextView
+            android:text="@string/no_to_dos"
+            android:textColor="@color/secondary_text"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!--<com.google.android.material.appbar.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:elevation="0dp"-->
+        <!--android:elevation="0dp"-->
+        <!--&gt;-->
+
+        <!--&lt;!&ndash;<include layout="@layout/base_toolbar"/>&ndash;&gt;-->
+    <!--</com.google.android.material.appbar.AppBarLayout>-->
+
+        <com.Teachers.HaziraKhataByGk.Scheduler.RecyclerViewEmptySupport
+            android:id="@+id/toDoRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <FrameLayout
+            android:id="@+id/attachment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@drawable/ic_add_white_24dp"
+            android:id="@+id/addToDoItemFAB"
+            android:background="@color/blueMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_anchor="@id/attachment_layout"
+            app:layout_anchorGravity="bottom|right|end"
+            app:layout_behavior="com.Teachers.HaziraKhataByGk.Scheduler.ScrollingFABBehaviour"
+            android:tint="#FFFFFF"
+            app:backgroundTint="#0472ae"
+            app:rippleColor="#03A9F4"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

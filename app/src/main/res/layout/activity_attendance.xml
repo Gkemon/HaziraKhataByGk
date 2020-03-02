@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/mainLayout"
+    android:background="@color/colorBackGround"
+    android:layout_height="match_parent"
+    tools:context="com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity">
+    <RadioGroup
+        android:id="@+id/rg_present_absent_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10"
+        android:padding="10dp"
+        android:background="@color/colorDeepRedOrange"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rb_present_all"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_radio"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/RadioButtonCustomStyle"
+            android:text="সকলে উপস্থিত"
+             />
+        <RadioButton
+            android:id="@+id/rb_absent_all"
+            style="@style/RadioButtonCustomStyle"
+            android:layout_width="0dp"
+            android:button="@drawable/selector_radio"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="সকলে অনুপস্থিত"/>
+    </RadioGroup>
+    <ListView
+        android:layout_below="@+id/rg_present_absent_all"
+        android:id="@+id/attendanceListViwe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        tools:listitem="@layout/attendence_item"
+        android:layout_above="@+id/saveButtonLayout"
+        android:layout_centerHorizontal="true">
+    </ListView>
+    <LinearLayout
+        android:id="@+id/toDoEmptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/EmptyImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/attendence_empty" />
+
+        <TextView
+            android:id="@+id/EmptyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:text="@string/no_to_dos_in_attendence_activity"
+            android:textColor="@color/secondary_text"
+            android:textSize="13sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/saveButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:padding="8sp">
+    <Button
+        android:id="@+id/buttonSaveAttendance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ButtonOrangeStyle"
+        android:text="ক্লাসের উপস্থিতি সার্ভারে সেভ করুন।"
+        />
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+<ScrollView
+    android:layout_above="@+id/ll_action"
+    android:id="@+id/ll_main_routine"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+<TextView
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:textAlignment="textStart"
+    android:textColor="@android:color/black"
+    android:textSize="14sp"
+    android:gravity="start"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/please_select_routine_type_from_below">
+
+</TextView>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rb_class_routine"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/class_routine">
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/rb_exam_routine"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/exam_routine">
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/rb_admin_routine"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/admin_routine">
+        </RadioButton>
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/text_subject"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <EditText
+            android:id="@+id/et_subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/text_room_no"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <EditText
+            android:id="@+id/et_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/text_start_time"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonPrimaryColorStyle"
+            android:id="@+id/bt_from_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/text_click"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/text_end_time"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonPrimaryColorStyle"
+            android:id="@+id/bt_to_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/text_click"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            />
+    </LinearLayout>
+
+        <TextView
+            tools:visibility="visible"
+            android:visibility="visible"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Routine lasting">
+
+        </TextView>
+        <RadioGroup
+            tools:visibility="visible"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_permanent_routine"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="permanent">
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/rb_temporary_routine"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Temporary">
+            </RadioButton>
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_date_select"
+            style="@style/ButtonPrimaryColorStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Select date"
+            tools:visibility="visible"
+            android:visibility="gone" />
+        <com.gk.emon.android.BanglaDaysPicker
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/weekdays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:friday_first_day="true"
+            app:is_all_days_selected="false"
+            app:is_bangla="true"
+            app:full_size="true"/>
+    <LinearLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:text="চাইলে রং সিলেক্ট করতে পারেন"
+            android:textColor="@color/white"
+            android:id="@+id/bt_color_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            app:backgroundTint="@color/colorGreen"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="start"
+        android:hint="চাইলে কোন বিবরণও লিখতে পারেন।"
+        android:inputType="textMultiLine"
+        android:maxLength="1000"
+        android:maxLines="5"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+</ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_action"
+        android:layout_above="@+id/btn_tutorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:text="বাদ"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+
+        <Button
+            android:text="সেভ করুন"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/save"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+
+    </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_delete_routine"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:backgroundTint="@color/red_primary"
+        android:src="@drawable/ic_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+    <include layout="@layout/include_tutorial_button">
+    </include>
+</RelativeLayout>

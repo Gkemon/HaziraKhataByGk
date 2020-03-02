@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.Teachers.HaziraKhataByGk.Browsing.BrowsingActivity">
+    <item
+        android:id="@+id/action_copy_URL"
+        android:icon="@drawable/ic_action_copy"
+        android:orderInCategory="100"
+        android:title="@string/action_forward"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/action_bookmark"
+        android:icon="@drawable/ic_bookmark_border_black_24dp"
+        android:orderInCategory="101"
+        android:title="@string/action_bookmark"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_back"
+        android:icon="@drawable/ic_keyboard_arrow_left_white_24dp"
+        android:text="ec"
+        android:orderInCategory="102"
+        android:title="@string/action_back"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/action_forward"
+        android:icon="@drawable/ic_keyboard_arrow_right_white_24dp"
+        android:orderInCategory="103"
+        android:title="@string/action_forward"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_share_white"
+        android:orderInCategory="104"
+        android:title="@string/action_forward"
+        app:showAsAction="always" />
+
+</menu>

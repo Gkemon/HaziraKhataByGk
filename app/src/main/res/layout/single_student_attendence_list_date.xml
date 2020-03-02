@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+
+    android:paddingBottom="5sp"
+    android:paddingLeft="5sp"
+    android:paddingRight="5sp"
+    android:paddingTop="5sp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#90caf9"
+        android:backgroundTint="#90caf9"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/PresentOrAbsent"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:elevation="10sp" />
+
+        <TextView
+            android:id="@+id/SingleStudentAttendeceDateList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="20sp"
+            android:padding="3sp"
+            tools:text="emon emon emon emon emon emon emonemon emonemon emonemon emonemonemon emonemon emonemon emonemon emonemon emonemon emon"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="#ffffff"/>
+</LinearLayout>

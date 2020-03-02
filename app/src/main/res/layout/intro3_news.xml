@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3F51B5">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:background="#3F51B5">
+
+        <ImageView
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:src="@drawable/news" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10sp"
+            android:text="শিক্ষা খবর"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15sp"
+            android:paddingRight="15sp"
+            android:text="সর্বশেষ ঘটে যাওয়া শিক্ষাবিষয়ক খবরগুলোর আপডেট নোটিফিকেশনের মাধ্যমে জানিয়ে দেয়ার ব্যবস্থা করা হয়েছে"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+</RelativeLayout>

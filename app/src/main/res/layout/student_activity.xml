@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/blueLight"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.Teachers.HaziraKhataByGk.StudentListShowActivity">
+
+    <LinearLayout
+        android:id="@+id/toDoEmptyView"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/EmptyImage"
+            android:src="@drawable/student_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+        <TextView
+            android:text="@string/instruction_for_student_Activity"
+            android:id="@+id/EmptyText"
+            android:textColor="@color/secondary_text"
+            android:layout_gravity="center"
+            android:textSize="13sp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBarInStudentActivity"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/ads"
+        android:id="@+id/studentFromStudentActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addFromStudentActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_add_black_24dp"
+        android:tint="#FFFFFF"
+        app:backgroundTint="#0472ae"
+        app:rippleColor="#03A9F4"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin" />
+
+</RelativeLayout>

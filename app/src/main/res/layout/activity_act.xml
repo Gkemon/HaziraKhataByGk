@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ads"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueLight"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+            android:id="@+id/class_name_textinputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:hintTextAppearance="@style/Hints">
+
+            <EditText
+                android:id="@+id/classText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|bottom"
+                android:hint="@string/insert_class"
+                android:inputType="text"
+                android:lines="2"
+                android:padding="20dp" />
+        </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
+
+        <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+            android:id="@+id/sectionName_textinputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:hintTextAppearance="@style/Hints">
+
+            <EditText
+                android:id="@+id/sectionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|bottom"
+                android:hint="@string/insert_section"
+                android:inputType="text"
+                android:lines="2"
+                android:padding="20dp" />
+        </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#4CAF50"
+                android:elevation="15sp"
+                android:text="@string/add"
+                android:textColor="@color/white" />
+
+            <Button
+            android:id="@+id/btnEdit"
+            android:backgroundTint="#FF9800"
+            android:elevation="15sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit" />
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F44336"
+                android:elevation="15sp"
+                android:text="@string/delete"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

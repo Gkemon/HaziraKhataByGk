@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/attendanceLayout"
+        android:elevation="20sp"
+        android:layout_margin="15sp"
+        android:backgroundTint="#bbdefb"
+        android:background="#bbdefb"
+
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/attendanceText"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="#2196F3"
+            android:backgroundTint="#F44336"
+            android:elevation="6sp"
+            android:gravity="left|center"
+            android:padding="10sp"
+            android:text="Date"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+    </LinearLayout>
+</RelativeLayout>
