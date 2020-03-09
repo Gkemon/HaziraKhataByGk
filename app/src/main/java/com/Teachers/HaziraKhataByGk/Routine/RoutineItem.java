@@ -1,7 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Routine;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
@@ -9,15 +8,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity(tableName = "Routine")
+@Entity
 public class RoutineItem extends WeekViewEvent implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
     private Date date;
     private String type;
-    private boolean isPermanent=true;
+    private boolean isPermanent = true;
     private String details;
     private List<Integer> selectedDayList;
+
 
     public List<Integer> getSelectedDayList() {
         return selectedDayList;
@@ -56,19 +54,11 @@ public class RoutineItem extends WeekViewEvent implements Serializable {
     }
 
     public void setDate(Date date) throws Exception {
-        if(!isPermanent)
-        this.date = date;
+        if (!isPermanent)
+            this.date = date;
         else {
             throw new Exception("Routine is permanent.So don't need to set date");
         }
     }
 
-    @Override
-    public long getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

@@ -14,19 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
-import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
-import com.Teachers.HaziraKhataByGk.HelperClassess.MockObjectsRepository;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
-import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.gk.emon.android.BanglaDaysPicker;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,9 +69,9 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     @OnClick(R.id.bt_date_select)
     void showDate(AppCompatButton btn) {
         DialogUtils.showDateDialog(null, getContext(), (datePicker, year, month, dayOfMonth) -> {
-            btn.setText(UtilsDateTime.getSimpleDateText(year,month,dayOfMonth));
+            btn.setText(UtilsDateTime.getSimpleDateText(year, month, dayOfMonth));
             try {
-                routineItem.setDate(UtilsDateTime.getDate(year,month,dayOfMonth));
+                routineItem.setDate(UtilsDateTime.getDate(year, month, dayOfMonth));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -138,26 +134,26 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     @OnClick(R.id.bt_color_select)
     void selectColor(AppCompatButton btnColorSelect) {
 
-        if(getActivity()!=null)
+        if (getActivity() != null)
             colorPicker = new ColorPicker(getActivity());
-        if(colorPicker==null)return;
+        if (colorPicker == null) return;
 
         colorPicker
                 .setDefaultColorButton(Color.RED)
                 .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-            public void onChooseColor(int position,int color) {
-                routineItem.setColor(color);
+                    public void onChooseColor(int position, int color) {
+                        routineItem.setColor(color);
 
-                btnColorSelect.getBackground().mutate().setColorFilter(new
-                        PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
-            }
+                        btnColorSelect.getBackground().mutate().setColorFilter(new
+                                PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
+                    }
 
-            @Override
-            public void onCancel(){
-                routineItem.setColor(Color.RED);
-            }
-        })
-        .show();
+                    @Override
+                    public void onCancel() {
+                        routineItem.setColor(Color.RED);
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.save)
@@ -175,22 +171,11 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         routineItem.setLocation((etRoom.getText().toString()));
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
 
-        FirebaseCaller.addRoutine(routineItem, new CommonCallback() {
+        //if (isValidated())
+        new ViewModelProvider(this).get(RoutineViewModel.class).insert(routineItem);
 
-            @Override
-            public void onSuccess() {
-                EventBus.getDefault().post(new RoutineEvent());
-                dismiss();
-            }
 
-            @Override
-            public void onFailure(String error) {
-               UtilsCommon.showToast("Routine is not saved for the problem :"+ error);
-            }
-        });
-
-       // if(isValidated())
-        MockObjectsRepository.mockRoutineItem = routineItem;
+        // MockObjectsRepository.mockRoutineItem = routineItem;
 
 
     }
@@ -207,22 +192,21 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         return view;
     }
 
-    private boolean isValidated(){
-        if(!UtilsCommon.isValideString(routineItem.getName()))
-        {
+    private boolean isValidated() {
+        if (!UtilsCommon.isValideString(routineItem.getName())) {
             etSubject.setError(getString(R.string.please_input_subject));
             return false;
         }
 
 
-        if(routineItem.getStartTime()==null||
-                btnFromTime.getText().toString().equals(getString(R.string.text_click))){
+        if (routineItem.getStartTime() == null ||
+                btnFromTime.getText().toString().equals(getString(R.string.text_click))) {
             UtilsCommon.showToast(getString(R.string.please_select_start_time));
             btnToTime.requestFocus();
             return false;
         }
 
-        if(routineItem.getEndTime()==null||
+        if (routineItem.getEndTime() == null ||
                 btnToTime.getText().toString().equals(getString(R.string.text_click))) {
             UtilsCommon.showToast(getString(R.string.please_select_end_time));
             btnToTime.requestFocus();
