@@ -3,6 +3,7 @@ package com.Teachers.HaziraKhataByGk.Routine;
 import android.content.Context;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,13 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.MockObjectsRepository;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.R;
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
+import com.amitshekhar.DebugDB;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +48,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
         mWeekView.setMonthChangeListener(this);
         mWeekView.setEventLongPressListener(this);
         mWeekView.setEmptyViewLongPressListener(this);
-
+        Log.d("DEBUG", DebugDB.getAddressLog());
         setupDateTimeInterpreter(false);
         return root;
     }
@@ -101,7 +104,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
         for (RoutineItem event : events) {
 
-            if(event==null)continue;
+            if(event==null||event.getStartTime()==null||event.getEndTime()==null )continue;
 
             Calendar dateTime = event.getStartTime();
             Calendar dateEndTime = event.getEndTime();

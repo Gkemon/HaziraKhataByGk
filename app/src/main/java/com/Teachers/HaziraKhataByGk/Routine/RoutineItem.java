@@ -21,7 +21,7 @@ public class RoutineItem extends WeekViewEvent implements Serializable {
         return selectedDayList;
     }
 
-    void setSelectedDayList(List<Integer> selectedDayList) {
+    public void setSelectedDayList(List<Integer> selectedDayList) {
         this.selectedDayList = selectedDayList;
     }
 
