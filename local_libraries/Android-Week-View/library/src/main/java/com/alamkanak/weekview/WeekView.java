@@ -33,12 +33,6 @@ import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.ViewCompat;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 
-import com.alamkanak.weekview.DateTimeInterpreter;
-import com.alamkanak.weekview.MonthLoader;
-import com.alamkanak.weekview.R;
-import com.alamkanak.weekview.WeekViewEvent;
-import com.alamkanak.weekview.WeekViewLoader;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -960,14 +954,16 @@ public class WeekView extends View {
 
                 // Clear events.
                 mEventRects.clear();
-                sortAndCacheEvents(previousPeriodEvents);
-                sortAndCacheEvents(currentPeriodEvents);
-                sortAndCacheEvents(nextPeriodEvents);
+                if (previousPeriodEvents != null && currentPeriodEvents != null && nextPeriodEvents != null) {
+                    sortAndCacheEvents(previousPeriodEvents);
+                    sortAndCacheEvents(currentPeriodEvents);
+                    sortAndCacheEvents(nextPeriodEvents);
 
-                mPreviousPeriodEvents = previousPeriodEvents;
-                mCurrentPeriodEvents = currentPeriodEvents;
-                mNextPeriodEvents = nextPeriodEvents;
-                mFetchedPeriod = periodToFetch;
+                    mPreviousPeriodEvents = previousPeriodEvents;
+                    mCurrentPeriodEvents = currentPeriodEvents;
+                    mNextPeriodEvents = nextPeriodEvents;
+                    mFetchedPeriod = periodToFetch;
+                }
             }
         }
 
@@ -1063,20 +1059,21 @@ public class WeekView extends View {
      * @param events The events to be sorted.
      */
     private void sortEvents(List<? extends WeekViewEvent> events) {
-        Collections.sort(events, new Comparator<WeekViewEvent>() {
-            @Override
-            public int compare(WeekViewEvent event1, WeekViewEvent event2) {
-                long start1 = event1.getStartTime().getTimeInMillis();
-                long start2 = event2.getStartTime().getTimeInMillis();
-                int comparator = start1 > start2 ? 1 : (start1 < start2 ? -1 : 0);
-                if (comparator == 0) {
-                    long end1 = event1.getEndTime().getTimeInMillis();
-                    long end2 = event2.getEndTime().getTimeInMillis();
-                    comparator = end1 > end2 ? 1 : (end1 < end2 ? -1 : 0);
+        if (events != null)
+            Collections.sort(events, new Comparator<WeekViewEvent>() {
+                @Override
+                public int compare(WeekViewEvent event1, WeekViewEvent event2) {
+                    long start1 = event1.getStartTime().getTimeInMillis();
+                    long start2 = event2.getStartTime().getTimeInMillis();
+                    int comparator = start1 > start2 ? 1 : (start1 < start2 ? -1 : 0);
+                    if (comparator == 0) {
+                        long end1 = event1.getEndTime().getTimeInMillis();
+                        long end2 = event2.getEndTime().getTimeInMillis();
+                        comparator = end1 > end2 ? 1 : (end1 < end2 ? -1 : 0);
+                    }
+                    return comparator;
                 }
-                return comparator;
-            }
-        });
+            });
     }
 
     /**

@@ -3,21 +3,20 @@ package com.Teachers.HaziraKhataByGk.Routine;
 import android.content.Context;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.MockObjectsRepository;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.R;
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
-import com.amitshekhar.DebugDB;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,8 +29,10 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
     View root;
     Context context;
     private WeekView mWeekView;
-    private String flag;//This is for choosing the categories of routine
-
+    private String routineType;
+    private RoutineViewModel routineViewModel;
+    LiveData<List<RoutineItem>> liveEvents;
+    List<RoutineItem> events;
     public RoutineWeekViewFragment() {
 
     }
@@ -42,15 +43,33 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                              Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_routine_week_view, container, false);
+        initData();
 
+        return root;
+    }
+
+    private void initData() {
         mWeekView = root.findViewById(R.id.weekView);
         mWeekView.setOnEventClickListener(this);
         mWeekView.setMonthChangeListener(this);
         mWeekView.setEventLongPressListener(this);
         mWeekView.setEmptyViewLongPressListener(this);
-        Log.d("DEBUG", DebugDB.getAddressLog());
         setupDateTimeInterpreter(false);
-        return root;
+        routineViewModel = new ViewModelProvider(this).get(RoutineViewModel.class);
+        events=new ArrayList<>();
+        if (getArguments() != null) {
+            routineType = getArguments().getString(RoutineConstant.routineType);
+            if(UtilsCommon.isValideString(routineType))
+            liveEvents = routineViewModel.getAllRoutines(routineType);
+            if (liveEvents != null) {
+                liveEvents.observe(getViewLifecycleOwner(), routineItems -> {
+                    events.clear();
+                    events.addAll(routineItems);
+                    mWeekView.notifyDatasetChanged();
+                });
+            }
+        }
+
     }
 
 
@@ -92,22 +111,17 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
     @Override
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
-        List<RoutineItem> events = new ArrayList<>();
-        if (getArguments() != null) {
-            flag = getArguments().getString("key");
-        }
 
-        events.add(MockObjectsRepository.mockRoutineItem);
+        if (events != null) {
+            List<WeekViewEvent> newEvents = new ArrayList<>();
 
+            for (RoutineItem event : events) {
 
-        List<WeekViewEvent> newEvents= new ArrayList<>();
+                if (event == null || event.getStartTime() == null || event.getEndTime() == null)
+                    continue;
 
-        for (RoutineItem event : events) {
-
-            if(event==null||event.getStartTime()==null||event.getEndTime()==null )continue;
-
-            Calendar dateTime = event.getStartTime();
-            Calendar dateEndTime = event.getEndTime();
+                Calendar dateTime = event.getStartTime();
+                Calendar dateEndTime = event.getEndTime();
 
 
                 Calendar monCal = getFirstDay(newMonth - 1,
@@ -122,7 +136,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 for (int k = monCal.get(Calendar.DAY_OF_MONTH);
                      k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 1) {
 
-                     if(!selectedDays.contains(k))continue;
+                    if (!selectedDays.contains(k)) continue;
 
                     Calendar startTime = Calendar.getInstance();
                     startTime.set(Calendar.MONTH, newMonth - 1);
@@ -148,9 +162,10 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                     newEvents.add(newEvent);
                 }
 
+            }
+            return newEvents;
         }
-
-        return newEvents;
+        return null;
 
     }
 

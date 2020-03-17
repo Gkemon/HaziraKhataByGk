@@ -57,6 +57,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     private ColorPicker colorPicker;
 
     private RoutineItem routineItem;
+    private RoutineViewModel routineViewModel;
 
     public static void showDialog(FragmentManager manager) {
 
@@ -87,7 +88,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     }
 
     @OnClick(R.id.rb_permanent_routine)
-    void hideDateSelecButton() {
+    void hideDateSelectButton() {
         routineItem.setPermanent(true);
         banglaDaysPicker.setVisibility(View.VISIBLE);
         btnDateSelect.setVisibility(View.GONE);
@@ -160,10 +161,10 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     void saveRoutine() {
 
         if (rbClassRoutine.isSelected()) {
-            routineItem.setType(Constant.ROUTINE_TYPE_CLASS);
+            routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
         } else if (rbExamRoutine.isSelected()) {
-            routineItem.setType(Constant.ROUTINE_TYPE_EXAM);
-        } else routineItem.setType(Constant.ROUTINE_TYPE_ADMINISTRATIONAL);
+            routineItem.setType(RoutineConstant.ROUTINE_TYPE_EXAM);
+        } else routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
 
 
         routineItem.setName(etSubject.getText().toString());
@@ -172,10 +173,8 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
 
         //if (isValidated())
-        new ViewModelProvider(this).get(RoutineViewModel.class).insert(routineItem);
-
-
-        // MockObjectsRepository.mockRoutineItem = routineItem;
+        routineViewModel.insert(routineItem);
+        dismiss();
 
 
     }
@@ -219,7 +218,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     }
 
     private void initData() {
-
+        routineViewModel = new ViewModelProvider(this).get(RoutineViewModel.class);
         routineItem = new RoutineItem();
     }
 

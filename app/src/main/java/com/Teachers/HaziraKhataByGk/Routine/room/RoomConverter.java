@@ -14,7 +14,7 @@ import java.util.List;
 public class RoomConverter {
     @TypeConverter
     public static List<Integer> fromStringToIntList(String value) {
-        Type listType = new TypeToken<ArrayList<String>>() {
+        Type listType = new TypeToken<List<Integer>>() {
         }.getType();
         return new Gson().fromJson(value, listType);
     }

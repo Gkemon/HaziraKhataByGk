@@ -9,10 +9,8 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
-import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.google.android.material.tabs.TabLayout;
@@ -34,8 +32,8 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
     @OnClick(R.id.btn_add_routine)
      void addRoutine() {
-        if (getFragmentManager() != null) {
-            RoutineInputDialog.showDialog(getFragmentManager());
+        if (getActivity() != null) {
+            RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
         }
     }
 
@@ -72,18 +70,18 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
         Bundle bundle1 = new Bundle();
-        bundle1.putString("key", Constant.ROUTINE_TYPE_CLASS);
+         bundle1.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_CLASS);
         RoutineWeekViewFragment fragmentClassRoutine = new RoutineWeekViewFragment();
         fragmentClassRoutine.setArguments(bundle1);
         adapter.addFrag(fragmentClassRoutine);
 
         Bundle bundle2 = new Bundle();
-        bundle2.putString("key", Constant.ROUTINE_TYPE_EXAM);
+         bundle2.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_EXAM);
         RoutineWeekViewFragment fragmentExamRoutine = new RoutineWeekViewFragment();
         adapter.addFrag(fragmentExamRoutine);
 
         Bundle bundle3 = new Bundle();
-        bundle3.putString("key", Constant.ROUTINE_TYPE_ADMINISTRATIONAL);
+         bundle3.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
         RoutineWeekViewFragment fragmentAdmin = new RoutineWeekViewFragment();
         adapter.addFrag(fragmentAdmin);
 

@@ -57,7 +57,13 @@ public class LoadingPopup extends Dialog {
 
         Handler handler = new Handler();
         try {
-            handler.postDelayed(super::dismiss, 3000);
+            handler.postDelayed(() -> {
+                try {
+                    super.dismiss();
+                }catch (Exception ignored){
+
+                }
+            }, 3000);
         }catch (Exception e){
             hideLoadingPopUp();
         }

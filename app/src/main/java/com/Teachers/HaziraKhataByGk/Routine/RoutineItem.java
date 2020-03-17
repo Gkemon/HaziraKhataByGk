@@ -53,12 +53,9 @@ public class RoutineItem extends WeekViewEvent implements Serializable {
         isPermanent = permanent;
     }
 
-    public void setDate(Date date) throws Exception {
+    public void setDate(Date date)  {
         if (!isPermanent)
             this.date = date;
-        else {
-            throw new Exception("Routine is permanent.So don't need to set date");
-        }
     }
 
 }
