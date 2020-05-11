@@ -304,23 +304,19 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
         if (previousContent == null || previousTitle == null) {
             isEdited = false;
         } else {
-            if (previousTitle.equals(currentTitle) && previousContent.equals(currentContent)) {
-                isEdited = false;
-            } else {
-                isEdited = true;
-            }
+            isEdited = !previousTitle.equals(currentTitle) || !previousContent.equals(currentContent);
         }
 
 
         if (isEdited) {
 
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("সতর্কীকরণ");
-            alertDialog.setIcon(R.drawable.warning_for_add);
-            alertDialog.setMessage("এই নোটটি পরিবর্তন করা হয়েছে। সেভ করতে চান?");
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "সেভ করুন",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+            try {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("সতর্কীকরণ");
+                alertDialog.setIcon(R.drawable.warning_for_add);
+                alertDialog.setMessage("এই নোটটি পরিবর্তন করা হয়েছে। সেভ করতে চান?");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "সেভ করুন",
+                        (dialog, which) -> {
 
 
                             Notes.setheading(title.getText().toString().trim());
@@ -329,17 +325,13 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                             //CHECK THAT THE ITEM IS UNIQUE
                             for (int i = 0; i < ClassRoomActivity.notesList.size(); i++) {
                                 if (ClassRoomActivity.notesList.get(i).getheading().equals(Notes.getheading()) && !previousTitle.equals(title.getText().toString())) {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(NoteAddActivity.this).create();
-                                    alertDialog.setTitle("সতর্কীকরণ");
-                                    alertDialog.setIcon(R.drawable.warning_for_add);
-                                    alertDialog.setMessage("এই একই শিরোনামের নোট ইতিমধ্যে এই ক্লাসের ডাটাবেজে রয়েছে।নতুন শিরোনাম ইনপুট দিন,ধন্যবাদ।");
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            });
-                                    alertDialog.show();
+                                    AlertDialog alertDialog1 = new AlertDialog.Builder(NoteAddActivity.this).create();
+                                    alertDialog1.setTitle("সতর্কীকরণ");
+                                    alertDialog1.setIcon(R.drawable.warning_for_add);
+                                    alertDialog1.setMessage("এই একই শিরোনামের নোট ইতিমধ্যে এই ক্লাসের ডাটাবেজে রয়েছে।নতুন শিরোনাম ইনপুট দিন,ধন্যবাদ।");
+                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                                            (dialog1, which1) -> dialog1.dismiss());
+                                    alertDialog1.show();
                                     return;
                                 }
                             }
@@ -362,16 +354,15 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
                             Toast.makeText(NoteAddActivity.this, "নোট নোটটি সার্ভারে সেভ হচ্ছে", Toast.LENGTH_SHORT).show();
                             finish();
                             previousTitle = null;
-                        }
-                    });
+                        });
 
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "বের হোন",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-            alertDialog.show();
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "বের হোন",
+                        (dialog, which) -> finish());
+                alertDialog.show();
+            }catch (Exception e){
+                UtilsCommon.handleError(e);
+            }
+
 
 
         } else {

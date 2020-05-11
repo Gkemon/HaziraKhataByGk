@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.Teachers.HaziraKhataByGk.R;
@@ -94,30 +95,23 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
         final Resources res = context.getResources();
         final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
 
-        //for bitmap generate
-//        LetterTile letterTile = new LetterTile(context);
-//        Bitmap letterBitmap = letterTile.getLetterTile(Notes.getheading(),
-//                Notes.getheading(), tileSize, tileSize);
 
         //FOR TEXTDRAWABLE IMAGE CREATING
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getRandomColor();
-        TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
-                .textColor(Color.WHITE)
-                .useFont(Typeface.DEFAULT)
-                .toUpperCase()
-                .endConfig()
-                .buildRound(Notes.getheading().substring(0, 1), color);
-        holder.thumbOfNote.setImageDrawable(myDrawable);
 
-//        String subjectName="শিরোনাম: "+Notes.getheading();
-//        String content;
-//        if(Notes.getContent().equals("")){
-//            content="";
-//        }
-//        else {
-//            content="বিষয়বস্তু: "+Notes.getContent();
-//        }
+        try{
+            TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
+                    .textColor(Color.WHITE)
+                    .useFont(Typeface.DEFAULT)
+                    .toUpperCase()
+                    .endConfig()
+                    .buildRound(Notes.getheading().substring(0, 1), color);
+            holder.thumbOfNote.setImageDrawable(myDrawable);
+        }catch (Exception e){
+            UtilsCommon.handleError(e);
+        }
+
 
         holder.TitleOfNotes.setText(Notes.getheading());
         holder.TitleOfNotes.setTextColor(color);

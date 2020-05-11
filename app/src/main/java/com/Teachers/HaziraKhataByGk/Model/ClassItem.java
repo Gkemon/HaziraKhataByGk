@@ -1,5 +1,7 @@
 package com.Teachers.HaziraKhataByGk.Model;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+
 import java.io.Serializable;
 
 /**
@@ -19,7 +21,7 @@ public class ClassItem implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return UtilsCommon.isValideString(name)? name: "";
     }
 
     public void setName(String name) {
@@ -27,7 +29,7 @@ public class ClassItem implements Serializable {
     }
 
     public String getSection() {
-        return section;
+        return UtilsCommon.isValideString(section)? section: "";
     }
 
     public void setSection(String section) {

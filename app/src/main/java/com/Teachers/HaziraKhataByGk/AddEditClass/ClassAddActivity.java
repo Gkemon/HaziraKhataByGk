@@ -113,6 +113,7 @@ public class ClassAddActivity extends AppCompatActivity
             //for avoiding null pointer exeption
             if (classItemList == null) {
                 startActivity(new Intent(this, MainActivity.class));
+                UtilsCommon.handleError(new Exception("Class list in null"));
                 return;
             }
 
@@ -121,13 +122,18 @@ public class ClassAddActivity extends AppCompatActivity
 
                 if (classItemList.get(i).getName().equals(classitem.getName()) &&
                         classItemList.get(i).getSection().equals(classitem.getSection())) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                    alertDialog.setTitle("সতর্কীকরণ");
-                    alertDialog.setIcon(R.drawable.warning_for_add);
-                    alertDialog.setMessage("এই একই নামের আরেকটি ক্লাসের নাম ইতিমধ্যে ডাটাবেজে রয়েছে।নতুন নাম ইনপুট দিন,ধন্যবাদ।");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                            (dialog, which) -> dialog.dismiss());
-                    alertDialog.show();
+                    try {
+                        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                        alertDialog.setTitle("সতর্কীকরণ");
+                        alertDialog.setIcon(R.drawable.warning_for_add);
+                        alertDialog.setMessage("এই একই নামের আরেকটি ক্লাসের নাম ইতিমধ্যে ডাটাবেজে রয়েছে।নতুন নাম ইনপুট দিন,ধন্যবাদ।");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                                (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                    }catch (Exception e){
+                        UtilsCommon.handleError(e);
+                    }
+
                     return;
                 }
             }
@@ -149,11 +155,7 @@ public class ClassAddActivity extends AppCompatActivity
             if (classItemList != null)
                 for (int i = 0; i < classItemList.size(); i++) {
 
-
-                    if (classItemList.get(i).getName().equals(classitem.getName()) &&
-                            classItemList.get(i).getSection().equals(classitem.getSection())
-                            && !(previousClassName.equals(classNameEditText.getText().toString()) &&
-                            previousSectionName.equals(sectionEditText.getText().toString()))) {
+                    if (isUpdatableClass(i)) {
                         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                         alertDialog.setTitle("সতর্কীকরণ");
                         alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -169,11 +171,19 @@ public class ClassAddActivity extends AppCompatActivity
             DeleteDialog();
         } else {
             editClass();
-
-
         }
 
+    }
 
+    private boolean isUpdatableClass(int index){
+        if(classItemList==null||classitem==null||!UtilsCommon.isValideString(previousClassName))
+            return false;
+        if(classItemList.size()-1>index)return false;
+
+       return classItemList.get(index).getName().equals(classitem.getName()) &&
+                classItemList.get(index).getSection().equals(classitem.getSection())
+                && !(previousClassName.equals(classNameEditText.getText().toString()) &&
+                previousSectionName.equals(sectionEditText.getText().toString()));
     }
 
     public void editClass() {
@@ -190,17 +200,21 @@ public class ClassAddActivity extends AppCompatActivity
         //FOR AVOID SQL INJECTION
         for (int i = 0; i < classItemList.size(); i++) {
 
-            if (classItemList.get(i).getName().equals(classNameEditText.getText().toString().trim())
-                    && classItemList.get(i).getSection().equals(sectionEditText.getText().toString().trim())
-                    && !(previousClassName.equals(classNameEditText.getText().toString()) &&
-                    previousSectionName.equals(sectionEditText.getText().toString()))) {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("সতর্কীকরণ");
-                alertDialog.setIcon(R.drawable.warnig_for_delete);
-                alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                        (dialog, which) -> dialog.dismiss());
-                alertDialog.show();
+            if (isUpdatableClass(i)) {
+
+                try {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("সতর্কীকরণ");
+                    alertDialog.setIcon(R.drawable.warnig_for_delete);
+                    alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                            (dialog, which) -> dialog.dismiss());
+                    alertDialog.show();
+                }catch (Exception e){
+                    UtilsCommon.handleError(e);
+                }
+
+
                 return;
             }
 

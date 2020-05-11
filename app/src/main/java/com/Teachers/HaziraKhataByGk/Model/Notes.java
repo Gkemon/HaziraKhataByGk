@@ -3,6 +3,8 @@ package com.Teachers.HaziraKhataByGk.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+
 
 /**
  * Created by uy on 9/7/2017.
@@ -35,7 +37,7 @@ public class Notes implements Parcelable {
     }
 
     public String getheading() {
-        return heading;
+        return UtilsCommon.isValideString(heading)?heading:"";
     }
 
     public void setheading(String heading) {
