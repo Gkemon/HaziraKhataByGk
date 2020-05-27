@@ -105,7 +105,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
-
+        routineViewModel.deleteByID(event.id);
     }
 
     @Override
@@ -120,23 +120,26 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 if (event == null || event.getStartTime() == null || event.getEndTime() == null)
                     continue;
 
-                Calendar dateTime = event.getStartTime();
+                Calendar dateStartTime = event.getStartTime();
                 Calendar dateEndTime = event.getEndTime();
 
 
-                Calendar monCal = getFirstDay(newMonth - 1,
-                        newYear,dateTime.get(Calendar.DAY_OF_WEEK));
-                int hday = dateTime.get(Calendar.HOUR_OF_DAY);
-                int mday = dateTime.get(Calendar.MINUTE);
+
+                Calendar monCal =  getCurrentMonthCalendar(newMonth-1,newYear);
+
+
+                int hday = dateStartTime.get(Calendar.HOUR_OF_DAY);
+                int mday = dateStartTime.get(Calendar.MINUTE);
+
                 int ehday = dateEndTime.get(Calendar.HOUR_OF_DAY);
                 int emday = dateEndTime.get(Calendar.MINUTE);
 
 
-                List<Integer> selectedDays=getAllSelectedDaysInMonth(event.getSelectedDayList());
-                for (int k = monCal.get(Calendar.DAY_OF_MONTH);
-                     k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 1) {
+                for (int k = 1; k <= monCal.getActualMaximum(Calendar.DAY_OF_MONTH); k += 1) {
 
-                    if (!selectedDays.contains(k)) continue;
+
+                    //Get day of this date and check the day is exist in day list of the event or not
+                    if(!hasEventForThisDay(event,newMonth,k))continue;
 
                     Calendar startTime = Calendar.getInstance();
                     startTime.set(Calendar.MONTH, newMonth - 1);
@@ -155,7 +158,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                     endTime.set(Calendar.MILLISECOND, 999);
 
 
-                    WeekViewEvent newEvent = new WeekViewEvent(1,event.getName(),startTime,endTime);
+                    WeekViewEvent newEvent = new WeekViewEvent(event.id, event.getName(), startTime, endTime);
                     newEvent.setStartTime(startTime);
                     newEvent.setEndTime(endTime);
                     newEvent.setColor(event.getColor());
@@ -169,16 +172,14 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     }
 
-    public List<Integer> getAllSelectedDaysInMonth(List<Integer> selectedDays){
-        //If selected day is 3 means monday which is on 3rd day in month then
-        // 10 , 17 will be selected.
-        List<Integer> selectedDaysInMonth = new ArrayList<>();
-        for(int selectedDay:selectedDays){
-            for(int i=0;i<5;i++){
-                selectedDaysInMonth.add((selectedDay+i*7)+1);
-            }
-        }
-        return selectedDaysInMonth;
+    private boolean hasEventForThisDay(RoutineItem event,int newMonth,int noOfDayInMonth){
+
+        Calendar currentCal =Calendar.getInstance();
+        currentCal.set(Calendar.MONTH,newMonth-1);
+        currentCal.set(Calendar.DAY_OF_MONTH, noOfDayInMonth);
+        int day=currentCal.get(Calendar.DAY_OF_WEEK);
+
+        return event!=null&&!event.getSelectedDayList().contains(day);
     }
 
     @Override
@@ -186,16 +187,14 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     }
 
-    public static Calendar getFirstDay(int newMonth, int year, int weekday) {
+
+    public static Calendar getCurrentMonthCalendar(int newMonth, int year) {
         Calendar c = Calendar.getInstance();
+
         c.set(Calendar.MONTH, newMonth);
         c.set(Calendar.YEAR, year);
-        c.set(Calendar.DAY_OF_MONTH, 1);
-        int day = c.get(Calendar.DAY_OF_WEEK);
-        while (day != weekday) {
-            c.add(Calendar.DAY_OF_MONTH, 1);
-            day = c.get(Calendar.DAY_OF_WEEK);
-        }
+
         return c;
     }
+
 }

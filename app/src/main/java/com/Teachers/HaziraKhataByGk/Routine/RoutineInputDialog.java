@@ -212,6 +212,12 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
             return false;
         }
 
+        if(routineItem.getEndTime().getTime().getTime()
+                <routineItem.getStartTime().getTime().getTime()){
+            UtilsCommon.showToast("শুরুর সময় শেষের সময় থেকে ছোট");
+            return false;
+        }
+
         return true;
 
 

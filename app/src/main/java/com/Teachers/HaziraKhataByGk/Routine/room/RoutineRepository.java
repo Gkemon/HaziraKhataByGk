@@ -43,5 +43,7 @@ public class RoutineRepository {
     public void delete(RoutineItem routineItem) {
         AppDatabase.databaseWriteExecutor.execute(() -> routineDao.delete(routineItem));
     }
-
+    public void deleteByID(Long routineItemID) {
+        AppDatabase.databaseWriteExecutor.execute(() -> routineDao.deleteByID(routineItemID));
+    }
 }

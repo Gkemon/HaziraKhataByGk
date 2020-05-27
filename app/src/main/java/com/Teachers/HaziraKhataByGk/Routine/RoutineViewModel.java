@@ -35,6 +35,10 @@ public class RoutineViewModel extends AndroidViewModel {
         mRepository.delete(routineItem);
     }
 
+    void deleteByID(Long routineItemID) {
+        mRepository.deleteByID(routineItemID);
+    }
+
     void update(RoutineItem routineItem) {
         mRepository.update(routineItem);
     }

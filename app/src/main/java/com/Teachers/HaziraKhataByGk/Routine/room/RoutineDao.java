@@ -13,33 +13,36 @@ import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
 import java.util.List;
 
 @Dao
-public interface RoutineDao {
+public abstract class RoutineDao {
     @Query("SELECT * FROM RoutineItem")
-    LiveData<List<RoutineItem>> getAllRoutines();
+   abstract LiveData<List<RoutineItem>> getAllRoutines();
 
     @Query("SELECT * FROM RoutineItem WHERE id IN (:userIds)")
-    LiveData<List<RoutineItem>> findAllByIds(int[] userIds);
+    abstract LiveData<List<RoutineItem>> findAllByIds(int[] userIds);
 
 
     @Query("SELECT * FROM RoutineItem WHERE id = (:routineID)")
-    RoutineItem getRoutineByID(long routineID);
+    abstract RoutineItem getRoutineByID(long routineID);
 
     @Query("SELECT * FROM RoutineItem WHERE type = (:type)")
-    LiveData<List<RoutineItem>> getAllRoutines(String type);
+    abstract  LiveData<List<RoutineItem>> getAllRoutines(String type);
 
+    @Query("DELETE FROM RoutineItem WHERE  id = (:routineItemID)")
+    abstract void deleteByID(Long routineItemID);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(RoutineItem routineItem);
+    abstract  void insert(RoutineItem routineItem);
 
     @Update
-    void updateRoutine(RoutineItem... routineItems);
+    abstract void updateRoutine(RoutineItem... routineItems);
 
     @Update
-    void updateRoutine(RoutineItem routineItem);
+    abstract  void updateRoutine(RoutineItem routineItem);
 
     @Insert
-    void insertAll(RoutineItem... routineItems);
+    abstract void insertAll(RoutineItem... routineItems);
 
     @Delete
-    void delete(RoutineItem user);
+    abstract void delete(RoutineItem routineItem);
+
 }

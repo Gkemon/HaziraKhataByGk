@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.Tabs;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ClassRoomFragments extends Fragment implements RecyclerItemClickListener {
+public class ClassRoomFragment extends Fragment implements RecyclerItemClickListener {
     public RecyclerView recyclerViewForClass;
     public FloatingActionButton btnAdd;
     public ClassListAdapter classListAdapter;
@@ -41,7 +40,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     private Context context;
 
 
-    public ClassRoomFragments() {
+    public ClassRoomFragment() {
         // Required empty public constructor
     }
 
@@ -50,7 +49,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
         AllRoutineShowingDialog.showDialog(getFragmentManager());
     }
 
-    private void initiView() {
+    private void initView() {
 
         ButterKnife.bind(this, rootView);
         emptyView = rootView.findViewById(R.id.toDoEmptyView);
@@ -80,7 +79,7 @@ public class ClassRoomFragments extends Fragment implements RecyclerItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_class_room, container, false);
-        initiView();
+        initView();
         return rootView;
     }
 

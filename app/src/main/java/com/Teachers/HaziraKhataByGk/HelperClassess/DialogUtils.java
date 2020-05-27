@@ -16,7 +16,8 @@ import java.util.Calendar;
 public class DialogUtils {
 
 
-    public static void showTimeDialog(int hourOfDay,int minOfDay,Context context, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
+    public static void showTimeDialog(int hourOfDay,int minOfDay,Context context,
+                                      TimePickerDialog.OnTimeSetListener onTimeSetListener) {
 
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(context, (timePicker, hourOfDay1, min) -> {

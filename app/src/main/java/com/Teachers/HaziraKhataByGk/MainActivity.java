@@ -30,6 +30,7 @@ import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
+import com.Teachers.HaziraKhataByGk.Tabs.ClassRoomFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NewsFragment;
@@ -305,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new com.Teachers.HaziraKhataByGk.Tabs.ClassRoomFragments(), "শ্রেণী কার্যক্রম");
+        adapter.addFrag(new ClassRoomFragment(), "শ্রেণী কার্যক্রম");
         adapter.addFrag(new NibondhonFragment(), "শিক্ষক নিবন্ধন কর্নার");
         adapter.addFrag(new NewsFragment(), "শিক্ষা খবর");
         adapter.addFrag(new TotthojhuriFragment(), "তথ্য ঝুড়ি");

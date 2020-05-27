@@ -38,8 +38,9 @@ public class RoomConverter {
     @TypeConverter
     public static Calendar toCalendar(Long l) {
         Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(l);
+        c.setTimeInMillis(l!=null?l:0L);
         return c;
+
     }
 
     @TypeConverter

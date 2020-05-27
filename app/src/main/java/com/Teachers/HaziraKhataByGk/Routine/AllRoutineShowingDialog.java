@@ -30,20 +30,19 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
     @BindView(R.id.tabs)
     TabLayout tabLayout;
 
-    @OnClick(R.id.btn_add_routine)
-     void addRoutine() {
-        if (getActivity() != null) {
-            RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
-        }
-    }
-
-
     public static void showDialog(FragmentManager manager) {
 
         AllRoutineShowingDialog dialog = new AllRoutineShowingDialog();
         FragmentTransaction ft = manager.beginTransaction();
         dialog.show(ft, AllRoutineShowingDialog.class.getSimpleName());
 
+    }
+
+    @OnClick(R.id.btn_add_routine)
+    void addRoutine() {
+        if (getActivity() != null) {
+            RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -64,25 +63,27 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         EventBus.getDefault().unregister(this);
     }
 
-     private void setupViewPager() {
+    private void setupViewPager() {
 
         tabLayout.setupWithViewPager(viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
         Bundle bundle1 = new Bundle();
-         bundle1.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_CLASS);
+        bundle1.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_CLASS);
         RoutineWeekViewFragment fragmentClassRoutine = new RoutineWeekViewFragment();
         fragmentClassRoutine.setArguments(bundle1);
         adapter.addFrag(fragmentClassRoutine);
 
         Bundle bundle2 = new Bundle();
-         bundle2.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_EXAM);
+        bundle2.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_EXAM);
         RoutineWeekViewFragment fragmentExamRoutine = new RoutineWeekViewFragment();
+        fragmentClassRoutine.setArguments(bundle2);
         adapter.addFrag(fragmentExamRoutine);
 
         Bundle bundle3 = new Bundle();
-         bundle3.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
+        bundle3.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
         RoutineWeekViewFragment fragmentAdmin = new RoutineWeekViewFragment();
+        fragmentClassRoutine.setArguments(bundle3);
         adapter.addFrag(fragmentAdmin);
 
         viewPager.setPagingEnabled(false);

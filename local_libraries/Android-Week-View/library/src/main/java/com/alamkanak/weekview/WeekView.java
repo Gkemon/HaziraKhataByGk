@@ -715,7 +715,7 @@ public class WeekView extends View {
         canvas.clipRect(mHeaderColumnWidth, 0, getWidth(), (mHeaderTextHeight + 36) + mHeaderRowPadding * 2);
 
         // Draw the header background.
-        canvas.drawRect(0, 0, getWidth(), (mHeaderTextHeight + 36) + mHeaderRowPadding * 2, mHeaderBackgroundPaint);
+        canvas.drawRect(0, 0, getWidth(), (mHeaderTextHeight + 26) + mHeaderRowPadding * 2, mHeaderBackgroundPaint);
 
         // Draw the header row texts.
         startPixel = startFromPixel;
