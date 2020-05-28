@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/savedNews"
+        android:icon="@drawable/ic_action_news_dark"
+        android:title="শিক্ষা খবর" />
+
+    <item
+        android:id="@+id/savedJobs"
+        android:icon="@drawable/ic_action_job_dark"
+        android:title="শিক্ষক নিয়োগ" />
+
+    <item
+        android:id="@+id/savedBlogs"
+        android:icon="@drawable/ic_action_shikkhok_kothon_dark"
+        android:title="শিক্ষক কথন" />
+
+    <!--<item-->
+        <!--android:id="@+id/other_links"-->
+        <!--android:icon="@drawable/ic_action_other_link_dark"-->
+        <!--andrsubjectNameitle=" অন্যান্য লিংক" />-->
+</menu>

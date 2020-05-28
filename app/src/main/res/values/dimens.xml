@@ -1,0 +1,48 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="margin_10">5dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="tile_letter_font_size">33sp</dimen>
+    <dimen name="letter_tile_size">64dp</dimen>
+    <dimen name="activity_right_margin">10dp</dimen>
+    <dimen name="activity_left_margin">10dp</dimen>
+    <dimen name="icon_width">60dip</dimen>
+    <dimen name="icon_height">60dip</dimen>
+    <dimen name="icon_padding">8dp</dimen>
+    <dimen name="card_height">135dip</dimen>
+    <dimen name="text_size">18sp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="appbar_header_height">256dp</dimen>
+    <dimen name="activity_margin_half">8dp</dimen>
+    <dimen name="activity_margin_content">24dp</dimen>
+    For তথ্যঝুড়ি
+    <dimen name="btn_padding">20dp</dimen>
+    <dimen name="btn_margin">14dp</dimen>
+
+    For news item card
+    <dimen name="card_margin_horizontal">8dp</dimen>
+    <dimen name="card_margin_vertical">8dp</dimen>
+    <dimen name="card_margin_horizontal_big_activity">8dp</dimen>
+    <dimen name="card_margin_vertical_big_activity">4dp</dimen>
+    <dimen name="card_recycler_corner_radius">8dp</dimen>
+    <dimen name="card_recycler_elevation">8dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="main_card_margin_horizontal">8dp</dimen>
+    <dimen name="main_card_margin_vertical">8dp</dimen>
+    <dimen name="main_card_margin_horizontal_big_activity">8dp</dimen>
+
+    <dimen name="card_title_margin_top">24dp</dimen>
+    <dimen name="card_title_margin">16dp</dimen>
+    <dimen name="card_subtitle_margin">16dp</dimen>
+    <dimen name="card_button_margin">8dp</dimen>
+
+    For Navigation Drawer
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">90sp</dimen>
+    <dimen name="radioTextSize">16sp</dimen>
+
+
+</resources>

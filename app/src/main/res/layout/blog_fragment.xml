@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e3f2fd"
+    tools:context="com.Teachers.HaziraKhataByGk.Tabs.Fragments.BlogFragment">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/blogPost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="20sp"
+        android:paddingBottom="20sp"
+        android:paddingRight="20sp"
+        android:paddingLeft="20sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/EmptyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:elevation="5sp"
+            android:background="#0472ae"
+            android:text="@string/intro1"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/write"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/btn_margin"
+            android:elevation="20sp"
+            android:backgroundTint="#2196F3"
+            android:padding="@dimen/btn_padding"
+            android:text="শিক্ষক কথন লিখুন"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/view_card_main3_line"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:elevation="5sp"
+            android:layout_marginTop="@dimen/card_title_margin"
+            android:background="@color/blueForAll"
+            android:paddingBottom="40sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/see"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingRight="20sp"
+        android:paddingLeft="20sp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="#0472ae"
+            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:elevation="5sp"
+            android:text="@string/intro2"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/btn_margin"
+            android:elevation="20sp"
+            android:backgroundTint="#2196F3"
+            android:padding="@dimen/btn_padding"
+            android:text="শিক্ষক কথন পড়ুন"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

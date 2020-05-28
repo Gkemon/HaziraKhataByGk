@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="letter_tile_colors">
+        <item>#f16364</item>
+        <item>#f58559</item>
+        <item>#f9a43e</item>
+        <item>#e4c62e</item>
+        <item>#67bf74</item>
+        <item>#59a2be</item>
+        <item>#2093cd</item>
+        <item>#ad62a7</item>
+    </array>
+
+    <string-array name="month_bd">
+        <item>সকল মাস</item>
+        <item>জানুয়ারী</item>
+        <item>ফেব্রুয়ারী</item>
+        <item>মার্চ</item>
+        <item>এপ্রিল</item>
+        <item>মে</item>
+        <item>জুন</item>
+        <item>জুলাই</item>
+        <item>আগস্ট</item>
+        <item>সেপ্টেম্বর</item>
+        <item>অক্টোবর</item>
+        <item>নভেম্বর</item>
+        <item>ডিসেম্বর</item>
+    </string-array>
+
+</resources>

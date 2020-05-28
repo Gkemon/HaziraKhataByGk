@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/blueLight">
+
+    <RelativeLayout
+        android:id="@+id/schedule_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_make_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:visibility="visible"
+            android:backgroundTint="@color/red_primary"
+            android:text="রুটিন চাইলে এখানে ক্লিক করুন"
+            android:textColor="@color/white" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_current_schedule_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red_primary">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="এখন চলছে"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/schedule_card"
+        android:id="@+id/toDoEmptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/EmptyImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/class_room" />
+
+        <TextView
+            android:id="@+id/EmptyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"
+            android:text="@string/no_to_dos_in_class_fragment"
+            android:textColor="@color/secondary_text"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="সাহায্য দরকার আপনার?"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/red_secondary" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleViewFromFragmentOne"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_class_room"
+        android:layout_below="@+id/schedule_card" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_add_black_24dp"
+        android:tint="#FFFFFF"
+        app:backgroundTint="#0472ae"
+        app:rippleColor="#03A9F4" />
+
+</RelativeLayout>
