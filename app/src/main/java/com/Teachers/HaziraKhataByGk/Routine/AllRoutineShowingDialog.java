@@ -77,13 +77,13 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         Bundle bundle2 = new Bundle();
         bundle2.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_EXAM);
         RoutineWeekViewFragment fragmentExamRoutine = new RoutineWeekViewFragment();
-        fragmentClassRoutine.setArguments(bundle2);
+        fragmentExamRoutine.setArguments(bundle2);
         adapter.addFrag(fragmentExamRoutine);
 
         Bundle bundle3 = new Bundle();
-        bundle3.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
+        bundle3.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_ADMINISTRATION);
         RoutineWeekViewFragment fragmentAdmin = new RoutineWeekViewFragment();
-        fragmentClassRoutine.setArguments(bundle3);
+        fragmentAdmin.setArguments(bundle3);
         adapter.addFrag(fragmentAdmin);
 
         viewPager.setPagingEnabled(false);

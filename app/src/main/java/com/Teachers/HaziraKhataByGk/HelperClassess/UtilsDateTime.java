@@ -34,6 +34,11 @@ public class UtilsDateTime {
         return c;
     }
 
+    public static boolean isDateEqualIgnoringTime(Date date1,Date date2){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd",Locale.ENGLISH);
+       return sdf.format(date1).equals(sdf.format(date2));
+    }
+
     public static String getAMPMTimeFromCalender(Calendar calendar){
 
         if(calendar==null)return "No time";
@@ -84,7 +89,7 @@ public class UtilsDateTime {
 
     }
 
-    public static String intMonthToStringMonthConvertor(int position) {
+    public static String intMonthToStringMonthConverter(int position) {
         if (position == 0) {
             return "";
         } else if (position == 1) {

@@ -48,7 +48,8 @@
                 android:layout_marginBottom="10dp"
                 android:hint="ফোন নাম্বার দিন"
                 android:inputType="phone"
-                android:textColor="@color/blueMiddle" android:textColorHint="@android:color/white" />
+                android:textColor="@color/blueMiddle"
+                android:textColorHint="@android:color/white" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -134,6 +135,7 @@
                 android:layout_marginBottom="10dp"
                 android:hint="ইমেইল"
                 android:inputType="textEmailAddress"
+                android:text="emon.info2013@gmail.com"
                 android:textColor="@color/blueMiddle"
                 android:textColorHint="@android:color/white" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -152,6 +154,7 @@
                 android:layout_marginBottom="10dp"
                 android:hint="পাসওয়ার্ড"
                 android:inputType="textPassword"
+                android:text="123456"
                 android:textColor="@color/blueMiddle"
                 android:textColorHint="@android:color/white" />
         </com.google.android.material.textfield.TextInputLayout>

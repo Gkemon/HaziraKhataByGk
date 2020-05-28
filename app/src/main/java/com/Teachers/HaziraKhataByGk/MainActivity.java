@@ -72,13 +72,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setUpDrawer() {
 
         //create default navigation drawer toggle
-        drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawer = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView =  findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         View headerView = navigationView.getHeaderView(0);
-        RelativeLayout nav_header = (RelativeLayout) headerView.findViewById(R.id.user_pro_pic);
-        TextView emailText = (TextView) nav_header.findViewById(R.id.user_email);
+        RelativeLayout nav_header = headerView.findViewById(R.id.user_pro_pic);
+        TextView emailText = nav_header.findViewById(R.id.user_email);
 
 
         emailText.setText(mProfileHeader);
@@ -140,7 +140,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         if (FirebaseCaller.getCurrentUser() != null)
-            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseCaller.getFirebaseDatabase().child("Users").
+                    child(FirebaseCaller.getUserID()).child("Saved_news").
+                    addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     ArrayList<NewsItem> NewsItem = new ArrayList<NewsItem>();
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         newsItem1 = classData.getValue(NewsItem.class);
                         NewsItem.add(newsItem1);
                     }
-                    MainActivity.saved_newsItem_for_main = new ArrayList<NewsItem>();
+                    MainActivity.saved_newsItem_for_main = new ArrayList<>();
                     MainActivity.saved_newsItem_for_main = NewsItem;
                 }
 

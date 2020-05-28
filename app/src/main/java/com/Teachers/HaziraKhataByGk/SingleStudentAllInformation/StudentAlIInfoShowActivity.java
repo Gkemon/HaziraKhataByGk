@@ -42,7 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime.intMonthToStringMonthConvertor;
+import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime.intMonthToStringMonthConverter;
 
 public class StudentAlIInfoShowActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, RecyclerItemClickListener {
     public static String time, yearWithDate, year, month, day;
@@ -503,7 +503,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        getDatewiseAttendenceList(intMonthToStringMonthConvertor(position));
+        getDatewiseAttendenceList(intMonthToStringMonthConverter(position));
     }
 
     @Override

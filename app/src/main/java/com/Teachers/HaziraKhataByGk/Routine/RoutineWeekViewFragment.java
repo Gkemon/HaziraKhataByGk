@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.R;
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
@@ -174,13 +175,28 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     private boolean hasEventForThisDay(RoutineItem event,int newMonth,int noOfDayInMonth){
 
-        Calendar currentCal =Calendar.getInstance();
-        currentCal.set(Calendar.MONTH,newMonth-1);
-        currentCal.set(Calendar.DAY_OF_MONTH, noOfDayInMonth);
-        int day=currentCal.get(Calendar.DAY_OF_WEEK);
+        if(event!=null) {
 
-        return event!=null&&!event.getSelectedDayList().contains(day);
+
+            Calendar currentCal = Calendar.getInstance();
+            currentCal.set(Calendar.MONTH, newMonth - 1);
+            currentCal.set(Calendar.DAY_OF_MONTH, noOfDayInMonth);
+
+
+            //If it is temporary routine
+            if(!event.isPermanent()){
+                return event.getDateIfTemporary()!=null&&UtilsDateTime.isDateEqualIgnoringTime(
+                        event.getDateIfTemporary(),currentCal.getTime());
+            }else {
+                int day = currentCal.get(Calendar.DAY_OF_WEEK);
+                return event.getSelectedDayList().contains(day);
+            }
+
+
+        }
+        else return false;
     }
+
 
     @Override
     public void onEmptyViewLongPress(Calendar time) {

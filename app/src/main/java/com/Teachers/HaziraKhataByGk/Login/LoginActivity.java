@@ -28,6 +28,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.Teachers.HaziraKhataByGk.BuildConfig;
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhoneAuthBuilder;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
@@ -181,6 +182,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_of_login);
         initView();
 
+        if(!BuildConfig.DEBUG){
+            etEmail.getText().clear();
+            etPassword.getText().clear();
+        }
 
         if (getIntent() != null && getIntent().getStringExtra("FLAG") != null) {
             if (getIntent().getStringExtra("FLAG").equals("OUTSIDE")) {

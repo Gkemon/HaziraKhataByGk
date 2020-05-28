@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
@@ -72,7 +71,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         DialogUtils.showDateDialog(null, getContext(), (datePicker, year, month, dayOfMonth) -> {
             btn.setText(UtilsDateTime.getSimpleDateText(year, month, dayOfMonth));
             try {
-                routineItem.setDate(UtilsDateTime.getDate(year, month, dayOfMonth));
+                routineItem.setDateIfTemporary(UtilsDateTime.getDate(year, month, dayOfMonth));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -161,15 +160,17 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     void saveRoutine() {
 
         if (rbClassRoutine.isSelected()) {
-            routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
+            routineItem.setType(RoutineConstant.ROUTINE_TYPE_CLASS);
         } else if (rbExamRoutine.isSelected()) {
             routineItem.setType(RoutineConstant.ROUTINE_TYPE_EXAM);
-        } else routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL);
+        } else routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATION);
 
 
         routineItem.setName(etSubject.getText().toString());
         routineItem.setDetails(etDetails.getText().toString());
         routineItem.setLocation((etRoom.getText().toString()));
+
+        if(routineItem.isPermanent())
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
 
         //if (isValidated())
@@ -185,6 +186,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
         View view = inflater.inflate(R.layout.dialog_add_routine_item, container, false);
         ButterKnife.bind(this, view);
+        rbClassRoutine.setSelected(true);
 
         initData();
 

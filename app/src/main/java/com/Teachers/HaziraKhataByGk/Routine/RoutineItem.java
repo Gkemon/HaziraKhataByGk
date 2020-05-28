@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 public class RoutineItem extends WeekViewEvent implements Serializable {
-    private Date date;
+    private Date dateIfTemporary;
     private String type;
     private boolean isPermanent = true;
     private String details;
@@ -41,8 +41,8 @@ public class RoutineItem extends WeekViewEvent implements Serializable {
         this.details = details;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateIfTemporary() {
+        return dateIfTemporary;
     }
 
     public boolean isPermanent() {
@@ -53,9 +53,8 @@ public class RoutineItem extends WeekViewEvent implements Serializable {
         isPermanent = permanent;
     }
 
-    public void setDate(Date date)  {
-        if (!isPermanent)
-            this.date = date;
+    public void setDateIfTemporary(Date date)  {
+            this.dateIfTemporary = date;
     }
 
 }

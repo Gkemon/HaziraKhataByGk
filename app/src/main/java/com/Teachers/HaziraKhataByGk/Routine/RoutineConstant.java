@@ -5,7 +5,7 @@ package com.Teachers.HaziraKhataByGk.Routine;
  */
 public interface RoutineConstant {
     String routineType = "routineType";
-    String ROUTINE_TYPE_ADMINISTRATIONAL = "Administrational";
+    String ROUTINE_TYPE_ADMINISTRATION = "Administration";
     String ROUTINE_TYPE_CLASS = "Class_routine";
     String ROUTINE_TYPE_EXAM = "Exam_routine";
 }

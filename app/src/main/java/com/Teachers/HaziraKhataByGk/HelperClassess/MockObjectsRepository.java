@@ -2,7 +2,6 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.graphics.Color;
 
-import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Routine.RoutineConstant;
 import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
 import com.Teachers.HaziraKhataByGk.Routine.RoutineItmBuilder;
@@ -34,7 +33,7 @@ public class MockObjectsRepository {
                 .setColor(Color.RED)
                 .setStartTime(startTime)
                 .setEndTime(endTime)
-                .setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATIONAL)
+                .setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATION)
                 .setDetails("This is demo")
                 .setLocation("Dhaka").build();
 
