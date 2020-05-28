@@ -11,66 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5bec1bdc-9643-47c4-b9fd-12ef428e7286" name="Default Changelist" comment="Merge remote-tracking branch 'origin/Development' into Development&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/gradle.xml&#10;#&#9;.idea/modules.xml&#10;#&#9;.idea/vcs.xml&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;local_libraries/Android-Week-View/library/library.iml">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_amitshekhar_android_debug_db_base_1_0_6_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_amitshekhar_android_debug_db_base_1_0_6_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_common_4_29_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_common_4_29_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_core_4_29_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_core_4_29_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_login_4_29_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_login_4_29_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_share_4_29_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_android_facebook_share_4_29_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_getkeepsafe_taptargetview_taptargetview_1_11_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_getkeepsafe_taptargetview_taptargetview_1_11_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_Gkemon_Android_Bangla_Day_Picker_1_0_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_Gkemon_Android_Bangla_Day_Picker_1_0_3_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_9_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_9_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_9_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_9_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_1_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_1_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_location_15_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_location_15_0_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_location_16_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_location_16_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_common_19_3_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_common_19_3_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_components_16_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_components_16_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_messaging_20_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_messaging_20_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_zxing_core_3_3_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_zxing_core_3_3_0_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_nineoldandroids_library_2_4_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_nineoldandroids_library_2_4_0_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_onesignal_OneSignal_3_12_6_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_orhanobut_logger_2_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_orhanobut_logger_2_2_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_parse_bolts_bolts_android_1_4_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_parse_bolts_bolts_android_1_4_0_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_parse_bolts_bolts_applinks_1_4_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_parse_bolts_bolts_applinks_1_4_0_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_parse_bolts_bolts_tasks_1_4_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_parse_bolts_bolts_tasks_1_4_0_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_picasso_picasso_2_71828_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_picasso_picasso_2_71828_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_wdullaer_materialdatetimepicker_1_5_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_wdullaer_materialdatetimepicker_1_5_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_junit_4_12_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_junit_4_12_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_core_1_3_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_core_1_3_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__uk_co_chrisjenx_calligraphy_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__uk_co_chrisjenx_calligraphy_2_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/HaziraKhata-app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/HaziraKhata-app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/Android-Week-View.iml" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/Android-Week-View.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/.transforms/c777a926ab75cc17b907cd7c3c3dda37.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/.transforms/c777a926ab75cc17b907cd7c3c3dda37/classes/classes.dex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/compile_library_classes/debug/classes.jar" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/compile_library_classes/debug/classes.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/mergeDebugShaders/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/mergeDebugShaders/merger.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/packageDebugAssets/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/packageDebugAssets/merger.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$Direction.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$Direction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$EventRect.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView$EventRect.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView.class" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/javac/debug/classes/com/alamkanak/weekview/WeekView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/runtime_library_classes/debug/classes.jar" beforeDir="false" afterPath="$PROJECT_DIR$/local_libraries/Android-Week-View/library/build/intermediates/runtime_library_classes/debug/classes.jar" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -154,7 +96,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.28666666" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -263,7 +205,7 @@
     </recent_temporary>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\user\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -371,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590661044073</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Merge remote-tracking branch 'origin/Development' into Development&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/gradle.xml&#10;#&#9;.idea/modules.xml&#10;#&#9;.idea/vcs.xml&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;local_libraries/Android-Week-View/library/library.iml">
+      <created>1590661274170</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1590661274170</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -411,10 +360,10 @@
     <MESSAGE value="Fix day pickers selection problem" />
     <MESSAGE value="Fix exceptions" />
     <MESSAGE value="fixing for git ignore not working issue" />
-    <MESSAGE value="Merge remote-tracking branch 'origin/Development' into Development&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/gradle.xml&#10;#&#9;.idea/modules.xml&#10;#&#9;.idea/vcs.xml&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;local_libraries/Android-Week-View/library/library.iml" />
     <MESSAGE value="Routine is showing from room database." />
     <MESSAGE value="Fix temporary routine item problem in week view." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix temporary routine item problem in week view." />
+    <MESSAGE value="Merge remote-tracking branch 'origin/Development' into Development&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/gradle.xml&#10;#&#9;.idea/modules.xml&#10;#&#9;.idea/vcs.xml&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;local_libraries/Android-Week-View/library/library.iml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/Development' into Development&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/caches/build_file_checksums.ser&#10;#&#9;.idea/gradle.xml&#10;#&#9;.idea/modules.xml&#10;#&#9;.idea/vcs.xml&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;local_libraries/Android-Week-View/library/library.iml" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
