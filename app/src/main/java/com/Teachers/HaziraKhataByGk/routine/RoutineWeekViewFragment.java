@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine;
+package com.Teachers.HaziraKhataByGk.routine;
 
 import android.content.Context;
 import android.graphics.RectF;
@@ -11,8 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
+import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.R;
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
@@ -26,18 +29,28 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class RoutineWeekViewFragment extends Fragment implements MonthLoader.MonthChangeListener, WeekView.EventClickListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
+public class RoutineWeekViewFragment extends Fragment implements MonthLoader.MonthChangeListener,
+        WeekView.EventClickListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
     View root;
     Context context;
+    LiveData<List<RoutineItem>> liveEvents;
+    CustomArrayList<RoutineItem> events;
     private WeekView mWeekView;
     private String routineType;
     private RoutineViewModel routineViewModel;
-    LiveData<List<RoutineItem>> liveEvents;
-    List<RoutineItem> events;
+
     public RoutineWeekViewFragment() {
 
     }
 
+    public static Calendar getCurrentMonthCalendar(int newMonth, int year) {
+        Calendar c = Calendar.getInstance();
+
+        c.set(Calendar.MONTH, newMonth);
+        c.set(Calendar.YEAR, year);
+
+        return c;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,12 +69,12 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
         mWeekView.setEventLongPressListener(this);
         mWeekView.setEmptyViewLongPressListener(this);
         setupDateTimeInterpreter(false);
-        routineViewModel = new ViewModelProvider(this).get(RoutineViewModel.class);
-        events=new ArrayList<>();
+        routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
+        events = new CustomArrayList<>();
         if (getArguments() != null) {
             routineType = getArguments().getString(RoutineConstant.routineType);
-            if(UtilsCommon.isValideString(routineType))
-            liveEvents = routineViewModel.getAllRoutines(routineType);
+            if (UtilsCommon.isValideString(routineType))
+                liveEvents = routineViewModel.getAllRoutines(routineType);
             if (liveEvents != null) {
                 liveEvents.observe(getViewLifecycleOwner(), routineItems -> {
                     events.clear();
@@ -73,6 +86,12 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     }
 
+    private RoutineItem getRoutineByID(long id) {
+        for (RoutineItem routineItem : events) {
+            if (routineItem.id == id) return routineItem;
+        }
+        return null;
+    }
 
     private void setupDateTimeInterpreter(final boolean shortDate) {
         mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
@@ -101,12 +120,27 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
+        if (getRoutineByID(event.id) != null) {
+            routineViewModel.setSelectedRoutineItem(getRoutineByID(event.id));
 
+            if (getActivity() != null) {
+                RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
+            }
+
+        }
     }
 
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
-        routineViewModel.deleteByID(event.id);
+
+        DialogUtils.showInfoAlertDialog("সতর্কতা", "আপনি কি রুটিনটি ডিলেট করতে চান?",
+                getContext(), new CommonCallback<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean response) {
+                        routineViewModel.deleteByID(event.id);
+                    }
+                });
+
     }
 
     @Override
@@ -125,8 +159,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 Calendar dateEndTime = event.getEndTime();
 
 
-
-                Calendar monCal =  getCurrentMonthCalendar(newMonth-1,newYear);
+                Calendar monCal = getCurrentMonthCalendar(newMonth - 1, newYear);
 
 
                 int hday = dateStartTime.get(Calendar.HOUR_OF_DAY);
@@ -140,7 +173,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
 
                     //Get day of this date and check the day is exist in day list of the event or not
-                    if(!hasEventForThisDay(event,newMonth,k))continue;
+                    if (!hasEventForThisDay(event, newMonth, k)) continue;
 
                     Calendar startTime = Calendar.getInstance();
                     startTime.set(Calendar.MONTH, newMonth - 1);
@@ -173,9 +206,9 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
     }
 
-    private boolean hasEventForThisDay(RoutineItem event,int newMonth,int noOfDayInMonth){
+    private boolean hasEventForThisDay(RoutineItem event, int newMonth, int noOfDayInMonth) {
 
-        if(event!=null) {
+        if (event != null) {
 
 
             Calendar currentCal = Calendar.getInstance();
@@ -184,33 +217,21 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
 
             //If it is temporary routine
-            if(!event.isPermanent()){
-                return event.getDateIfTemporary()!=null&&UtilsDateTime.isDateEqualIgnoringTime(
-                        event.getDateIfTemporary(),currentCal.getTime());
-            }else {
+            if (!event.isPermanent()) {
+                return event.getDateIfTemporary() != null && UtilsDateTime.isDateEqualIgnoringTime(
+                        event.getDateIfTemporary(), currentCal.getTime());
+            } else {
                 int day = currentCal.get(Calendar.DAY_OF_WEEK);
                 return event.getSelectedDayList().contains(day);
             }
 
 
-        }
-        else return false;
+        } else return false;
     }
-
 
     @Override
     public void onEmptyViewLongPress(Calendar time) {
 
-    }
-
-
-    public static Calendar getCurrentMonthCalendar(int newMonth, int year) {
-        Calendar c = Calendar.getInstance();
-
-        c.set(Calendar.MONTH, newMonth);
-        c.set(Calendar.YEAR, year);
-
-        return c;
     }
 
 }

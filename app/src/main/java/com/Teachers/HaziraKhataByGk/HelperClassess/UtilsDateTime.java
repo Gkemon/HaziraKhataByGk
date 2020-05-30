@@ -21,15 +21,20 @@ public class UtilsDateTime {
     public static String getSimpleDateText(int year,int month,int dayOfMonth){
         return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).format(getDate(year,month,dayOfMonth));
     }
+    public static String getSimpleDateText(Date date){
+        return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).format(date);
+    }
     public static Date getDate(int year,int month,int dayOfMonth) {
         return new GregorianCalendar(year, month, dayOfMonth).getTime();
     }
 
-    public static Calendar getUnixTimeStampFromHourMin(int hourOfDay, int min){
+    public static Calendar getCalendarFromHourMin(int hourOfDay, int min){
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, min);
+        //Ignore second in account for decision the start time and end time is equal or not.
+        c.set(Calendar.SECOND,0);
 
         return c;
     }

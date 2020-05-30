@@ -1634,21 +1634,21 @@ Ans: কর্মধারয় সমাস\n
     <string name="title_activity_month_wise_class_data">MonthWiseClassDataActivity</string>
     <string name="title_activity_mark_sheet_home">MarkSheetHomeActivity</string>
     <string name="info_attandance_activity_first_time">আপনি যদি কোন শিক্ষার্থীর সম্পূর্ণ ডাটা দেখতে চান তাহলে এখানে উপস্থাপিত লিস্ট থেকে তার নামের উপর ক্লিক করুন , আপনি যদি ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলিট করতে চান তাহলে উপরের ডানপাশের ডিলিট চিহ্ন ক্লিক করুন আর যদি মাসিক উপস্থিতির রেকর্ড দেখতে অথবা প্রিন্ট করতে চান তাহলে উপরের প্রিন্ট চিহ্ন ক্লিক করুন</string>
-    <string name="routine_admin">Admin routine</string>
-    <string name="routine_exam">Exam routine</string>
-    <string name="routine_class">Class routine</string>
+    <string name="routine_admin">প্রশাসনিক রুটিন</string>
+    <string name="routine_exam">পরীক্ষার রুটিন</string>
+    <string name="routine_class">ক্লাস রুটিন</string>
     <string name="text_click">ক্লিক করুন</string>
     <string name="text_end_time">শেষ সময়</string>
     <string name="text_start_time">শুরুর সময়</string>
     <string name="text_room_no">রুম নং</string>
     <string name="text_subject">বিষয় :</string>
-    <string name="admin_routine">Admin routine</string>
-    <string name="exam_routine">Exam routine</string>
-    <string name="class_routine">Class routine</string>
-    <string name="please_select_routine_type_from_below">Please select routine type from below</string>
-    <string name="please_input_subject">Please input subject</string>
-    <string name="please_select_start_time">Please select start time</string>
-    <string name="please_select_end_time">Please select end time</string>
+    <string name="admin_routine">প্রশাসনিক রুটিন</string>
+    <string name="exam_routine">পরীক্ষার রুটিন</string>
+    <string name="class_routine">ক্লাস রুটিন</string>
+    <string name="please_select_routine_type_from_below">দয়া করে রুটিনের ধরন সিলেক্ট করুন</string>
+    <string name="please_input_subject">দয়া করে বিষয় ইনপুট দিন</string>
+    <string name="please_select_start_time">শুরুর সময় ইনপুট দিন</string>
+    <string name="please_select_end_time">শেষের সময় ইনপুট দিন</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine;
+package com.Teachers.HaziraKhataByGk.routine;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -25,6 +25,7 @@ import com.gk.emon.android.BanglaDaysPicker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -37,6 +38,10 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     RadioButton rbExamRoutine;
     @BindView(R.id.rb_admin_routine)
     RadioButton rbAdminRoutine;
+    @BindView(R.id.rb_permanent_routine)
+    RadioButton rbPermanentRoutine;
+    @BindView(R.id.rb_temporary_routine)
+    RadioButton rbTemporaryRoutine;
     @BindView(R.id.et_subject)
     EditText etSubject;
     @BindView(R.id.et_room)
@@ -55,6 +60,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     EditText etDetails;
     private ColorPicker colorPicker;
 
+    private boolean isEditMode = false;
     private RoutineItem routineItem;
     private RoutineViewModel routineViewModel;
 
@@ -79,18 +85,38 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         });
     }
 
-    @OnClick(R.id.rb_temporary_routine)
-    void showDateSelectButton() {
-        routineItem.setPermanent(false);
-        banglaDaysPicker.setVisibility(View.GONE);
-        btnDateSelect.setVisibility(View.VISIBLE);
-    }
+    @OnCheckedChanged({R.id.rb_admin_routine, R.id.rb_class_routine, R.id.rb_exam_routine,
+            R.id.rb_temporary_routine, R.id.rb_permanent_routine})
+    public void onCheckedChanged(RadioButton radioButton, boolean isChecked) {
+        if (isChecked) {
+            switch (radioButton.getId()) {
+                case R.id.rb_class_routine:
+                    routineItem.setType(RoutineConstant.ROUTINE_TYPE_CLASS);
+                    break;
+                case R.id.rb_exam_routine:
+                    routineItem.setType(RoutineConstant.ROUTINE_TYPE_EXAM);
+                    break;
+                case R.id.rb_admin_routine:
+                    routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATION);
+                    break;
+                case R.id.rb_temporary_routine: {
+                    routineItem.setPermanent(false);
+                    routineItem.setSelectedDayList(null);
+                    banglaDaysPicker.setVisibility(View.GONE);
+                    btnDateSelect.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case R.id.rb_permanent_routine: {
+                    routineItem.setPermanent(true);
+                    routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
+                    banglaDaysPicker.setVisibility(View.VISIBLE);
+                    btnDateSelect.setVisibility(View.GONE);
+                    break;
+                }
 
-    @OnClick(R.id.rb_permanent_routine)
-    void hideDateSelectButton() {
-        routineItem.setPermanent(true);
-        banglaDaysPicker.setVisibility(View.VISIBLE);
-        btnDateSelect.setVisibility(View.GONE);
+
+            }
+        }
     }
 
     @OnClick(R.id.btn_tutorial)
@@ -115,8 +141,8 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
                 (timePicker, hourOfDay, min) -> {
 
                     btnFromTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
-                            getUnixTimeStampFromHourMin(hourOfDay, min)));
-                    routineItem.setStartTime(UtilsDateTime.getUnixTimeStampFromHourMin(hourOfDay, min));
+                            getCalendarFromHourMin(hourOfDay, min)));
+                    routineItem.setStartTime(UtilsDateTime.getCalendarFromHourMin(hourOfDay, min));
                 });
 
     }
@@ -126,8 +152,8 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         DialogUtils.showTimeDialog(0, 0, getContext(),
                 (timePicker, hourOfDay, min) -> {
                     btnToTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
-                            getUnixTimeStampFromHourMin(hourOfDay, min)));
-                    routineItem.setEndTime(UtilsDateTime.getUnixTimeStampFromHourMin(hourOfDay, min));
+                            getCalendarFromHourMin(hourOfDay, min)));
+                    routineItem.setEndTime(UtilsDateTime.getCalendarFromHourMin(hourOfDay, min));
                 });
     }
 
@@ -159,13 +185,8 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     @OnClick(R.id.save)
     void saveRoutine() {
 
-        if (rbClassRoutine.isSelected()) {
-            routineItem.setType(RoutineConstant.ROUTINE_TYPE_CLASS);
-        } else if (rbExamRoutine.isSelected()) {
-            routineItem.setType(RoutineConstant.ROUTINE_TYPE_EXAM);
-        } else routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATION);
 
-
+        // 3: Set final value.
         routineItem.setName(etSubject.getText().toString());
         routineItem.setDetails(etDetails.getText().toString());
         routineItem.setLocation((etRoom.getText().toString()));
@@ -173,11 +194,24 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         if(routineItem.isPermanent())
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
 
-        //if (isValidated())
-        routineViewModel.insert(routineItem);
-        dismiss();
+        if (isValidated()) {
+
+            if (isEditMode)
+                routineViewModel.update(routineItem);
+            else
+                routineViewModel.insert(routineItem);
+
+            isEditMode=false;
+            dismiss();
+        }
 
 
+    }
+
+    @Override
+    public void dismiss() {
+        routineViewModel.setSelectedRoutineItem(null);
+        super.dismiss();
     }
 
     @Override
@@ -186,11 +220,49 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
         View view = inflater.inflate(R.layout.dialog_add_routine_item, container, false);
         ButterKnife.bind(this, view);
-        rbClassRoutine.setSelected(true);
 
+        // 1: Set default value for first time creation.
         initData();
 
+        // 2: Set value if edit mode.
+        if (routineViewModel.getSelectedRoutineItem() != null) {
+            routineItem = routineViewModel.getSelectedRoutineItem();
+            isEditMode = true;
+            setUIforEdit();
+        }
+
+
         return view;
+    }
+
+    private void setUIforEdit() {
+        if (routineItem.getType().equals(RoutineConstant.ROUTINE_TYPE_CLASS))
+            rbClassRoutine.setChecked(true);
+        else if (routineItem.getType().equals(RoutineConstant.ROUTINE_TYPE_EXAM))
+            rbExamRoutine.setChecked(true);
+        else rbAdminRoutine.setChecked(true);
+
+        etSubject.setText(routineItem.getName());
+        etRoom.setText(routineItem.getLocation());
+
+
+        btnFromTime.setText(UtilsDateTime.getAMPMTimeFromCalender(routineItem.getStartTime()));
+        btnToTime.setText(UtilsDateTime.getAMPMTimeFromCalender(routineItem.getEndTime()));
+
+        rbPermanentRoutine.setChecked(routineItem.isPermanent());
+        rbTemporaryRoutine.setChecked(!routineItem.isPermanent());
+
+        if (routineItem.getDateIfTemporary() != null)
+            btnDateSelect.setText(UtilsDateTime.getSimpleDateText(routineItem.getDateIfTemporary()));
+
+        etDetails.setText(routineItem.getDetails());
+
+        if(routineItem.getSelectedDayList()!=null)
+        banglaDaysPicker.setSelectedDays(routineItem.getSelectedDayList());
+
+        btnColorSelect.getBackground().mutate().setColorFilter(new
+                PorterDuffColorFilter(routineItem.getColor(), PorterDuff.Mode.SRC));
+
     }
 
     private boolean isValidated() {
@@ -214,20 +286,32 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
             return false;
         }
 
-        if(routineItem.getEndTime().getTime().getTime()
-                <routineItem.getStartTime().getTime().getTime()){
-            UtilsCommon.showToast("শুরুর সময় শেষের সময় থেকে ছোট");
+        if (routineItem.getEndTime().getTime().getTime()
+                <= routineItem.getStartTime().getTime().getTime()) {
+            DialogUtils.showInfoAlertDialog("", "শুরুর সময় শেষের সময় থেকে ছোট বা সমান", getContext());
             return false;
         }
 
+        if (!routineItem.isPermanent() && routineItem.getDateIfTemporary() == null) {
+            DialogUtils.showInfoAlertDialog("", "তারিখ সিলেক্ট করুন যেহেতু আপনার রুটিনটি স্থায়ী নয়।বুঝতে " +
+                            "অসুবিধা হলে সবার শেষের বাটনে ক্লিক করে ভিডিও টিউটোরিয়াল দেখে আসতে পারেন।",
+                    getContext());
+            return false;
+        }
         return true;
-
 
     }
 
     private void initData() {
-        routineViewModel = new ViewModelProvider(this).get(RoutineViewModel.class);
+        routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
         routineItem = new RoutineItem();
+
+        //Radio button not word properly while set value via XML so we need to do that
+        //by programmatically
+        routineItem.setPermanent(true);
+        routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
+        routineItem.setType(RoutineConstant.ROUTINE_TYPE_CLASS);
+        routineItem.setColor(getResources().getColor(R.color.colorGreen));
     }
 
 }

@@ -1,7 +1,8 @@
-package com.Teachers.HaziraKhataByGk.Routine;
+package com.Teachers.HaziraKhataByGk.routine;
 
 import androidx.room.Entity;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.alamkanak.weekview.WeekViewEvent;
 
 import java.io.Serializable;
@@ -34,7 +35,7 @@ public class RoutineItem extends WeekViewEvent implements Serializable {
     }
 
     public String getDetails() {
-        return details;
+        return UtilsCommon.isValideString(details)?details:"";
     }
 
     public void setDetails(String details) {
@@ -57,4 +58,17 @@ public class RoutineItem extends WeekViewEvent implements Serializable {
             this.dateIfTemporary = date;
     }
 
+    @Override
+    public String getName() {
+        if(UtilsCommon.isValideString(super.getName()))
+            return super.getName();
+        else return "";
+    }
+
+    @Override
+    public String getLocation() {
+        if(UtilsCommon.isValideString(super.getLocation()))
+        return super.getLocation();
+        else return "";
+    }
 }

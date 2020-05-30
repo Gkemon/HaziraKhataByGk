@@ -2,9 +2,9 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.graphics.Color;
 
-import com.Teachers.HaziraKhataByGk.Routine.RoutineConstant;
-import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
-import com.Teachers.HaziraKhataByGk.Routine.RoutineItmBuilder;
+import com.Teachers.HaziraKhataByGk.routine.RoutineConstant;
+import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
+import com.Teachers.HaziraKhataByGk.routine.RoutineItmBuilder;
 
 import java.util.Calendar;
 

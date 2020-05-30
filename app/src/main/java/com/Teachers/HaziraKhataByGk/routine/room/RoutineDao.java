@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine.room;
+package com.Teachers.HaziraKhataByGk.routine.room;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
+import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 
 import java.util.List;
 
@@ -30,7 +30,8 @@ public abstract class RoutineDao {
     @Query("DELETE FROM RoutineItem WHERE  id = (:routineItemID)")
     abstract void deleteByID(Long routineItemID);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE
+    )
     abstract  void insert(RoutineItem routineItem);
 
     @Update

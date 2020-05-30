@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine;
+package com.Teachers.HaziraKhataByGk.routine;
 
 /**
  * Created by Gk Emon on 3/17/2020.

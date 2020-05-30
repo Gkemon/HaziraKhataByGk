@@ -123,8 +123,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         OneSignal.startInit(this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification).unsubscribeWhenNotificationsAreDisabled(true).init();
 
 
@@ -188,13 +189,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user == null) {
-                //startActivity(new Intent (MainActivity.this,LoginActivity.class));
+                startActivity(new Intent (MainActivity.this,LoginActivity.class));
             }
         };
 
-
-        if (FirebaseAuth.getInstance() != null)
-            FirebaseCaller.getAuth().addAuthStateListener(authListener);
+        FirebaseCaller.getAuth().addAuthStateListener(authListener);
 
         super.onResume();
     }
@@ -310,7 +309,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ClassRoomFragment(), "শ্রেণী কার্যক্রম");
         adapter.addFrag(new NibondhonFragment(), "শিক্ষক নিবন্ধন কর্নার");
-        adapter.addFrag(new NewsFragment(), "শিক্ষা খবর");
         adapter.addFrag(new TotthojhuriFragment(), "তথ্য ঝুড়ি");
         adapter.addFrag(new JobFragment(), "শিক্ষক নিয়োগ");
         adapter.addFrag(new BlogFragment(), "শিক্ষক কথন");
@@ -331,30 +329,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_nibondhon, 0, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabThree.setText(" শিক্ষা খবর");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_news, 0, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
+//        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+//        tabThree.setText(" শিক্ষা খবর");
+//        tabThree.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_news, 0, 0, 0);
+//        tabLayout.getTabAt(2).setCustomView(tabThree);
 
         TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabFour.setText(" তথ্য ঝুড়ি");
         tabFour.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_tottho, 0, 0, 0);
-        tabLayout.getTabAt(3).setCustomView(tabFour);
+        tabLayout.getTabAt(2).setCustomView(tabFour);
 
         TextView tabFive = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabFive.setText(" শিক্ষক নিয়োগ");
         tabFive.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_job, 0, 0, 0);
-        tabLayout.getTabAt(4).setCustomView(tabFive);
+        tabLayout.getTabAt(3).setCustomView(tabFive);
 
         TextView tabSix = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabSix.setText(" শিক্ষক কথন");
         tabSix.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_shikkhok_kothon, 0, 0, 0);
-        tabLayout.getTabAt(5).setCustomView(tabSix);
+        tabLayout.getTabAt(4).setCustomView(tabSix);
 
         TextView tabSeven = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabSeven.setText(" পাঠ্যবই");
         tabSeven.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_text_book, 0, 0, 0);
-        tabLayout.getTabAt(6).setCustomView(tabSeven);
+        tabLayout.getTabAt(5).setCustomView(tabSeven);
 
     }
 

@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine;
+package com.Teachers.HaziraKhataByGk.routine;
 
 import java.util.Calendar;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine.room;
+package com.Teachers.HaziraKhataByGk.routine.room;
 
 import android.content.Context;
 
@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
+import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

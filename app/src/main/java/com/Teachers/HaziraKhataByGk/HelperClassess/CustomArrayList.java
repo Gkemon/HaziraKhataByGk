@@ -13,6 +13,7 @@ public class CustomArrayList<T> extends ArrayList<T> {
             return super.size();
     }
 
+
     @Override
     public boolean add(T a) {
 

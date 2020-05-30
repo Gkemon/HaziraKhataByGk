@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine.room;
+package com.Teachers.HaziraKhataByGk.routine.room;
 
 import androidx.room.TypeConverter;
 
@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

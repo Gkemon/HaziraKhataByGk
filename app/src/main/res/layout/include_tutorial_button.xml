@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.appcompat.widget.AppCompatButton
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/btn_tutorial"
-        android:layout_alignParentBottom="true"
-        style="@style/ButtonOrangeStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.appcompat.widget.AppCompatButton>
+<androidx.appcompat.widget.AppCompatButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btn_tutorial"
+    style="@style/ButtonOrangeStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:text="যদি বুঝতে অসুবিধা হয় তাহলে এখানে ক্লিক করুন।"></androidx.appcompat.widget.AppCompatButton>

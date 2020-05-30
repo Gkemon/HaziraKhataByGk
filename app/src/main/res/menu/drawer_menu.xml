@@ -5,10 +5,10 @@
 
     <group android:checkableBehavior="none"
         android:id="@+id/group1">
-    <item
-        android:id="@+id/savedUrl"
-        android:icon="@drawable/ic_action_saved_data"
-        android:title="সেভকৃত তথ্য " />
+<!--    <item-->
+<!--        android:id="@+id/savedUrl"-->
+<!--        android:icon="@drawable/ic_action_saved_data"-->
+<!--        android:title="সেভকৃত তথ্য " />-->
 
     <item
         android:id="@+id/instruction"
@@ -45,22 +45,22 @@
             />
     </group>
 
-    <group
-        android:checkableBehavior="none"
-        android:id="@+id/group4">
-        <item android:title="আমাদের আরো এপস">
-            <menu>
-                <item
-                    android:id="@+id/FourG"
-                    android:icon="@drawable/logo_4g"
-                    android:title="4G সার্ভিস বাংলাদেশ" />
-                <item
-                    android:id="@+id/nav_tutor_finder"
-                    android:icon="@drawable/tutor_finder"
-                    android:title="টিউশন ফাইন্ডার" />
-            </menu>
-        </item>
-    </group>
+<!--    <group-->
+<!--        android:checkableBehavior="none"-->
+<!--        android:id="@+id/group4">-->
+<!--        <item android:title="আমাদের আরো এপস">-->
+<!--            <menu>-->
+<!--                <item-->
+<!--                    android:id="@+id/FourG"-->
+<!--                    android:icon="@drawable/logo_4g"-->
+<!--                    android:title="4G সার্ভিস বাংলাদেশ" />-->
+<!--                <item-->
+<!--                    android:id="@+id/nav_tutor_finder"-->
+<!--                    android:icon="@drawable/tutor_finder"-->
+<!--                    android:title="টিউশন ফাইন্ডার" />-->
+<!--            </menu>-->
+<!--        </item>-->
+<!--    </group>-->
     <group
         android:checkableBehavior="none"
         android:id="@+id/group3">

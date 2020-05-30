@@ -36,13 +36,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:text="Add routine" />
+        android:text="নতুন রুটিন বানান" />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_add_class_routine"
         android:layout_alignParentBottom="true"
         style="@style/ButtonOrangeStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="If you didnot get it please click here." />
+        android:text="যদি বুঝতে অসুবিধা হয় তাহলে এখানে ক্লিক করুন।" />
 
 </RelativeLayout>

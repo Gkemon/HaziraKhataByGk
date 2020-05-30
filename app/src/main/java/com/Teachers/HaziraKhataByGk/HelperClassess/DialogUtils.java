@@ -3,6 +3,7 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -10,6 +11,7 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AlertDialog;
 
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
+import com.Teachers.HaziraKhataByGk.R;
 
 import java.util.Calendar;
 
@@ -57,9 +59,14 @@ public class DialogUtils {
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
 
                         if (commonCallback != null)
-                            commonCallback.onSuccess();
+                            commonCallback.onSuccess(true);
 
                         dialog.dismiss();
+                    }).setNegativeButton(android.R.string.no, (dialogInterface, i) -> {
+                        if (commonCallback != null)
+                            commonCallback.onSuccess(false);
+
+                        dialogInterface.dismiss();
                     }).create();
 
 

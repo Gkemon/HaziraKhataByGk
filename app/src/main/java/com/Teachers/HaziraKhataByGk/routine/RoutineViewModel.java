@@ -1,22 +1,31 @@
-package com.Teachers.HaziraKhataByGk.Routine;
+package com.Teachers.HaziraKhataByGk.routine;
 
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.Teachers.HaziraKhataByGk.Routine.room.RoutineRepository;
+import com.Teachers.HaziraKhataByGk.routine.room.RoutineRepository;
 
 import java.util.List;
 
 public class RoutineViewModel extends AndroidViewModel {
     private RoutineRepository mRepository;
     private LiveData<List<RoutineItem>> mAllRoutines;
+    private RoutineItem selectedRoutineItem;
 
     public RoutineViewModel(Application application) {
         super(application);
         mRepository = new RoutineRepository(application);
         mAllRoutines = mRepository.getAllRoutineItems();
+    }
+
+    public RoutineItem getSelectedRoutineItem() {
+        return selectedRoutineItem;
+    }
+
+    public void setSelectedRoutineItem(RoutineItem selectedRoutineItem) {
+        this.selectedRoutineItem = selectedRoutineItem;
     }
 
     LiveData<List<RoutineItem>> getAllRoutines() {

@@ -30,6 +30,7 @@
 
 </TextView>
     <RadioGroup
+        android:id="@+id/rg_routine_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -180,7 +181,7 @@
             android:gravity="start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Routine lasting">
+            android:text="রুটিনের স্থায়ীত্ব">
 
         </TextView>
         <RadioGroup
@@ -195,7 +196,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="permanent">
+                android:text="স্থায়ী">
             </RadioButton>
 
             <RadioButton
@@ -203,7 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Temporary">
+                android:text="অস্থায়ী">
             </RadioButton>
         </RadioGroup>
 
@@ -213,7 +214,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Select date"
+            android:text="যেহেতু অস্থায়ী রুটিন তাই এর তারিখ সিলেক্ট করুন।"
             tools:visibility="visible"
             android:visibility="gone" />
         <com.gk.emon.android.BanglaDaysPicker

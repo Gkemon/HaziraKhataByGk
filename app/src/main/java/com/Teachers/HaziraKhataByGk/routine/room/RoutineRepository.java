@@ -1,10 +1,10 @@
-package com.Teachers.HaziraKhataByGk.Routine.room;
+package com.Teachers.HaziraKhataByGk.routine.room;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.Teachers.HaziraKhataByGk.Routine.RoutineItem;
+import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 
 import java.util.List;
 

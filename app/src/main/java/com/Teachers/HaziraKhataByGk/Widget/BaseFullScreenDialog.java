@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.Teachers.HaziraKhataByGk.R;
-import com.Teachers.HaziraKhataByGk.Routine.AllRoutineShowingDialog;
+import com.Teachers.HaziraKhataByGk.routine.AllRoutineShowingDialog;
 
 
 public class BaseFullScreenDialog extends DialogFragment {

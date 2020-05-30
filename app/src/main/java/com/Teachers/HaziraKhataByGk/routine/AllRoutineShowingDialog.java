@@ -1,4 +1,4 @@
-package com.Teachers.HaziraKhataByGk.Routine;
+package com.Teachers.HaziraKhataByGk.routine;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
@@ -15,16 +16,13 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.google.android.material.tabs.TabLayout;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
+    RoutineViewModel routineViewModel;
     @BindView(R.id.viewpager)
     CustomViewPager viewPager;
     @BindView(R.id.tabs)
@@ -41,27 +39,12 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
     @OnClick(R.id.btn_add_routine)
     void addRoutine() {
         if (getActivity() != null) {
+            routineViewModel.setSelectedRoutineItem(null);
             RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRoutinEventTriggered(RoutineEvent routineEvent) {
-        setupViewPager();
-        setupTab();
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
 
     private void setupViewPager() {
 
@@ -117,6 +100,8 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
         View view = inflater.inflate(R.layout.dialog_show_routine, container, false);
         ButterKnife.bind(this, view);
+
+        routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
 
         setupViewPager();
         setupTab();
