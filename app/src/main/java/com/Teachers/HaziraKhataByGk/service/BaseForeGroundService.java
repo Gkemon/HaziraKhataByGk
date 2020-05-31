@@ -17,35 +17,33 @@ import com.Teachers.HaziraKhataByGk.R;
  * Created by Gk Emon on 5/31/2020.
  */
 public class BaseForeGroundService extends BaseService {
-    public static final String CHANNEL_NAME = "ChannelName";
-    public static final String CHANNEL_ID = "EventShowingService";
+
+
+    public static final String NOTIFICATION_CONTENT = "NotificationContent";
+    public static final String CHANNEL_ID = "ChannelID";
+    public static final String CHANNEL_NAME = "channelName";
     public static final String NOTIFICATION_TITLE = "NotificationTitle";
     public static final String REQUEST_CODE = "RequestCode";
-    public String channelName, notificationTitle;
-    public int requestCode;
-    public NotificationCompat.Builder builder;
+
+
+    public NotificationManager notificationManager;
+    public ForegroundServiceBuilder foregroundServiceBuilder;
+    public NotificationCompat.Builder notificationBuilder;
+    public BaseForeGroundServiceNavigator baseForeGroundServiceNavigator;
 
     @CallSuper
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        channelName = intent.getStringExtra(BaseForeGroundService.CHANNEL_NAME);
-        notificationTitle = intent.getStringExtra(BaseForeGroundService.NOTIFICATION_TITLE);
-        requestCode = intent.getIntExtra(BaseForeGroundService.REQUEST_CODE, 0);
 
+        baseForeGroundServiceNavigator.setUpForegroundBuilder();
+
+        initNotificationManager();
         createNotificationChannel();
+        initNotification();
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                requestCode, notificationIntent, 0);
 
-        builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle(notificationTitle)
-                .setContentText(channelName)
-                .setSmallIcon(R.mipmap.main_icon_hd_half)
-                .setContentIntent(pendingIntent);
-
-        Notification notification = builder.build();
-        startForeground(1, notification);
+        Notification notification = notificationBuilder.build();
+        startForeground(foregroundServiceBuilder.notificationID, notification);
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -54,12 +52,33 @@ public class BaseForeGroundService extends BaseService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    channelName,
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    foregroundServiceBuilder.channelID,
+                    foregroundServiceBuilder.channelName,
+                    foregroundServiceBuilder.importance);
 
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(serviceChannel);
+            if (notificationManager != null)
+                notificationManager.createNotificationChannel(serviceChannel);
+
         }
     }
+
+    private void initNotificationManager() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            notificationManager = getSystemService(NotificationManager.class);
+        } else notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    }
+
+    private void initNotification() {
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                foregroundServiceBuilder.requestCode, notificationIntent, 0);
+
+        notificationBuilder = new NotificationCompat.Builder(this, foregroundServiceBuilder.channelID)
+                .setContentTitle(foregroundServiceBuilder.notificationTitle)
+                .setContentText(foregroundServiceBuilder.notificationContent)
+                .setSmallIcon(R.mipmap.main_icon_hd_half)
+                .setContentIntent(pendingIntent);
+    }
+
+
 }

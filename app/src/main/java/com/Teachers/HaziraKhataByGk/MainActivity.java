@@ -25,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
@@ -208,15 +209,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Intent intent = new Intent();
 
         switch (item.getItemId()) {
             case R.id.privacy_policy:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/1Yj7XyuCfGIkJ5S0Qqi0f9Xo1z6a0j19uVP_n0k_tnCE/edit?usp=sharing")));
-                break;
-            case R.id.savedUrl:
-                intent.setClass(MainActivity.this, BottomNavigationActivity.class);
-                startActivity(intent);
                 break;
 
             case R.id.instruction:
@@ -226,22 +222,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.questuon_answer:
 
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/", this);
+                UtilsCommon.openWithFaceBook(
+                        "https://www.facebook.com/groups/2035798976667483/permalink/2045734145673966/", this);
 
                 break;
 
             case R.id.review:
 
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setMessage("এপটি এখনো ডেভেলপিং দশায় রয়েছে । সুতরাং শিক্ষক হিসাবে আপনার মূল্যবান মতামত প্রদান করে ডেভেলপারকে সাহায্য করুন।");
+                alertDialog.setMessage("এপটি এখনো ডেভেলপিং দশায় রয়েছে । " +
+                        "সুতরাং শিক্ষক হিসাবে আপনার মূল্যবান মতামত প্রদান করে ডেভেলপারকে সাহায্য করুন।");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "মতামত দিন",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                UtilsCommon.openInAppBrowser("https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/", MainActivity.this);
-
-                            }
-                        });
+                        (dialog, which) -> UtilsCommon.openInAppBrowser(
+                                "https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",
+                                MainActivity.this));
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "বাদ দিন", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -249,22 +243,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
                 alertDialog.show();
 
-
                 break;
-            case R.id.FourG:
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "binarygeek.a4gbangladeshByGkEmon")));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "cbinarygeek.a4gbangladeshByGkEmon")));
-                }
-                break;
-            case R.id.nav_tutor_finder:
-                // getPackageName() fromTime Context or Activity object
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.tariqulislam.tutorfinder")));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.tariqulislam.tutorfinder")));
-                }
+            case R.id.setting:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.share_the_app:
 
@@ -329,10 +310,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_nibondhon, 0, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
-//        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-//        tabThree.setText(" শিক্ষা খবর");
-//        tabThree.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_news, 0, 0, 0);
-//        tabLayout.getTabAt(2).setCustomView(tabThree);
 
         TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabFour.setText(" তথ্য ঝুড়ি");

@@ -144,7 +144,6 @@
     <string name="todo_error">Please enter a Todo</string>
 
 
-
     FOR PREVIOUS QUESTION
     <string name="clg">১৪ তম শিক্ষক নিবন্ধন প্রশ্ন এবং উত্তর \n (কলেজ পর্যায়)</string>
     <string name="scl">১৪ তম শিক্ষক নিবন্ধন প্রশ্ন এবং উত্তর \n (স্কুল পর্যায়)</string>
@@ -1649,6 +1648,22 @@ Ans: কর্মধারয় সমাস\n
     <string name="please_input_subject">দয়া করে বিষয় ইনপুট দিন</string>
     <string name="please_select_start_time">শুরুর সময় ইনপুট দিন</string>
     <string name="please_select_end_time">শেষের সময় ইনপুট দিন</string>
+    <string name="title_activity_settings">সেটিংস</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
 
 </resources>

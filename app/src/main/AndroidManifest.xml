@@ -17,11 +17,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden|adjustPan">
+        <activity
+            android:name=".Home.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
+
         <service
             android:name=".service.GenericEventShowingService"
             android:enabled="true"
+            android:exported="true" />
+
+        <receiver android:name=".service.TimeChangeReceiver"
+            android:enabled="true"
             android:exported="true">
-        </service>
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_TIME_TICK">
+                </action>
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
@@ -63,7 +75,7 @@
         <activity
             android:name=".ClassRoom.ClassRoomActivity"
             android:theme="@style/AppThemeForNoActionBar" />
-        <activity android:name=".Attendance.AttendanceActivity"></activity>
+        <activity android:name=".Attendance.AttendanceActivity" />
         <activity
             android:name=".StudentListShowActivity"
             android:theme="@style/AppThemeForNoActionBar" />
@@ -119,7 +131,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MarksheetEditActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url 'https://plugins.gradle.org/m2/'}
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.4, 0.99.99]'
@@ -28,7 +28,7 @@ android {
         versionName "2.0.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [onesignal_app_id: "611c83ef-2af7-48c6-921c-f22f31e7ccd9",
+        manifestPlaceholders = [onesignal_app_id               : "611c83ef-2af7-48c6-921c-f22f31e7ccd9",
                                 onesignal_google_project_number: "REMOTE"]
 
     }
@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.preference:preference:1.1.1'
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
