@@ -11,7 +11,7 @@ public class UtilsDateTime {
     public static String DATE_FORMATE_EEE_D_MMM_YYYY="EEE, d MMM yyyy";
 
     public static SimpleDateFormat getSimpleDateFormate(String dateFormate){
-       return new SimpleDateFormat(dateFormate, Locale.ENGLISH);
+        return new SimpleDateFormat(dateFormate, Locale.ENGLISH);
     }
 
     public static Date getDateObjFromDateFormate(String dateText) throws ParseException {
@@ -28,6 +28,11 @@ public class UtilsDateTime {
         return new GregorianCalendar(year, month, dayOfMonth).getTime();
     }
 
+    public static String getHHMMformattedTime(){
+        Calendar cal = Calendar.getInstance();
+        return  "" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+    }
+
     public static Calendar getCalendarFromHourMin(int hourOfDay, int min){
 
         Calendar c = Calendar.getInstance();
@@ -41,9 +46,43 @@ public class UtilsDateTime {
 
     public static boolean isDateEqualIgnoringTime(Date date1,Date date2){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd",Locale.ENGLISH);
-       return sdf.format(date1).equals(sdf.format(date2));
+        return sdf.format(date1).equals(sdf.format(date2));
     }
 
+    public static long getRemainingMinsFromCalender(Calendar calendar){
+        Calendar nextEventCalender = Calendar.getInstance();
+
+        nextEventCalender.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY));
+        nextEventCalender.set(Calendar.MINUTE,calendar.get(Calendar.MINUTE));
+
+        long nexEventMillSec = nextEventCalender.getTime().getTime();
+
+        long diff=(nexEventMillSec/1000)-(Calendar.getInstance().getTime().getTime()/1000);
+        //different is less than 60 that means return 0 (That means no remaining min)
+        return diff<=60?0:diff/60;
+
+
+    }
+
+    //If the current time is between two calender object
+    public static boolean isCurrentTimeBetweenPeriod(Calendar startCalender,Calendar endCalender){
+
+        Calendar currentStartTime = Calendar.getInstance();
+        Calendar currentEndTime = Calendar.getInstance();
+        long currentTimeInMills = Calendar.getInstance().getTimeInMillis();
+
+        currentStartTime.set(Calendar.HOUR_OF_DAY,startCalender.get(Calendar.HOUR_OF_DAY));
+        currentStartTime.set(Calendar.MINUTE,startCalender.get(Calendar.MINUTE));
+
+        currentEndTime.set(Calendar.HOUR_OF_DAY,endCalender.get(Calendar.HOUR_OF_DAY));
+        currentEndTime.set(Calendar.MINUTE,endCalender.get(Calendar.MINUTE));
+
+
+        return  currentStartTime.getTime().getTime()<currentTimeInMills&&
+                currentEndTime.getTime().getTime()>currentTimeInMills;
+
+
+    }
     public static String getAMPMTimeFromCalender(Calendar calendar){
 
         if(calendar==null)return "No time";

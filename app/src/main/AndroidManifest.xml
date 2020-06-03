@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".HelperClassess.GlobalContext"
@@ -32,6 +33,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_TIME_TICK">
                 </action>
+                <action android:name="android.intent.action.BOOT_COMPLETED">
+                </action>
             </intent-filter>
         </receiver>
 
@@ -47,10 +50,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity> <!-- for FB LOGIN -->

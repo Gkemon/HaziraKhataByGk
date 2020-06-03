@@ -4,9 +4,13 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+
 public class GenericEventShowingService extends BaseForeGroundService implements BaseForeGroundServiceNavigator {
+
     public static int REQUEST_CODE_FOR_EVENT_SHOWING = 11;
     public static int NOTIFICATION_ID_FOR_EVENT_SHOWING = 11;
+    public static String SHOW_ROUTINE = "showRouting";
     private TimeChangeReceiver timeChangeReceiver;
 
     @Override
@@ -14,7 +18,9 @@ public class GenericEventShowingService extends BaseForeGroundService implements
         baseForeGroundServiceNavigator = this;
         super.onStartCommand(intent, flags, startId);
 
-        notifyNotificationContent(System.currentTimeMillis() + "");
+        if (intent.getExtras() != null && intent.getExtras().getBoolean(SHOW_ROUTINE)) {
+            notifyNotificationContent(UtilsDateTime.getHHMMformattedTime());
+        }
 
         return START_STICKY;
     }
@@ -56,6 +62,7 @@ public class GenericEventShowingService extends BaseForeGroundService implements
         timeChangeReceiver = new TimeChangeReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(timeChangeReceiver, filter);
     }
 

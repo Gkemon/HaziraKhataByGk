@@ -18,6 +18,7 @@ public class RoutineViewModel extends AndroidViewModel {
         super(application);
         mRepository = new RoutineRepository(application);
         mAllRoutines = mRepository.getAllRoutineItems();
+
     }
 
     public RoutineItem getSelectedRoutineItem() {

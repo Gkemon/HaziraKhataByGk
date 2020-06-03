@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
@@ -72,6 +73,15 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
         routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
         events = new CustomArrayList<>();
         if (getArguments() != null) {
+
+            routineViewModel.getAllRoutines().observe(getViewLifecycleOwner(), new Observer<List<RoutineItem>>() {
+                @Override
+                public void onChanged(List<RoutineItem> routineItems) {
+                   RoutineUtils.getRunningRoutines(routineItems);
+                   RoutineUtils.getUpcomingRoutines(routineItems);
+                }
+            });
+
             routineType = getArguments().getString(RoutineConstant.routineType);
             if (UtilsCommon.isValideString(routineType))
                 liveEvents = routineViewModel.getAllRoutines(routineType);

@@ -69,15 +69,20 @@ public class BaseForeGroundService extends BaseService {
     }
 
     private void initNotification() {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                foregroundServiceBuilder.requestCode, notificationIntent, 0);
+
+        //Set for going to main activity
+        Intent intentToMainActivity = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntentToMainActivity = PendingIntent.getActivity(this,
+                foregroundServiceBuilder.requestCode, intentToMainActivity, 0);
+
 
         notificationBuilder = new NotificationCompat.Builder(this, foregroundServiceBuilder.channelID)
                 .setContentTitle(foregroundServiceBuilder.notificationTitle)
                 .setContentText(foregroundServiceBuilder.notificationContent)
                 .setSmallIcon(R.mipmap.main_icon_hd_half)
-                .setContentIntent(pendingIntent);
+                .setOnlyAlertOnce(true)//To prevent showing notification while "notify()" is called.
+                .setContentIntent(pendingIntentToMainActivity);
+
     }
 
 
