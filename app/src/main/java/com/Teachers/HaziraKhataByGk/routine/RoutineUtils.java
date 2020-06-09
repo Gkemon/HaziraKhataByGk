@@ -1,6 +1,12 @@
 package com.Teachers.HaziraKhataByGk.routine;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
+import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +38,18 @@ public class RoutineUtils {
         }
 
         return runningRoutine;
+
+    }
+
+
+    public static void startEventShowingService(Context context,List<RoutineItem> totalRoutines){
+        ArrayList<RoutineItem> totalRoutineArrayList = new ArrayList(totalRoutines);
+
+        Intent serviceIntent = new Intent(context, GenericEventShowingService.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(GenericEventShowingService.TOTAL_ROUTINES,totalRoutineArrayList);
+        serviceIntent.putExtras(bundle);
+        ServiceUtils.startForegroundService(serviceIntent,context);
 
     }
 }

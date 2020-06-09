@@ -12,21 +12,26 @@ public class RoutineRepository {
 
 
     private RoutineDao routineDao;
-    private LiveData<List<RoutineItem>> routineList;
+    private LiveData<List<RoutineItem>> routineLiveList;
+    private List<RoutineItem> routineList;
 
 
     public RoutineRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         routineDao = db.routineDao();
-        routineList = routineDao.getAllRoutines();
+        routineLiveList = routineDao.getAllLiveRoutines();
     }
 
-    public LiveData<List<RoutineItem>> getAllRoutineItems() {
-        return routineList;
+    public LiveData<List<RoutineItem>> getAllLiveRoutineItems() {
+        return routineLiveList;
     }
 
-    public LiveData<List<RoutineItem>> getAllRoutineItems(String type) {
-        return routineDao.getAllRoutines(type);
+    public List<RoutineItem> getAllRoutineItems() {
+        return routineDao!=null?routineDao.getAllRoutines():null;
+    }
+
+    public LiveData<List<RoutineItem>> getAllLiveRoutineItems(String type) {
+        return routineDao.getAllLiveRoutines(type);
     }
 
     public void insert(RoutineItem routineItem) {

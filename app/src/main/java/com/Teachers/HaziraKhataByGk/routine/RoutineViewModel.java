@@ -17,8 +17,7 @@ public class RoutineViewModel extends AndroidViewModel {
     public RoutineViewModel(Application application) {
         super(application);
         mRepository = new RoutineRepository(application);
-        mAllRoutines = mRepository.getAllRoutineItems();
-
+        mAllRoutines = mRepository.getAllLiveRoutineItems();
     }
 
     public RoutineItem getSelectedRoutineItem() {
@@ -29,12 +28,16 @@ public class RoutineViewModel extends AndroidViewModel {
         this.selectedRoutineItem = selectedRoutineItem;
     }
 
-    LiveData<List<RoutineItem>> getAllRoutines() {
+    LiveData<List<RoutineItem>> getAllLiveRoutines() {
         return mAllRoutines;
     }
 
+    List<RoutineItem> getAllRoutineItems() {
+        return mRepository.getAllRoutineItems();
+    }
+
     LiveData<List<RoutineItem>> getAllRoutines(String type) {
-        return mRepository.getAllRoutineItems(type);
+        return mRepository.getAllLiveRoutineItems(type);
     }
 
     void insert(RoutineItem routineItem) {

@@ -2,13 +2,15 @@ package com.Teachers.HaziraKhataByGk.service;
 
 
 import android.app.NotificationManager;
+import android.widget.RemoteViews;
 
 /**
  * Created by Gk Emon on 5/31/2020.
  */
 public class ForegroundServiceBuilder {
     public String notificationContent, notificationTitle, channelName, channelID;
-    public int requestCode, importance = NotificationManager.IMPORTANCE_DEFAULT,notificationID;
+    public RemoteViews remoteViews;
+    public int requestCode, importance = NotificationManager.IMPORTANCE_DEFAULT, notificationID;
     public boolean autoCancel;
 
     private ForegroundServiceBuilder() {
@@ -46,6 +48,14 @@ public class ForegroundServiceBuilder {
         return autoCancel;
     }
 
+    public RemoteViews getRemoteViews() {
+        return remoteViews;
+    }
+
+    public int getNotificationID() {
+        return notificationID;
+    }
+
     public interface FinalStep {
         ForegroundServiceBuilder build();
 
@@ -57,12 +67,15 @@ public class ForegroundServiceBuilder {
 
         FinalStep channelID(String channelID);
 
+        FinalStep remoteViews(RemoteViews remoteViews);
+
         FinalStep requestCode(int requestCode);
 
         FinalStep importance(int importance);
 
-        FinalStep autoCancel(boolean autoCancel);
         FinalStep notificationID(int notificationID);
+
+        FinalStep autoCancel(boolean autoCancel);
     }
 
 
@@ -71,10 +84,11 @@ public class ForegroundServiceBuilder {
         private String notificationTitle;
         private String channelName;
         private String channelID;
+        private RemoteViews remoteViews;
         private int requestCode;
         private int importance;
-        private boolean autoCancel;
         private int notificationID;
+        private boolean autoCancel;
 
         public FinalStep notificationContent(String notificationContent) {
             this.notificationContent = notificationContent;
@@ -96,6 +110,11 @@ public class ForegroundServiceBuilder {
             return this;
         }
 
+        public FinalStep remoteViews(RemoteViews remoteViews) {
+            this.remoteViews = remoteViews;
+            return this;
+        }
+
         public FinalStep requestCode(int requestCode) {
             this.requestCode = requestCode;
             return this;
@@ -106,12 +125,13 @@ public class ForegroundServiceBuilder {
             return this;
         }
 
-        public FinalStep autoCancel(boolean autoCancel) {
-            this.autoCancel = autoCancel;
+        public FinalStep notificationID(int notificationID) {
+            this.notificationID = notificationID;
             return this;
         }
-        public FinalStep notificationID(int notificationID){
-            this.notificationID = notificationID;
+
+        public FinalStep autoCancel(boolean autoCancel) {
+            this.autoCancel = autoCancel;
             return this;
         }
 
@@ -121,10 +141,11 @@ public class ForegroundServiceBuilder {
             theObject.notificationTitle = notificationTitle;
             theObject.channelName = channelName;
             theObject.channelID = channelID;
+            theObject.remoteViews = remoteViews;
             theObject.requestCode = requestCode;
             theObject.importance = importance;
+            theObject.notificationID = notificationID;
             theObject.autoCancel = autoCancel;
-            theObject.notificationID=notificationID;
             return theObject;
         }
     }

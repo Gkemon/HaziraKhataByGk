@@ -41,12 +41,12 @@ public class BaseForeGroundService extends BaseService {
         createNotificationChannel();
         initNotification();
 
-
         Notification notification = notificationBuilder.build();
         startForeground(foregroundServiceBuilder.notificationID, notification);
 
         return super.onStartCommand(intent, flags, startId);
     }
+
 
     public void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -80,6 +80,7 @@ public class BaseForeGroundService extends BaseService {
                 .setContentTitle(foregroundServiceBuilder.notificationTitle)
                 .setContentText(foregroundServiceBuilder.notificationContent)
                 .setSmallIcon(R.mipmap.main_icon_hd_half)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(foregroundServiceBuilder.notificationContent))
                 .setOnlyAlertOnce(true)//To prevent showing notification while "notify()" is called.
                 .setContentIntent(pendingIntentToMainActivity);
 

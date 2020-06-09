@@ -52,8 +52,10 @@ public class UtilsDateTime {
     public static long getRemainingMinsFromCalender(Calendar calendar){
         Calendar nextEventCalender = Calendar.getInstance();
 
-        nextEventCalender.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY));
-        nextEventCalender.set(Calendar.MINUTE,calendar.get(Calendar.MINUTE));
+        if(calendar!=null){
+            nextEventCalender.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY));
+            nextEventCalender.set(Calendar.MINUTE,calendar.get(Calendar.MINUTE));
+        }
 
         long nexEventMillSec = nextEventCalender.getTime().getTime();
 
@@ -71,16 +73,19 @@ public class UtilsDateTime {
         Calendar currentEndTime = Calendar.getInstance();
         long currentTimeInMills = Calendar.getInstance().getTimeInMillis();
 
-        currentStartTime.set(Calendar.HOUR_OF_DAY,startCalender.get(Calendar.HOUR_OF_DAY));
-        currentStartTime.set(Calendar.MINUTE,startCalender.get(Calendar.MINUTE));
+        if(startCalender!=null){
+            currentStartTime.set(Calendar.HOUR_OF_DAY,startCalender.get(Calendar.HOUR_OF_DAY));
+            currentStartTime.set(Calendar.MINUTE,startCalender.get(Calendar.MINUTE));
+        }
 
-        currentEndTime.set(Calendar.HOUR_OF_DAY,endCalender.get(Calendar.HOUR_OF_DAY));
-        currentEndTime.set(Calendar.MINUTE,endCalender.get(Calendar.MINUTE));
 
+        if(endCalender!=null){
+            currentEndTime.set(Calendar.HOUR_OF_DAY,endCalender.get(Calendar.HOUR_OF_DAY));
+            currentEndTime.set(Calendar.MINUTE,endCalender.get(Calendar.MINUTE));
+        }
 
         return  currentStartTime.getTime().getTime()<currentTimeInMills&&
                 currentEndTime.getTime().getTime()>currentTimeInMills;
-
 
     }
     public static String getAMPMTimeFromCalender(Calendar calendar){

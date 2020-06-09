@@ -64,23 +64,23 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
     }
 
     private void initData() {
+
         mWeekView = root.findViewById(R.id.weekView);
         mWeekView.setOnEventClickListener(this);
         mWeekView.setMonthChangeListener(this);
         mWeekView.setEventLongPressListener(this);
         mWeekView.setEmptyViewLongPressListener(this);
         setupDateTimeInterpreter(false);
+
         routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
+
         events = new CustomArrayList<>();
         if (getArguments() != null) {
 
-            routineViewModel.getAllRoutines().observe(getViewLifecycleOwner(), new Observer<List<RoutineItem>>() {
-                @Override
-                public void onChanged(List<RoutineItem> routineItems) {
-                   RoutineUtils.getRunningRoutines(routineItems);
-                   RoutineUtils.getUpcomingRoutines(routineItems);
-                }
-            });
+           RoutineUtils.getRunningRoutines(routineViewModel.getAllRoutineItems());
+           RoutineUtils.getUpcomingRoutines(routineViewModel.getAllRoutineItems());
+
+           RoutineUtils.startEventShowingService(getContext(),routineViewModel.getAllRoutineItems());
 
             routineType = getArguments().getString(RoutineConstant.routineType);
             if (UtilsCommon.isValideString(routineType))
@@ -93,6 +93,8 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 });
             }
         }
+
+        mWeekView.post(() -> mWeekView.goToHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
 
     }
 

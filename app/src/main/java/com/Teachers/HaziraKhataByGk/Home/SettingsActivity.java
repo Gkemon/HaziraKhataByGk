@@ -17,8 +17,13 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.Teachers.HaziraKhataByGk.R;
+import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
+import com.Teachers.HaziraKhataByGk.routine.room.RoutineDao;
+import com.Teachers.HaziraKhataByGk.routine.room.RoutineRepository;
 import com.Teachers.HaziraKhataByGk.service.BaseForeGroundService;
 import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
+import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
+import com.google.firebase.database.core.Context;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -63,14 +68,12 @@ public class SettingsActivity extends AppCompatActivity {
             if(spcNotification!=null)
             spcNotification.setOnPreferenceChangeListener((preference, newValue) -> {
 
+                RoutineRepository routineRepository = new RoutineRepository(getActivity().getApplication());
                 Intent serviceIntent = new Intent(preference.getContext(), GenericEventShowingService.class);
 
                 if((Boolean)newValue)
                 {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        preference.getContext().startForegroundService(serviceIntent);
-                    }
-                    else preference.getContext().startService(serviceIntent);
+                    RoutineUtils.startEventShowingService(getContext(),routineRepository.getAllRoutineItems());
                 }else {
                     preference.getContext().stopService(serviceIntent);
                 }

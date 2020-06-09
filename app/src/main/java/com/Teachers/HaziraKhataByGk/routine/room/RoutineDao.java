@@ -14,36 +14,40 @@ import java.util.List;
 
 @Dao
 public abstract class RoutineDao {
-    @Query("SELECT * FROM RoutineItem")
-   abstract LiveData<List<RoutineItem>> getAllRoutines();
 
-    @Query("SELECT * FROM RoutineItem WHERE id IN (:userIds)")
-    abstract LiveData<List<RoutineItem>> findAllByIds(int[] userIds);
+   @Query("SELECT * FROM RoutineItem")
+   abstract LiveData<List<RoutineItem>> getAllLiveRoutines();
+
+   @Query("SELECT * FROM RoutineItem")
+   abstract List<RoutineItem> getAllRoutines();
+
+   @Query("SELECT * FROM RoutineItem WHERE id IN (:userIds)")
+   abstract LiveData<List<RoutineItem>> findAllByIds(int[] userIds);
 
 
-    @Query("SELECT * FROM RoutineItem WHERE id = (:routineID)")
-    abstract RoutineItem getRoutineByID(long routineID);
+   @Query("SELECT * FROM RoutineItem WHERE id = (:routineID)")
+   abstract RoutineItem getRoutineByID(long routineID);
 
-    @Query("SELECT * FROM RoutineItem WHERE type = (:type)")
-    abstract  LiveData<List<RoutineItem>> getAllRoutines(String type);
+   @Query("SELECT * FROM RoutineItem WHERE type = (:type)")
+   abstract  LiveData<List<RoutineItem>> getAllLiveRoutines(String type);
 
-    @Query("DELETE FROM RoutineItem WHERE  id = (:routineItemID)")
-    abstract void deleteByID(Long routineItemID);
+   @Query("DELETE FROM RoutineItem WHERE  id = (:routineItemID)")
+   abstract void deleteByID(Long routineItemID);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE
-    )
-    abstract  void insert(RoutineItem routineItem);
+   @Insert(onConflict = OnConflictStrategy.REPLACE
+   )
+   abstract  void insert(RoutineItem routineItem);
 
-    @Update
-    abstract void updateRoutine(RoutineItem... routineItems);
+   @Update
+   abstract void updateRoutine(RoutineItem... routineItems);
 
-    @Update
-    abstract  void updateRoutine(RoutineItem routineItem);
+   @Update
+   abstract  void updateRoutine(RoutineItem routineItem);
 
-    @Insert
-    abstract void insertAll(RoutineItem... routineItems);
+   @Insert
+   abstract void insertAll(RoutineItem... routineItems);
 
-    @Delete
-    abstract void delete(RoutineItem routineItem);
+   @Delete
+   abstract void delete(RoutineItem routineItem);
 
 }

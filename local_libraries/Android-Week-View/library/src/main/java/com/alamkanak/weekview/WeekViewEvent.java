@@ -1,5 +1,8 @@
 package com.alamkanak.weekview;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -12,15 +15,15 @@ import static com.alamkanak.weekview.WeekViewUtil.isSameDay;
  * Created by Raquib-ul-Alam Kanak on 7/21/2014.
  * Website: http://april-shower.com
  */
-public class WeekViewEvent {
+public class WeekViewEvent implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     public long id;
-    private Calendar mStartTime;
-    private Calendar mEndTime;
-    private String mName;
-    private String mLocation;
-    private int mColor;
-    private boolean mAllDay;
+    public Calendar mStartTime;
+    public Calendar mEndTime;
+    public String mName;
+    public String mLocation;
+    public int mColor;
+    public boolean mAllDay;
 
     public WeekViewEvent() {
 
@@ -106,6 +109,18 @@ public class WeekViewEvent {
         this(id, name, null, startTime, endTime);
     }
 
+
+    public static final Creator<WeekViewEvent> CREATOR = new Creator<WeekViewEvent>() {
+        @Override
+        public WeekViewEvent createFromParcel(Parcel in) {
+            return new WeekViewEvent(in);
+        }
+
+        @Override
+        public WeekViewEvent[] newArray(int size) {
+            return new WeekViewEvent[size];
+        }
+    };
 
     public Calendar getStartTime() {
         return mStartTime;
@@ -224,4 +239,31 @@ public class WeekViewEvent {
 
         return events;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeSerializable(this.mStartTime);
+        dest.writeSerializable(this.mEndTime);
+        dest.writeString(this.mName);
+        dest.writeString(this.mLocation);
+        dest.writeInt(this.mColor);
+        dest.writeByte(this.mAllDay ? (byte) 1 : (byte) 0);
+    }
+
+    protected WeekViewEvent(Parcel in) {
+        this.id = in.readLong();
+        this.mStartTime = (Calendar) in.readSerializable();
+        this.mEndTime = (Calendar) in.readSerializable();
+        this.mName = in.readString();
+        this.mLocation = in.readString();
+        this.mColor = in.readInt();
+        this.mAllDay = in.readByte() != 0;
+    }
+
 }
