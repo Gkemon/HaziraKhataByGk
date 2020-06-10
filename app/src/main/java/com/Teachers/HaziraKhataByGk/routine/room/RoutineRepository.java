@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.routine.room;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
@@ -16,8 +17,8 @@ public class RoutineRepository {
     private List<RoutineItem> routineList;
 
 
-    public RoutineRepository(Application application) {
-        AppDatabase db = AppDatabase.getDatabase(application);
+    public RoutineRepository(Context context) {
+        RoutineDatabase db = RoutineDatabase.getDatabase(context);
         routineDao = db.routineDao();
         routineLiveList = routineDao.getAllLiveRoutines();
     }
@@ -35,20 +36,20 @@ public class RoutineRepository {
     }
 
     public void insert(RoutineItem routineItem) {
-        AppDatabase.databaseWriteExecutor.execute(() -> routineDao.insert(routineItem));
+        RoutineDatabase.databaseWriteExecutor.execute(() -> routineDao.insert(routineItem));
     }
 
     public void update(RoutineItem routineItem) {
-        AppDatabase.databaseWriteExecutor.execute(() -> routineDao.updateRoutine(routineItem));
+        RoutineDatabase.databaseWriteExecutor.execute(() -> routineDao.updateRoutine(routineItem));
     }
 
     public void update(RoutineItem... routineItem) {
-        AppDatabase.databaseWriteExecutor.execute(() -> routineDao.updateRoutine(routineItem));
+        RoutineDatabase.databaseWriteExecutor.execute(() -> routineDao.updateRoutine(routineItem));
     }
     public void delete(RoutineItem routineItem) {
-        AppDatabase.databaseWriteExecutor.execute(() -> routineDao.delete(routineItem));
+        RoutineDatabase.databaseWriteExecutor.execute(() -> routineDao.delete(routineItem));
     }
     public void deleteByID(Long routineItemID) {
-        AppDatabase.databaseWriteExecutor.execute(() -> routineDao.deleteByID(routineItemID));
+        RoutineDatabase.databaseWriteExecutor.execute(() -> routineDao.deleteByID(routineItemID));
     }
 }

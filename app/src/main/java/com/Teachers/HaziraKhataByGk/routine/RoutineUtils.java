@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.routine.room.RoutineRepository;
 import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
 
@@ -27,6 +28,10 @@ public class RoutineUtils {
         }
 
         return remainingMinutes;
+    }
+
+    public static List<RoutineItem> getTotalRoutineItems(Context context){
+        return new RoutineRepository(context).getAllRoutineItems();
     }
     public static  List<RoutineItem> getRunningRoutines(List<RoutineItem> routineItems){
         List<RoutineItem> runningRoutine=new ArrayList<>();

@@ -10,6 +10,7 @@
             app:title="রুটিনের নোটিফিকেশন" />
 
         <EditTextPreference
+            app:defaultValue="10"
             android:icon="@drawable/ic_alarm_black_24dp"
             app:key="routineReminderTimeBefore"
             app:title="রুটিনের কতক্ষন আগে থেকে এলার্ম দেয়া হবে তা ইনপুট দিন।"/>

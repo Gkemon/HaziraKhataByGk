@@ -1,12 +1,8 @@
 package com.Teachers.HaziraKhataByGk.service;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-
-import java.util.Calendar;
 
 /**
  * Created by Gk Emon on 5/31/2020.
@@ -22,6 +18,9 @@ public class  TimeChangeReceiver extends BroadcastReceiver {
                 intentToEventService.putExtra(GenericEventShowingService.SHOW_ROUTINE, true);
             }
             else if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
+
+                // RoutineRepository routineRepository=new RoutineRepository(context.getApplicationContext());
+
                 intentToEventService.putExtra(GenericEventShowingService.SHOW_ROUTINE, true);
             }
 

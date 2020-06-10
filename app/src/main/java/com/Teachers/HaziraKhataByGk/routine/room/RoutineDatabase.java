@@ -15,20 +15,20 @@ import java.util.concurrent.Executors;
 @Database(entities = {RoutineItem.class}, version = 1, exportSchema = false)
 @TypeConverters({RoomConverter.class})
 
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class RoutineDatabase extends RoomDatabase {
     public abstract RoutineDao routineDao();
 
-    private static volatile AppDatabase INSTANCE;
+    private static volatile RoutineDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public static AppDatabase getDatabase(final Context context) {
+    public static RoutineDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (AppDatabase.class) {
+            synchronized (RoutineDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, RoomConstant.ROUTINE_DATABASE)
+                            RoutineDatabase.class, RoomConstant.ROUTINE_DATABASE)
                             .allowMainThreadQueries()
                             .build();
                 }

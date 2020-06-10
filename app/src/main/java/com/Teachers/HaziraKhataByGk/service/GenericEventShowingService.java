@@ -6,9 +6,11 @@ import android.content.IntentFilter;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
@@ -33,6 +35,15 @@ public class GenericEventShowingService extends BaseForeGroundService implements
     public int onStartCommand(Intent intent, int flags, int startId) {
         baseForeGroundServiceNavigator = this;
 
+       String beforeMin = PreferenceManager.getDefaultSharedPreferences(getApplication())
+                .getString(SettingsActivity.ROUTINE_REMINDER_TIME_BEFORE,"10");
+
+
+       Integer.valueOf(beforeMin);
+
+
+
+
 
         if (intent.getExtras() != null) {
 
@@ -43,6 +54,7 @@ public class GenericEventShowingService extends BaseForeGroundService implements
                 upcomingRoutines = RoutineUtils.getUpcomingRoutines(totalRoutines);
             }
             if (intent.getExtras().getBoolean(SHOW_ROUTINE)) {
+
                 notifyNotificationContent
                         (setupNotificationTextRoutine(upcomingRoutines, runningRoutines));
             }
@@ -121,7 +133,7 @@ public class GenericEventShowingService extends BaseForeGroundService implements
 
 
         return "∎ চলমান কাজ : " +
-                runningRoutine + "\n\n" +
+                runningRoutine + "\n" +
                 "∎ সামনের কাজ : " +
                 upcomingRoutine;
     }

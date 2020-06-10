@@ -27,6 +27,8 @@ import com.google.firebase.database.core.Context;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String ROUTINE_REMINDER_TIME_BEFORE="routineReminderTimeBefore";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,26 +67,32 @@ public class SettingsActivity extends AppCompatActivity {
         private void routineNotificationSetup(){
             SwitchPreferenceCompat spcNotification=
                     findPreference("notificationPreference");
-            if(spcNotification!=null)
-            spcNotification.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (spcNotification != null) {
 
-                RoutineRepository routineRepository = new RoutineRepository(getActivity().getApplication());
-                Intent serviceIntent = new Intent(preference.getContext(), GenericEventShowingService.class);
+                spcNotification.setChecked(ServiceUtils.
+                        isServiceRunning(GenericEventShowingService.class,getContext()));
 
-                if((Boolean)newValue)
-                {
-                    RoutineUtils.startEventShowingService(getContext(),routineRepository.getAllRoutineItems());
-                }else {
-                    preference.getContext().stopService(serviceIntent);
-                }
-                return true;
-            });
+                spcNotification.setOnPreferenceChangeListener((preference, newValue) -> {
+
+                    RoutineRepository routineRepository = new RoutineRepository(getActivity());
+                    Intent serviceIntent = new Intent(preference.getContext(), GenericEventShowingService.class);
+
+                    if((Boolean)newValue)
+                    {
+                        RoutineUtils.startEventShowingService(getContext(),routineRepository.getAllRoutineItems());
+                    }else {
+                        preference.getContext().stopService(serviceIntent);
+                    }
+                    return true;
+                });
+            }
+
         }
 
         private void preRoutineRemindTimeSetup() {
 
             // Pre routine remind time.
-            EditTextPreference preRoutineTime = findPreference("routineReminderTimeBefore");
+       EditTextPreference preRoutineTime = findPreference(ROUTINE_REMINDER_TIME_BEFORE);
             if (preRoutineTime != null) {
                 preRoutineTime.setSummaryProvider((Preference.SummaryProvider<EditTextPreference>) preference -> {
                     String text = preference.getText();
