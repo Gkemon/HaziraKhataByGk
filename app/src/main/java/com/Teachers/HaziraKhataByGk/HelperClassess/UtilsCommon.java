@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 import android.view.Window;
@@ -35,11 +37,9 @@ import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-import static com.Teachers.HaziraKhataByGk.MainActivity.saved_blogItem_for_main;
-import static com.Teachers.HaziraKhataByGk.MainActivity.saved_newsItem_for_main;
 
 /**
  * Created by uy on 6/18/2018.
@@ -58,6 +58,16 @@ public class UtilsCommon {
         return phone.matches(pattern);
     }
 
+    public static MediaPlayer getMediaPlayer(Context context){
+        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if(alert == null) {
+            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        }
+        MediaPlayer player = MediaPlayer.create(context, alert);
+        player.setLooping(true);
+        return player;
+
+    }
     public static Student getCurrentStudent(Context context) {
         String studentPref = "currentProfile";
         Gson gson = new Gson();
@@ -169,66 +179,6 @@ public class UtilsCommon {
         editor.commit();
     }
 
-    //TODO: save news
-    public static boolean saveBlog(Context context, BlogItem blogItem) {
-        BlogItem blog;
-        blog = blogItem;
-        boolean exist = false;
-
-        if (saved_blogItem_for_main == null) {
-            showDialogForSignUp(context);
-            return false;
-        }
-
-        //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
-        for (int i = 0; i < saved_blogItem_for_main.size(); i++) {
-            if (blog.getURL().equals(saved_blogItem_for_main.get(i).getURL()) && blog.getDate().equals(saved_blogItem_for_main.get(i).getDate()) && blog.getHeading().equals(saved_blogItem_for_main.get(i).getHeading()) && blog.getWriter().equals(saved_blogItem_for_main.get(i).getWriter())) {
-                exist = true;
-            }
-        }
-
-        SharedPreferences pref = context.getSharedPreferences("teacher_blog_saved", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-
-        //TODO: for bookmark in browser activity
-
-        if ((pref.getBoolean(blog.getURL(), false) && pref.getBoolean(blog.getHeading(), false) && pref.getBoolean(blog.getDate(), false) && pref.getBoolean(blog.getWriter(), false)) || exist) {
-
-            editor.putBoolean(blog.getURL(), false);
-            editor.putBoolean(blog.getHeading(), false);
-            editor.putBoolean(blog.getDate(), false);
-            editor.putBoolean(blog.getWriter(), false);
-
-            Query query =
-                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").orderByChild("url").equalTo(blog.getURL());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        snapshot.getRef().child("url").removeValue();
-                        snapshot.getRef().child("date").removeValue();
-                        snapshot.getRef().child("heading").removeValue();
-                        snapshot.getRef().child("writer").removeValue();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
-        } else {
-            editor.putBoolean(blog.getURL(), true);
-            editor.putBoolean(blog.getHeading(), true);
-            editor.putBoolean(blog.getDate(), true);
-            editor.putBoolean(blog.getWriter(), true);
-            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").push().setValue(blog);
-
-        }
-
-        editor.apply();
-
-        return true;
-    }
 
 
     public static void hideNotificationStatus(Activity activity) {
@@ -239,7 +189,10 @@ public class UtilsCommon {
 
 
     public static void showToast(String msg) {
-        Toast.makeText(GlobalContext.getAppContext(), msg, Toast.LENGTH_LONG).show();
+        try {
+            Toast.makeText(GlobalContext.getAppContext(), msg, Toast.LENGTH_LONG).show();
+        }catch (Exception ignore){
+        }
     }
 
 
@@ -283,69 +236,6 @@ public class UtilsCommon {
         Log.d("GK", info + ": " + msg);
     }
 
-    //TODO: save news
-    public static boolean saveNews(Context context, NewsItem newsItem1) {
-        NewsItem NewsItem;
-        NewsItem = newsItem1;
-        boolean exist = false;
-
-
-        //TODO: this forloop for ensuring the data is exist both shared preference and firebase database
-
-        if (saved_newsItem_for_main == null) {
-            showDialogForSignUp(context);
-            return false;
-        }
-        for (int i = 0; i < saved_newsItem_for_main.size(); i++) {
-            if (NewsItem.getURL().equals(saved_newsItem_for_main.get(i).getURL()) && NewsItem.getDate().equals(saved_newsItem_for_main.get(i).getDate()) && NewsItem.getHeading().equals(saved_newsItem_for_main.get(i).getHeading())) {
-                exist = true;
-            }
-        }
-
-
-        SharedPreferences pref = context.getSharedPreferences("HaziraKhata", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-
-        //TODO: for bookmark in browser activity
-
-        if ((pref.getBoolean(newsItem1.getURL(), false) && pref.getBoolean(newsItem1.getHeading(), false) && pref.getBoolean(newsItem1.getDate(), false)) || exist) {
-
-
-            editor.putBoolean(newsItem1.getURL(), false);
-            editor.putBoolean(newsItem1.getHeading(), false);
-            editor.putBoolean(newsItem1.getDate(), false);
-            // editor1.putBoolean(newsItem1.getURL(), false);
-
-
-            Query query =
-                    FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").orderByChild("url").equalTo(newsItem1.getURL());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        snapshot.getRef().child("url").removeValue();
-                        snapshot.getRef().child("date").removeValue();
-                        snapshot.getRef().child("heading").removeValue();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
-        } else {
-            editor.putBoolean(newsItem1.getURL(), true);
-            editor.putBoolean(newsItem1.getHeading(), true);
-            editor.putBoolean(newsItem1.getDate(), true);
-            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_news").push().setValue(newsItem1);
-
-        }
-
-        editor.apply();
-
-        return true;
-    }
-
     //TODO: check news
     public static boolean isNewsBookmarked(NewsItem NewsItem, Context context) {
 
@@ -385,7 +275,8 @@ public class UtilsCommon {
 
 
     //TODO: save job
-    public static void saveJob(Context context, String post, String institute, String place, String URL) {
+    public static void saveJob(Context context, String post, String institute, String place, String
+        URL) {
         SharedPreferences pref = context.getSharedPreferences("HaziraKhata_save_job", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
 
@@ -539,7 +430,7 @@ public class UtilsCommon {
                 uri = Uri.parse("fb://facewebmodal/f?href=" + url);
             }
         } catch (PackageManager.NameNotFoundException ignored) {
-         UtilsCommon.handleError(ignored);
+            UtilsCommon.handleError(ignored);
         }
 
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);

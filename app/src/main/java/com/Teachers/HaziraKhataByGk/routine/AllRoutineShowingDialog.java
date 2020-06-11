@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
@@ -15,6 +16,8 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -102,6 +105,11 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         ButterKnife.bind(this, view);
 
         routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
+        routineViewModel.getAllLiveRoutines().observe(getViewLifecycleOwner(), routineItems -> {
+            if(routineItems.isEmpty())
+                RoutineUtils.stopEventShowingService(getContext());
+            else RoutineUtils.startEventShowingService(getContext(),routineItems);
+        });
 
         setupViewPager();
         setupTab();

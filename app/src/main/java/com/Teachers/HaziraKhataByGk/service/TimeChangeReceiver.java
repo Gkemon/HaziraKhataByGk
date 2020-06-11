@@ -17,16 +17,8 @@ public class  TimeChangeReceiver extends BroadcastReceiver {
             if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
                 intentToEventService.putExtra(GenericEventShowingService.SHOW_ROUTINE, true);
             }
-            else if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
+            ServiceUtils.startForegroundService(intentToEventService,context);
 
-                // RoutineRepository routineRepository=new RoutineRepository(context.getApplicationContext());
-
-                intentToEventService.putExtra(GenericEventShowingService.SHOW_ROUTINE, true);
-            }
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                context.startForegroundService(intentToEventService);
-            } else context.startService(intent);
         }
     }
 

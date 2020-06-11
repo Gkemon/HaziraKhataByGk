@@ -10,6 +10,7 @@ import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
  * Created by Gk Emon on 6/10/2020.
  */
 public class AutoStartReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
 

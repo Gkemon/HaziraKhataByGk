@@ -217,19 +217,6 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
 
             case SaveClicker:
 
-                if (UtilsCommon.saveBlog(context, BlogItem)) {
-                    ImageView savedIcon = (ImageView) view.findViewById(R.id.SaveClickerIcon);
-                    if (UtilsCommon.isBlogBookmarked(BlogItem, context)) {
-                        savedIcon.setImageResource(R.drawable.ic_saved_icon);
-                        Toast.makeText(BottomNavigationActivity.activity, "সেভ হয়েছে", Toast.LENGTH_SHORT).show();
-                    } else {
-                        savedIcon.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
-                        Toast.makeText(BottomNavigationActivity.activity, "সেভ রিমুভ হয়েছে", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-
-
             case loveClicker:
                 UtilsCommon.loveBlog(BlogItem, context);
                 ImageView loveIcon = (ImageView) view.findViewById(R.id.lovedIcon);
@@ -257,7 +244,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
         dialogBuilder.setView(dialogView);
-        final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
+        final EditText edt =  dialogView.findViewById(R.id.custom_delete_dialauge_text);
 
         dialogBuilder.setIcon(R.drawable.warnig_for_delete);
         dialogBuilder.setTitle("সেভ করা শিক্ষক কথন ডিলিট করতে চান?");

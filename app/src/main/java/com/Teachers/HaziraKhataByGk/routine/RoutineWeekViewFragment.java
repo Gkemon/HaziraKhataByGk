@@ -76,12 +76,6 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
         events = new CustomArrayList<>();
         if (getArguments() != null) {
-
-           RoutineUtils.getRunningRoutines(routineViewModel.getAllRoutineItems());
-           RoutineUtils.getUpcomingRoutines(routineViewModel.getAllRoutineItems());
-
-           RoutineUtils.startEventShowingService(getContext(),routineViewModel.getAllRoutineItems());
-
             routineType = getArguments().getString(RoutineConstant.routineType);
             if (UtilsCommon.isValideString(routineType))
                 liveEvents = routineViewModel.getAllRoutines(routineType);

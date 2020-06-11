@@ -21,10 +21,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Home.MainViewModel;
 import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
@@ -34,20 +36,20 @@ import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.ClassRoomFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
-import com.Teachers.HaziraKhataByGk.Tabs.NewsFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NibondhonFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.TotthojhuriFragment;
+import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
+import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.Teachers.HaziraKhataByGk.service.GenericEventShowingService.TOTAL_ROUTINES;
 
 //TODO: Tutorial for navigation drawer with tablayout:
 // 1)http://www.devexchanges.info/2016/05/android-basic-training-course-combining.html
@@ -56,15 +58,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public static ArrayList<NewsItem> NewsList;
+    private MainViewModel mainViewModel;
     public static ArrayList<JobItems> Job_list;
-    public static ArrayList<NewsItem> saved_newsItem_for_main;
-    public static ArrayList<BlogItem> saved_blogItem_for_main;
-
-
     public Activity activity;
     public String mProfileHeader;
-    // public static FirebaseUser mFirebaseUser;
     Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -120,14 +117,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_main);
+
+        mainViewModel=new ViewModelProvider(this).get(MainViewModel.class);
+
+        //If activity is launched from routine service
+        if(getIntent()!=null&&getIntent().getExtras()!=null&&
+                getIntent().getExtras().getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES)!=null){
+            mainViewModel.setTriggeredRoutines(getIntent().getExtras().getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES));
+        }
 
         toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        OneSignal.startInit(this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification).unsubscribeWhenNotificationsAreDisabled(true).init();
+        OneSignal.startInit(this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification).
+                unsubscribeWhenNotificationsAreDisabled(true).init();
 
 
         setUpDrawer();
@@ -141,53 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
 
-        if (FirebaseCaller.getCurrentUser() != null)
-            FirebaseCaller.getFirebaseDatabase().child("Users").
-                    child(FirebaseCaller.getUserID()).child("Saved_news").
-                    addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArrayList<NewsItem> NewsItem = new ArrayList<NewsItem>();
-                    for (DataSnapshot classData : dataSnapshot.getChildren()) {
-                        NewsItem newsItem1;
-                        newsItem1 = classData.getValue(NewsItem.class);
-                        NewsItem.add(newsItem1);
-                    }
-                    MainActivity.saved_newsItem_for_main = new ArrayList<>();
-                    MainActivity.saved_newsItem_for_main = NewsItem;
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        //TODO: To saved load teachers post
-        if (FirebaseCaller.getCurrentUser() != null)
-            FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).child("Saved_blog").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArrayList<BlogItem> blogItem_temp = new ArrayList<BlogItem>();
-                    for (DataSnapshot blogData : dataSnapshot.getChildren()) {
-                        BlogItem blog;
-                        blog = blogData.getValue(BlogItem.class);
-                        blogItem_temp.add(blog);
-                    }
-                    saved_blogItem_for_main = blogItem_temp;
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        //startActivity(new Intent (MainActivity.this,LoginActivity.class));
         FirebaseAuth.AuthStateListener authListener = firebaseAuth -> {
-
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user == null) {
                 startActivity(new Intent (MainActivity.this,LoginActivity.class));
@@ -287,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ClassRoomFragment(), "শ্রেণী কার্যক্রম");
         adapter.addFrag(new NibondhonFragment(), "শিক্ষক নিবন্ধন কর্নার");

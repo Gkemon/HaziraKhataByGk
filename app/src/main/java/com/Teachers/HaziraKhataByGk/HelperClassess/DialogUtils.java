@@ -27,7 +27,7 @@ public class DialogUtils {
                 onTimeSetListener.onTimeSet(timePicker,timePicker.getHour(),timePicker.getMinute());
             }
             else onTimeSetListener.onTimeSet(timePicker,timePicker.getCurrentMinute(),timePicker.getCurrentMinute());
-        }, hourOfDay, minOfDay, false);//Yes 24 hour time
+        }, hourOfDay, minOfDay, false);//Yes for 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
 

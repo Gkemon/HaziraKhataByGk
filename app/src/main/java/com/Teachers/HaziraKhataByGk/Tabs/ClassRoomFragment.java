@@ -1,12 +1,17 @@
 package com.Teachers.HaziraKhataByGk.Tabs;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,20 +22,25 @@ import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.Home.MainViewModel;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.routine.AllRoutineShowingDialog;
+import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class ClassRoomFragment extends Fragment implements RecyclerItemClickListener {
+    private MainViewModel mainViewModel;
     public RecyclerView recyclerViewForClass;
     public FloatingActionButton btnAdd;
     public ClassListAdapter classListAdapter;
@@ -38,6 +48,7 @@ public class ClassRoomFragment extends Fragment implements RecyclerItemClickList
     public View emptyView;
     private View rootView;
     private Context context;
+    private MediaPlayer mediaPlayer;
 
 
     public ClassRoomFragment() {
@@ -46,7 +57,61 @@ public class ClassRoomFragment extends Fragment implements RecyclerItemClickList
 
     @OnClick(R.id.btn_make_schedule)
     public void showRoutine() {
-        AllRoutineShowingDialog.showDialog(getFragmentManager());
+        AllRoutineShowingDialog.showDialog(getChildFragmentManager());
+    }
+
+    private void showAlarm(){
+        if(mainViewModel.getTriggeredRoutines()!=null&&!mainViewModel.getTriggeredRoutines().isEmpty()){
+
+            if (mediaPlayer == null)
+                mediaPlayer = UtilsCommon.getMediaPlayer(getContext());
+            mediaPlayer.start();
+
+            AlertDialog alertDialog =
+                    new AlertDialog.Builder(getContext()).create();
+            alertDialog.setTitle("বর্তমান কাজ");
+            alertDialog.setMessage(getStringFromRoutines(mainViewModel.getTriggeredRoutines()));
+            alertDialog.setCancelable(false);
+
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "রুটিন দেখুন",
+                    (dialog, which) -> {
+                        stopAlarm();
+                        dialog.dismiss();
+                        AllRoutineShowingDialog.showDialog(getChildFragmentManager());
+                    }
+            );
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"এপটি বন্ধ করুন",
+                    (dialog, which) -> {
+                        stopAlarm();
+                        dialog.dismiss();
+                        if(getActivity()!=null)
+                            getActivity().finish();
+                        System.exit(0);
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,"এলার্ম বন্ধ করুন",
+                    (dialog, which) -> {
+                        stopAlarm();
+                    });
+            alertDialog.show();
+        }
+
+    }
+    private void stopAlarm() {
+        try {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopAlarm();
     }
 
     private void initView() {
@@ -84,8 +149,23 @@ public class ClassRoomFragment extends Fragment implements RecyclerItemClickList
     }
 
     @Override
-    public void onResume() {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mainViewModel=new ViewModelProvider(getActivity()).get(MainViewModel.class);
+        showAlarm();
+    }
 
+    private String getStringFromRoutines(List<RoutineItem> routineItems){
+        StringBuilder stringBuilder =new StringBuilder();
+        for(RoutineItem routineItem:routineItems){
+            stringBuilder.append("∎ ");
+            stringBuilder.append(routineItem.getName());
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+    @Override
+    public void onResume() {
 
         //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
         if (FirebaseCaller.getCurrentUser() == null) {

@@ -26,7 +26,6 @@ import java.util.Collections;
 
 import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.isBlogBookmarked;
 import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.loveBlog;
-import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.saveBlog;
 import static com.Teachers.HaziraKhataByGk.R.id.ClickerForBlog;
 import static com.Teachers.HaziraKhataByGk.R.id.SaveClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.ShareClicker;
@@ -105,7 +104,6 @@ public class BlogActivity extends AppCompatActivity implements RecyclerItemClick
 
             case SaveClicker:
 
-                saveBlog(this, BlogItem);
                 ImageView savedIcon = (ImageView) view.findViewById(R.id.SaveClickerIcon);
 
                 if (isBlogBookmarked(BlogItem, BlogActivity.this)) {

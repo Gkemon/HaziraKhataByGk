@@ -49,6 +49,8 @@ public class UtilsDateTime {
         return sdf.format(date1).equals(sdf.format(date2));
     }
 
+
+    //For getting remaining minutes from current time to upcoming time.
     public static long getRemainingMinsFromCalender(Calendar calendar){
         Calendar nextEventCalender = Calendar.getInstance();
 

@@ -193,7 +193,7 @@ public class SavedNewsFragment extends Fragment implements RecyclerItemClickList
 
             case SaveClicker:
 
-                UtilsCommon.saveNews(getContext(), Saved_News_list.get(position));
+
                 ImageView savedIcon = (ImageView) view.findViewById(R.id.SaveClickerIcon);
 
                 if (UtilsCommon.isNewsBookmarked(Saved_News_list.get(position), getContext())) {

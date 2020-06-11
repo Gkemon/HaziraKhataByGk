@@ -3,6 +3,7 @@ package com.Teachers.HaziraKhataByGk.service;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -11,6 +12,7 @@ import androidx.preference.PreferenceManager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
+import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
@@ -24,24 +26,19 @@ public class GenericEventShowingService extends BaseForeGroundService implements
     public static int NOTIFICATION_ID_FOR_EVENT_SHOWING = 11;
     public static String TOTAL_ROUTINES = "total_routines";
     public static String SHOW_ROUTINE = "showRouting";
+    public static String TRIGGERED_ROUTINES = "triggeredRoutines";
+
     private TimeChangeReceiver timeChangeReceiver;
     RemoteViews mRemoteViews;
     private List<RoutineItem> totalRoutines = new ArrayList<>();
     private List<RoutineItem> upcomingRoutines = new ArrayList<>();
     private List<RoutineItem> runningRoutines = new ArrayList<>();
+    private AutoStartReceiver autoStartReceiver;
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         baseForeGroundServiceNavigator = this;
-
-       String beforeMin = PreferenceManager.getDefaultSharedPreferences(getApplication())
-                .getString(SettingsActivity.ROUTINE_REMINDER_TIME_BEFORE,"10");
-
-
-       Integer.valueOf(beforeMin);
-
-
 
 
 
@@ -49,9 +46,14 @@ public class GenericEventShowingService extends BaseForeGroundService implements
 
             List<RoutineItem> routineItems = intent.getExtras().getParcelableArrayList(TOTAL_ROUTINES);
             if (routineItems != null) {
+
                 totalRoutines = routineItems;
                 runningRoutines = RoutineUtils.getRunningRoutines(totalRoutines);
                 upcomingRoutines = RoutineUtils.getUpcomingRoutines(totalRoutines);
+
+                if (upcomingRoutines.size() > 0)
+                    triggerAlarm(upcomingRoutines);
+
             }
             if (intent.getExtras().getBoolean(SHOW_ROUTINE)) {
 
@@ -65,6 +67,35 @@ public class GenericEventShowingService extends BaseForeGroundService implements
         return START_STICKY;
     }
 
+    //when a routine is ready to notify user and current time is its trigger time.
+    private void triggerAlarm(List<RoutineItem> runningRoutines) {
+        String beforeMin = PreferenceManager.getDefaultSharedPreferences(getApplication())
+                .getString(SettingsActivity.ROUTINE_REMINDER_TIME_BEFORE, "10");
+
+        long beforeReminderTime = Long.parseLong(beforeMin);
+
+        //The routines which "start time" is current time and that's why we need to fire them.
+        List<RoutineItem> triggerRoutines = new ArrayList<>();
+
+        for (RoutineItem routineItem : runningRoutines) {
+            if (beforeReminderTime >= UtilsDateTime
+                    .getRemainingMinsFromCalender(routineItem.getStartTime())) {
+                triggerRoutines.add(routineItem);
+            }
+        }
+
+        if (triggerRoutines.size() > 0) {
+            Intent intent = new Intent(getApplication(), MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES,
+                    new ArrayList<>(triggerRoutines));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
+
+    }
+
 
     @Override
     public void setUpForegroundBuilder() {
@@ -76,7 +107,6 @@ public class GenericEventShowingService extends BaseForeGroundService implements
                 .channelName("আপনার প্রতিদিনের কাজ")
                 .importance(NotificationManager.IMPORTANCE_MAX)
                 .requestCode(REQUEST_CODE_FOR_EVENT_SHOWING)
-              //  .notificationTitle("আপনার আজকের কাজ")
                 .notificationContent(setupNotificationTextRoutine(upcomingRoutines, runningRoutines))
                 .notificationID(NOTIFICATION_ID_FOR_EVENT_SHOWING)
                 .build();
@@ -93,22 +123,28 @@ public class GenericEventShowingService extends BaseForeGroundService implements
     public void onCreate() {
         super.onCreate();
         registerTimeChangeReceiver();
+        registerBootCompleteReceiver();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterTimeChangeReceiver();
+        unregisterBootChangeReceiver();
     }
 
     private void registerTimeChangeReceiver() {
         timeChangeReceiver = new TimeChangeReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
-        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(timeChangeReceiver, filter);
     }
-
+    private void registerBootCompleteReceiver() {
+        autoStartReceiver = new AutoStartReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        registerReceiver(autoStartReceiver, filter);
+    }
     private RemoteViews setupNotificationRemoteViewForRoutine(List<RoutineItem> upcomingRoutines,
                                                               List<RoutineItem> runningRoutines) {
 
@@ -157,8 +193,20 @@ public class GenericEventShowingService extends BaseForeGroundService implements
             if (timeChangeReceiver != null) {
                 unregisterReceiver(timeChangeReceiver);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
+            UtilsCommon.handleError(ignored);
         }
     }
+
+    private void unregisterBootChangeReceiver() {
+        try {
+            if (autoStartReceiver != null) {
+                unregisterReceiver(autoStartReceiver);
+            }
+        } catch (IllegalArgumentException ignored) {
+            UtilsCommon.handleError(ignored);
+        }
+    }
+
 
 }

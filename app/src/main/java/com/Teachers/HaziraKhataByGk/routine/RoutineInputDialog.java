@@ -23,6 +23,8 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.gk.emon.android.BanglaDaysPicker;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -137,23 +139,41 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     @OnClick(R.id.bt_from_time)
     void showStartTimeDialog() {
 
-        DialogUtils.showTimeDialog(0, 0, getContext(),
-                (timePicker, hourOfDay, min) -> {
+        int hourOfDay=0,minOfDay=0;
+        if(routineItem!=null&&routineItem.getStartTime()!=null){
+            hourOfDay=routineItem.getStartTime().get(Calendar.HOUR_OF_DAY);
+            minOfDay=routineItem.getStartTime().get(Calendar.MINUTE);
+        }
 
+        DialogUtils.showTimeDialog(hourOfDay,minOfDay , getContext(),
+                (timePicker, hrOfDay, min) -> {
                     btnFromTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
-                            getCalendarFromHourMin(hourOfDay, min)));
-                    routineItem.setStartTime(UtilsDateTime.getCalendarFromHourMin(hourOfDay, min));
+                            getCalendarFromHourMin(hrOfDay, min)));
+                    routineItem.setStartTime(UtilsDateTime.getCalendarFromHourMin(hrOfDay, min));
                 });
 
     }
 
     @OnClick(R.id.bt_to_time)
     void showEndTimeDialog() {
-        DialogUtils.showTimeDialog(0, 0, getContext(),
-                (timePicker, hourOfDay, min) -> {
+        int hourOfDay=0,minOfDay=0;
+        if(routineItem!=null) {
+            if (routineItem.getEndTime() != null) {
+                hourOfDay = routineItem.getEndTime().get(Calendar.HOUR_OF_DAY);
+                minOfDay = routineItem.getEndTime().get(Calendar.MINUTE);
+            } else if (routineItem.getStartTime()!=null){
+                //For adding routine (First time input) increase automatically 5 minutes for
+                //inputting "End time"
+                hourOfDay=routineItem.getStartTime().get(Calendar.HOUR_OF_DAY);
+                minOfDay=routineItem.getStartTime().get(Calendar.MINUTE)+5;
+            }
+        }
+
+        DialogUtils.showTimeDialog(hourOfDay, minOfDay, getContext(),
+                (timePicker, hrOfDay, min) -> {
                     btnToTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
-                            getCalendarFromHourMin(hourOfDay, min)));
-                    routineItem.setEndTime(UtilsDateTime.getCalendarFromHourMin(hourOfDay, min));
+                            getCalendarFromHourMin(hrOfDay, min)));
+                    routineItem.setEndTime(UtilsDateTime.getCalendarFromHourMin(hrOfDay, min));
                 });
     }
 

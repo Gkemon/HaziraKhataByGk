@@ -74,12 +74,12 @@ public class SettingsActivity extends AppCompatActivity {
 
                 spcNotification.setOnPreferenceChangeListener((preference, newValue) -> {
 
-                    RoutineRepository routineRepository = new RoutineRepository(getActivity());
                     Intent serviceIntent = new Intent(preference.getContext(), GenericEventShowingService.class);
 
                     if((Boolean)newValue)
                     {
-                        RoutineUtils.startEventShowingService(getContext(),routineRepository.getAllRoutineItems());
+                        RoutineUtils.startEventShowingService(getContext(),
+                                RoutineUtils.getTotalRoutineItems(getContext()));
                     }else {
                         preference.getContext().stopService(serviceIntent);
                     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.routine.room.RoutineRepository;
+import com.Teachers.HaziraKhataByGk.service.AutoStartReceiver;
 import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
 
@@ -46,6 +47,10 @@ public class RoutineUtils {
 
     }
 
+    public static void stopEventShowingService(Context context){
+        Intent serviceIntent = new Intent(context, GenericEventShowingService.class);
+        context.stopService(serviceIntent);
+    }
 
     public static void startEventShowingService(Context context,List<RoutineItem> totalRoutines){
         ArrayList<RoutineItem> totalRoutineArrayList = new ArrayList(totalRoutines);
