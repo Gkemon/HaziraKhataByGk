@@ -10,9 +10,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
+import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.google.android.material.tabs.TabLayout;
@@ -104,12 +106,20 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         View view = inflater.inflate(R.layout.dialog_show_routine, container, false);
         ButterKnife.bind(this, view);
 
-        routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
-        routineViewModel.getAllLiveRoutines().observe(getViewLifecycleOwner(), routineItems -> {
-            if(routineItems.isEmpty())
-                RoutineUtils.stopEventShowingService(getContext());
-            else RoutineUtils.startEventShowingService(getContext(),routineItems);
-        });
+        if(getActivity()!=null){
+            if(PreferenceManager.getDefaultSharedPreferences(getActivity())
+                    .getBoolean(SettingsActivity.IS_NOTIFICATION_ENABLED,false))
+            {
+                routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
+                routineViewModel.getAllLiveRoutines().observe(getViewLifecycleOwner(), routineItems -> {
+                    if(routineItems.isEmpty())
+                        RoutineUtils.stopEventShowingService(getContext());
+                    else RoutineUtils.startEventShowingService(getContext(),routineItems,false);
+                });
+            }
+        }
+
+
 
         setupViewPager();
         setupTab();

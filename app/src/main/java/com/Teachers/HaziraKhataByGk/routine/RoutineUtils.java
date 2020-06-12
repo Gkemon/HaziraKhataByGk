@@ -11,21 +11,34 @@ import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by Gk Emon on 6/1/2020.
  */
 public class RoutineUtils {
+
+    public static boolean isRoutineItemInToday(RoutineItem routineItem){
+        if((routineItem.isPermanent()&&routineItem.getSelectedDayList().
+                contains(UtilsDateTime.getTodayInNumber()))){
+            return true;
+        }
+        else return !routineItem.isPermanent() &&
+                UtilsDateTime.getTodayInNumber() ==
+                        UtilsDateTime.getDayFromCalender(routineItem.getStartTime());
+    }
    public static List<RoutineItem> getUpcomingRoutines(List<RoutineItem> routineItems) {
 
         List<RoutineItem> remainingMinutes=new ArrayList<>();
 
         for(RoutineItem routineItem:routineItems){
-            long remainingMins=UtilsDateTime.
-                    getRemainingMinsFromCalender(routineItem.getStartTime());
-            if(remainingMins>1)
-            remainingMinutes.add(routineItem);
+            if(isRoutineItemInToday(routineItem)){
+                long remainingMins=UtilsDateTime.
+                        getRemainingMinsFromCalender(routineItem.getStartTime());
+                if(remainingMins>=1)
+                    remainingMinutes.add(routineItem);
+            }
         }
 
         return remainingMinutes;
@@ -38,9 +51,11 @@ public class RoutineUtils {
         List<RoutineItem> runningRoutine=new ArrayList<>();
 
         for(RoutineItem routineItem:routineItems){
-             if(UtilsDateTime.isCurrentTimeBetweenPeriod(routineItem.getStartTime(),
-                     routineItem.getEndTime()))
-                runningRoutine.add(routineItem);
+            if(isRoutineItemInToday(routineItem)) {
+                if (UtilsDateTime.isCurrentTimeBetweenPeriod(routineItem.getStartTime(),
+                        routineItem.getEndTime()))
+                    runningRoutine.add(routineItem);
+            }
         }
 
         return runningRoutine;
@@ -50,6 +65,19 @@ public class RoutineUtils {
     public static void stopEventShowingService(Context context){
         Intent serviceIntent = new Intent(context, GenericEventShowingService.class);
         context.stopService(serviceIntent);
+    }
+
+    public static void startEventShowingService(Context context,List<RoutineItem> totalRoutines,
+                                                boolean triggerImmediately){
+        ArrayList<RoutineItem> totalRoutineArrayList = new ArrayList(totalRoutines);
+
+        Intent serviceIntent = new Intent(context, GenericEventShowingService.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(GenericEventShowingService.TOTAL_ROUTINES,totalRoutineArrayList);
+        bundle.putBoolean(GenericEventShowingService.TRIGGERED_ROUTINES,triggerImmediately);
+        serviceIntent.putExtras(bundle);
+        ServiceUtils.startForegroundService(serviceIntent,context);
+
     }
 
     public static void startEventShowingService(Context context,List<RoutineItem> totalRoutines){

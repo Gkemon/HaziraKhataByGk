@@ -9,6 +9,7 @@ import android.os.Build;
 
 import androidx.annotation.CallSuper;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -79,7 +80,7 @@ public class BaseForeGroundService extends BaseService {
         notificationBuilder = new NotificationCompat.Builder(this, foregroundServiceBuilder.channelID)
                 .setContentTitle(foregroundServiceBuilder.notificationTitle)
                 .setContentText(foregroundServiceBuilder.notificationContent)
-                .setSmallIcon(R.mipmap.main_icon_hd_half)
+                .setSmallIcon(R.drawable.ic_notification_icon)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(foregroundServiceBuilder.notificationContent))
                 .setOnlyAlertOnce(true)//To prevent showing notification while "notify()" is called.
                 .setContentIntent(pendingIntentToMainActivity);

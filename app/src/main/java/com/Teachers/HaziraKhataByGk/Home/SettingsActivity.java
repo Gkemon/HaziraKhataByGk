@@ -28,6 +28,7 @@ import com.google.firebase.database.core.Context;
 public class SettingsActivity extends AppCompatActivity {
 
     public static final String ROUTINE_REMINDER_TIME_BEFORE="routineReminderTimeBefore";
+    public static final String IS_NOTIFICATION_ENABLED="notificationPreference";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         private void routineNotificationSetup(){
             SwitchPreferenceCompat spcNotification=
-                    findPreference("notificationPreference");
+                    findPreference(SettingsActivity.IS_NOTIFICATION_ENABLED);
             if (spcNotification != null) {
 
                 spcNotification.setChecked(ServiceUtils.

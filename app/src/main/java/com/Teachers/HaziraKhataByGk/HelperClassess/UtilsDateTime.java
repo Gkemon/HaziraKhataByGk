@@ -44,6 +44,10 @@ public class UtilsDateTime {
         return c;
     }
 
+    public static int getDayFromCalender(Calendar calendar){
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
     public static boolean isDateEqualIgnoringTime(Date date1,Date date2){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd",Locale.ENGLISH);
         return sdf.format(date1).equals(sdf.format(date2));
@@ -90,6 +94,10 @@ public class UtilsDateTime {
                 currentEndTime.getTime().getTime()>currentTimeInMills;
 
     }
+
+    public static int getTodayInNumber(){
+       return Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+    }
     public static String getAMPMTimeFromCalender(Calendar calendar){
 
         if(calendar==null)return "No time";
@@ -100,7 +108,7 @@ public class UtilsDateTime {
 
         time.append(":");
         int min= calendar.get(Calendar.MINUTE);
-        time.append(min <= 9 ?min+"0":min);
+        time.append(min <= 9 ?"0"+min:min);
         if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
             time.append(" AM");
         } else {

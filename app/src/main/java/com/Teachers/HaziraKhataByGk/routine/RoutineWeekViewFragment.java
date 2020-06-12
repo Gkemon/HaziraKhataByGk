@@ -81,14 +81,28 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 liveEvents = routineViewModel.getAllRoutines(routineType);
             if (liveEvents != null) {
                 liveEvents.observe(getViewLifecycleOwner(), routineItems -> {
-                    events.clear();
-                    events.addAll(routineItems);
-                    mWeekView.notifyDatasetChanged();
+
+                    if(routineItems!=null){
+
+                        //If an item is newly created then it needs to scroll into this item.
+                        //Or if it is just open then then scroll to current time only.
+                        RoutineItem lastRoutineItem=!routineItems.isEmpty() ?
+                                        routineItems.get(routineItems.size() - 1):null;
+                        if(routineItems.size()>events.size()&&lastRoutineItem!=null)
+                            mWeekView.post(() -> mWeekView.goToHour(lastRoutineItem.getStartTime().get(Calendar.HOUR_OF_DAY)));
+                        else
+                            mWeekView.post(() -> mWeekView.goToHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+
+                        events.clear();
+                        events.addAll(routineItems);
+                        mWeekView.notifyDatasetChanged();
+                    }
+
+
                 });
             }
         }
 
-        mWeekView.post(() -> mWeekView.goToHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
 
     }
 
@@ -128,11 +142,9 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         if (getRoutineByID(event.id) != null) {
             routineViewModel.setSelectedRoutineItem(getRoutineByID(event.id));
-
             if (getActivity() != null) {
                 RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
             }
-
         }
     }
 

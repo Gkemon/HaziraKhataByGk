@@ -29,7 +29,6 @@ public class GenericEventShowingService extends BaseForeGroundService implements
     public static String TRIGGERED_ROUTINES = "triggeredRoutines";
 
     private TimeChangeReceiver timeChangeReceiver;
-    RemoteViews mRemoteViews;
     private List<RoutineItem> totalRoutines = new ArrayList<>();
     private List<RoutineItem> upcomingRoutines = new ArrayList<>();
     private List<RoutineItem> runningRoutines = new ArrayList<>();
@@ -40,8 +39,6 @@ public class GenericEventShowingService extends BaseForeGroundService implements
     public int onStartCommand(Intent intent, int flags, int startId) {
         baseForeGroundServiceNavigator = this;
 
-
-
         if (intent.getExtras() != null) {
 
             List<RoutineItem> routineItems = intent.getExtras().getParcelableArrayList(TOTAL_ROUTINES);
@@ -51,12 +48,13 @@ public class GenericEventShowingService extends BaseForeGroundService implements
                 runningRoutines = RoutineUtils.getRunningRoutines(totalRoutines);
                 upcomingRoutines = RoutineUtils.getUpcomingRoutines(totalRoutines);
 
-                if (upcomingRoutines.size() > 0)
-                    triggerAlarm(upcomingRoutines);
-
             }
-            if (intent.getExtras().getBoolean(SHOW_ROUTINE)) {
 
+            //To prevent MainActivity recursively when the remaining time is less than 10 and user
+            //enter routine week view.
+            if(intent.getExtras().getBoolean(TRIGGERED_ROUTINES,true))
+            triggerAlarm(upcomingRoutines);
+            if (intent.getExtras().getBoolean(SHOW_ROUTINE)) {
                 notifyNotificationContent
                         (setupNotificationTextRoutine(upcomingRoutines, runningRoutines));
             }
@@ -69,37 +67,39 @@ public class GenericEventShowingService extends BaseForeGroundService implements
 
     //when a routine is ready to notify user and current time is its trigger time.
     private void triggerAlarm(List<RoutineItem> runningRoutines) {
-        String beforeMin = PreferenceManager.getDefaultSharedPreferences(getApplication())
-                .getString(SettingsActivity.ROUTINE_REMINDER_TIME_BEFORE, "10");
+        if(runningRoutines!=null&&!runningRoutines.isEmpty()){
+            String beforeMin = PreferenceManager.getDefaultSharedPreferences(getApplication())
+                    .getString(SettingsActivity.ROUTINE_REMINDER_TIME_BEFORE, "10");
 
-        long beforeReminderTime = Long.parseLong(beforeMin);
+            long beforeReminderTime = Long.parseLong(beforeMin);
 
-        //The routines which "start time" is current time and that's why we need to fire them.
-        List<RoutineItem> triggerRoutines = new ArrayList<>();
+            //The routines which "start time" is current time and that's why we need to fire them.
+            List<RoutineItem> triggerRoutines = new ArrayList<>();
 
-        for (RoutineItem routineItem : runningRoutines) {
-            if (beforeReminderTime >= UtilsDateTime
-                    .getRemainingMinsFromCalender(routineItem.getStartTime())) {
-                triggerRoutines.add(routineItem);
+            for (RoutineItem routineItem : runningRoutines) {
+
+                if (beforeReminderTime == UtilsDateTime
+                        .getRemainingMinsFromCalender(routineItem.getStartTime())) {
+                    triggerRoutines.add(routineItem);
+                }
+            }
+
+            if (triggerRoutines.size() > 0) {
+                Intent intent = new Intent(getApplication(), MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES,
+                        new ArrayList<>(triggerRoutines));
+                intent.putExtras(bundle);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         }
-
-        if (triggerRoutines.size() > 0) {
-            Intent intent = new Intent(getApplication(), MainActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES,
-                    new ArrayList<>(triggerRoutines));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-
 
     }
 
 
     @Override
     public void setUpForegroundBuilder() {
-        mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_routine);
 
         foregroundServiceBuilder = ForegroundServiceBuilder.newInstance()
                 .autoCancel(false)
@@ -115,8 +115,10 @@ public class GenericEventShowingService extends BaseForeGroundService implements
 
     @Override
     public void notifyNotificationContent(String content) {
-        notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(content));
-        notificationManager.notify(NOTIFICATION_ID_FOR_EVENT_SHOWING, notificationBuilder.build());
+        if(notificationBuilder!=null){
+            notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(content));
+            notificationManager.notify(NOTIFICATION_ID_FOR_EVENT_SHOWING, notificationBuilder.build());
+        }
     }
 
     @Override
@@ -144,19 +146,6 @@ public class GenericEventShowingService extends BaseForeGroundService implements
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(autoStartReceiver, filter);
-    }
-    private RemoteViews setupNotificationRemoteViewForRoutine(List<RoutineItem> upcomingRoutines,
-                                                              List<RoutineItem> runningRoutines) {
-
-        String upcomingRoutine, runningRoutine;
-
-        upcomingRoutine = getRoutinesText(upcomingRoutines);
-        runningRoutine = getRoutinesText(runningRoutines);
-
-        mRemoteViews.setTextViewText(R.id.txt_upcoming_task, upcomingRoutine);
-        mRemoteViews.setTextViewText(R.id.txt_running_task, runningRoutine);
-
-        return mRemoteViews;
     }
 
     private String setupNotificationTextRoutine(List<RoutineItem> upcomingRoutines,

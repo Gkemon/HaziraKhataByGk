@@ -1,5 +1,7 @@
 package com.Teachers.HaziraKhataByGk.routine;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -22,6 +24,7 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.gk.emon.android.BanglaDaysPicker;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 
@@ -60,6 +63,9 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     AppCompatButton btnColorSelect;
     @BindView(R.id.et_detail)
     EditText etDetails;
+    @BindView(R.id.btn_delete_routine)
+    FloatingActionButton btnDeleteRoutine;
+
     private ColorPicker colorPicker;
 
     private boolean isEditMode = false;
@@ -85,6 +91,22 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
             }
 
         });
+    }
+
+    @OnClick(R.id.btn_delete_routine)
+    void deleteRoutine(FloatingActionButton btn) {
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle("রুটিনটি ডিলিট করতে চান?");
+        alertDialog.setIcon(R.drawable.warnig_for_delete);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ডিলিট", (dialogInterface, i) -> {
+            routineViewModel.delete(routineItem);
+            dialogInterface.dismiss();
+            routineViewModel.setSelectedRoutineItem(null);
+            super.dismiss();
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "বাদ",
+                (dialogInterface, i) -> dialogInterface.dismiss());
+        alertDialog.show();
     }
 
     @OnCheckedChanged({R.id.rb_admin_routine, R.id.rb_class_routine, R.id.rb_exam_routine,
@@ -123,11 +145,6 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     @OnClick(R.id.btn_tutorial)
     void showTutorial() {
-
-    }
-
-    @OnClick(R.id.btn_delete_routine)
-    void deleteRoutine() {
 
     }
 
@@ -279,6 +296,8 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
         if(routineItem.getSelectedDayList()!=null)
         banglaDaysPicker.setSelectedDays(routineItem.getSelectedDayList());
+
+        btnDeleteRoutine.setVisibility(View.VISIBLE);
 
         btnColorSelect.getBackground().mutate().setColorFilter(new
                 PorterDuffColorFilter(routineItem.getColor(), PorterDuff.Mode.SRC));
