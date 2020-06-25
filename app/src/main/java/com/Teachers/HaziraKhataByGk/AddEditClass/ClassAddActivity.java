@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +22,6 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,8 +33,7 @@ public class ClassAddActivity extends AppCompatActivity
 
 
     //This is for avoiding Delete SQL injection
-    public static String previousClassName;
-    public static String previousSectionName;
+    private ClassItem previousClass;
     CustomArrayList<ClassItem> classItemList;
     private EditText classNameEditText;
     private EditText sectionEditText;
@@ -63,15 +59,15 @@ public class ClassAddActivity extends AppCompatActivity
         setContentView(R.layout.activity_act);
 
 
-        classNameEditText = (EditText) findViewById(R.id.classText);
-        sectionEditText = (EditText) findViewById(R.id.sectionText);
+        classNameEditText = findViewById(R.id.classText);
+        sectionEditText = findViewById(R.id.sectionText);
 
         classNameEditText.addTextChangedListener(new MyTextWatcher(classNameEditText));
         sectionEditText.addTextChangedListener(new MyTextWatcher(sectionEditText));
 
-        btnAdd = (Button) findViewById(R.id.btnAdd);
-        btnEdit = (Button) findViewById(R.id.btnEdit);
-        btnDelete = (Button) findViewById(R.id.btnDelete);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnEdit = findViewById(R.id.btnEdit);
+        btnDelete = findViewById(R.id.btnDelete);
 
         btnAdd.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
@@ -88,8 +84,7 @@ public class ClassAddActivity extends AppCompatActivity
             btnAdd.setVisibility(View.GONE);
             classNameEditText.setText(classitem.getName());
             sectionEditText.setText(classitem.getSection());
-            previousClassName = classitem.getName();
-            previousSectionName = classitem.getSection();
+            previousClass= new ClassItem(classitem.getName(),classitem.getSection());
         } else {
             btnDelete.setVisibility(View.GONE);
             btnEdit.setVisibility(View.GONE);
@@ -152,10 +147,7 @@ public class ClassAddActivity extends AppCompatActivity
 
             //FOR AVOID SQL INJECTION
 
-            if (classItemList != null)
-                for (int i = 0; i < classItemList.size(); i++) {
-
-                    if (isUpdatableClass(i)) {
+                    if (!isEditable()) {
                         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                         alertDialog.setTitle("সতর্কীকরণ");
                         alertDialog.setIcon(R.drawable.warnig_for_delete);
@@ -166,25 +158,28 @@ public class ClassAddActivity extends AppCompatActivity
                         return;
                     }
 
-                }
 
-            DeleteDialog();
+
+            deleteDialog();
         } else {
+
+            classitem.setName(classNameEditText.getText().toString());
+            classitem.setSection(sectionEditText.getText().toString());
+
             editClass();
         }
-
     }
 
-    private boolean isUpdatableClass(int index){
-        if(classItemList==null||classitem==null||!UtilsCommon.isValideString(previousClassName))
+    private boolean isEditable(){
+        if(classItemList==null||classitem==null||!UtilsCommon.isValideString(previousClass.getName()))
             return false;
-        if(classItemList.size()-1>index)return false;
+        return !(classItemList.contains(previousClass)&&
+                classItemList.contains(classitem)&&!previousClass.equals(classitem));
 
-       return classItemList.get(index).getName().equals(classitem.getName()) &&
-                classItemList.get(index).getSection().equals(classitem.getSection())
-                && !(previousClassName.equals(classNameEditText.getText().toString()) &&
-                previousSectionName.equals(sectionEditText.getText().toString()));
     }
+
+
+
 
     public void editClass() {
 
@@ -198,32 +193,30 @@ public class ClassAddActivity extends AppCompatActivity
         }
 
         //FOR AVOID SQL INJECTION
-        for (int i = 0; i < classItemList.size(); i++) {
-
-            if (isUpdatableClass(i)) {
-
-                try {
-                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                    alertDialog.setTitle("সতর্কীকরণ");
-                    alertDialog.setIcon(R.drawable.warnig_for_delete);
-                    alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
-                            (dialog, which) -> dialog.dismiss());
-                    alertDialog.show();
-                }catch (Exception e){
-                    UtilsCommon.handleError(e);
-                }
+        if(!isEditable()) {
 
 
+            try {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("সতর্কীকরণ");
+                alertDialog.setIcon(R.drawable.warnig_for_delete);
+                alertDialog.setMessage("আপনি ক্লাসের নাম অংশ পরিবর্তন করে যে নাম ইনপুট করেছেন তা অন্য আরেকটি ক্লাসের ডাটাবেজের নামের সাথে মিলে যায় ।তাই আপনাকে সেই ক্লাসটি Edit করতে হলে অবশ্যই সেই ক্লাসের ডাটাবেজে যেতে হবে।ধন্যবাদ ");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
+                        (dialog, which) -> dialog.dismiss());
+                alertDialog.show();
+                btnEdit.setEnabled(true);
                 return;
+            } catch (Exception e) {
+                UtilsCommon.handleError(e);
             }
 
         }
 
+
         DatabaseReference fromDBRef = FirebaseCaller.getFirebaseDatabase().child("Users")
                 .child(FirebaseCaller.getUserID())
                 .child("Class")
-                .child(previousClassName + previousSectionName);
+                .child(previousClass.getName() + previousClass.getSection());
 
         DatabaseReference toDBRef = FirebaseCaller.getFirebaseDatabase().child("Users")
                 .child(FirebaseCaller.getUserID())
@@ -245,16 +238,13 @@ public class ClassAddActivity extends AppCompatActivity
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                toPath.setValue(dataSnapshot.getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isComplete()) {
-                            UtilsCommon.debugLog("Copy Class Complete");
-                            fromPath.removeValue().addOnSuccessListener(ClassAddActivity.this, aVoid -> ClassAddActivity.this.finish());
+                toPath.setValue(dataSnapshot.getValue()).addOnCompleteListener(task -> {
+                    if (task.isComplete()) {
+                        UtilsCommon.debugLog("Copy Class Complete");
+                        fromPath.removeValue().addOnSuccessListener(ClassAddActivity.this, aVoid -> ClassAddActivity.this.finish());
 
-                        } else {
-                            UtilsCommon.debugLog("Copy Class Not Complete");
-                        }
+                    } else {
+                        UtilsCommon.debugLog("Copy Class Not Complete");
                     }
                 });
             }
@@ -292,13 +282,13 @@ public class ClassAddActivity extends AppCompatActivity
         view.requestFocus();
     }
 
-    public void DeleteDialog() {
+    public void deleteDialog() {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
         dialogBuilder.setView(dialogView);
-        final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
+        final EditText edt =dialogView.findViewById(R.id.custom_delete_dialauge_text);
         dialogBuilder.setIcon(R.drawable.warnig_for_delete);
         dialogBuilder.setTitle("আপনি কি আসলেই ক্লাসে সকল তথ্য ডিলিট করতে চান?");
         dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");
@@ -312,16 +302,14 @@ public class ClassAddActivity extends AppCompatActivity
 
 
                     Toast.makeText(ClassAddActivity.this, "ক্লাসটির যাবতীয় সব ডাটাবেজ সার্ভার থেকে ডিলেট হয়েছে,ধন্যবাদ।", Toast.LENGTH_LONG).show();
-                    previousClassName = null;
+                    previousClass = null;
                     finish();
 
 
                 }
             }
         });
-        dialogBuilder.setNegativeButton("বাদ দিন", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
+        dialogBuilder.setNegativeButton("বাদ দিন", (dialog, whichButton) -> {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
@@ -353,7 +341,6 @@ public class ClassAddActivity extends AppCompatActivity
 
     }
 
-    //EDIT TEXT MATERIAL STYLE
     private class MyTextWatcher implements TextWatcher {
 
         private View view;

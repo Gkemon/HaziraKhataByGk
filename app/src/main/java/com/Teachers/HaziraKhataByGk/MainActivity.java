@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
@@ -39,6 +40,8 @@ import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NibondhonFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.TotthojhuriFragment;
 import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
+import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
+import com.Teachers.HaziraKhataByGk.routine.RoutineViewModel;
 import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DrawerLayout drawer;
+    private RoutineViewModel routineViewModel;
 
     public void setUpDrawer() {
 
@@ -121,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mainViewModel=new ViewModelProvider(this).get(MainViewModel.class);
 
+        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false);
+
         //If activity is launched from routine service
         if(getIntent()!=null&&getIntent().getExtras()!=null&&
                 getIntent().getExtras().getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES)!=null){
@@ -134,11 +140,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 unsubscribeWhenNotificationsAreDisabled(true).init();
 
 
+        setupRoutine();
         setUpDrawer();
         setupViewPager();
         setupTabIcons();
     }
 
+    private void setupRoutine(){
+        routineViewModel = new ViewModelProvider(this).get(RoutineViewModel.class);
+
+
+        if(UtilsCommon.isRoutineNotificationEnable(this))
+        {
+            routineViewModel.getAllLiveRoutines().observe(this, routineItems -> {
+                RoutineUtils.startEventShowingService(this,routineItems);
+            });
+        }
+
+    }
 
     @Override
     protected void onResume() {

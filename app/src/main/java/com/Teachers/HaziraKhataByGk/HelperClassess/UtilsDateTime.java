@@ -38,8 +38,10 @@ public class UtilsDateTime {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, min);
-        //Ignore second in account for decision the start time and end time is equal or not.
+        c.set(Calendar.MILLISECOND,0);
         c.set(Calendar.SECOND,0);
+        //Ignore second in account for decision the start time and end time is equal or not.
+
 
         return c;
     }
@@ -56,6 +58,21 @@ public class UtilsDateTime {
 
     //For getting remaining minutes from current time to upcoming time.
     public static long getRemainingMinsFromCalender(Calendar calendar){
+
+        long diffInSec=getRemainingSecondFromCalender(calendar);
+        //different is less than 60 that means return 0 (That means no remaining min)
+        return diffInSec<60&&diffInSec>=0?0:(diffInSec<0?-1:diffInSec/60);
+
+    }
+
+    //For getting remaining minutes from current time to upcoming time.
+    public static long getRemainingSecondFromCalender(Calendar calendar){
+        //different is less than 60 that means return 0 (That means no remaining min)
+        return getRemainingMillSecFromCalender(calendar)/1000;
+    }
+
+    //For getting remaining minutes from current time to upcoming time.
+    public static long getRemainingMillSecFromCalender(Calendar calendar){
         Calendar nextEventCalender = Calendar.getInstance();
 
         if(calendar!=null){
@@ -65,10 +82,7 @@ public class UtilsDateTime {
 
         long nexEventMillSec = nextEventCalender.getTime().getTime();
 
-        long diff=(nexEventMillSec/1000)-(Calendar.getInstance().getTime().getTime()/1000);
-        //different is less than 60 that means return 0 (That means no remaining min)
-        return diff<=60?0:diff/60;
-
+        return (nexEventMillSec)-(Calendar.getInstance().getTime().getTime());
 
     }
 
@@ -82,12 +96,14 @@ public class UtilsDateTime {
         if(startCalender!=null){
             currentStartTime.set(Calendar.HOUR_OF_DAY,startCalender.get(Calendar.HOUR_OF_DAY));
             currentStartTime.set(Calendar.MINUTE,startCalender.get(Calendar.MINUTE));
+            currentStartTime.set(Calendar.SECOND,startCalender.get(Calendar.SECOND));
         }
 
 
         if(endCalender!=null){
             currentEndTime.set(Calendar.HOUR_OF_DAY,endCalender.get(Calendar.HOUR_OF_DAY));
             currentEndTime.set(Calendar.MINUTE,endCalender.get(Calendar.MINUTE));
+            currentEndTime.set(Calendar.SECOND,endCalender.get(Calendar.SECOND));
         }
 
         return  currentStartTime.getTime().getTime()<currentTimeInMills&&

@@ -10,14 +10,17 @@ import com.Teachers.HaziraKhataByGk.routine.room.RoutineRepository;
 import java.util.List;
 
 public class RoutineViewModel extends AndroidViewModel {
+
     private RoutineRepository mRepository;
     private LiveData<List<RoutineItem>> mAllRoutines;
     private RoutineItem selectedRoutineItem;
+    public InputOperation inputOperation;
 
     public RoutineViewModel(Application application) {
         super(application);
         mRepository = new RoutineRepository(application);
         mAllRoutines = mRepository.getAllLiveRoutineItems();
+        selectedRoutineItem=null;
     }
 
     public RoutineItem getSelectedRoutineItem() {
@@ -28,7 +31,7 @@ public class RoutineViewModel extends AndroidViewModel {
         this.selectedRoutineItem = selectedRoutineItem;
     }
 
-    LiveData<List<RoutineItem>> getAllLiveRoutines() {
+   public LiveData<List<RoutineItem>> getAllLiveRoutines() {
         return mAllRoutines;
     }
 
@@ -46,6 +49,7 @@ public class RoutineViewModel extends AndroidViewModel {
 
     void delete(RoutineItem routineItem) {
         mRepository.delete(routineItem);
+        inputOperation=InputOperation.DELETE;
     }
 
     void deleteByID(Long routineItemID) {

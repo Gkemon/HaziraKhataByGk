@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.R;
@@ -74,29 +75,22 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
         final ContactHolder contactHolder = new ContactHolder(view);
 
-        contactHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int adapterPos = contactHolder.getAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION) {
-                    if (recyclerItemClickListener != null) {
-                        recyclerItemClickListener.onItemClick(adapterPos, contactHolder.itemView);
-                    }
+        contactHolder.itemView.setOnClickListener(v -> {
+            int adapterPos = contactHolder.getAdapterPosition();
+            if (adapterPos != RecyclerView.NO_POSITION) {
+                if (recyclerItemClickListener != null) {
+                    recyclerItemClickListener.onItemClick(adapterPos, contactHolder.itemView);
                 }
             }
-
         });
-        contactHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                int adapterPos = contactHolder.getAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION) {
-                    if (recyclerItemClickListener != null) {
-                        recyclerItemClickListener.onItemLongPressed(adapterPos, contactHolder.itemView);
-                    }
+        contactHolder.itemView.setOnLongClickListener(v -> {
+            int adapterPos = contactHolder.getAdapterPosition();
+            if (adapterPos != RecyclerView.NO_POSITION) {
+                if (recyclerItemClickListener != null) {
+                    recyclerItemClickListener.onItemLongPressed(adapterPos, contactHolder.itemView);
                 }
-                return false;
             }
+            return false;
         });
 
         return contactHolder;
@@ -166,8 +160,11 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                     if (classitem.getName() != null && !classitem.getName().isEmpty())
                         holder.name.setText(className);
 
-                    if (classitem.getSection() != null && !classitem.getSection().isEmpty())
-                        holder.phone.setText(sectionName);
+                    if (UtilsCommon.isValideString(sectionName)){
+                        holder.section.setText(sectionName);
+                        holder.section.setVisibility(View.VISIBLE);
+                    }
+                    else holder.section.setVisibility(View.GONE);
 
                 } catch (Exception e) {
                     Toast.makeText(context, "ERROR " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -191,14 +188,14 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
         ImageView thumb;
         TextView name;
-        TextView phone;
+        TextView section;
 
         public ContactHolder(View itemView) {
             super(itemView);
 
-            thumb = (ImageView) itemView.findViewById(R.id.thumb);
-            name = (TextView) itemView.findViewById(R.id.name);
-            phone = (TextView) itemView.findViewById(R.id.phone);
+            thumb = itemView.findViewById(R.id.thumb);
+            name = itemView.findViewById(R.id.class_name);
+            section = itemView.findViewById(R.id.section_name);
 
         }
     }

@@ -29,7 +29,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.Teachers.HaziraKhataByGk.BuildConfig;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ConnectivityChecker;
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhoneAuthBuilder;
+import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.MainActivity;
@@ -325,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void doEmailLogin() {
-        if (!isOnline()) {
+        if (!ConnectivityChecker.isConnected(this)) {
             AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
             alertDialog.setMessage("দুঃখিত ,ইন্টারনেট সংযোগ নেই । দয়া করে ইন্টারনেট সংযোগ চালু করুন ,ধন্যবাদ");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "ওকে",
@@ -348,7 +350,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        LoadingPopup.showLoadingPopUp(this);
 
 
         try {
@@ -361,7 +363,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // If sign in fails, display a message toTime the user. If sign in succeeds
                         // the auth state listener will be notified and logic toTime handle the
                         // signed in user can be handled in the listener.
-                        progressBar.setVisibility(View.GONE);
+                        LoadingPopup.hideLoadingPopUp();
                         if (!task.isSuccessful()) {
                             // there was an error
                             if (password.length() < 6) {

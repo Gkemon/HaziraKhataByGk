@@ -3,6 +3,7 @@ package com.Teachers.HaziraKhataByGk.Model;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by wim on 4/26/16.
@@ -36,6 +37,20 @@ public class ClassItem implements Serializable {
         this.section = section;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ClassItem)) return false;
+        ClassItem classItem = (ClassItem) o;
+        return getName().equals(classItem.getName()) &&
+                getSection().equals(classItem.getSection());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getSection());
+    }
 
     @Override
     public String toString() {

@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
@@ -13,7 +12,6 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.MainActivity;
-import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
 
@@ -43,16 +41,10 @@ public class GenericEventShowingService extends BaseForeGroundService implements
 
             List<RoutineItem> routineItems = intent.getExtras().getParcelableArrayList(TOTAL_ROUTINES);
             if (routineItems != null) {
-
                 totalRoutines = routineItems;
-                runningRoutines = RoutineUtils.getRunningRoutines(totalRoutines);
-                upcomingRoutines = RoutineUtils.getUpcomingRoutines(totalRoutines);
-
             }
-
-            //To prevent MainActivity recursively when the remaining time is less than 10 and user
-            //enter routine week view.
-            if(intent.getExtras().getBoolean(TRIGGERED_ROUTINES,true))
+            runningRoutines = RoutineUtils.getRunningRoutines(totalRoutines);
+            upcomingRoutines = RoutineUtils.getUpcomingRoutines(totalRoutines);
             triggerAlarm(upcomingRoutines);
             if (intent.getExtras().getBoolean(SHOW_ROUTINE)) {
                 notifyNotificationContent

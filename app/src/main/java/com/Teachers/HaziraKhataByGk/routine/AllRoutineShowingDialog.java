@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
 import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
@@ -28,6 +29,7 @@ import butterknife.OnClick;
 public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
     RoutineViewModel routineViewModel;
+
     @BindView(R.id.viewpager)
     CustomViewPager viewPager;
     @BindView(R.id.tabs)
@@ -44,8 +46,11 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
     @OnClick(R.id.btn_add_routine)
     void addRoutine() {
         if (getActivity() != null) {
-            routineViewModel.setSelectedRoutineItem(null);
-            RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
+            if(routineViewModel!=null){
+                routineViewModel.setSelectedRoutineItem(null);
+                routineViewModel.inputOperation=InputOperation.ADD;
+                RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
+            }
         }
     }
 
@@ -107,20 +112,8 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         ButterKnife.bind(this, view);
 
         if(getActivity()!=null){
-            if(PreferenceManager.getDefaultSharedPreferences(getActivity())
-                    .getBoolean(SettingsActivity.IS_NOTIFICATION_ENABLED,false))
-            {
-                routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
-                routineViewModel.getAllLiveRoutines().observe(getViewLifecycleOwner(), routineItems -> {
-                    if(routineItems.isEmpty())
-                        RoutineUtils.stopEventShowingService(getContext());
-                    else RoutineUtils.startEventShowingService(getContext(),routineItems,false);
-                });
-            }
+            routineViewModel = new ViewModelProvider(getActivity()).get(RoutineViewModel.class);
         }
-
-
-
         setupViewPager();
         setupTab();
 

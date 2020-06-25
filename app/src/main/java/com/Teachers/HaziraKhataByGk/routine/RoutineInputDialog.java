@@ -325,11 +325,11 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
             return false;
         }
 
-        if (routineItem.getEndTime().getTime().getTime()
-                <= routineItem.getStartTime().getTime().getTime()) {
-            DialogUtils.showInfoAlertDialog("", "শুরুর সময় শেষের সময় থেকে ছোট বা সমান", getContext());
-            return false;
-        }
+//        if (routineItem.getEndTime().getTime().getTime()
+//                <= routineItem.getStartTime().getTime().getTime()) {
+//            DialogUtils.showInfoAlertDialog("", "শুরুর সময় শেষের সময় থেকে ছোট বা সমান", getContext());
+//            return false;
+//        }
 
         if (!routineItem.isPermanent() && routineItem.getDateIfTemporary() == null) {
             DialogUtils.showInfoAlertDialog("", "তারিখ সিলেক্ট করুন যেহেতু আপনার রুটিনটি স্থায়ী নয়।বুঝতে " +

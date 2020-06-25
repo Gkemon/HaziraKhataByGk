@@ -80,6 +80,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:launchMode="singleTask"
             android:name=".MainActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity

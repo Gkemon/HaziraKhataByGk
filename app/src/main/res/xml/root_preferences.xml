@@ -5,6 +5,7 @@
         app:title="রুটিন সেটিং">
 
         <SwitchPreferenceCompat
+            app:defaultValue="true"
             android:icon="@drawable/ic_notifications_black_24dp"
             app:key="notificationPreference"
             app:title="রুটিনের নোটিফিকেশন" />

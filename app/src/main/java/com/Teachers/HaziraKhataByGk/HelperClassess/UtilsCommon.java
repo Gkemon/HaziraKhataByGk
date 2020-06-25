@@ -16,8 +16,10 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.preference.PreferenceManager;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
@@ -27,6 +29,7 @@ import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SignupActivity;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -86,8 +89,16 @@ public class UtilsCommon {
         sharedPreferenceManager.setValue("item_student", json);
     }
 
-    public static void handleError(Throwable throwable){
+    public static boolean isRoutineNotificationEnable(Context context){
+       return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(SettingsActivity.IS_NOTIFICATION_ENABLED,true);
+    }
 
+    public static void handleError(Throwable throwable){
+        FirebaseCrashlytics.getInstance().recordException(throwable);
+    }
+    public static void sendLogToCrashlytics(String error){
+        FirebaseCrashlytics.getInstance().log(error);
     }
 
     public static ClassItem getCurrentClass(Context context) {

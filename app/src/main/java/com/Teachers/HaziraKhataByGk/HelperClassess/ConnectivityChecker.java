@@ -69,7 +69,6 @@ public class ConnectivityChecker {
             InetAddress address = InetAddress.getByName("www.google.com");
             hasInternet = !address.equals("");
         } catch (Exception e) {
-            hasInternet = false;
             Log.d("GK", "ERROR : " + e.getMessage());
         }
 

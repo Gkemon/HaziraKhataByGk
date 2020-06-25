@@ -6,12 +6,10 @@ import android.os.Bundle;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.routine.room.RoutineRepository;
-import com.Teachers.HaziraKhataByGk.service.AutoStartReceiver;
 import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -34,9 +32,9 @@ public class RoutineUtils {
 
         for(RoutineItem routineItem:routineItems){
             if(isRoutineItemInToday(routineItem)){
-                long remainingMins=UtilsDateTime.
-                        getRemainingMinsFromCalender(routineItem.getStartTime());
-                if(remainingMins>=1)
+                long remainingSecond = UtilsDateTime.
+                        getRemainingSecondFromCalender(routineItem.getStartTime());
+                if (remainingSecond > 0)
                     remainingMinutes.add(routineItem);
             }
         }
@@ -67,18 +65,8 @@ public class RoutineUtils {
         context.stopService(serviceIntent);
     }
 
-    public static void startEventShowingService(Context context,List<RoutineItem> totalRoutines,
-                                                boolean triggerImmediately){
-        ArrayList<RoutineItem> totalRoutineArrayList = new ArrayList(totalRoutines);
 
-        Intent serviceIntent = new Intent(context, GenericEventShowingService.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(GenericEventShowingService.TOTAL_ROUTINES,totalRoutineArrayList);
-        bundle.putBoolean(GenericEventShowingService.TRIGGERED_ROUTINES,triggerImmediately);
-        serviceIntent.putExtras(bundle);
-        ServiceUtils.startForegroundService(serviceIntent,context);
 
-    }
 
     public static void startEventShowingService(Context context,List<RoutineItem> totalRoutines){
         ArrayList<RoutineItem> totalRoutineArrayList = new ArrayList(totalRoutines);

@@ -14,8 +14,10 @@ import androidx.core.app.NavUtils;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
 import com.Teachers.HaziraKhataByGk.routine.room.RoutineDao;
@@ -34,6 +36,8 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.settings, new SettingsFragment())
@@ -59,8 +63,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
+            setPreferencesFromResource(R.xml.root_preferences,rootKey);
             preRoutineRemindTimeSetup();
             routineNotificationSetup();
 
@@ -68,10 +72,19 @@ public class SettingsActivity extends AppCompatActivity {
         private void routineNotificationSetup(){
             SwitchPreferenceCompat spcNotification=
                     findPreference(SettingsActivity.IS_NOTIFICATION_ENABLED);
+
             if (spcNotification != null) {
 
+                //1st step: check service is running or not.
                 spcNotification.setChecked(ServiceUtils.
                         isServiceRunning(GenericEventShowingService.class,getContext()));
+
+                //2nd step: Because notification is set true by default.
+                if(UtilsCommon.isRoutineNotificationEnable(getContext())){
+                    spcNotification.setChecked(true);
+                    RoutineUtils.startEventShowingService(getContext(),
+                            RoutineUtils.getTotalRoutineItems(getContext()));
+                }
 
                 spcNotification.setOnPreferenceChangeListener((preference, newValue) -> {
 

@@ -3,6 +3,7 @@ package com.Teachers.HaziraKhataByGk.routine;
 import android.content.Context;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
@@ -81,15 +83,27 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 liveEvents = routineViewModel.getAllRoutines(routineType);
             if (liveEvents != null) {
                 liveEvents.observe(getViewLifecycleOwner(), routineItems -> {
-
                     if(routineItems!=null){
 
-                        //If an item is newly created then it needs to scroll into this item.
+                        //FOR ADD: If an item is newly created then it needs to scroll into this item.
                         //Or if it is just open then then scroll to current time only.
-                        RoutineItem lastRoutineItem=!routineItems.isEmpty() ?
-                                        routineItems.get(routineItems.size() - 1):null;
-                        if(routineItems.size()>events.size()&&lastRoutineItem!=null)
-                            mWeekView.post(() -> mWeekView.goToHour(lastRoutineItem.getStartTime().get(Calendar.HOUR_OF_DAY)));
+                        //FOR EDIT: Also if getSelectedRoutineItem is not null then that means that
+                        // it is going for edit or update
+
+
+                        if(InputOperation.EDIT.equals(routineViewModel.inputOperation)){
+                            if(routineViewModel.getSelectedRoutineItem()!=null)//Edited
+                                mWeekView.post(() -> mWeekView.goToHour(routineViewModel.getSelectedRoutineItem()
+                                    .getStartTime().get(Calendar.HOUR_OF_DAY)));
+                            else mWeekView.post(() -> mWeekView.goToHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+                        }
+                        else if(InputOperation.ADD.equals(routineViewModel.inputOperation)){
+                            RoutineItem lastRoutineItem=!routineItems.isEmpty() ?
+                                    routineItems.get(routineItems.size() - 1):null;
+                            if(routineItems.size() > events.size())//That means new item is added
+                                mWeekView.post(() -> mWeekView.goToHour(lastRoutineItem.getStartTime().get(Calendar.HOUR_OF_DAY)));
+                            else mWeekView.post(() -> mWeekView.goToHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+                        }
                         else
                             mWeekView.post(() -> mWeekView.goToHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
 
@@ -127,7 +141,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
 
             @Override
             public String interpretTime(int hour) {
-                return hour > 11 ? (hour - 12) + " PM" : (hour == 0 ? "12 AM" : hour + " AM");
+                return hour > 11 ?(hour==12?"12 PM":(hour - 12) + " PM" ): (hour == 0 ? "12 AM" : hour + " AM");
             }
         });
     }
@@ -142,6 +156,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         if (getRoutineByID(event.id) != null) {
             routineViewModel.setSelectedRoutineItem(getRoutineByID(event.id));
+            routineViewModel.inputOperation=InputOperation.EDIT;
             if (getActivity() != null) {
                 RoutineInputDialog.showDialog(getActivity().getSupportFragmentManager());
             }

@@ -30,7 +30,7 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:singleLine="false"
-                android:id="@+id/name"
+                android:id="@+id/class_name"
                 android:gravity="start"
                 android:textAlignment="textStart"
                 tools:text="Class: class five"
@@ -42,7 +42,7 @@
 
             <TextView
                 tools:text="Section: Section shapla"
-                android:id="@+id/phone"
+                android:id="@+id/section_name"
                 android:maxLines="2"
                 android:lines="2"
                 android:textAlignment="textStart"

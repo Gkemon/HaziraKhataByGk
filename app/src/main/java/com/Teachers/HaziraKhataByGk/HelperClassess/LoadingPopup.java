@@ -16,6 +16,7 @@ import com.Teachers.HaziraKhataByGk.R;
 public class LoadingPopup extends Dialog {
 
     public static LoadingPopup dialog;
+    public int DELAY=0;
 
 
     public LoadingPopup(@NonNull Context context) {
@@ -34,6 +35,7 @@ public class LoadingPopup extends Dialog {
     public static void hideLoadingPopUp() {
         if (dialog != null) {
             try {
+                if(dialog.isShowing())
                 dialog.dismiss();
             } catch (Exception e) {
                 UtilsCommon.handleError(e);
@@ -63,7 +65,7 @@ public class LoadingPopup extends Dialog {
                 }catch (Exception ignored){
 
                 }
-            }, 3000);
+            }, DELAY);
         }catch (Exception e){
             hideLoadingPopUp();
         }
@@ -76,7 +78,7 @@ public class LoadingPopup extends Dialog {
         try {
             super.show();
             Handler handler = new Handler();
-            handler.postDelayed(() -> setCancelable(true), 3000);
+            handler.postDelayed(() -> setCancelable(true), DELAY);
         }catch (Exception e){
             hideLoadingPopUp();
         }

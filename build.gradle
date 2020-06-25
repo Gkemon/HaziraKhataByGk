@@ -6,6 +6,10 @@ buildscript {
         google()
     }
     dependencies {
+        classpath 'com.google.gms:google-services:4.3.3'
+
+        // Add the Crashlytics Gradle plugin.
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.1'
         classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'com.google.gms:google-services:4.3.3'
         classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.1'
