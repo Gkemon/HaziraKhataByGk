@@ -88,7 +88,7 @@ public class SavedBlogFragment extends Fragment implements RecyclerItemClickList
         savedBlogRecycle = (RecyclerView) rootView.findViewById(R.id.savedblogRecycle);
         delete_all = (FloatingActionButton) rootView.findViewById(R.id.delete_all_button);
         BottomNavigationActivity.viewforSavedBlog = rootView.findViewById(R.id.EmptyImage);
-        BottomNavigationActivity.view1forSavedBlog = rootView.findViewById(R.id.EmptyText);
+        BottomNavigationActivity.view1forSavedBlog = rootView.findViewById(R.id.txt_empty_view);
 
 
         //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION

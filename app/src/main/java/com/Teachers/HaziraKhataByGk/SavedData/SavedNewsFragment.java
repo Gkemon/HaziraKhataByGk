@@ -68,7 +68,7 @@ public class SavedNewsFragment extends Fragment implements RecyclerItemClickList
         rootView = inflater.inflate(R.layout.saved_news_fragment, container, false);
         rootView.setPadding(0, 40, 0, 0);
         BottomNavigationActivity.view = rootView.findViewById(R.id.EmptyImage);
-        BottomNavigationActivity.view1 = rootView.findViewById(R.id.EmptyText);
+        BottomNavigationActivity.view1 = rootView.findViewById(R.id.txt_empty_view);
         NewsRecycle = (RecyclerView) rootView.findViewById(R.id.SavedNewsRecycle);
         delete_all = (FloatingActionButton) rootView.findViewById(R.id.delete_all_button);
 

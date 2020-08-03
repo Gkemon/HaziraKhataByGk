@@ -12,28 +12,29 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 
 public class Notes implements Parcelable {
 
-    public static final Parcelable.Creator<Notes> CREATOR = new Parcelable.Creator<Notes>() {
-        @Override
-        public Notes createFromParcel(Parcel source) {
-            return new Notes(source);
-        }
+    private String heading="";
+    private String Content="";
+    private String uid="";
+    private String date="";
 
-        @Override
-        public Notes[] newArray(int size) {
-            return new Notes[size];
-        }
-    };
-    private String heading;
-    private String Content;
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public Notes() {
 
-    }
-
-    public Notes(Parcel parcel) {
-
-        this.heading = parcel.readString();
-        this.Content = parcel.readString();
     }
 
     public String getheading() {
@@ -61,6 +62,26 @@ public class Notes implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.heading);
         dest.writeString(this.Content);
+        dest.writeString(this.uid);
+        dest.writeString(this.date);
     }
 
+    protected Notes(Parcel in) {
+        this.heading = in.readString();
+        this.Content = in.readString();
+        this.uid = in.readString();
+        this.date = in.readString();
+    }
+
+    public static final Creator<Notes> CREATOR = new Creator<Notes>() {
+        @Override
+        public Notes createFromParcel(Parcel source) {
+            return new Notes(source);
+        }
+
+        @Override
+        public Notes[] newArray(int size) {
+            return new Notes[size];
+        }
+    };
 }

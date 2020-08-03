@@ -22,7 +22,7 @@
             android:layout_height="100dp" />
         <TextView
             android:text="@string/instruction_for_note"
-            android:id="@+id/EmptyText"
+            android:id="@+id/txt_empty_view"
             android:textColor="@color/secondary_text"
             android:layout_gravity="center"
             android:textSize="13sp"
@@ -36,7 +36,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_note"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_note"

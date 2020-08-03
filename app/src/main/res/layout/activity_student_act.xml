@@ -240,11 +240,19 @@
 
     </LinearLayout>
     <Button
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/btn_note"
         android:backgroundTint="#2196F3"
         android:textColor="@color/white"
         android:id="@+id/classRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/class_record"/>
+    <Button
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#2196F3"
+        android:textColor="@color/white"
+        android:id="@+id/btn_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="জরুরী তথ্য"/>
 </RelativeLayout>

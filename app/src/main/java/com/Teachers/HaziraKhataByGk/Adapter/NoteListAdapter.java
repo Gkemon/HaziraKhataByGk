@@ -48,6 +48,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
         for (Notes Notes : Notelist) {
             add(Notes);
         }
+        notifyDataSetChanged();
     }
 
     public void remove(Notes item) {

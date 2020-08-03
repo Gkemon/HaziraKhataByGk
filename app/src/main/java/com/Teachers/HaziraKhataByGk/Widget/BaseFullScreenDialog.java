@@ -14,14 +14,6 @@ import com.Teachers.HaziraKhataByGk.routine.AllRoutineShowingDialog;
 
 public class BaseFullScreenDialog extends DialogFragment {
 
-    public static void showDialog(FragmentManager manager) {
-
-        AllRoutineShowingDialog dialog = new AllRoutineShowingDialog();
-        FragmentTransaction ft = manager.beginTransaction();
-        dialog.show(ft, "AllRoutineShowingDialog");
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

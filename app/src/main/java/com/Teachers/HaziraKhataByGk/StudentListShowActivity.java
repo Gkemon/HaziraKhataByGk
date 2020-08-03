@@ -117,7 +117,13 @@ public class StudentListShowActivity extends BaseActivity implements RecyclerIte
     @Override
     public void onItemClick(int position, View view) {
         UtilsCommon.setCurrentStudent(studentListAdapter.getItem(position), this);
-        StudentAddActivity.start(this, studentListAdapter.getItem(position), studentList);
+        //This is for if class name is edited then class and section name in student field should be
+        //modified as like that.
+        Student student = studentListAdapter.getItem(position);
+        student.setStudentClass(classItem.getName());
+        student.setStudentSection(classItem.getSection());
+
+        StudentAddActivity.start(this,student, studentList);
     }
 
     @Override

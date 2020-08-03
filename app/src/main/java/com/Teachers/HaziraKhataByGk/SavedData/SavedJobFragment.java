@@ -81,7 +81,7 @@ public class SavedJobFragment extends Fragment implements RecyclerItemClickListe
         SavedJobRecycle = (RecyclerView) Rootview.findViewById(R.id.SavedJobRecycle);
         delete_all = (FloatingActionButton) Rootview.findViewById(R.id.delete_all_button);
         BottomNavigationActivity.viewforSavedJob = Rootview.findViewById(R.id.EmptyImage);
-        BottomNavigationActivity.view1forSavedJob = Rootview.findViewById(R.id.EmptyText);
+        BottomNavigationActivity.view1forSavedJob = Rootview.findViewById(R.id.txt_empty_view);
 
         //THIS MAKES THE EMPTY IMAGE AND EMPTY DESCRIPTION
         if (BottomNavigationActivity.isSavedJoblistEmpty) {

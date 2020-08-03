@@ -1,106 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="#e3f2fd"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#e3f2fd"
+    android:orientation="vertical">
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_date"
-        android:gravity="center"
-        android:layout_margin="5dp"
-        android:layout_centerHorizontal="true"
+        android:text="তারিখ সিলেক্ট করতে এখানে ক্লিক করুন"
         style="@style/ButtonPrimaryColorStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_click"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:gravity="center"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
-    <LinearLayout
-    android:id="@+id/main"
-    android:layout_above="@+id/buttomLinearLayout"
-    android:layout_below="@+id/bt_date"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="6sp"
-    android:weightSum="1"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
-        android:id="@+id/note_title_textinputLayout"
-        app:hintTextAppearance="@style/Hints"
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/note_title_hint"
-        android:ems="10"
-        android:layout_marginBottom="@dimen/margin_10" />
-    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
-        android:id="@+id/note_content_textinputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:hintTextAppearance="@style/Hints">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttomLinearLayout"
+        android:layout_below="@+id/bt_date"
+        android:orientation="vertical"
+        android:padding="6sp"
+        android:weightSum="1">
+
+        <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+            android:id="@+id/note_title_textinputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:hintTextAppearance="@style/Hints">
 
             <EditText
-                android:id="@+id/content"
+                android:id="@+id/et_note_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="start"
-                android:hint="@string/note_content_hint"
-                android:inputType="textMultiLine"
-                android:maxLength="1000"
-                android:maxLines="1000"
-                android:textSize="14sp"
-                app:layout_constraintTop_toTopOf="parent" />
-    </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
-    </ScrollView>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:ems="10"
+                android:hint="@string/note_title_hint"
+                android:inputType="textPersonName" />
+        </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout
+                android:id="@+id/note_content_textinputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:hintTextAppearance="@style/Hints">
+
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:hint="@string/note_content_hint"
+                    android:inputType="textMultiLine"
+                    android:maxLength="1000"
+                    android:maxLines="1000"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout>
+        </ScrollView>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/buttomLinearLayout"
-        android:padding="4sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        >
+        android:padding="4sp">
+
         <Button
-            android:id="@+id/ADD"
-            android:backgroundTint="#4CAF50"
-            android:textColor="@color/white"
-            android:elevation="15sp"
+            android:id="@+id/btn_add_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ADD"/>
+            android:backgroundTint="#4CAF50"
+            android:elevation="15sp"
+            android:text="@string/ADD"
+            android:textColor="@color/white" />
+
         <Button
-            android:id="@+id/SAVE"
+            android:id="@+id/btn_save_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:backgroundTint="#FF9800"
             android:elevation="15sp"
-            android:textColor="@color/white"
+            android:text="@string/SAVE"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btn_delete_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/SAVE" />
-        <Button
-            android:id="@+id/DELETE"
             android:backgroundTint="#F44336"
             android:elevation="15sp"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/DELETE" />
+            android:text="@string/DELETE"
+            android:textColor="@color/white" />
     </LinearLayout>
 </RelativeLayout>

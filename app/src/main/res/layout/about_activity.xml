@@ -19,7 +19,7 @@ android:padding="5sp"
             android:src="@mipmap/main_icon_hd_half" />
 
         <TextView
-            android:id="@+id/EmptyText"
+            android:id="@+id/txt_empty_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

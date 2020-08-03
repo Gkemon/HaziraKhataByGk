@@ -60,7 +60,7 @@ public class NoteAddActivity extends BaseActivity implements View.OnClickListene
 
         setContentView(R.layout.dialog_note_add);
         activity = this;
-        title = (EditText) findViewById(R.id.Title);
+        title = (EditText) findViewById(R.id.et_note_title);
         content = (EditText) findViewById(R.id.content);
         isEdited = false;
 
@@ -68,9 +68,9 @@ public class NoteAddActivity extends BaseActivity implements View.OnClickListene
         title.addTextChangedListener(new MyTextWatcher(title));
         content.addTextChangedListener(new MyTextWatcher(content));
 
-        ADD = (Button) findViewById(R.id.ADD);
-        Save = (Button) findViewById(R.id.SAVE);
-        btnDelete = (Button) findViewById(R.id.DELETE);
+        ADD = (Button) findViewById(R.id.btn_add_note);
+        Save = (Button) findViewById(R.id.btn_save_note);
+        btnDelete = (Button) findViewById(R.id.btn_delete_note);
         ButtonLayout = (LinearLayout) findViewById(R.id.buttomLinearLayout);
         Notes = getIntent().getParcelableExtra(ClassRoomActivity.class.getSimpleName());
         ADD.setOnClickListener(this);

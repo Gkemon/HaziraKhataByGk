@@ -10,9 +10,15 @@ interface CallBackContract<T> {
     void onWait(int sec);
 
     void onFailure(String r);
+    void onFailure(Throwable throwable);
 }
 
 public abstract class CommonCallback<T> implements CallBackContract<T> {
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
+
     @Override
     public void onFailure(String r) {
 

@@ -33,7 +33,10 @@ import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
+import com.Teachers.HaziraKhataByGk.note.NoteShowingDialog;
 import com.bumptech.glide.Glide;
+import com.facebook.FacebookButtonBase;
+import com.google.firebase.database.FirebaseDatabase;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -71,7 +74,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
     private EditText etRollNumber;
     private EditText etParentName;
     private EditText etParentPhoneNumber;
-    private Button btnAdd, btnEdit, btnDelete, btnClassRecord;
+    private Button btnAdd, btnEdit, btnDelete, btnClassRecord,btnNotes;
     private ImageView imgProPic;
     private Student student;
     private String birthDay;
@@ -111,8 +114,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
                 student.setBirthDate(response);
                 button.setText("জন্ম তারিখ: " + response);
             }
-        })
-                .show();
+        }).show();
 
     }
 
@@ -149,6 +151,7 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -190,6 +193,8 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         btnEdit = findViewById(R.id.btnEditFromStudentAct);
         btnDelete = findViewById(R.id.btnDeleteFromStudentAct);
         btnClassRecord = findViewById(R.id.classRecord);
+        btnNotes = findViewById(R.id.btn_note);
+
         imgProPic = findViewById(R.id.img_pro_pic);
 
 
@@ -197,6 +202,8 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
         btnEdit.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         btnClassRecord.setOnClickListener(this);
+        btnNotes.setOnClickListener(this);
+
     }
 
     @Override
@@ -437,6 +444,12 @@ public class StudentAddActivity extends PermissionActivity implements View.OnCli
             launchinIntent.putExtra("classItem",
                     UtilsCommon.getCurrentClass(StudentAddActivity.this));
             startActivity(launchinIntent);
+        }
+        else if(v.getId()==R.id.btn_note){
+            String databasePath= "/Users/"+FirebaseCaller.getUserID()+"/Class/"+student.getStudentClass()
+                    +student.getStudentSection()
+                    +"/Student/"+student.getId()+"/notes";
+            NoteShowingDialog.showDialog(getSupportFragmentManager(),databasePath);
         }
     }
 

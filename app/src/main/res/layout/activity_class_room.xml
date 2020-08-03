@@ -85,7 +85,7 @@
             android:layout_height="100dp" />
         <TextView
             android:text="@string/instruction_for_note"
-            android:id="@+id/EmptyText"
+            android:id="@+id/txt_empty_view"
             android:textColor="@color/secondary_text"
             android:layout_gravity="center"
             android:textSize="13sp"

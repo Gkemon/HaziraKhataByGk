@@ -129,7 +129,7 @@ public class Student implements Serializable {
     }
 
     public String getStudentClass() {
-        return StudentClass;
+        return UtilsCommon.isValideString(StudentClass)?StudentClass.trim():"";
     }
 
     public void setStudentClass(String studentClass) {
@@ -137,7 +137,7 @@ public class Student implements Serializable {
     }
 
     public String getStudentSection() {
-        return StudentSection;
+        return UtilsCommon.isValideString(StudentSection)?StudentSection.trim():"";
     }
 
     public void setStudentSection(String studentSection) {
