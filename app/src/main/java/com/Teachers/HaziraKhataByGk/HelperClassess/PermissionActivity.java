@@ -6,15 +6,15 @@ import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PermissionActivity extends AppCompatActivity {
+public abstract class PermissionActivity extends BaseActivity {
 
     public CommonCallback commonCallback;
 

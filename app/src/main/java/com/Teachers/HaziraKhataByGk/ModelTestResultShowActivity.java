@@ -7,8 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -16,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import static com.Teachers.HaziraKhataByGk.ModelTestActivity.wrong_Answer_correct_list;
 
-public class ModelTestResultShowActivity extends AppCompatActivity {
+public class ModelTestResultShowActivity extends BaseActivity {
     public static FirebaseAuth auth;
     public static FirebaseDatabase firebaseDatabase;
     public static DatabaseReference databaseReference;

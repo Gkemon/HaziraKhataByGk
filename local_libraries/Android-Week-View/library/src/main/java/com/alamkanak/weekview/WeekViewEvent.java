@@ -110,18 +110,6 @@ public class WeekViewEvent implements Parcelable {
     }
 
 
-    public static final Creator<WeekViewEvent> CREATOR = new Creator<WeekViewEvent>() {
-        @Override
-        public WeekViewEvent createFromParcel(Parcel in) {
-            return new WeekViewEvent(in);
-        }
-
-        @Override
-        public WeekViewEvent[] newArray(int size) {
-            return new WeekViewEvent[size];
-        }
-    };
-
     public Calendar getStartTime() {
         return mStartTime;
     }

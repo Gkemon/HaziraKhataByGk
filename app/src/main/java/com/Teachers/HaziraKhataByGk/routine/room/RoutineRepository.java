@@ -1,6 +1,5 @@
 package com.Teachers.HaziraKhataByGk.routine.room;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;

@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.Teachers.HaziraKhataByGk.BuildConfig;
@@ -33,6 +32,7 @@ import com.Teachers.HaziraKhataByGk.HelperClassess.ConnectivityChecker;
 import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhoneAuthBuilder;
 import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;
@@ -52,7 +52,7 @@ import butterknife.ButterKnife;
 
 
 //TODO Tutorial for FB loging http://androidbash.com/firebase-facebook-login-tutorial-android/
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
     public static String email;
     public FirebaseAuth auth;
     public Button btnSignup, btnEmailLogin, btnReset, btnSignOut, btnChangeEmail, help, btnGuest, btnPhone;

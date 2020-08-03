@@ -8,7 +8,6 @@ import androidx.room.Entity;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.alamkanak.weekview.WeekViewEvent;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,12 +15,24 @@ import java.util.List;
 
 @Entity
 public class RoutineItem extends WeekViewEvent implements Parcelable {
-    private Date dateIfTemporary;
+    private Calendar dateIfTemporary;
     private String type;
+    private boolean triggerAlarm=true;
     private boolean isPermanent = true;
     private String details;
     private List<Integer> selectedDayList;
 
+    public boolean isTriggerAlarm() {
+        return triggerAlarm;
+    }
+
+    public void setTriggerAlarm(boolean triggerAlarm) {
+        this.triggerAlarm = triggerAlarm;
+    }
+
+    public static Creator<RoutineItem> getCREATOR() {
+        return CREATOR;
+    }
 
     public List<Integer> getSelectedDayList() {
         return selectedDayList;
@@ -47,7 +58,7 @@ public class RoutineItem extends WeekViewEvent implements Parcelable {
         this.details = details;
     }
 
-    public Date getDateIfTemporary() {
+    public Calendar getDateIfTemporary() {
         return dateIfTemporary;
     }
 
@@ -59,7 +70,7 @@ public class RoutineItem extends WeekViewEvent implements Parcelable {
         isPermanent = permanent;
     }
 
-    public void setDateIfTemporary(Date date)  {
+    public void setDateIfTemporary(Calendar date)  {
             this.dateIfTemporary = date;
     }
 
@@ -88,8 +99,9 @@ public class RoutineItem extends WeekViewEvent implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeLong(this.dateIfTemporary != null ? this.dateIfTemporary.getTime() : -1);
+        dest.writeSerializable(this.dateIfTemporary);
         dest.writeString(this.type);
+        dest.writeByte(this.triggerAlarm ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isPermanent ? (byte) 1 : (byte) 0);
         dest.writeString(this.details);
         dest.writeList(this.selectedDayList);
@@ -104,9 +116,9 @@ public class RoutineItem extends WeekViewEvent implements Parcelable {
 
     protected RoutineItem(Parcel in) {
         super(in);
-        long tmpDateIfTemporary = in.readLong();
-        this.dateIfTemporary = tmpDateIfTemporary == -1 ? null : new Date(tmpDateIfTemporary);
+        this.dateIfTemporary = (Calendar) in.readSerializable();
         this.type = in.readString();
+        this.triggerAlarm = in.readByte() != 0;
         this.isPermanent = in.readByte() != 0;
         this.details = in.readString();
         this.selectedDayList = new ArrayList<Integer>();

@@ -16,7 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +25,7 @@ import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.FeesAcitvity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.MarkSheetHomeActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -49,7 +49,7 @@ import java.util.List;
 
 import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.DateFormate;
 
-public class ClassRoomActivity extends AppCompatActivity implements RecyclerItemClickListener {
+public class ClassRoomActivity extends BaseActivity implements RecyclerItemClickListener {
 
     public static List<Notes> notesList;
     public static String FLAG_OF_CLASSROOM_ACTIVITY = "class_room";
@@ -62,11 +62,10 @@ public class ClassRoomActivity extends AppCompatActivity implements RecyclerItem
     public ClassItem classitem;
     public Button feesButton, DailyAndMontlyRecord, marksheetButton;
     View emptyView;
-    private RecyclerView NOTES;
+    private RecyclerView rvNote;
     private FloatingActionButton btnAdd;
     private LinearLayoutManager linearLayoutManager;
     private NoteListAdapter noteListAdapter;
-    private Context context;
     private LinearLayout linearLayoutForPresent, linearLayoutForStudentProfile;
 
     public static void start(Context context, ClassItem classitem) {
@@ -78,7 +77,6 @@ public class ClassRoomActivity extends AppCompatActivity implements RecyclerItem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_class_room);
         initView();
 
@@ -123,7 +121,7 @@ public class ClassRoomActivity extends AppCompatActivity implements RecyclerItem
                 } else {
                     emptyView.setVisibility(View.GONE);
                 }
-                NOTES.setAdapter(noteListAdapter);
+                rvNote.setAdapter(noteListAdapter);
             }
 
             @Override
@@ -161,8 +159,7 @@ public class ClassRoomActivity extends AppCompatActivity implements RecyclerItem
 
     void initView() {
         activity = this;
-        context = getApplicationContext();
-        NOTES = findViewById(R.id.notes);
+        rvNote = findViewById(R.id.notes);
         emptyView = findViewById(R.id.toDoEmptyView);
         notesList = new ArrayList<>();
         btnAdd = findViewById(R.id.fabForNotes);
@@ -176,10 +173,9 @@ public class ClassRoomActivity extends AppCompatActivity implements RecyclerItem
         studentListForPrintActiviyFromAttendenceActivity = new ArrayList<>();
 
         linearLayoutManager = new LinearLayoutManager(this);
-        noteListAdapter = new NoteListAdapter(this);
-        noteListAdapter.setOnItemClickListener(this);
-        NOTES.setLayoutManager(linearLayoutManager);
-        NOTES.setAdapter(noteListAdapter);
+        noteListAdapter = new NoteListAdapter(this,this);
+        rvNote.setLayoutManager(linearLayoutManager);
+        rvNote.setAdapter(noteListAdapter);
 
         //FOR ADD CLICK LISTENER IN ATTENDENCE AND STUDENT PROFILE ACTIVITY
         linearLayoutForStudentProfile = (LinearLayout) findViewById(R.id.CardlayoutForStudentProfile);

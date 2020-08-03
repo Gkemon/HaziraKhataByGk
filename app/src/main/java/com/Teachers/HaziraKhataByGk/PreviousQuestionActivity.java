@@ -6,15 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Widget.TextShowActivity;
 
 /**
  * Created by uy on 12/1/2017.
  */
 
-public class PreviousQuestionActivity extends AppCompatActivity {
+public class PreviousQuestionActivity extends BaseActivity {
     Activity activity;
     Button button1, button2, button3, button4, button5;
 

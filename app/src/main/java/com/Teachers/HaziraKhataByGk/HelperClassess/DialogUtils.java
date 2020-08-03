@@ -3,15 +3,11 @@ package com.Teachers.HaziraKhataByGk.HelperClassess;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
-import com.Teachers.HaziraKhataByGk.R;
 
 import java.util.Calendar;
 
@@ -21,6 +17,10 @@ public class DialogUtils {
     public static void showTimeDialog(int hourOfDay,int minOfDay,Context context,
                                       TimePickerDialog.OnTimeSetListener onTimeSetListener) {
 
+        if(hourOfDay<0){
+            hourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            minOfDay = Calendar.getInstance().get(Calendar.MINUTE);
+        }
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(context, (timePicker, hourOfDay1, min) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -89,7 +89,7 @@ public class DialogUtils {
                     }).create();
             alertDialog.show();
         } catch (Exception e) {
-
+            UtilsCommon.handleError(e);
         }
 
 

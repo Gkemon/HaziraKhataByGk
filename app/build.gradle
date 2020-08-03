@@ -18,28 +18,54 @@ android {
     buildToolsVersion '29.0.3'
 
     lintOptions {
-        disable 'RestrictedApi'
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
     defaultConfig {
 
         applicationId "com.Teachers.HaziraKhataByGk"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 24
-        versionName "2.0.1"
+        versionCode 25
+        versionName "2.1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [onesignal_app_id               : "611c83ef-2af7-48c6-921c-f22f31e7ccd9",
                                 onesignal_google_project_number: "REMOTE"]
+        signingConfig signingConfigs.debug
 
+    }
+    signingConfigs {
+        release {
+            storeFile file('../jks/HaziraKhataByGk.jks')
+            storePassword '1122334411223344'
+            keyPassword '11223344'
+            keyAlias = 'hazirakhatabygk'
+
+            //Only changing build variant not enough for
+            //build signed apk in emulator. signature is also needed
+            //Signature is for support apk in other users devices
+            v2SigningEnabled true
+            v1SigningEnabled true
+        }
     }
     dexOptions {
         jumboMode true
     }
     buildTypes {
         release {
+            shrinkResources false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //This is must for install sign apk in emulator
+            // directly with changing of build variant
+            signingConfig signingConfigs.release
+        }
+        stage {
+            initWith buildTypes.release
+            debuggable true
         }
     }
     compileOptions {
@@ -50,6 +76,9 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.navigation:navigation-fragment:2.3.0'
+    implementation 'androidx.navigation:navigation-ui:2.3.0'
+
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
     // Optional -- Robolectric environment

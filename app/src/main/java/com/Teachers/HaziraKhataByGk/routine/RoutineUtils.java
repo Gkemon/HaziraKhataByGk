@@ -10,6 +10,7 @@ import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class RoutineUtils {
         }
         else return !routineItem.isPermanent() &&
                 UtilsDateTime.getTodayInNumber() ==
-                        UtilsDateTime.getDayFromCalender(routineItem.getStartTime());
+                        routineItem.getDateIfTemporary().get(Calendar.DAY_OF_WEEK);
     }
    public static List<RoutineItem> getUpcomingRoutines(List<RoutineItem> routineItems) {
 

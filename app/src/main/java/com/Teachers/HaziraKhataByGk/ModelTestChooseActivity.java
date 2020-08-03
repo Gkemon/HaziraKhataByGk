@@ -9,9 +9,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 
-public class ModelTestChooseActivity extends AppCompatActivity {
+public class ModelTestChooseActivity extends BaseActivity {
     public static Context context;
     public LinearLayout adlayout;
     Button min15, min30, min60;

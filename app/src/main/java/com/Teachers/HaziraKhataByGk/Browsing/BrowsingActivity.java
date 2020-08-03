@@ -9,18 +9,19 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
+import com.Teachers.HaziraKhataByGk.R;
 
 /**
  * Created by uy on 10/29/2017.
  */
 
-public class BrowsingActivity extends AppCompatActivity {
+public class BrowsingActivity extends BaseActivity {
     public static Activity activity;
     CoordinatorLayout coordinatorLayout;
     private String url, TAG, title;
@@ -34,7 +35,7 @@ public class BrowsingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_browser);
+        setContentView(R.layout.activity_browser);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);

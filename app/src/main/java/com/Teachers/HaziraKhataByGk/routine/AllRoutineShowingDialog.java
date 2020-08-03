@@ -8,19 +8,14 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
+import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomViewPager;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
-import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.Widget.BaseFullScreenDialog;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +38,11 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
 
     }
 
+
+    @OnClick(R.id.btn_tutorial)
+    void showTutorial(){
+        UtilsCommon.openWithFaceBook("https://www.facebook.com/comrate.lenin.7/videos/751533605417104/",getContext());
+    }
     @OnClick(R.id.btn_add_routine)
     void addRoutine() {
         if (getActivity() != null) {
@@ -79,6 +79,12 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         fragmentAdmin.setArguments(bundle3);
         adapter.addFrag(fragmentAdmin);
 
+        Bundle bundle4 = new Bundle();
+        bundle4.putString(RoutineConstant.routineType, RoutineConstant.ROUTINE_TYPE_OTHER);
+        RoutineWeekViewFragment fragmentOthers = new RoutineWeekViewFragment();
+        fragmentOthers.setArguments(bundle4);
+        adapter.addFrag(fragmentOthers);
+
         viewPager.setPagingEnabled(false);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -100,6 +106,11 @@ public class AllRoutineShowingDialog extends BaseFullScreenDialog {
         tabThree.setText(R.string.routine_admin);
         tabThree.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_job, 0, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabThree);
+
+        TextView tabFour = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.custom_tab, null);
+        tabFour.setText(R.string.routine_others);
+        tabFour.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_person, 0, 0, 0);
+        tabLayout.getTabAt(3).setCustomView(tabFour);
 
     }
 

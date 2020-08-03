@@ -16,11 +16,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +33,7 @@ import java.util.List;
  * Created by uy on 9/7/2017.
  */
 
-public class NoteAddActivity extends AppCompatActivity implements View.OnClickListener {
+public class NoteAddActivity extends BaseActivity implements View.OnClickListener {
     public static String currentTitle, previousTitle, currentContent, previousContent;
     public LinearLayout ButtonLayout;
     Activity activity;
@@ -58,7 +58,7 @@ public class NoteAddActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.note_add_activity);
+        setContentView(R.layout.dialog_note_add);
         activity = this;
         title = (EditText) findViewById(R.id.Title);
         content = (EditText) findViewById(R.id.content);

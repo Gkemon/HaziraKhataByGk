@@ -42,7 +42,8 @@ public class BlogFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                UtilsCommon.openWithFaceBook("https://www.facebook.com/groups/2035798976667483/permalink/2045745182339529/", getActivity());
+                UtilsCommon.openWithFaceBook(
+                        "https://www.facebook.com/groups/2035798976667483/permalink/2045745182339529/", getActivity());
             }
         });
 

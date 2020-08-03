@@ -12,6 +12,10 @@ android {
         minSdkVersion 9
         targetSdkVersion 27
     }
+    buildTypes {
+        stage {
+        }
+    }
 }
 
 dependencies {

@@ -1,7 +1,6 @@
 package com.Teachers.HaziraKhataByGk.routine;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -39,10 +39,14 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     @BindView(R.id.rb_class_routine)
     RadioButton rbClassRoutine;
+    @BindView(R.id.cb_trigger_alarm)
+    CheckBox cbTriggerAlarm;
     @BindView(R.id.rb_exam_routine)
     RadioButton rbExamRoutine;
     @BindView(R.id.rb_admin_routine)
     RadioButton rbAdminRoutine;
+    @BindView(R.id.rb_others_routine)
+    RadioButton rbOtherRoutine;
     @BindView(R.id.rb_permanent_routine)
     RadioButton rbPermanentRoutine;
     @BindView(R.id.rb_temporary_routine)
@@ -93,6 +97,11 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         });
     }
 
+    @OnCheckedChanged(R.id.cb_trigger_alarm)
+    void handleAlarm(CheckBox checkBox) {
+        routineItem.setTriggerAlarm(checkBox != null && checkBox.isChecked());
+    }
+
     @OnClick(R.id.btn_delete_routine)
     void deleteRoutine(FloatingActionButton btn) {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
@@ -110,7 +119,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     }
 
     @OnCheckedChanged({R.id.rb_admin_routine, R.id.rb_class_routine, R.id.rb_exam_routine,
-            R.id.rb_temporary_routine, R.id.rb_permanent_routine})
+            R.id.rb_temporary_routine, R.id.rb_permanent_routine, R.id.rb_others_routine})
     public void onCheckedChanged(RadioButton radioButton, boolean isChecked) {
         if (isChecked) {
             switch (radioButton.getId()) {
@@ -122,6 +131,9 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
                     break;
                 case R.id.rb_admin_routine:
                     routineItem.setType(RoutineConstant.ROUTINE_TYPE_ADMINISTRATION);
+                    break;
+                case R.id.rb_others_routine:
+                    routineItem.setType(RoutineConstant.ROUTINE_TYPE_OTHER);
                     break;
                 case R.id.rb_temporary_routine: {
                     routineItem.setPermanent(false);
@@ -145,7 +157,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     @OnClick(R.id.btn_tutorial)
     void showTutorial() {
-
+        UtilsCommon.openWithFaceBook("https://www.facebook.com/comrate.lenin.7/videos/751533605417104/",getContext());
     }
 
     @OnClick(R.id.cancel)
@@ -156,13 +168,13 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     @OnClick(R.id.bt_from_time)
     void showStartTimeDialog() {
 
-        int hourOfDay=0,minOfDay=0;
-        if(routineItem!=null&&routineItem.getStartTime()!=null){
-            hourOfDay=routineItem.getStartTime().get(Calendar.HOUR_OF_DAY);
-            minOfDay=routineItem.getStartTime().get(Calendar.MINUTE);
+        int hourOfDay = -1, minOfDay = -1;
+        if (routineItem != null && routineItem.getStartTime() != null) {
+            hourOfDay = routineItem.getStartTime().get(Calendar.HOUR_OF_DAY);
+            minOfDay = routineItem.getStartTime().get(Calendar.MINUTE);
         }
 
-        DialogUtils.showTimeDialog(hourOfDay,minOfDay , getContext(),
+        DialogUtils.showTimeDialog(hourOfDay, minOfDay, getContext(),
                 (timePicker, hrOfDay, min) -> {
                     btnFromTime.setText(UtilsDateTime.getAMPMTimeFromCalender(UtilsDateTime.
                             getCalendarFromHourMin(hrOfDay, min)));
@@ -173,16 +185,20 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
     @OnClick(R.id.bt_to_time)
     void showEndTimeDialog() {
-        int hourOfDay=0,minOfDay=0;
-        if(routineItem!=null) {
+        int hourOfDay = -1, minOfDay = -1;
+        if (routineItem != null) {
             if (routineItem.getEndTime() != null) {
                 hourOfDay = routineItem.getEndTime().get(Calendar.HOUR_OF_DAY);
                 minOfDay = routineItem.getEndTime().get(Calendar.MINUTE);
-            } else if (routineItem.getStartTime()!=null){
+            } else if (routineItem.getStartTime() != null) {
                 //For adding routine (First time input) increase automatically 5 minutes for
                 //inputting "End time"
-                hourOfDay=routineItem.getStartTime().get(Calendar.HOUR_OF_DAY);
-                minOfDay=routineItem.getStartTime().get(Calendar.MINUTE)+5;
+                hourOfDay = routineItem.getStartTime().get(Calendar.HOUR_OF_DAY);
+                minOfDay = routineItem.getStartTime().get(Calendar.MINUTE) + 5;
+            } else
+            {
+                DialogUtils.showInfoAlertDialog("", "দয়া করে শুরুর সময় সিলেক্ট করুন", getContext());
+                return;
             }
         }
 
@@ -206,7 +222,6 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
                 .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                     public void onChooseColor(int position, int color) {
                         routineItem.setColor(color);
-
                         btnColorSelect.getBackground().mutate().setColorFilter(new
                                 PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
                     }
@@ -228,17 +243,20 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         routineItem.setDetails(etDetails.getText().toString());
         routineItem.setLocation((etRoom.getText().toString()));
 
-        if(routineItem.isPermanent())
-        routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
+        if (routineItem.isPermanent())
+            routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
 
         if (isValidated()) {
 
             if (isEditMode)
                 routineViewModel.update(routineItem);
             else
+            {
                 routineViewModel.insert(routineItem);
+                UtilsCommon.sendLogToCrashlytics("New routine added");
+            }
 
-            isEditMode=false;
+            isEditMode = false;
             dismiss();
         }
 
@@ -273,11 +291,21 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
     }
 
     private void setUIforEdit() {
-        if (routineItem.getType().equals(RoutineConstant.ROUTINE_TYPE_CLASS))
-            rbClassRoutine.setChecked(true);
-        else if (routineItem.getType().equals(RoutineConstant.ROUTINE_TYPE_EXAM))
-            rbExamRoutine.setChecked(true);
-        else rbAdminRoutine.setChecked(true);
+
+        switch (routineItem.getType()) {
+            case RoutineConstant.ROUTINE_TYPE_CLASS:
+                rbClassRoutine.setChecked(true);
+                break;
+            case RoutineConstant.ROUTINE_TYPE_EXAM:
+                rbExamRoutine.setChecked(true);
+                break;
+            case RoutineConstant.ROUTINE_TYPE_ADMINISTRATION:
+                rbAdminRoutine.setChecked(true);
+                break;
+            default:
+                rbOtherRoutine.setChecked(true);
+                break;
+        }
 
         etSubject.setText(routineItem.getName());
         etRoom.setText(routineItem.getLocation());
@@ -294,11 +322,11 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
 
         etDetails.setText(routineItem.getDetails());
 
-        if(routineItem.getSelectedDayList()!=null)
-        banglaDaysPicker.setSelectedDays(routineItem.getSelectedDayList());
+        if (routineItem.getSelectedDayList() != null)
+            banglaDaysPicker.setSelectedDays(routineItem.getSelectedDayList());
 
         btnDeleteRoutine.setVisibility(View.VISIBLE);
-
+        cbTriggerAlarm.setChecked(routineItem.isTriggerAlarm());
         btnColorSelect.getBackground().mutate().setColorFilter(new
                 PorterDuffColorFilter(routineItem.getColor(), PorterDuff.Mode.SRC));
 
@@ -325,11 +353,11 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
             return false;
         }
 
-//        if (routineItem.getEndTime().getTime().getTime()
-//                <= routineItem.getStartTime().getTime().getTime()) {
-//            DialogUtils.showInfoAlertDialog("", "শুরুর সময় শেষের সময় থেকে ছোট বা সমান", getContext());
-//            return false;
-//        }
+        if (routineItem.getEndTime().getTime().getTime()
+                <= routineItem.getStartTime().getTime().getTime()) {
+            DialogUtils.showInfoAlertDialog("", "শুরুর সময় শেষের সময় থেকে ছোট বা সমান", getContext());
+            return false;
+        }
 
         if (!routineItem.isPermanent() && routineItem.getDateIfTemporary() == null) {
             DialogUtils.showInfoAlertDialog("", "তারিখ সিলেক্ট করুন যেহেতু আপনার রুটিনটি স্থায়ী নয়।বুঝতে " +
@@ -348,6 +376,7 @@ public class RoutineInputDialog extends BaseFullScreenDialog {
         //Radio button not word properly while set value via XML so we need to do that
         //by programmatically
         routineItem.setPermanent(true);
+        routineItem.setTriggerAlarm(true);
         routineItem.setSelectedDayList(banglaDaysPicker.getSelectedDays());
         routineItem.setType(RoutineConstant.ROUTINE_TYPE_CLASS);
         routineItem.setColor(getResources().getColor(R.color.colorGreen));

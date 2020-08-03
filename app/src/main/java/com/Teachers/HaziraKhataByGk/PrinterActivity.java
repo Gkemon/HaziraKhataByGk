@@ -9,9 +9,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
 import com.Teachers.HaziraKhataByGk.Model.Student;
@@ -22,7 +21,7 @@ import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.perStud
 import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.studentListForPrintActiviyFromAttendenceActivity;
 import static com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity.year;
 
-public class PrinterActivity extends AppCompatActivity {
+public class PrinterActivity extends BaseActivity {
 
 
     public static String INTENT_FLAG = "FLAG";

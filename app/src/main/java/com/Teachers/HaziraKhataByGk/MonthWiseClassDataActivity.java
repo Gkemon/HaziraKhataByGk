@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MonthWiseClassDataActivity extends AppCompatActivity {
+public class MonthWiseClassDataActivity extends BaseActivity {
     TextView textView;
 
 

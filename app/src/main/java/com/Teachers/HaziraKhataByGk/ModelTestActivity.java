@@ -16,11 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.ModelTestAdapter;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.ModelTestDatabase.ModelTestDatabase;
 
@@ -32,7 +32,7 @@ import java.util.Random;
  * Created by uy on 11/26/2017.
  */
 
-public class ModelTestActivity extends AppCompatActivity implements RecyclerItemClickListener {
+public class ModelTestActivity extends BaseActivity implements RecyclerItemClickListener {
     public static SparseBooleanArray selectedItems;
     //TODO: Answer
     public static List<String> Gk_Answer;

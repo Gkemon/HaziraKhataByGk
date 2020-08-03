@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.FeesAdapter;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 
 import java.util.ArrayList;
 
-public class FeesAcitvity extends AppCompatActivity {
+public class FeesAcitvity extends BaseActivity {
     public RecyclerView recyclerView;
     public ArrayList<String> arrayList;
 

@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -27,19 +26,17 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Home.MainViewModel;
 import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
-import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
-import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.Tabs.BlogFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.ClassRoomFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.Fragments.TextBookFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.JobFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.NibondhonFragment;
 import com.Teachers.HaziraKhataByGk.Tabs.TotthojhuriFragment;
-import com.Teachers.HaziraKhataByGk.routine.RoutineItem;
 import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
 import com.Teachers.HaziraKhataByGk.routine.RoutineViewModel;
 import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
@@ -52,13 +49,8 @@ import com.onesignal.OneSignal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.Teachers.HaziraKhataByGk.service.GenericEventShowingService.TOTAL_ROUTINES;
 
-//TODO: Tutorial for navigation drawer with tablayout:
-// 1)http://www.devexchanges.info/2016/05/android-basic-training-course-combining.html
-
-
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private MainViewModel mainViewModel;
@@ -174,13 +166,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseCaller.getAuth().addAuthStateListener(authListener);
 
         super.onResume();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.schedule_menu, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
 

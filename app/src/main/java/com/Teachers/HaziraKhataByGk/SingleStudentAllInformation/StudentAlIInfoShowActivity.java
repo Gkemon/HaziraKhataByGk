@@ -21,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +29,7 @@ import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -44,7 +44,7 @@ import java.util.Collections;
 
 import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime.intMonthToStringMonthConverter;
 
-public class StudentAlIInfoShowActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, RecyclerItemClickListener {
+public class StudentAlIInfoShowActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, RecyclerItemClickListener {
     public static String time, yearWithDate, year, month, day;
     public Button studentPhoneNumber;
     public Button parentPhoneNumber;
@@ -279,7 +279,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
             {
                 final DatePicker datePicker = (DatePicker) v.findViewById(R.id.datePicker);
 
-                String formatedDate = UtilsDateTime.getSimpleDateText(datePicker.getYear(),
+                String formattedDate = UtilsDateTime.getSimpleDateText(datePicker.getYear(),
                         datePicker.getMonth(), datePicker.getDayOfMonth());
 
                 String subject = Subject.getText().toString();
@@ -288,7 +288,7 @@ public class StudentAlIInfoShowActivity extends AppCompatActivity implements Ada
                 AttendenceData attendenceData = new AttendenceData();
                 attendenceData.setStatus(true);
                 attendenceData.setSubject(subject);
-                attendenceData.setDate(formatedDate);
+                attendenceData.setDate(formattedDate);
 
                 //Add toTime database
                 FirebaseCaller.getFirebaseDatabase().child("Users").

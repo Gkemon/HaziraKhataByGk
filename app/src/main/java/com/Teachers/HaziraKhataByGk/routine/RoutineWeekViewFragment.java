@@ -3,19 +3,16 @@ package com.Teachers.HaziraKhataByGk.routine;
 import android.content.Context;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.CustomArrayList;
 import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
-import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
@@ -170,7 +167,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
                 getContext(), new CommonCallback<Boolean>() {
                     @Override
                     public void onSuccess(Boolean response) {
-                        routineViewModel.deleteByID(event.id);
+                        if(response)routineViewModel.deleteByID(event.id);
                     }
                 });
 
@@ -252,7 +249,7 @@ public class RoutineWeekViewFragment extends Fragment implements MonthLoader.Mon
             //If it is temporary routine
             if (!event.isPermanent()) {
                 return event.getDateIfTemporary() != null && UtilsDateTime.isDateEqualIgnoringTime(
-                        event.getDateIfTemporary(), currentCal.getTime());
+                        event.getDateIfTemporary().getTime(), currentCal.getTime());
             } else {
                 int day = currentCal.get(Calendar.DAY_OF_WEEK);
                 return event.getSelectedDayList().contains(day);

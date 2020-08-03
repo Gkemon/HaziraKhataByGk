@@ -1,7 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Home;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -9,8 +8,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -18,16 +15,13 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.routine.RoutineUtils;
-import com.Teachers.HaziraKhataByGk.routine.room.RoutineDao;
-import com.Teachers.HaziraKhataByGk.routine.room.RoutineRepository;
-import com.Teachers.HaziraKhataByGk.service.BaseForeGroundService;
 import com.Teachers.HaziraKhataByGk.service.GenericEventShowingService;
 import com.Teachers.HaziraKhataByGk.service.ServiceUtils;
-import com.google.firebase.database.core.Context;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     public static final String ROUTINE_REMINDER_TIME_BEFORE="routineReminderTimeBefore";
     public static final String IS_NOTIFICATION_ENABLED="notificationPreference";

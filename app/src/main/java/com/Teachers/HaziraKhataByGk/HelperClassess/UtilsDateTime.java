@@ -19,13 +19,17 @@ public class UtilsDateTime {
     }
 
     public static String getSimpleDateText(int year,int month,int dayOfMonth){
-        return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).format(getDate(year,month,dayOfMonth));
+        return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).format(getDate(year,month,dayOfMonth).getTime());
     }
-    public static String getSimpleDateText(Date date){
-        return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).format(date);
+    public static String getSimpleDateText(Calendar date){
+        return getSimpleDateFormate(DATE_FORMATE_EEE_D_MMM_YYYY).format(date.getTime());
     }
-    public static Date getDate(int year,int month,int dayOfMonth) {
-        return new GregorianCalendar(year, month, dayOfMonth).getTime();
+    public static Calendar getDate(int year,int month,int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
+        return calendar;
     }
 
     public static String getHHMMformattedTime(){

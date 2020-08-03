@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsForMarkSheetEditAcitvity;
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 
-public class MarksheetEditActivity extends AppCompatActivity {
+public class MarksheetEditActivity extends BaseActivity {
 
     public SubjectMarkSheet subjectMarkSheet;
     public Button saveButton, printButton;

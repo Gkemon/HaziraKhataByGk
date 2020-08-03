@@ -24,23 +24,24 @@ import java.util.List;
 
 
 /**
- * Created by uy on 9/7/2017.
+ * Created by Gk emon on 9/7/2017.
  */
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesHolder> {
-    public static List<Notes> Notelist;
+    public List<Notes> notesList;
     private Context context;
 
     private RecyclerItemClickListener recyclerItemClickListener;
 
-    public NoteListAdapter(Context context) {
+    public NoteListAdapter(Context context,RecyclerItemClickListener recyclerItemClickListener) {
         this.context = context;
-        this.Notelist = new ArrayList<>();
+        this.notesList = new ArrayList<>();
+        this.recyclerItemClickListener=recyclerItemClickListener;
     }
 
     private void add(Notes item) {
-        Notelist.add(item);
-        notifyItemInserted(Notelist.size() - 1);
+        notesList.add(item);
+        notifyItemInserted(notesList.size() - 1);
     }
 
     public void addAll(List<Notes> Notelist) {
@@ -50,9 +51,9 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
     }
 
     public void remove(Notes item) {
-        int position = Notelist.indexOf(item);
+        int position = notesList.indexOf(item);
         if (position > -1) {
-            Notelist.remove(position);
+            notesList.remove(position);
             notifyItemRemoved(position);
         }
     }
@@ -64,7 +65,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
     }
 
     public Notes getItem(int position) {
-        return Notelist.get(position);
+        return notesList.get(position);
     }
 
     @Override
@@ -73,14 +74,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
 
         final notesHolder notesHolder = new notesHolder(view);
 
-        notesHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int adapterPos = notesHolder.getAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION) {
-                    if (recyclerItemClickListener != null) {
-                        recyclerItemClickListener.onItemClick(adapterPos, notesHolder.itemView);
-                    }
+        notesHolder.itemView.setOnClickListener(v -> {
+            int adapterPos = notesHolder.getAdapterPosition();
+            if (adapterPos != RecyclerView.NO_POSITION) {
+                if (recyclerItemClickListener != null) {
+                    recyclerItemClickListener.onItemClick(adapterPos, notesHolder.itemView);
                 }
             }
         });
@@ -91,7 +89,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
     @Override
     public void onBindViewHolder(notesHolder holder, int position) {
 
-        final Notes Notes = Notelist.get(position);
+        final Notes Notes = notesList.get(position);
         final Resources res = context.getResources();
         final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
 
@@ -120,7 +118,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
 
     @Override
     public int getItemCount() {
-        return Notelist.size();
+        return notesList.size();
     }
 
     public void setOnItemClickListener(RecyclerItemClickListener recyclerItemClickListener) {
@@ -135,11 +133,9 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.notesH
 
         public notesHolder(View itemView) {
             super(itemView);
-
-            thumbOfNote = (ImageView) itemView.findViewById(R.id.thumbOfNote);
-            TitleOfNotes = (TextView) itemView.findViewById(R.id.TitleOfNotes);
-            ContentOfNotes = (TextView) itemView.findViewById(R.id.ContentOfNotes);
-
+            thumbOfNote = itemView.findViewById(R.id.thumbOfNote);
+            TitleOfNotes =  itemView.findViewById(R.id.TitleOfNotes);
+            ContentOfNotes = itemView.findViewById(R.id.ContentOfNotes);
         }
     }
 

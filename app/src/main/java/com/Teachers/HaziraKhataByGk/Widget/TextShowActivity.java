@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * Created by uy on 10/21/2017.
  */
 
-public class TextShowActivity extends AppCompatActivity {
+public class TextShowActivity extends BaseActivity {
     String title;
     FloatingActionButton shareButton;
     TextView mainContent, heading;

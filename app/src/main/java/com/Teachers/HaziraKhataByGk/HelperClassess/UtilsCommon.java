@@ -1,6 +1,7 @@
 package com.Teachers.HaziraKhataByGk.HelperClassess;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,14 +11,13 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.preference.PreferenceManager;
-
+import com.Teachers.HaziraKhataByGk.BuildConfig;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
 import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
@@ -40,7 +40,6 @@ import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -95,10 +94,12 @@ public class UtilsCommon {
     }
 
     public static void handleError(Throwable throwable){
-        FirebaseCrashlytics.getInstance().recordException(throwable);
+        if (!BuildConfig.DEBUG)
+            FirebaseCrashlytics.getInstance().recordException(throwable);
     }
-    public static void sendLogToCrashlytics(String error){
-        FirebaseCrashlytics.getInstance().log(error);
+    public static void sendLogToCrashlytics(String log){
+        if (!BuildConfig.DEBUG)
+        FirebaseCrashlytics.getInstance().log(log);
     }
 
     public static ClassItem getCurrentClass(Context context) {
@@ -116,6 +117,7 @@ public class UtilsCommon {
         String json = gson.toJson(classItem);
         SharedPreferenceManager sharedPreferenceManager =
                 new SharedPreferenceManager(activity, classPref);
+        sharedPreferenceManager.removeValue("currentClass");
         sharedPreferenceManager.setValue("currentClass", json);
     }
 
@@ -128,6 +130,7 @@ public class UtilsCommon {
         String json = gson.toJson(classItemList, baseType);
         SharedPreferenceManager sharedPreferenceManager =
                 new SharedPreferenceManager(activity, classPref);
+        sharedPreferenceManager.removeValue("classList");
         sharedPreferenceManager.setValue("classList", json);
     }
 
@@ -209,14 +212,14 @@ public class UtilsCommon {
 
     public static void showDialogForSignUp(final Context activity) {
 
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
+        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(activity).create();
         alertDialog.setTitle("আপনি এখনো লগিন করেননি বা একাউন্ট খুলেননি");
         alertDialog.setIcon(R.drawable.warnig_for_delete);
         alertDialog.setMessage("আপনি একাউন্ট না খুলে থাকলে সাইন আপ করুন।আর যদি আপনার আগেই একাউন্ট থেকে থাকে তাহলে লগিন করুন।");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "সাইন আপ",
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "সাইন আপ",
                 (dialog, which) -> activity.startActivity(new Intent(activity, SignupActivity.class)));
 
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "লগিন", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "লগিন", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 activity.startActivity(new Intent(activity, LoginActivity.class));

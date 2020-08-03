@@ -37,7 +37,7 @@ public class GenericEventShowingService extends BaseForeGroundService implements
     public int onStartCommand(Intent intent, int flags, int startId) {
         baseForeGroundServiceNavigator = this;
 
-        if (intent.getExtras() != null) {
+        if (intent!=null&&intent.getExtras() != null) {
 
             List<RoutineItem> routineItems = intent.getExtras().getParcelableArrayList(TOTAL_ROUTINES);
             if (routineItems != null) {
@@ -70,7 +70,7 @@ public class GenericEventShowingService extends BaseForeGroundService implements
 
             for (RoutineItem routineItem : runningRoutines) {
 
-                if (beforeReminderTime == UtilsDateTime
+                if (routineItem.isTriggerAlarm()&&beforeReminderTime == UtilsDateTime
                         .getRemainingMinsFromCalender(routineItem.getStartTime())) {
                     triggerRoutines.add(routineItem);
                 }
