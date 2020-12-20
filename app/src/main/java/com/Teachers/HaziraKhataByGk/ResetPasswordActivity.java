@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

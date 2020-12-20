@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Adapter.FeesAdapter;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 
 import java.util.ArrayList;
 

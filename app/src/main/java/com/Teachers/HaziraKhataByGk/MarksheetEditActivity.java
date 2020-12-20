@@ -7,9 +7,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsForMarkSheetEditAcitvity;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsForMarkSheetEditAcitvity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Model.SubjectMarkSheet;
 
 public class MarksheetEditActivity extends BaseActivity {

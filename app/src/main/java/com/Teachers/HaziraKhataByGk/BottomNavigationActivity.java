@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.ViewPagerAdapter;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.ViewPagerAdapter;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.Model.JobItems;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;

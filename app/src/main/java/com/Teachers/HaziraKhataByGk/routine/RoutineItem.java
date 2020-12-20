@@ -5,12 +5,11 @@ import android.os.Parcelable;
 
 import androidx.room.Entity;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
 import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Entity

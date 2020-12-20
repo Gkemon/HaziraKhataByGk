@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MonthWiseClassDataActivity extends BaseActivity {

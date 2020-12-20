@@ -19,8 +19,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

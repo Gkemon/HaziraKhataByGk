@@ -3,7 +3,7 @@ package com.Teachers.HaziraKhataByGk.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
 
 
 /**

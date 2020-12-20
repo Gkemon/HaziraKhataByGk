@@ -1,7 +1,6 @@
 package com.Teachers.HaziraKhataByGk.note;
 
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.HelperClasses.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsDateTime;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.Notes;
 import com.Teachers.HaziraKhataByGk.R;

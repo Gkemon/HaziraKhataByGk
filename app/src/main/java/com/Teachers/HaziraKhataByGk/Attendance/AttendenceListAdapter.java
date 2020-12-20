@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.UtilsView;
+import com.Teachers.HaziraKhataByGk.HelperClasses.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.UtilsView;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;

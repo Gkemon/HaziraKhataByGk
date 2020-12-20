@@ -262,7 +262,8 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    app:backgroundTint="@color/colorGreen" />
+                    app:backgroundTint="@color/colorGreen"
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
             <EditText

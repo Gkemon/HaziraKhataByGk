@@ -1,7 +1,7 @@
 package com.Teachers.HaziraKhataByGk.Model;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
 
 import java.io.Serializable;
 

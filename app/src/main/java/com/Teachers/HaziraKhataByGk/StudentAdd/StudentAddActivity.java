@@ -21,12 +21,12 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.DatePickerBuilder;
-import com.Teachers.HaziraKhataByGk.HelperClassess.DialogUtils;
-import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhotoUploader;
-import com.Teachers.HaziraKhataByGk.HelperClassess.PermissionActivity;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.UtilsView;
+import com.Teachers.HaziraKhataByGk.HelperClasses.DatePickerBuilder;
+import com.Teachers.HaziraKhataByGk.HelperClasses.DialogUtils;
+import com.Teachers.HaziraKhataByGk.HelperClasses.FirebasePhotoUploader;
+import com.Teachers.HaziraKhataByGk.HelperClasses.PermissionActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.UtilsView;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
 import com.Teachers.HaziraKhataByGk.Model.ClassItem;
@@ -35,8 +35,6 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.Teachers.HaziraKhataByGk.SingleStudentAllInformation.StudentAlIInfoShowActivity;
 import com.Teachers.HaziraKhataByGk.note.NoteShowingDialog;
 import com.bumptech.glide.Glide;
-import com.facebook.FacebookButtonBase;
-import com.google.firebase.database.FirebaseDatabase;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 

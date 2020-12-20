@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.Teachers.HaziraKhataByGk.Adapter.NewsAdapter;
 import com.Teachers.HaziraKhataByGk.BottomNavigationActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.R;

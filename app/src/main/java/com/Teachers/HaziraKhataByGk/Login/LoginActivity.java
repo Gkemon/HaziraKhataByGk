@@ -28,11 +28,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import com.Teachers.HaziraKhataByGk.BuildConfig;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ConnectivityChecker;
-import com.Teachers.HaziraKhataByGk.HelperClassess.FirebasePhoneAuthBuilder;
-import com.Teachers.HaziraKhataByGk.HelperClassess.LoadingPopup;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ConnectivityChecker;
+import com.Teachers.HaziraKhataByGk.HelperClasses.FirebasePhoneAuthBuilder;
+import com.Teachers.HaziraKhataByGk.HelperClasses.LoadingPopup;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.MainActivity;
 import com.Teachers.HaziraKhataByGk.R;

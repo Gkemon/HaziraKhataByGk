@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.Teachers.HaziraKhataByGk.Adapter.BlogAdapter;
 import com.Teachers.HaziraKhataByGk.BottomNavigationActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.BlogItem;
 import com.Teachers.HaziraKhataByGk.R;

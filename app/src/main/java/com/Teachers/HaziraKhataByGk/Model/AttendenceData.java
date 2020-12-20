@@ -1,6 +1,6 @@
 package com.Teachers.HaziraKhataByGk.Model;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ComparableDate;
 
 import java.text.ParseException;
 

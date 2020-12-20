@@ -19,8 +19,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.CustomTextInputLayout;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout;
 import com.Teachers.HaziraKhataByGk.Model.DistributionVSnumberTable;
 import com.Teachers.HaziraKhataByGk.Model.Student;
 import com.Teachers.HaziraKhataByGk.Model.StudentVsDistributionTable;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.logObject;
+import static com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon.logObject;
 
 /**
  * Created by Gk emon on 2/4/2018.

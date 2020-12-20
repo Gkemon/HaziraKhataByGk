@@ -5,8 +5,8 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 
 /**
  * Created by uy on 12/2/2017.

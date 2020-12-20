@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -25,8 +24,8 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Home.MainViewModel;
 import com.Teachers.HaziraKhataByGk.Home.SettingsActivity;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
@@ -122,7 +121,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //If activity is launched from routine service
         if(getIntent()!=null&&getIntent().getExtras()!=null&&
                 getIntent().getExtras().getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES)!=null){
-            mainViewModel.setTriggeredRoutines(getIntent().getExtras().getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES));
+            mainViewModel
+                    .setTriggeredRoutines(getIntent()
+                    .getExtras()
+                    .getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES));
         }
 
         toolbar =  findViewById(R.id.toolbar);

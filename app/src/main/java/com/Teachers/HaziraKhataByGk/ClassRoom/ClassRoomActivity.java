@@ -24,8 +24,8 @@ import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Constant.Constant;
 import com.Teachers.HaziraKhataByGk.FeesAcitvity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.MarkSheetHomeActivity;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -47,7 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon.DateFormate;
+import static com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon.DateFormate;
 
 public class ClassRoomActivity extends BaseActivity implements RecyclerItemClickListener {
 

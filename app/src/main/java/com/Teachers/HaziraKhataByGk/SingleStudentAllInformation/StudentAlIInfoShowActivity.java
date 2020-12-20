@@ -26,10 +26,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity;
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ComparableDate;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsCommon;
-import com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime;
-import com.Teachers.HaziraKhataByGk.HelperClassess.ViewUtils.BaseActivity;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ComparableDate;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
+import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsDateTime;
+import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Listener.CommonCallback;
 import com.Teachers.HaziraKhataByGk.Listener.RecyclerItemClickListener;
 import com.Teachers.HaziraKhataByGk.Model.AttendenceData;
@@ -42,7 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.Teachers.HaziraKhataByGk.HelperClassess.UtilsDateTime.intMonthToStringMonthConverter;
+import static com.Teachers.HaziraKhataByGk.HelperClasses.UtilsDateTime.intMonthToStringMonthConverter;
 
 public class StudentAlIInfoShowActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, RecyclerItemClickListener {
     public static String time, yearWithDate, year, month, day;

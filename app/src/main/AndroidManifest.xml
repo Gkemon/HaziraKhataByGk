@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".HelperClassess.GlobalContext"
+        android:name=".HelperClasses.GlobalContext"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/main_icon_hd_half"
         android:label="@string/app_name"
