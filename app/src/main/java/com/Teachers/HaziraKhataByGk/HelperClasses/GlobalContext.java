@@ -9,6 +9,8 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.multidex.MultiDexApplication;
 
 import com.Teachers.HaziraKhataByGk.Firebase.FirebaseCaller;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.lang.ref.WeakReference;
 
@@ -34,6 +36,10 @@ public class GlobalContext extends MultiDexApplication {
         getTheme().applyStyle(android.R.style.Theme_Dialog, true);
 
         FirebaseCaller.initializationFirebase();
+
+        //TODO: Maybe not post the handled crash by reportException() if the below line is not mentioned.
+        FirebaseApp.initializeApp(this);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

@@ -108,7 +108,7 @@ public class AttendanceActivity extends BaseActivity {
                 LayoutInflater inflater = this.getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.custom_delete_dialauge, null);
                 dialogBuilder.setView(dialogView);
-                final EditText edt = (EditText) dialogView.findViewById(R.id.custom_delete_dialauge_text);
+                final EditText edt = dialogView.findViewById(R.id.custom_delete_dialauge_text);
                 dialogBuilder.setIcon(R.drawable.warnig_for_delete);
                 dialogBuilder.setTitle("ক্লাসের সকল শিক্ষার্থীর উপস্থিতির ডাটা ডিলেট করতে চায়?");
                 dialogBuilder.setMessage("ডিলিট করার আগে ইংরেজীতে \"DELETE\" শব্দটি লিখুন।");

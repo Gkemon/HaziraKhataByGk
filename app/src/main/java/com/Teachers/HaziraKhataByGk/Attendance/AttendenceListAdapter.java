@@ -196,7 +196,8 @@ public class AttendenceListAdapter extends BaseAdapter {
 
             FirebaseCaller.getFirebaseDatabase().child("Users").child(FirebaseCaller.getUserID()).
                     child("Class").
-                    child(AttendanceActivity.classitemAttendence.getName() + AttendanceActivity.classitemAttendence.getSection()).
+                    child(AttendanceActivity.classitemAttendence.getName() +
+                            AttendanceActivity.classitemAttendence.getSection()).
                     child("Student").child(AttendanceActivity.rolls.get(i)).
                     child("Attendance").push().setValue(attendenceData);
 

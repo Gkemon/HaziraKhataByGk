@@ -98,15 +98,12 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
 
     @Override
     public void onBindViewHolder(ContactHolder holder, int position) {
-        if (classitemList == null) {
-
-        } else {
+        if (classitemList != null) {
             final ClassItem classitem = classitemList.get(position);
 
             if (classitem != null && classitem.getName() != null) {
                 final Resources res = context.getResources();
                 final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
-
 
                 try {
 
@@ -114,17 +111,6 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                     ColorGenerator generator = ColorGenerator.MATERIAL;
                     int color = generator.getRandomColor();
 
-                    if (classitem.getName().isEmpty()) {
-
-                        FirebaseCaller.getFirebaseDatabase()
-                                .child("Users")
-                                .child(FirebaseCaller
-                                        .getUserID())
-                                .child("Class")
-                                .child(classitem.getName() + classitem.getSection())
-                                .removeValue();
-                        classitem.setName("No class name");
-                    }
 
                     TextDrawable myDrawable = TextDrawable.builder().beginConfig().height(tileSize).width(tileSize)
                             .textColor(Color.WHITE)
@@ -143,18 +129,6 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Cont
                         sectionName = "সেকশন/সেশন: " + classitem.getSection();
                     }
 
-
-                    if (classitem.getName() == null) { //Quick fix
-                        FirebaseCaller.getFirebaseDatabase().child("Users")
-                                .child(FirebaseCaller.getUserID())
-                                .child("Class")
-                                .child("nullnull").removeValue();
-
-                        FirebaseCaller.getFirebaseDatabase().child("Users")
-                                .child(FirebaseCaller.getUserID())
-                                .child("Class")
-                                .child("null").removeValue();
-                    }
 
 
                     if (classitem.getName() != null && !classitem.getName().isEmpty())
