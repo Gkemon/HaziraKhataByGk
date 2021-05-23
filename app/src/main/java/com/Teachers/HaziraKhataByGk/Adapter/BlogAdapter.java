@@ -30,7 +30,7 @@ import static com.Teachers.HaziraKhataByGk.R.id.dateOfNews;
 import static com.Teachers.HaziraKhataByGk.R.id.loveClicker;
 
 /**
- * Created by uy on 10/28/2017.
+ * Created by GK on 10/28/2017.
  */
 
 public class BlogAdapter extends RecyclerView.Adapter<blogViewHolder> {

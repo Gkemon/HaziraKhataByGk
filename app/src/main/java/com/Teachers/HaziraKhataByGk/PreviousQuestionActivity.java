@@ -10,7 +10,7 @@ import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Widget.TextShowActivity;
 
 /**
- * Created by uy on 12/1/2017.
+ * Created by GK on 12/1/2017.
  */
 
 public class PreviousQuestionActivity extends BaseActivity {

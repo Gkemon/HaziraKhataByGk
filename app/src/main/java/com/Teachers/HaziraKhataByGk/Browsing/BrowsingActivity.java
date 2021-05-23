@@ -18,7 +18,7 @@ import com.Teachers.HaziraKhataByGk.Model.NewsItem;
 import com.Teachers.HaziraKhataByGk.R;
 
 /**
- * Created by uy on 10/29/2017.
+ * Created by GK on 10/29/2017.
  */
 
 public class BrowsingActivity extends BaseActivity {

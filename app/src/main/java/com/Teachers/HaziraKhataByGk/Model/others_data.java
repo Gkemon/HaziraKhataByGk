@@ -1,7 +1,7 @@
 package com.Teachers.HaziraKhataByGk.Model;
 
 /**
- * Created by uy on 11/22/2017.
+ * Created by GK on 11/22/2017.
  */
 
 public class others_data {

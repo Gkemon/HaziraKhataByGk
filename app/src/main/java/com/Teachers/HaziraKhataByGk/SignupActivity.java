@@ -21,7 +21,7 @@ import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 
 /**
- * Created by uy on 12/2/2017.
+ * Created by GK on 12/2/2017.
  */
 
 public class SignupActivity extends BaseActivity {

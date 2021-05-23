@@ -3,7 +3,7 @@ package com.Teachers.HaziraKhataByGk.Model;
 import java.io.Serializable;
 
 /**
- * Created by uy on 6/16/2018.
+ * Created by GK on 6/16/2018.
  */
 
 public class DistributionVSnumberTable implements Serializable {

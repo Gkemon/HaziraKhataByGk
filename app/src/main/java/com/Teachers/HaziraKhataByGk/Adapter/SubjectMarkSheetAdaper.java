@@ -23,7 +23,7 @@ import static com.Teachers.HaziraKhataByGk.Constant.Constant.HASH_KEY_FOR_RESULT
 import static com.Teachers.HaziraKhataByGk.Constant.Constant.MARK_SHEET_OBJECT_FOR_EDIT;
 
 /**
- * Created by uy on 6/14/2018.
+ * Created by GK on 6/14/2018.
  */
 
 public class SubjectMarkSheetAdaper extends RecyclerView.Adapter<SubjectMarkSheetAdaper.MyViewHolder> {

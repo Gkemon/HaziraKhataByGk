@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 /**
- * Created by uy on 10/28/2017.
+ * Created by GK on 10/28/2017.
  */
 
 public class SingleStudentAttendanceAdapter extends RecyclerView.Adapter<SingleStudentAttendanceViewHolder> {

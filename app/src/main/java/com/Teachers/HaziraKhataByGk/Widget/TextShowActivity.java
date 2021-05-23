@@ -14,7 +14,7 @@ import com.Teachers.HaziraKhataByGk.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
- * Created by uy on 10/21/2017.
+ * Created by GK on 10/21/2017.
  */
 
 public class TextShowActivity extends BaseActivity {

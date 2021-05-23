@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by uy on 11/26/2017.
+ * Created by GK on 11/26/2017.
  */
 
 public class ModelTestAdapter extends RecyclerView.Adapter<ModelTestAdapter.questionHolder> {

@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by uy on 10/28/2017.
+ * Created by GK on 10/28/2017.
  */
 
 public class JobItems implements Parcelable {

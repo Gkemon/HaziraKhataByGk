@@ -26,7 +26,7 @@ import static com.Teachers.HaziraKhataByGk.R.id.saveClickerForjob;
 import static com.Teachers.HaziraKhataByGk.R.id.shareClickerForjob;
 
 /**
- * Created by uy on 10/28/2017.
+ * Created by GK on 10/28/2017.
  */
 
 public class JobListAdapter extends RecyclerView.Adapter<JobViewHolder> {

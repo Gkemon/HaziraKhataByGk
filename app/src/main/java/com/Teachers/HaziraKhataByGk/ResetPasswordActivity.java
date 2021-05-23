@@ -22,7 +22,7 @@ import static android.view.Gravity.CENTER;
 import static com.Teachers.HaziraKhataByGk.Login.LoginActivity.email;
 
 /**
- * Created by uy on 12/2/2017.
+ * Created by GK on 12/2/2017.
  */
 
 public class ResetPasswordActivity extends BaseActivity {

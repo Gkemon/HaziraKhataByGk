@@ -23,7 +23,7 @@ import com.Teachers.HaziraKhataByGk.Login.LoginActivity;
 import com.Teachers.HaziraKhataByGk.Widget.PrefManager;
 
 /**
- * Created by uy on 12/1/2017.
+ * Created by GK on 12/1/2017.
  */
 
 public class WelcomeActivity extends BaseActivity {

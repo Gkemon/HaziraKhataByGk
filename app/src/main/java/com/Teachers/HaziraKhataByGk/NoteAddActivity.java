@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by uy on 9/7/2017.
+ * Created by GK on 9/7/2017.
  */
 
 public class NoteAddActivity extends BaseActivity implements View.OnClickListener {

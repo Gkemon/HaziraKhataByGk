@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by uy on 6/17/2018.
+ * Created by GK on 6/17/2018.
  */
 
 public class StudentVsDistributionTable implements Serializable {

@@ -9,7 +9,7 @@ import com.Teachers.HaziraKhataByGk.HelperClasses.UtilsCommon;
 import com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.BaseActivity;
 
 /**
- * Created by uy on 12/2/2017.
+ * Created by GK on 12/2/2017.
  */
 
 public class AboutActivity extends BaseActivity {

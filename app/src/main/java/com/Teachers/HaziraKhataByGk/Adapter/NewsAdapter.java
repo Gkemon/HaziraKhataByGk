@@ -31,7 +31,7 @@ import static com.Teachers.HaziraKhataByGk.R.id.loveClicker;
 import static com.Teachers.HaziraKhataByGk.R.id.tv_card_main_3_title;
 
 /**
- * Created by uy on 10/28/2017.
+ * Created by GK on 10/28/2017.
  */
 
 public class NewsAdapter extends RecyclerView.Adapter<newsViewHolder> {

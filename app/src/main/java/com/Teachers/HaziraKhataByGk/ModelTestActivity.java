@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by uy on 11/26/2017.
+ * Created by GK on 11/26/2017.
  */
 
 public class ModelTestActivity extends BaseActivity implements RecyclerItemClickListener {
