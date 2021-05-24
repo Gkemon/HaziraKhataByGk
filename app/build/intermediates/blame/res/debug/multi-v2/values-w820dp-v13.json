@@ -1,0 +1,45 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/gk/AndroidStudioProjects/hazira-khata-attendance-sheet/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w820dp-v13/values-w820dp-v13.xml",
+            "map": [
+                {
+                    "source": "/home/gk/AndroidStudioProjects/hazira-khata-attendance-sheet/app/src/main/res/values-w820dp/styles.xml",
+                    "from": {
+                        "startLines": "4,78,73,83,9,46,87,63,68,100,26,22,32,41,37,96",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "93,3032,2877,3196,282,1786,3340,2563,2707,3792,1004,847,1189,1600,1406,3649",
+                        "endLines": "7,80,75,85,20,61,94,66,71,103,29,24,34,44,40,98",
+                        "endColumns": "12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12",
+                        "endOffsets": "276,3189,3025,3334,841,2557,3643,2701,2871,3998,1182,998,1350,1780,1595,3786"
+                    },
+                    "to": {
+                        "startLines": "3,7,10,13,16,28,44,52,56,60,64,68,71,74,78,82",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "113,301,463,616,759,1323,2099,2407,2550,2719,2930,3113,3269,3435,3620,3814",
+                        "endLines": "6,9,12,15,27,43,51,55,59,63,67,70,73,77,81,84",
+                        "endColumns": "12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12",
+                        "endOffsets": "296,458,611,754,1318,2094,2402,2545,2714,2925,3108,3264,3430,3615,3809,3951"
+                    }
+                },
+                {
+                    "source": "/home/gk/AndroidStudioProjects/hazira-khata-attendance-sheet/app/src/main/res/values-w820dp/dimens.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "4",
+                        "startOffsets": "291",
+                        "endColumns": "57",
+                        "endOffsets": "344"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "57",
+                        "endOffsets": "108"
+                    }
+                }
+            ]
+        }
+    ]
+}

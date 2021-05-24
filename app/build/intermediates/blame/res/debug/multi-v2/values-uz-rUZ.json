@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/gk/AndroidStudioProjects/hazira-khata-attendance-sheet/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-uz-rUZ/values-uz-rUZ.xml",
+            "map": [
+                {
+                    "source": "/home/gk/.gradle/caches/transforms-2/files-2.1/7bc51ad868b1153d1f59533fba8223c2/jetified-materialdatetimepicker-1.5.1/res/values-uz-rUZ/values-uz-rUZ.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "265,370,485,566,678,797,913,1007,1098,1193,1282",
+                        "endColumns": "104,114,80,111,118,115,93,90,94,88,102",
+                        "endOffsets": "365,480,561,673,792,908,1002,1093,1188,1277,1380"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,210,325,406,518,637,753,847,938,1033,1122",
+                        "endColumns": "104,114,80,111,118,115,93,90,94,88,102",
+                        "endOffsets": "205,320,401,513,632,748,842,933,1028,1117,1220"
+                    }
+                }
+            ]
+        }
+    ]
+}

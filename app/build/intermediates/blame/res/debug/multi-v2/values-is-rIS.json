@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/gk/AndroidStudioProjects/hazira-khata-attendance-sheet/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-is-rIS/values-is-rIS.xml",
+            "map": [
+                {
+                    "source": "/home/gk/.gradle/caches/transforms-2/files-2.1/7bc51ad868b1153d1f59533fba8223c2/jetified-materialdatetimepicker-1.5.1/res/values-is-rIS/values-is-rIS.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "265,374,483,563,679,795,907,1000,1096,1188,1272",
+                        "endColumns": "108,108,79,115,115,111,92,95,91,83,95",
+                        "endOffsets": "369,478,558,674,790,902,995,1091,1183,1267,1363"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,214,323,403,519,635,747,840,936,1028,1112",
+                        "endColumns": "108,108,79,115,115,111,92,95,91,83,95",
+                        "endOffsets": "209,318,398,514,630,742,835,931,1023,1107,1203"
+                    }
+                }
+            ]
+        }
+    ]
+}
