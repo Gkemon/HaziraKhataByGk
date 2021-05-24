@@ -28,7 +28,7 @@
         android:padding="6sp"
         android:weightSum="1">
 
-        <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+        <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
             android:id="@+id/note_title_textinputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,13 +43,13 @@
                 android:ems="10"
                 android:hint="@string/note_title_hint"
                 android:inputType="textPersonName" />
-        </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+        </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/note_content_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     android:maxLines="1000"
                     android:textSize="14sp"
                     app:layout_constraintTop_toTopOf="parent" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
         </ScrollView>
     </LinearLayout>
 

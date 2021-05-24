@@ -5,7 +5,7 @@
     android:background="#e3f2fd"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.Teachers.HaziraKhataByGk.ClassRoom.ClassRoomActivity">
+    tools:context="com.emon.haziraKhata.ClassRoom.ClassRoomActivity">
 
     <LinearLayout
         android:id="@+id/toDoEmptyView"

@@ -8,7 +8,7 @@
     android:id="@+id/CoordinatorLayout"
     android:fitsSystemWindows="true"
     android:animateLayoutChanges="true"
-    tools:context="com.Teachers.HaziraKhataByGk.Login.LoginActivity">
+    tools:context="com.emon.haziraKhata.Login.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"

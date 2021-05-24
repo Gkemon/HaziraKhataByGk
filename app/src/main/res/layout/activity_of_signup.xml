@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/blueLight"
-    tools:context="com.Teachers.HaziraKhataByGk.SignupActivity">
+    tools:context="com.emon.haziraKhata.SignupActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

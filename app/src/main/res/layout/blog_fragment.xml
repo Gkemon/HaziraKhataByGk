@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e3f2fd"
-    tools:context="com.Teachers.HaziraKhataByGk.Tabs.Fragments.BlogFragment">
+    tools:context="com.emon.haziraKhata.Tabs.Fragments.BlogFragment">
     <androidx.core.widget.NestedScrollView
         android:id="@+id/blogPost"
         android:layout_width="match_parent"

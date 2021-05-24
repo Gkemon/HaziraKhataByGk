@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/Student_name_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,9 +35,9 @@
                     android:ems="10"
                     android:hint="@string/student_name"
                     android:inputType="textPersonName" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/Roll_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                     android:ems="10"
                     android:hint="@string/student_roll"
                     android:inputType="number" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                     android:text="মেয়ে" />
             </RadioGroup>
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/Student_number_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,9 +91,9 @@
                     android:ems="10"
                     android:hint="@string/student_contact"
                     android:inputType="phone" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/parent_name_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,9 +108,9 @@
                     android:ems="10"
                     android:hint="@string/student_parent_name"
                     android:inputType="textPersonName" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/parentPhoneNumber_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,9 +125,9 @@
                     android:ems="10"
                     android:hint="@string/student_parent_contact"
                     android:inputType="phone" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/parent2_name_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,9 +142,9 @@
                     android:ems="10"
                     android:hint="@string/student_parent_name2"
                     android:inputType="textPersonName" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/parent2PhoneNumber_textinputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,9 +159,9 @@
                     android:ems="10"
                     android:hint="@string/student_parent_contact2"
                     android:inputType="phone" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
-            <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout
+            <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout
                 android:id="@+id/ll_birth_certificate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                     android:ems="10"
                     android:hint="@string/birth_certification_no"
                     android:inputType="text" />
-            </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomTextInputLayout>
+            </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomTextInputLayout>
 
             <Button
                 android:id="@+id/btn_birth_date_select"

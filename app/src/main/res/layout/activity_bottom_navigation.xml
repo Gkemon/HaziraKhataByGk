@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.Teachers.HaziraKhataByGk.BottomNavigationActivity">
+    tools:context="com.emon.haziraKhata.BottomNavigationActivity">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_bottom_navigation"

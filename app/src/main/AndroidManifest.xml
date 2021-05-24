@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.Teachers.HaziraKhataByGk">
+    package="com.emon.haziraKhata">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="ANDROID.PERMISSION.INTERNET" />
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".HelperClasses.GlobalContext"
+        android:name="com.emon.haziraKhata.HelperClasses.GlobalContext"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/main_icon_hd_half"
         android:label="@string/app_name"
@@ -20,16 +20,16 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden|adjustPan">
         <activity
-            android:name=".Home.SettingsActivity"
+            android:name="com.emon.haziraKhata.Home.SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
 
         <service
-            android:name=".service.GenericEventShowingService"
+            android:name="com.emon.haziraKhata.service.GenericEventShowingService"
             android:enabled="true"
             android:exported="true" />
 
         <receiver
-            android:name=".service.TimeChangeReceiver"
+            android:name="com.emon.haziraKhata.service.TimeChangeReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -37,7 +37,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".service.AutoStartReceiver"
+            android:name="com.emon.haziraKhata.service.AutoStartReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="500">
@@ -65,10 +65,10 @@
             </intent-filter>
         </activity> <!-- for FB LOGIN -->
         <activity
-            android:name=".Login.LoginActivity"
+            android:name="com.emon.haziraKhata.Login.LoginActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name="com.emon.haziraKhata.WelcomeActivity"
             android:theme="@style/AppThemeForNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -77,71 +77,71 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.emon.haziraKhata.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".AddEditClass.ClassAddActivity"
+            android:name="com.emon.haziraKhata.AddEditClass.ClassAddActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".ClassRoom.ClassRoomActivity"
+            android:name="com.emon.haziraKhata.ClassRoom.ClassRoomActivity"
             android:theme="@style/AppThemeForNoActionBar" />
-        <activity android:name=".Attendance.AttendanceActivity" />
+        <activity android:name="com.emon.haziraKhata.Attendance.AttendanceActivity" />
         <activity
-            android:name=".StudentListShowActivity"
-            android:theme="@style/AppThemeForNoActionBar" />
-        <activity
-            android:name=".PrinterActivity"
+            android:name="com.emon.haziraKhata.StudentListShowActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".StudentAdd.StudentAddActivity"
-            android:theme="@style/AppThemeForNoActionBar" />
-        <activity android:name=".SingleStudentAllInformation.StudentAlIInfoShowActivity" />
-        <activity
-            android:name=".NoteAddActivity"
+            android:name="com.emon.haziraKhata.PrinterActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".Widget.TextShowActivity"
+            android:name="com.emon.haziraKhata.StudentAdd.StudentAddActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity android:name="com.emon.haziraKhata.SingleStudentAllInformation.StudentAlIInfoShowActivity" />
+        <activity
+            android:name="com.emon.haziraKhata.NoteAddActivity"
+            android:theme="@style/AppThemeForNoActionBar" />
+        <activity
+            android:name="com.emon.haziraKhata.Widget.TextShowActivity"
             android:label=""
             android:theme="@style/style_for_text_content" />
         <activity
-            android:name=".PreviousQuestionActivity"
+            android:name="com.emon.haziraKhata.PreviousQuestionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Browsing.BrowsingActivity"
+            android:name="com.emon.haziraKhata.Browsing.BrowsingActivity"
             android:theme="@style/AppTheme.NoActionBarForBrowser" />
-        <activity android:name=".BlogActivity" />
+        <activity android:name="com.emon.haziraKhata.BlogActivity" />
         <activity
-            android:name=".BottomNavigationActivity"
+            android:name="com.emon.haziraKhata.BottomNavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ModelTestChooseActivity"
+            android:name="com.emon.haziraKhata.ModelTestChooseActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".ModelTestActivity"
+            android:name="com.emon.haziraKhata.ModelTestActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ModelTestResultShowActivity"
+            android:name="com.emon.haziraKhata.ModelTestResultShowActivity"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity
-            android:name=".AboutActivity"
+            android:name="com.emon.haziraKhata.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SignupActivity"
+            android:name="com.emon.haziraKhata.SignupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name="com.emon.haziraKhata.ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MonthWiseClassDataActivity"
+            android:name="com.emon.haziraKhata.MonthWiseClassDataActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FeesAcitvity" />
+        <activity android:name="com.emon.haziraKhata.FeesAcitvity" />
         <activity
-            android:name=".MarkSheetHomeActivity"
+            android:name="com.emon.haziraKhata.MarkSheetHomeActivity"
             android:label="@string/title_activity_mark_sheet_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MarksheetEditActivity"
+            android:name="com.emon.haziraKhata.MarksheetEditActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

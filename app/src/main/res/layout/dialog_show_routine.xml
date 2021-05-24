@@ -20,14 +20,14 @@
             app:tabMode="scrollable" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomViewPager
+    <com.emon.haziraKhata.HelperClasses.ViewUtils.CustomViewPager
         android:id="@+id/viewpager"
         android:layout_above="@+id/btn_add_routine"
         android:layout_below="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </com.Teachers.HaziraKhataByGk.HelperClasses.ViewUtils.CustomViewPager>
+    </com.emon.haziraKhata.HelperClasses.ViewUtils.CustomViewPager>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_add_routine"

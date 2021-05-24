@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLightPrimary"
-    tools:context="com.Teachers.HaziraKhataByGk.MarkSheetHomeActivity">
+    tools:context="com.emon.haziraKhata.MarkSheetHomeActivity">
 
     <include layout="@layout/content_mark_sheet_home" />
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:paddingTop="30sp"
     android:background="#e3f2fd"
-    tools:context="com.Teachers.HaziraKhataByGk.SavedData.SavedJobFragment"
+    tools:context="com.emon.haziraKhata.SavedData.SavedJobFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:id="@+id/toDoEmptyView"

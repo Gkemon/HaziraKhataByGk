@@ -6,7 +6,7 @@
     android:id="@+id/mainLayout"
     android:background="@color/colorBackGround"
     android:layout_height="match_parent"
-    tools:context="com.Teachers.HaziraKhataByGk.Attendance.AttendanceActivity">
+    tools:context="com.emon.haziraKhata.Attendance.AttendanceActivity">
     <RadioGroup
         android:id="@+id/rg_present_absent_all"
         android:layout_width="match_parent"
