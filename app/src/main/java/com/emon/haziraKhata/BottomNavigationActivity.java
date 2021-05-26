@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.emon.haziraKhata.Firebase.FirebaseCaller;
 import com.emon.haziraKhata.HelperClasses.ViewUtils.BaseActivity;
 import com.emon.haziraKhata.HelperClasses.ViewUtils.ViewPagerAdapter;
+import com.emon.haziraKhata.home.MainActivity;
 import com.emon.haziraKhata.Model.BlogItem;
 import com.emon.haziraKhata.Model.JobItems;
 import com.emon.haziraKhata.Model.NewsItem;

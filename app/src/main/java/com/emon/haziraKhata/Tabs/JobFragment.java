@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.emon.haziraKhata.MainActivity.Job_list;
+import static com.emon.haziraKhata.home.MainActivity.Job_list;
 import static com.emon.haziraKhata.R.id.clickerForJob;
 import static com.emon.haziraKhata.R.id.loveClickerForjob;
 import static com.emon.haziraKhata.R.id.saveClickerForjob;

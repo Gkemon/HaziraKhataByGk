@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden|adjustPan">
         <activity
-            android:name="com.emon.haziraKhata.Home.SettingsActivity"
+            android:name="com.emon.haziraKhata.home.SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
 
         <service
@@ -77,7 +77,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.emon.haziraKhata.MainActivity"
+            android:name="com.emon.haziraKhata.home.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppThemeForNoActionBar" />
         <activity

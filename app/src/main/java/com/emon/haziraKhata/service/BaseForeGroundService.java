@@ -10,7 +10,7 @@ import android.os.Build;
 import androidx.annotation.CallSuper;
 import androidx.core.app.NotificationCompat;
 
-import com.emon.haziraKhata.MainActivity;
+import com.emon.haziraKhata.home.MainActivity;
 import com.emon.haziraKhata.R;
 
 /**

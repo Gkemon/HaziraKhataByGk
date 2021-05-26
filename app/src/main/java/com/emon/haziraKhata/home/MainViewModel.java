@@ -1,4 +1,4 @@
-package com.emon.haziraKhata.Home;
+package com.emon.haziraKhata.home;
 
 import android.app.Application;
 

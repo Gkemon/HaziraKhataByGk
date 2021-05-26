@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.emon.haziraKhata.BuildConfig;
 import com.emon.haziraKhata.Firebase.FirebaseCaller;
-import com.emon.haziraKhata.Home.SettingsActivity;
+import com.emon.haziraKhata.home.SettingsActivity;
 import com.emon.haziraKhata.Login.LoginActivity;
 import com.emon.haziraKhata.Model.AttendenceData;
 import com.emon.haziraKhata.Model.BlogItem;

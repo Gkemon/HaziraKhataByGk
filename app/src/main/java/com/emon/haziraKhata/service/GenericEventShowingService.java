@@ -10,8 +10,8 @@ import androidx.preference.PreferenceManager;
 
 import com.emon.haziraKhata.HelperClasses.UtilsCommon;
 import com.emon.haziraKhata.HelperClasses.UtilsDateTime;
-import com.emon.haziraKhata.Home.SettingsActivity;
-import com.emon.haziraKhata.MainActivity;
+import com.emon.haziraKhata.home.SettingsActivity;
+import com.emon.haziraKhata.home.MainActivity;
 import com.emon.haziraKhata.routine.RoutineItem;
 import com.emon.haziraKhata.routine.RoutineUtils;
 
