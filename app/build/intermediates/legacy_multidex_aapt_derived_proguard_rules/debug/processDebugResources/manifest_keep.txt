@@ -1,4 +1,0 @@
-# Referenced at /home/gk/AndroidStudioProjects/hazira-khata-attendance-sheet/app/build/intermediates/merged_manifests/debug/AndroidManifest.xml:48
--keep class androidx.core.app.CoreComponentFactory { <init>(); }
-# Referenced at /home/gk/AndroidStudioProjects/hazira-khata-attendance-sheet/app/build/intermediates/merged_manifests/debug/AndroidManifest.xml:48
--keep class com.emon.haziraKhata.HelperClasses.GlobalContext { <init>(); }

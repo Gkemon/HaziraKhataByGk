@@ -3,6 +3,7 @@
 /local.properties
 /.idea
 .idea/
+.idea
 .DS_Store
 /build
 /captures
@@ -19,3 +20,5 @@
 /gradle/wrapper/gradle-wrapper.jar
 /adb/AdbWinUsbApi.dll
 
+/build/
+/app/build/
