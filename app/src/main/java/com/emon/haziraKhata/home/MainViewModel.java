@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Gk Emon on 6/11/2020.
  */
 public class MainViewModel extends AndroidViewModel {
-    List<RoutineItem> triggeredRoutines=new ArrayList<>();
+    private List<RoutineItem> triggeredRoutines=new ArrayList<>();
     public MainViewModel(@NonNull Application application) {
         super(application);
     }

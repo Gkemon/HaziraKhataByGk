@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.RelativeLayout
@@ -52,35 +51,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var drawer: DrawerLayout
     private lateinit var routineViewModel: RoutineViewModel
 
-    private fun setUpDrawer() {
-
-        drawer = findViewById(R.id.drawerLayout)
-        val toggle = ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
-        navigationView.itemIconTintList = null
-        FirebaseCaller.getFirebaseDatabase().keepSynced(true)
-        if (FirebaseCaller.getCurrentUser() != null) {
-            if (UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().email)) mProfileHeader = FirebaseCaller.getCurrentUser().email.toString() else if (UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().phoneNumber)) mProfileHeader = FirebaseCaller.getCurrentUser().phoneNumber.toString()
-        } else {
-            mProfileHeader = "এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন"
-        }
-        val headerView = navigationView.getHeaderView(0)
-        val navHeader = headerView.findViewById<RelativeLayout>(R.id.user_pro_pic)
-        val emailText = navHeader.findViewById<TextView>(R.id.user_email)
-        emailText.text = mProfileHeader
-        navHeader.setOnClickListener {
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            intent.putExtra("FLAG", "INSIDE")
-            startActivity(intent)
-            val drawer = findViewById<DrawerLayout>(R.id.drawerLayout)
-            drawer.closeDrawer(GravityCompat.START)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -88,11 +58,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
         //If activity is launched from routine service
-        if (intent != null && intent.extras != null && intent.extras!!.getParcelableArrayList<Parcelable>(GenericEventShowingService.TRIGGERED_ROUTINES) != null) {
-            mainViewModel.triggeredRoutines = intent
-                    .extras!!
-                    .getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES)
-        }
+        mainViewModel.triggeredRoutines = intent.extras?.getParcelableArrayList(GenericEventShowingService.TRIGGERED_ROUTINES)
+
+
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         OneSignal.startInit(this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification).unsubscribeWhenNotificationsAreDisabled(true).init()
@@ -132,7 +100,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 alertDialog.setMessage("এপটি এখনো ডেভেলপিং দশায় রয়েছে । " +
                         "সুতরাং শিক্ষক হিসাবে আপনার মূল্যবান মতামত প্রদান করে ডেভেলপারকে সাহায্য করুন।")
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "মতামত দিন"
-                ) { dialog: DialogInterface?, which: Int ->
+                ) { _: DialogInterface?, _: Int ->
                     UtilsCommon.openInAppBrowser(
                             "https://www.facebook.com/groups/2035798976667483/permalink/2066665843580796/",
                             this@MainActivity)
@@ -162,11 +130,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(intent1)
             }
         }
-        drawer!!.closeDrawer(GravityCompat.START)
+        drawer.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun setupViewPager() {
+    private fun setupViewPager() {
         viewPager = findViewById(R.id.viewpager)
         tabLayout = findViewById(R.id.tabs)
         tabLayout.setupWithViewPager(viewPager)
@@ -177,35 +145,35 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         adapter.addFrag(JobFragment(), "শিক্ষক নিয়োগ")
         adapter.addFrag(BlogFragment(), "শিক্ষক কথন")
         adapter.addFrag(TextBookFragment(), "পাঠ্যবই")
-        viewPager.setAdapter(adapter)
-        viewPager.setOffscreenPageLimit(adapter.count)
+        viewPager.adapter = adapter
+        viewPager.offscreenPageLimit = adapter.count
     }
 
     private fun setupTabIcons() {
         val tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabOne.text = " শ্রেণী কার্যক্রম"
         tabOne.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_class_fragment, 0, 0, 0)
-        tabLayout!!.getTabAt(0)!!.customView = tabOne
+        tabLayout.getTabAt(0)!!.customView = tabOne
         val tabTwo = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabTwo.text = " শিক্ষক নিবন্ধন কর্নার"
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_nibondhon, 0, 0, 0)
-        tabLayout!!.getTabAt(1)!!.customView = tabTwo
+        tabLayout.getTabAt(1)!!.customView = tabTwo
         val tabFour = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabFour.text = " তথ্য ঝুড়ি"
         tabFour.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_tottho, 0, 0, 0)
-        tabLayout!!.getTabAt(2)!!.customView = tabFour
+        tabLayout.getTabAt(2)!!.customView = tabFour
         val tabFive = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabFive.text = " শিক্ষক নিয়োগ"
         tabFive.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_job, 0, 0, 0)
-        tabLayout!!.getTabAt(3)!!.customView = tabFive
+        tabLayout.getTabAt(3)!!.customView = tabFive
         val tabSix = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabSix.text = " শিক্ষক কথন"
         tabSix.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_shikkhok_kothon, 0, 0, 0)
-        tabLayout!!.getTabAt(4)!!.customView = tabSix
+        tabLayout.getTabAt(4)!!.customView = tabSix
         val tabSeven = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabSeven.text = " পাঠ্যবই"
         tabSeven.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_text_book, 0, 0, 0)
-        tabLayout!!.getTabAt(5)!!.customView = tabSeven
+        tabLayout.getTabAt(5)!!.customView = tabSeven
     }
 
     internal inner class ViewPagerAdapter(manager: FragmentManager?) : FragmentPagerAdapter(manager!!) {
@@ -232,5 +200,34 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     companion object {
         @JvmField
         var Job_list: ArrayList<JobItems>? = null
+    }
+
+    private fun setUpDrawer() {
+
+        drawer = findViewById(R.id.drawerLayout)
+        val toggle = ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
+        navigationView.itemIconTintList = null
+        FirebaseCaller.getFirebaseDatabase().keepSynced(true)
+        if (FirebaseCaller.getCurrentUser() != null) {
+            if (UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().email)) mProfileHeader = FirebaseCaller.getCurrentUser().email.toString() else if (UtilsCommon.isValideString(FirebaseCaller.getCurrentUser().phoneNumber)) mProfileHeader = FirebaseCaller.getCurrentUser().phoneNumber.toString()
+        } else {
+            mProfileHeader = "এখনো একাউন্ট খুলেননি।খুলতে এখানে ক্লিক করুন"
+        }
+        val headerView = navigationView.getHeaderView(0)
+        val navHeader = headerView.findViewById<RelativeLayout>(R.id.user_pro_pic)
+        val emailText = navHeader.findViewById<TextView>(R.id.user_email)
+        emailText.text = mProfileHeader
+        navHeader.setOnClickListener {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            intent.putExtra("FLAG", "INSIDE")
+            startActivity(intent)
+            val drawer = findViewById<DrawerLayout>(R.id.drawerLayout)
+            drawer.closeDrawer(GravityCompat.START)
+        }
     }
 }
